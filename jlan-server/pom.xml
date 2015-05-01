@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>alfresco-jlan-server</artifactId>
+    <name>Alfresco JLan</name>
+    <description>Alfresco JLan</description>
+    <url>${project.artifactId}</url>
+
+    <parent>
+        <groupId>org.alfresco</groupId>
+        <artifactId>alfresco-jlan-parent</artifactId>
+        <version>5.1-RA4-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+          <groupId>org.springframework.extensions.surf</groupId>
+          <artifactId>spring-surf-core-configservice</artifactId>
+          <version>${dependency.webscripts.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast-spring</artifactId>
+            <version>2.4</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hazelcast-client</artifactId>
+                    <groupId>com.hazelcast</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsr250-api</artifactId>
+                    <groupId>javax.annotation</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+   
+
+</project>
