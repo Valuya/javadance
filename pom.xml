@@ -1,11 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.alfresco</groupId>
-        <artifactId>alfresco-parent</artifactId>
-        <version>5.1-RA4-SNAPSHOT</version>
-    </parent>
+
+    <groupId>org.alfresco</groupId>
     <artifactId>alfresco-jlan-parent</artifactId>
+    <version>5.1-RA4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Alfresco JLAN Parent</name>
 
@@ -14,15 +12,40 @@
     </modules>
 
     <properties>
-        <version.major>5</version.major>
-        <version.minor>1</version.minor>
-        <version.revision>0</version.revision>
+       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+       <dependency.webscripts.version>5.1</dependency.webscripts.version>
     </properties>
 
-   <scm>
-       <connection>scm:svn:https://svn.alfresco.com/repos/alfresco-open-mirror/services/jlan/trunk/</connection>
-       <developerConnection>scm:svn:https://svn.alfresco.com/repos/alfresco-enterprise/services/jlan/branches/HEAD-BUG-FIX/</developerConnection>
-   </scm>
+    <url>http://www.alfresco.org/</url>
+    <inceptionYear>2005</inceptionYear>
+    <organization>
+        <name>Alfresco Software</name>
+        <url>http://www.alfresco.org/</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License v3.0 or later</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:svn:https://svn.alfresco.com/repos/alfresco-open-mirror/services/jlan/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.alfresco.com/repos/alfresco-enterprise/services/jlan/trunk</developerConnection>
+    </scm>
+    <prerequisites>
+        <maven>3.0.3</maven>
+    </prerequisites>
+
+    <distributionManagement>
+        <repository>
+             <id>alfresco-internal</id>
+             <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+             <id>alfresco-internal-snapshots</id>
+             <url>https://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
     <repositories>
         <repository>
             <id>alfresco-public</id>
@@ -45,27 +68,41 @@
             </snapshots>
         </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <!-- Only used for the customised version of yuicompressor in yuicompressor-maven-plugin -->
-            <id>alfresco-public</id>
-            <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <build>
-        <!-- Resets Maven default -->
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <testSourceDirectory>src/test/java</testSourceDirectory>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-        <testResources>
-            <testResource>
-                 <directory>src/test/resources</directory>
-            </testResource>
-        </testResources> 
+       <!-- Defining version and some configuration of Maven plugins -->
+       <pluginManagement>
+           <plugins>
+               <plugin>
+                   <artifactId>maven-clean-plugin</artifactId>
+                   <version>2.6.1</version>
+               </plugin>
+               <plugin>
+                   <artifactId>maven-jar-plugin</artifactId>
+                   <version>2.6</version>
+               </plugin>
+               <plugin>
+                   <artifactId>maven-compiler-plugin</artifactId>
+                   <version>3.3</version>
+                   <configuration>
+                       <source>1.7</source>
+                       <target>1.7</target>
+                   </configuration>
+               </plugin>
+               <plugin>
+                   <artifactId>maven-deploy-plugin</artifactId>
+                   <version>2.8.2</version>
+               </plugin>
+               <plugin>
+                   <artifactId>maven-release-plugin</artifactId>
+                   <version>2.5.2</version>
+                   <configuration>
+                       <autoVersionSubmodules>true</autoVersionSubmodules>
+                       <tagNameFormat>@{project.version}</tagNameFormat>
+                   </configuration>
+               </plugin>
+           </plugins>
+       </pluginManagement>
     </build>
+
 </project>

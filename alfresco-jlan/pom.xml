@@ -3,7 +3,6 @@
     <artifactId>alfresco-jlan-embed</artifactId>
     <name>Alfresco JLan</name>
     <description>Alfresco JLan</description>
-    <url>${project.artifactId}</url>
 
     <parent>
         <groupId>org.alfresco</groupId>
