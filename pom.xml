@@ -3,7 +3,7 @@
 
     <groupId>org.alfresco</groupId>
     <artifactId>alfresco-jlan-parent</artifactId>
-    <version>5.1-RA4-SNAPSHOT</version>
+    <version>5.1</version>
     <packaging>pom</packaging>
     <name>Alfresco JLAN Parent</name>
 
@@ -29,8 +29,8 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:https://svn.alfresco.com/repos/alfresco-open-mirror/services/jlan/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.alfresco.com/repos/alfresco-enterprise/services/jlan/trunk</developerConnection>
+        <connection>scm:svn:https://svn.alfresco.com/repos/alfresco-open-mirror/services/jlan/tags/5.1</connection>
+        <developerConnection>scm:svn:https://svn.alfresco.com/repos/alfresco-enterprise/services/jlan/tags/5.1</developerConnection>
     </scm>
     <prerequisites>
         <maven>3.0.3</maven>
