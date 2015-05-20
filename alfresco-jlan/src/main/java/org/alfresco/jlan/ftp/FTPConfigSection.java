@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2005-2015 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -49,7 +49,8 @@ public class FTPConfigSection extends ConfigSection {
   
   private InetAddress m_ftpBindAddress;
   private int m_ftpPort = -1;
-  
+  private int m_ftpSrvSessionTimeout = 0;
+
   //  Allow anonymous FTP access and anonymous FTP account name
   
   private boolean m_ftpAllowAnonymous;
@@ -136,6 +137,11 @@ public class FTPConfigSection extends ConfigSection {
    */
   public final int getFTPPort() {
     return m_ftpPort;
+  }
+
+  public final int getFTPSrvSessionTimeout()
+  {
+    return m_ftpSrvSessionTimeout;
   }
 
   /**
@@ -369,6 +375,26 @@ public class FTPConfigSection extends ConfigSection {
     
     //  Return the change status
     
+    return sts;
+  }
+
+  /**
+   * Set the FTP server session timeout
+   *
+   * @param timeout int
+   * @return int
+   * @exception InvalidConfigurationException
+   */
+  public final int setFTPSrvSessionTimeout(int timeout)
+          throws InvalidConfigurationException {
+
+    //  Inform listeners, validate the configuration change
+
+    int sts = fireConfigurationChange(ConfigId.FTPSrvSessionTimeout, new Integer(timeout));
+    m_ftpSrvSessionTimeout = timeout;
+
+    //  Return the change status
+
     return sts;
   }
   

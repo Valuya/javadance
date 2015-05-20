@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2010 Alfresco Software Limited.
+ * Copyright (C) 2006-2015 Alfresco Software Limited.
  *
  * This file is part of Alfresco
  *
@@ -108,6 +108,7 @@ public class ConfigId {
 	public static final int FTPTrustPassphrase  = GroupFTP + 19;
 	public static final int FTPKeyProvider		= GroupFTP + 20;
 	public static final int FTPTrustProvider	= GroupFTP + 21;
+        public static final int FTPSrvSessionTimeout= GroupFTP + 22;
 
 	// NFS server variables
 

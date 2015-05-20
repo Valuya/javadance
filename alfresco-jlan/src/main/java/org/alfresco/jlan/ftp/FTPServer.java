@@ -812,6 +812,7 @@ public class FTPServer extends NetworkFileServer implements Runnable, Configurat
 					case ConfigId.SecurityAuthenticator:
 					case ConfigId.UsersList:
 					case ConfigId.DebugDevice:
+					case ConfigId.FTPSrvSessionTimeout:
 						sts = StsAccepted;
 						break;
 

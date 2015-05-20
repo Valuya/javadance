@@ -30,6 +30,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.security.KeyManagementException;
@@ -2349,6 +2350,8 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 	                return;
 	            }
 
+                    dataSock.setSoTimeout(getFTPServer().getFTPConfiguration().getFTPSrvSessionTimeout());
+
 	            // Open an input stream from the client
 
 	            is = dataSock.getInputStream();
@@ -2499,6 +2502,21 @@ public class FTPSrvSession extends SrvSession implements Runnable {
 
 	        sendFTPResponse(451, "Access denied, file may be in use or locked by another user");
 	    }
+            catch (SocketTimeoutException ex)
+            {
+                // DEBUG
+
+                if ( Debug.EnableInfo && hasDebug(DBG_ERROR))
+                {
+                    debugPrintln(" Error during transmission: session timeout.");
+                    debugPrintln(" Marking file for delete on close.");
+                }
+                deleteOnClose = true;
+
+                // Indicate that there was an error during transmission of the file data
+
+                sendFTPResponse(426, "Error during transmission: session timeout");
+            }
 	    catch (Exception ex) 
 	    {
 
