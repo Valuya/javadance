@@ -795,7 +795,7 @@ public class DERBuffer {
   /**
    * Calculate the number of length bytes required for a data length
    * 
-   * @param len
+   * @param len int
    * @return int
    */
   public final int calculateLengthBytes(int len) {

@@ -59,7 +59,7 @@ public class DEREnumerated extends DERObject {
   /**
    * Decode the object
    * 
-   * @param buf
+   * @param buf DERBuffer
    * @throws IOException
    */
   public void derDecode(DERBuffer buf)
@@ -81,7 +81,7 @@ public class DEREnumerated extends DERObject {
   /**
    * Encode the object
    * 
-   * @param buf
+   * @param buf DERBuffer
    * @throws IOException
    */
   public void derEncode(DERBuffer buf)

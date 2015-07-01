@@ -122,7 +122,7 @@ public abstract class SrvSession {
 	/**
 	 * Output a string to the debug device
 	 * 
-	 * @param str
+	 * @param str String
 	 */
 	public final void debugPrint(String str) {
 		Debug.print(str);
@@ -560,7 +560,7 @@ public abstract class SrvSession {
 	
 	/**
 	 * Are pseudo files enabled for this session?
-	 * @return
+	 * @return boolean
 	 */
 	public boolean isPseudoFilesEnabled()
 	{
@@ -580,7 +580,7 @@ public abstract class SrvSession {
 	/**
 	 * Set the Driver State.   A place for the content driver to 
 	 * store state in the session.
-	 * @param driverState
+	 * @param driverState Object
 	 */
 	public void setDriverState(Object driverState)
 	{

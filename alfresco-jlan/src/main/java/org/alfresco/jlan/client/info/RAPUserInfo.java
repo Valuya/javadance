@@ -55,8 +55,8 @@ public final class RAPUserInfo extends UserInfo implements RAPReadable, Serializ
 	}
 
 	/**
-	 * @param infoLevel
-	 * @param objs
+	 * @param infoLevel int
+	 * @param objs Vector
 	 */
 	public void readRAPObject(int infoLevel, Vector objs) {
 		// TODO Auto-generated method stub

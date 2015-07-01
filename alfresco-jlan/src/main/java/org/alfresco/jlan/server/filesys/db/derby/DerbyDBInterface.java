@@ -1877,7 +1877,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 	 * @param dirId int
 	 * @param fid int
 	 * @param stid int
-	 * @param newName
+	 * @param newName String
 	 * @exception DBException
 	 */
 	public void renameStreamRecord(int dirId, int fid, int stid, String newName)
@@ -2896,8 +2896,8 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 	/**
 	 * Return the file data details for the specified file or stream.
 	 * 
-	 * @param fileId
-	 * @param streamId
+	 * @param fileId int
+	 * @param streamId int
 	 * @return DBDataDetails
 	 * @throws DBException
 	 */

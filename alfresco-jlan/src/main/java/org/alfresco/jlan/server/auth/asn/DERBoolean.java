@@ -59,7 +59,7 @@ public class DERBoolean extends DERObject {
   /**
    * Decode the object
    * 
-   * @param buf
+   * @param buf DERBuffer
    * @throws IOException
    */
   public void derDecode(DERBuffer buf) throws IOException {
@@ -80,7 +80,7 @@ public class DERBoolean extends DERObject {
   /**
    * Encode the object
    * 
-   * @param buf
+   * @param buf DERBuffer
    * @throws IOException
    */
   public void derEncode(DERBuffer buf) throws IOException {

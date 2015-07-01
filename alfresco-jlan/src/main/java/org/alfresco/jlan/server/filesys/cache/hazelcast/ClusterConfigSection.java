@@ -119,7 +119,7 @@ public class ClusterConfigSection extends ConfigSection {
 	  /**
 	   * Set an external Hazelcast instance to be used
 	   * 
-	   * @param 
+	   * @param hazelcast HazelcastInstance
 	   */
 	  public final void setHazelcastInstance( HazelcastInstance hazelcast) {
 		  

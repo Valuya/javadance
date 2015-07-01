@@ -36,8 +36,8 @@ public interface DBDataInterface {
   /**
    * Return the file data details for the specified file or stream.
    * 
-   * @param fileId
-   * @param streamId
+   * @param fileId int
+   * @param streamId int
    * @return DBDataDetails
    * @throws DBException
    */

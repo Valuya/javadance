@@ -876,7 +876,7 @@ public class Session {
 	/**
 	 * Set the process id for this session
 	 * 
-	 * @param id
+	 * @param id int
 	 */
 	public final void setProcessId(int id) {
 		m_processId = id;

@@ -223,7 +223,6 @@ public abstract class RemoteCacheTask<T> implements Callable<T>, HazelcastInstan
 	 * Run a remote task
 	 * 
 	 * @param stateCache IMap<String, ClusterFileState>
-	 * @param stateCache ClusterFileState
 	 * @param key String
 	 * @return T
 	 * @exception Exception

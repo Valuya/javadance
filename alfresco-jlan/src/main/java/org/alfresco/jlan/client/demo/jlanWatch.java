@@ -46,7 +46,7 @@ public class jlanWatch extends jlanApp {
 	/**
 	 * Output the command help
 	 * 
-	 * @param out
+	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
 

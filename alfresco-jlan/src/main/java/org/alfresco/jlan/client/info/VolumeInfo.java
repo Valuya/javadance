@@ -116,7 +116,7 @@ public class VolumeInfo {
 	/**
 	 * Set the volume label
 	 * 
-	 * @param label
+	 * @param label String
 	 */
 	public final void setVolumeLabel(String label) {
 		m_label = label;

@@ -45,8 +45,8 @@ public class DBDataDetails {
   /**
    * Class constructor
    * 
-   * @param fileId
-   * @param streamId
+   * @param fileId int
+   * @param streamId int
    */
   public DBDataDetails(int fileId, int streamId) {
     m_fid  = fileId;

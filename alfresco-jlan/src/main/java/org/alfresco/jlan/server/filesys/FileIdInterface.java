@@ -39,7 +39,7 @@ public interface FileIdInterface {
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 * @param dirid int
-	 * @param fileid
+	 * @param fileid int
 	 * @return String
 	 * @exception FileNotFoundException 
 	 */

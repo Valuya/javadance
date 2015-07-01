@@ -1198,7 +1198,7 @@ public class BackgroundLoadSave {
 	/**
 	 * Set the in-memory file request queue low water mark level
 	 * 
-	 * @param lowqSize
+	 * @param lowqSize int
 	 */
 	public final void setLowQueueSize(int lowqSize) {
 		m_lowQueueSize = lowqSize;

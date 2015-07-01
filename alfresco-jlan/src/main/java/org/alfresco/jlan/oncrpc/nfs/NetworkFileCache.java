@@ -495,7 +495,7 @@ public class NetworkFileCache {
 	/**
 	 * Remove a file from the cache
 	 * 
-	 * @param id
+	 * @param id int
 	 */
 	public synchronized final void removeFile(int id) {
 

@@ -44,9 +44,9 @@ public class Md5SumFileProcessor implements FileProcessor {
 	/**
 	 * Process a cached file just before it is to be stored.
 	 * 
-	 * @param context
-	 * @param state
-	 * @param segment
+	 * @param context DiskDeviceContext
+	 * @param state FileState
+	 * @param segment FileSegment
 	 */
 	public void processStoredFile(DiskDeviceContext context, FileState state, FileSegment segment) {
 		
@@ -60,9 +60,9 @@ public class Md5SumFileProcessor implements FileProcessor {
 	/**
 	 * Process a cached file just after being loaded.
 	 *
-	 * @param context
-	 * @param state
-	 * @param segment
+	 * @param context DiskDeviceContext
+	 * @param state FileState
+	 * @param segment FileSegment
 	 */
 	public void processLoadedFile(DiskDeviceContext context, FileState state, FileSegment segment) {
 	}

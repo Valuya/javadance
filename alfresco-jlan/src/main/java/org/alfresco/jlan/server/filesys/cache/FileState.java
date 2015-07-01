@@ -541,7 +541,7 @@ public abstract class FileState implements Serializable {
 	 * optionally create the map if it does not exist
 	 * 
 	 * @param createMap boolean
-	 * @return HashMap<String, Object>
+	 * @return HashMap
 	 */
 	protected abstract HashMap<String, Object> getAttributeMap( boolean createMap);
 	

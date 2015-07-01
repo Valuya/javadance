@@ -60,7 +60,7 @@ public class NameValueList {
 	/**
 	 * Return the specified item
 	 * 
-	 * @param idx
+	 * @param idx int
 	 * @return NameValue
 	 */
 	public final NameValue getItemAt(int idx) {

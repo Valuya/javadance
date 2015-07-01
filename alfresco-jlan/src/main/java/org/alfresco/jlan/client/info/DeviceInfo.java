@@ -186,7 +186,7 @@ public class DeviceInfo {
 	/**
 	 * Check if the device characteristic flag is set
 	 * 
-	 * @param flg
+	 * @param flg int
 	 * @return boolan
 	 */
 	private final boolean hasFlag(int flg) {

@@ -63,7 +63,6 @@ public class ConsoleIO {
    * Read a character from the console
    *
    * @return int
-   * @exception IOException
    */
   public final static int readCharacter() {
     try {

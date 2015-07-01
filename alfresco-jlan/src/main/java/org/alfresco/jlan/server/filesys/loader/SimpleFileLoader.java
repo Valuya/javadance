@@ -394,7 +394,7 @@ public class SimpleFileLoader implements FileLoader, NamedFileLoader {
 	/**
 	 * Add a file processor to process files before storing and after loading.
 	 * 
-	 * @param fileProc
+	 * @param fileProc FileProcessor
 	 * @throws FileLoaderException
 	 */
 	public void addFileProcessor(FileProcessor fileProc)

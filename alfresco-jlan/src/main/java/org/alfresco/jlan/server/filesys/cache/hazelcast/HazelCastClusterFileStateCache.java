@@ -1500,7 +1500,7 @@ public class HazelCastClusterFileStateCache extends ClusterFileStateCache implem
 	 * Change an oplock type
 	 * 
 	 * @param oplock OpLockDetails
-	 * @param newTyp
+	 * @param newTyp int
 	 */
 	public void changeOpLockType( OpLockDetails oplock, int newTyp) {
 

@@ -62,7 +62,7 @@ public class MountEntryList {
 	/**
 	 * Return the specified entry
 	 * 
-	 * @param idx
+	 * @param idx int
 	 * @return MountEntry
 	 */
 	public synchronized final MountEntry getEntryAt(int idx) {

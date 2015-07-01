@@ -49,7 +49,7 @@ public interface ShareMapper {
 	 * Return the share list for the specified host. The host name can be used to implement virtual
 	 * hosts.
 	 * 
-	 * @param host
+	 * @param host String
 	 * @param sess SrvSession
 	 * @param allShares boolean
 	 * @return SharedDeviceList

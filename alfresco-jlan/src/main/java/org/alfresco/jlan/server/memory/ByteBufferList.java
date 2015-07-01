@@ -57,7 +57,7 @@ public class ByteBufferList {
 	 * 
 	 * @param bufSize int
 	 * @param initAlloc int
-	 * @param maxAlloc
+	 * @param maxAlloc int
 	 */
 	public ByteBufferList(int bufSize, int initAlloc, int maxAlloc) {
 		m_bufSize = bufSize;

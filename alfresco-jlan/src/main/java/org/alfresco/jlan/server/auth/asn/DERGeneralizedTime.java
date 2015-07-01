@@ -59,7 +59,7 @@ public class DERGeneralizedTime extends DERObject {
   /**
    * Decode the object
    * 
-   * @param buf
+   * @param buf DERBuffer
    * @throws IOException
    */
   public void derDecode(DERBuffer buf)
@@ -89,7 +89,7 @@ public class DERGeneralizedTime extends DERObject {
   /**
    * Encode the object
    * 
-   * @param buf
+   * @param buf DERBuffer
    * @throws IOException
    */
   public void derEncode(DERBuffer buf)

@@ -270,7 +270,7 @@ public class Win32NetBIOS {
 	/**
 	 * Send a broadcast datagram
 	 * 
-	 * @param lana
+	 * @param lana int
 	 * @param buf byte[]
 	 * @param off int
 	 * @param len int
@@ -485,7 +485,7 @@ public class Win32NetBIOS {
 	/**
 	 * Return a hashtable of NetworkInterfaces indexed by TCP/IP address
 	 * 
-	 * @return Hashtable<String, NetworkInterface>
+	 * @return Hashtable
 	 */
 	private static final Hashtable<String, NetworkInterface> getNetworkAdapterList() {
 

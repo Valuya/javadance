@@ -2480,7 +2480,6 @@ public class DBDiskDriver implements DiskInterface, DiskSizeInterface, DiskVolum
    * @param fid int
    * @param dbCtx DBDeviceContext
    * @return DBFileInfo
-   * @exception IOException
    */
   public DBFileInfo getFileInfo(String path, int dirId, int fid, DBDeviceContext dbCtx) {
 
@@ -3493,7 +3492,7 @@ public class DBDiskDriver implements DiskInterface, DiskSizeInterface, DiskVolum
    * @param sess SrvSession
    * @param tree TreeConnection
    * @param dirid int
-   * @param fileid
+   * @param fileid int
    * @return String
    * @exception FileNotFoundException 
    */

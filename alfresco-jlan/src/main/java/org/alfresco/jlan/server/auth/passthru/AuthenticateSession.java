@@ -897,7 +897,7 @@ public class AuthenticateSession {
 	/**
 	 * Set the process id for this session
 	 * 
-	 * @param id
+	 * @param id int
 	 */
 	protected final void setProcessId(int id) {
 		m_processId = id;
@@ -1229,7 +1229,7 @@ public class AuthenticateSession {
    * Process the negotiate response SMB packet
    * 
    * @exception IOException If a network error occurs
-   * @eception SMBException If a CIFS error occurs
+   * @exception SMBException If a CIFS error occurs
    */
   private void processNegotiateResponse() throws IOException, SMBException
   {
@@ -1389,7 +1389,7 @@ public class AuthenticateSession {
    * Send the first stage of the extended security session setup
    * 
    * @exception IOException If a network error occurs
-   * @eception SMBException If a CIFS error occurs
+   * @exception SMBException If a CIFS error occurs
    */
   private final void doExtendedSessionSetupPhase1() throws IOException, SMBException
   {
@@ -1524,7 +1524,7 @@ public class AuthenticateSession {
   * @param ntlmPwd byte[]
   * @param vcNum int
   * @exception IOException If a network error occurs
-  * @eception SMBException If a CIFS error occurs
+  * @exception SMBException If a CIFS error occurs
   */
  private final void doExtendedSessionSetupPhase2(String domain, String userName, String wksName,
          byte[] lmPwd, byte[] ntlmPwd, int vcNum) throws IOException, SMBException

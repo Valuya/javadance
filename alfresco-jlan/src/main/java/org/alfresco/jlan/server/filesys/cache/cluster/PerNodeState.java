@@ -170,7 +170,7 @@ public class PerNodeState {
 	 * optionally create the map if it does not exist
 	 * 
 	 * @param createMap boolean
-	 * @return HashMap<String, Object>
+	 * @return HashMap
 	 */
 	protected HashMap<String, Object> getAttributeMap( boolean createMap) {
 		if ( m_cache == null && createMap == true)

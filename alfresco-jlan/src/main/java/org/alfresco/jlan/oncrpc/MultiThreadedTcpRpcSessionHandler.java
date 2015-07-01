@@ -69,7 +69,7 @@ public class MultiThreadedTcpRpcSessionHandler extends TcpRpcSessionHandler {
   /**
    * Initialize the session socket handler
    * 
-   * @param server
+   * @param server NetworkServer
    * @throws IOException
    */
   public void initializeSessionHandler(NetworkServer server) throws IOException {

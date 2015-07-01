@@ -676,7 +676,7 @@ public class SamrPipeFile extends IPCPipeFile {
 	/**
 	 * Open the built in domain
 	 * 
-	 * @return
+	 * @return PolicyHandle
 	 * @throws IOException
 	 * @throws SMBException
 	 */

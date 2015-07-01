@@ -568,7 +568,7 @@ public class ClusterTest {
 	/**
 	 * Application startup
 	 * 
-	 * @param args
+	 * @param args String[]
 	 */
 	public static void main(String[] args) {
 		

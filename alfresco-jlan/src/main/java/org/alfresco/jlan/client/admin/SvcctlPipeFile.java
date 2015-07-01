@@ -335,7 +335,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 	/**
 	 * Delete a remote service
 	 * 
-	 * @param handle
+	 * @param handle ServiceHandle
 	 * @throws IOException
 	 * @throws SMBException
 	 */

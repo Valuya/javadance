@@ -448,7 +448,7 @@ public abstract class FileStateCache {
 	 * Change an oplock type
 	 * 
 	 * @param oplock OpLockDetails
-	 * @param newTyp
+	 * @param newTyp int
 	 */
 	public void changeOpLockType( OpLockDetails oplock, int newTyp) {
 

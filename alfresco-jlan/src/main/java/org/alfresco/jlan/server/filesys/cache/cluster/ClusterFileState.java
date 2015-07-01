@@ -232,7 +232,7 @@ public abstract class ClusterFileState extends FileState implements Serializable
 	 * optionally create the map if it does not exist
 	 * 
 	 * @param createMap boolean
-	 * @return HashMap<String, Object>
+	 * @return HashMap
 	 */
 	protected HashMap<String, Object> getAttributeMap( boolean createMap) {
 		HashMap<String, Object> attrMap = null;

@@ -265,7 +265,7 @@ public interface DBInterface {
    * @param dirId int
    * @param fid int
    * @param stid int
-   * @param newName
+   * @param newName String
    * @exception DBException
    */
   public void renameStreamRecord(int dirId, int fid, int stid, String newName)

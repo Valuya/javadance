@@ -701,7 +701,7 @@ public class DBConnectionPool {
 	/**
 	 * Renew a lease on a connection for the default lease time
 	 * 
-	 * @param conn
+	 * @param conn Connection
 	 */
 	public final void renewLease(Connection conn) {
 		renewLease(conn, System.currentTimeMillis() + getLeaseTime());

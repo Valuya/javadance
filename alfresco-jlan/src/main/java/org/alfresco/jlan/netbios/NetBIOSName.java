@@ -141,7 +141,7 @@ public class NetBIOSName {
 	 * 
 	 * @param name java.lang.String
 	 * @param typ char
-	 * @param group
+	 * @param group boolean
 	 */
 	public NetBIOSName(String name, char typ, boolean group) {
 		setName(name);
