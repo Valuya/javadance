@@ -98,4 +98,13 @@ public interface QuotaManager {
 	 * @return long
 	 */
 	public long getUserFreeSpace(SrvSession sess, TreeConnection tree);
+	
+	/**
+	 * Return total space available to the specified user/session
+	 *
+	 * @param sess SrvSession
+	 * @param tree TreeConnection
+	 * @return long
+	 */
+	public long getUserTotalSpace(SrvSession sess, TreeConnection tree);
 }

@@ -272,23 +272,24 @@ class DiskInfoPacker {
 	/**
 	 * Pack the filesystem size information, InfoFsSize
 	 * 
-	 * @param userLimit		User free units
-	 * @param info				Disk size information
-	 * @param buf         Buffer to pack data into.
+	 * @param userQuota User total units
+	 * @param userLimit User free units
+	 * @param info Disk size information
+	 * @param buf Buffer to pack data into.
 	 */
-	public final static void packFullFsSizeInformation(long userLimit, SrvDiskInfo info, DataBuffer buf) {
-  	
-		//	Information format :-
-		//	 ULONG	Disk size (in units)
+	public final static void packFullFsSizeInformation(long userTotalSpace, long userLimit, SrvDiskInfo info, DataBuffer buf) {
+
+		//	 Information format :-
+		//	 ULONG User total size (in units)
 		//	 ULONG  User free size (in units)
 		//	 ULONG	Free size (in units)
 		//	 UINT		Unit size in blocks
 		//	 UINT		Block size in bytes
 
-		buf.putLong(info.getTotalUnits());
+		buf.putLong(userTotalSpace);
 		buf.putLong(userLimit);
 		buf.putLong(info.getFreeUnits());
 		buf.putInt(info.getBlocksPerAllocationUnit());
-		buf.putInt(info.getBlockSize());  	
+		buf.putInt(info.getBlockSize());
 	}
 }

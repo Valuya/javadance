@@ -4186,11 +4186,13 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				// from the quota manager.
 
 				long userLimit = -1L;
+				long userTotalSpace = -1L;
 
 				if ( diskCtx.hasQuotaManager()) {
 
-					// Get the per user free space from the quota manager
+					// Get the per user quota and free space from the quota manager
 
+					userTotalSpace = diskCtx.getQuotaManager().getUserTotalSpace(m_sess, conn);
 					userLimit = diskCtx.getQuotaManager().getUserFreeSpace(m_sess, conn);
 				}
 
@@ -4198,14 +4200,18 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				// else convert
 				// to allocation units.
 
+				if (userTotalSpace > 0)
+					userTotalSpace = userTotalSpace / diskInfo.getUnitSize();
+				else
+					userTotalSpace = diskInfo.getTotalUnits();
+				
 				if ( userLimit != -1L)
 					userLimit = userLimit / diskInfo.getUnitSize();
 				else
 					userLimit = diskInfo.getFreeUnits();
 
 				// Pack the disk information into the return data packet
-
-				DiskInfoPacker.packFullFsSizeInformation(userLimit, diskInfo, replyBuf);
+				DiskInfoPacker.packFullFsSizeInformation(userTotalSpace, userLimit, diskInfo, replyBuf);
 				break;
 			}
 

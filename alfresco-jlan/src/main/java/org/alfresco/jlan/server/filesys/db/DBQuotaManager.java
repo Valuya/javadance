@@ -239,6 +239,18 @@ public class DBQuotaManager implements QuotaManager {
 	}
 
 	/**
+	 * Return total space available to the specified user/session
+	 * 
+	 * @param sess SrvSession
+	 * @param tree TreeConnection
+	 * @return long
+	 */
+	public long getUserTotalSpace(SrvSession sess, TreeConnection tree) {
+
+		return m_totalSpace;
+	}
+
+	/**
 	 * Determine if debug output is enabled
 	 * 
 	 * @return boolean
