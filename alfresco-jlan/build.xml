@@ -11,7 +11,6 @@
 		<mkdir dir="build/standalone"/>
 		<javac destdir="build/standalone" classpath="service/wrapper.jar:hazelcast/hazelcast-2.4.jar" debug="on">
 			<src path="src/main/java"/>
-			<src path="source/standalone-java"/>
 			<include name="**/*.java"/>
 			<exclude name="org/alfresco/jlan/debug/cluster/**"/>
 			<exclude name="org/alfresco/jlan/server/filesys/cache/cluster/**"/>
@@ -41,7 +40,6 @@
 		<mkdir dir="build/standalone"/>
 		<javac destdir="build/standalone" classpath="service/wrapper.jar:libs/ojdbc14.jar:hazelcast/hazelcast-2.4.jar:libs/postgresql-9.1-901.jdbc4.jar" debug="on">
 			<src path="src/main/java"/>
-			<src path="source/standalone-java"/>
 			<include name="**/*.java"/>
 			<exclude name="org/alfresco/jlan/server/filesys/db/oracle/**"/>
 		</javac>
@@ -59,7 +57,6 @@
 		<mkdir dir="build/standalone-db"/>
 		<javac destdir="build/standalone-db" classpath="service/wrapper.jar:libs/ojdbc14.jar:hazelcast/hazelcast-2.4.jar:libs/postgresql-9.1-901.jdbc4.jar" debug="on">
 		  <src path="src/main/java"/>
-		  <src path="source/standalone-java"/>
 		  <include name="**/*.java"/>
 		  <exclude name="org/alfresco/jlan/server/filesys/db/oracle/**"/>
 		  <exclude name="org/alfresco/jlan/client/**"/>
@@ -85,7 +82,6 @@
 		<mkdir dir="build/standalone-dbora"/>
 		<javac destdir="build/standalone-dbora" classpath="service/wrapper.jar:libs/ojdbc14.jar:hazelcast/hazelcast-2.4.jar:libs/postgresql-9.1-901.jdbc4.jar" debug="on">
 		  <src path="src/main/java"/>
-		  <src path="source/standalone-java"/>
 		  <include name="**/*.java"/>
 		  <exclude name="org/alfresco/jlan/client/**"/>
 		  <exclude name="org/alfresco/jlan/client/admin/**"/>
@@ -107,7 +103,6 @@
 		<mkdir dir="build/standalone-cluster"/>
 		<javac destdir="build/standalone-cluster" classpath="service/wrapper.jar:hazelcast/hazelcast-2.4.jar" debug="on">
 			<src path="src/main/java"/>
-			<src path="source/standalone-java"/>
 			<include name="**/*.java"/>
 			<exclude name="org/alfresco/jlan/server/filesys/db/mysql/**"/>
 			<exclude name="org/alfresco/jlan/server/filesys/db/oracle/**"/>
@@ -134,7 +129,6 @@
 		<mkdir dir="build/standalone"/>
 		<javac destdir="build/standalone" debug="on">
 			<src path="src/main/java"/>
-			<src path="source/standalone-java"/>
 			<include name="**/*.java"/>
 			<exclude name="org/alfresco/jlan/app/**"/>
 			<exclude name="org/alfresco/jlan/debug/cluster/**"/>

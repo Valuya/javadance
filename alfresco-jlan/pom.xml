@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>alfresco-jlan-embed</artifactId>
+    <artifactId>alfresco-jlan</artifactId>
     <name>Alfresco JLan</name>
     <description>Alfresco JLan</description>
 
@@ -10,11 +10,33 @@
         <version>5.1.2-SNAPSHOT</version>
     </parent>
 
+    <profiles>
+        <profile>
+            <id>jarsigner.defaults</id>
+            <activation>
+                <property>
+                    <name>!sign.skip</name>
+                </property>
+            </activation>
+        <!-- The actual jarsigner properties are specified in the settings.xml -->
+            <properties>
+                <sign.skip>true</sign.skip>
+                <sign.alias>WHATEVER</sign.alias>
+                <sign.keystore>WHATEVER</sign.keystore>
+                <sign.storepass>WHATEVER</sign.storepass>
+                <sign.storetype>pkcs12</sign.storetype>
+                <sign.sigfile>WHATEVER</sign.sigfile>
+                <sign.tsa>http://issuers.timestamp.server</sign.tsa>
+                <sign.keypass>WHATEVER</sign.keypass>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
-          <groupId>org.springframework.extensions.surf</groupId>
-          <artifactId>spring-surf-core-configservice</artifactId>
-          <version>${dependency.webscripts.version}</version>
+            <groupId>org.springframework.extensions.surf</groupId>
+            <artifactId>spring-surf-core-configservice</artifactId>
+            <version>${dependency.webscripts.version}</version>
         </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
@@ -36,6 +58,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.52</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -45,23 +72,104 @@
              -->
         <plugins>
             <plugin>
-                <!-- Excludes as configured in original build.xml -->
+                <!-- Exclude DB-backend -->
                 <artifactId>maven-compiler-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>default-compile</id>
                         <configuration>
                             <excludes>
-                                <exclude>org/alfresco/jlan/app/**</exclude>
-                                <exclude>org/alfresco/jlan/server/filesys/db/*/*</exclude>
-                                <exclude>org/alfresco/jlan/server/filesys/db/JdbcDBInterface.java</exclude>
-                                <exclude>org/alfresco/jlan/smb/util/**</exclude>
-                                <exclude>org/alfresco/jlan/util/db/**</exclude>
-                                <exclude>org/alfresco/config/*/**</exclude>                    
+                                <exclude>org/alfresco/jlan/app/JLANServerService.java</exclude>
+                                <exclude>org/alfresco/jlan/server/filesys/db/**</exclude>
+                                <exclude>org/alfresco/jlan/smb/dcerpc/client/**</exclude>
                             </excludes> 
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- executable jar server WITHOUT DB-backend, WITH CLUSTER support -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>false</minimizeJar>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>executable</shadedClassifierName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.alfresco.jlan.app.JLANServer</mainClass>
+                                </transformer>
+                            </transformers>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.springframework.extensions.config</pattern>
+                                    <shadedPattern>org.shaded.springframework.extensions.config</shadedPattern>
+                                    <includes>
+                                        <include>org.springframework.extensions.config.element.GenericConfigElement</include>
+                                        <include>org.springframework.extensions.config.ConfigElement</include>
+                                    </includes>
+                                </relocation>
+                            </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>org.alfresco:alfresco-jlan</artifact>
+                                    <excludes>
+                                        <exclude>org/alfresco/jlan/client/**</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>org.bouncycastle</artifact>
+                                    <includes>
+                                        <include>org/bouncycastle/**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Sign the executable jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jarsigner-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>sign</id>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skip>${sign.skip}</skip>
+                    <keystore>${sign.keystore}</keystore>
+                    <alias>${sign.alias}</alias>
+                    <storepass>${sign.storepass}</storepass>
+                    <storetype>${sign.storetype}</storetype>
+                    <sigfile>${sign.sigfile}</sigfile>
+                    <tsa>${sign.tsa}</tsa>
+                    <processMainArtifact>false</processMainArtifact>
+                    <processAttachedArtifacts>false</processAttachedArtifacts>
+                    <removeExistingSignatures>true</removeExistingSignatures>
+                    <archive>target/${artifactId}-${version}-executable.jar</archive>
+                </configuration>
             </plugin>
 
             <plugin>
