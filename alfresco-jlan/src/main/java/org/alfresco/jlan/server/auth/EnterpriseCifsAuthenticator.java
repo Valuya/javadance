@@ -886,7 +886,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 			pos = DataPacker.wordAlign(pos);
 
 		pos = DataPacker.putString("Java", buf, pos, true, isUni);
-		pos = DataPacker.putString("Alfresco CIFS Server " + sess.getServer().isVersion(), buf, pos, true, isUni);
+		pos = DataPacker.putString(getServerVersionString(sess), buf, pos, true, isUni);
 
 		if ( respBlob == null)
 			pos = DataPacker.putString(sess.getSMBServer().getCIFSConfiguration().getDomainName(), buf, pos, true, isUni);
@@ -2209,7 +2209,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 			pos = DataPacker.wordAlign(pos);
 
 		pos = DataPacker.putString("Java", buf, pos, true, isUni);
-		pos = DataPacker.putString("Alfresco CIFS Server " + sess.getServer().isVersion(), buf, pos, true, isUni);
+		pos = DataPacker.putString(getServerVersionString(sess), buf, pos, true, isUni);
 		pos = DataPacker.putString(sess.getSMBServer().getCIFSConfiguration().getDomainName(), buf, pos, true, isUni);
 
 		reqPkt.setByteCount(pos - reqPkt.getByteOffset());

@@ -118,7 +118,13 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
     {
         this.m_debug = debug;
     }
-    
+
+    protected String getServerVersionString(final SMBSrvSession sess) {
+        String ret = sess.getSMBServer().getCIFSConfiguration().getComment();
+        return (ret.isEmpty() ? "Alfresco CIFS Server" : ret) + " " + sess.getServer().isVersion();
+    }
+
+
     /**
      * @param config an accessor for the file server configuration sections
      */
@@ -648,7 +654,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 			pos = DataPacker.wordAlign(pos);
 
 		pos = DataPacker.putString("Java", buf, pos, true, isUni);
-		pos = DataPacker.putString("Alfresco CIFS Server " + sess.getServer().isVersion(), buf, pos, true, isUni);
+		pos = DataPacker.putString(getServerVersionString(sess), buf, pos, true, isUni);
 		pos = DataPacker.putString(sess.getSMBServer().getCIFSConfiguration().getDomainName(), buf, pos, true, isUni);
 
 		respPkt.setByteCount(pos - respPkt.getByteOffset());
