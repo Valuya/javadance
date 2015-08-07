@@ -26,7 +26,7 @@
 			<exclude name="org/alfresco/jlan/client/smb/**"/>
 			<exclude name="org/alfresco/jlan/smb/dcerpc/client/**"/>
 		</javac>
-    
+
 		<mkdir dir="jars"/>
  		<delete file="jars/alfresco-jlan.jar" quiet="true"/>
  		<jar jarfile="jars/alfresco-jlan.jar"
@@ -43,7 +43,7 @@
 			<include name="**/*.java"/>
 			<exclude name="org/alfresco/jlan/server/filesys/db/oracle/**"/>
 		</javac>
-    
+
 		<mkdir dir="jars"/>
  		<delete file="jars/alfresco-jlan-full.jar" quiet="true"/>
  		<jar jarfile="jars/alfresco-jlan-full.jar"
@@ -66,7 +66,7 @@
 		  <exclude name="org/alfresco/jlan/client/smb/**"/>
 		  <exclude name="org/alfresco/jlan/smb/dcerpc/client/**"/>
 		</javac>
-    
+
  		<delete file="jars/alfresco-jlan-db.jar" quiet="true"/>
  		<jar jarfile="jars/alfresco-jlan-db.jar"
  			 manifest="source/meta-inf/alfrescojlan_manifest.mf"
@@ -76,7 +76,7 @@
 	<!-- Create the JLAN Server Jar (with database interface implementations for Oracle/Derby/mySQL/PostgreSQL) -->
     <!--                                                                                             -->
     <!-- Requires the Oracle ojdbc14.jar to be copied to the libs/ /folder                           -->
-  
+
 	<target name="createJarDBOracle">
 		<delete dir="build/standalone-dbora" quiet="true"/>
 		<mkdir dir="build/standalone-dbora"/>
@@ -90,7 +90,7 @@
 		  <exclude name="org/alfresco/jlan/client/smb/**"/>
 		  <exclude name="org/alfresco/jlan/smb/dcerpc/client/**"/>
 		</javac>
-    
+
  		<delete file="jars/alfresco-jlan-dbora.jar" quiet="true"/>
  		<jar jarfile="jars/alfresco-jlan-dbora.jar"
  			 manifest="source/meta-inf/alfrescojlan_manifest.mf"
@@ -115,7 +115,7 @@
 			<exclude name="org/alfresco/jlan/client/smb/**"/>
 			<exclude name="org/alfresco/jlan/smb/dcerpc/client/**"/>
 		</javac>
-    
+
 		<mkdir dir="jars"/>
  		<delete file="jars/alfresco-jlan-cluster.jar" quiet="true"/>
  		<jar jarfile="jars/alfresco-jlan-cluster.jar"
@@ -173,7 +173,7 @@
 			<exclude name="org/alfresco/jlan/util/db/**"/>
 			<exclude name="org/alfresco/jlan/util/win32/**"/>
 		</javac>
-    
+
 		<mkdir dir="jars"/>
  		<delete file="jars/alfresco-jlan-client.jar" quiet="true"/>
  		<jar jarfile="jars/alfresco-jlan-client.jar"
@@ -184,15 +184,15 @@
 	<target name="createKit" depends="createJar,createJarFull,createJarDB,createJarCluster,createJarClient">
 	    <delete dir="build/kitting" quiet="true"/>
 	    <mkdir dir="build/kitting"/>
-	    
+	
 	    <copy todir="build/kitting" file="runsrv.bat"/>
 	    <copy todir="build/kitting" file="runsrv.sh"/>
 	    <copy todir="build/kitting" file="jlanConfig.xml"/>
 	    <copy todir="build/kitting" file="jlanserver.dtd"/>
-	    
+	
 	    <copy todir="build/kitting/service">
 	      <fileset dir="service"/>
-	    </copy> 
+	    </copy>
 	    <copy todir="build/kitting/jars">
 	      <fileset dir="jars"/>
 	    </copy>
@@ -208,13 +208,13 @@
 	    <copy todir="build/kitting/guides">
 	      <fileset dir="guides"/>
 	    </copy>
-	            
+	
 	    <delete file="build/alfresco-jlan.zip" quiet="true"/>
 			<zip zipfile="build/alfresco-jlan.zip" basedir="build/kitting"/>
 			<delete dir="build/kitting" quiet="true"/>
-	    
+	
 	</target>
-  
+
     <!-- Generate the JLAN Server Javadocs -->
 	<target name="createDocs">
     <mkdir dir="javadoc"/>

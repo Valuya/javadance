@@ -16,7 +16,7 @@
 
       <Win32NetBIOS/>
       <Win32Announce interval="5"/>
-      
+
       <!-- Requires running the server using the root account -->
       <netBIOSSMB sessionPort="1139" namePort="1137" datagramPort="1138" platforms="linux,macosx,solaris"/>
       <tcpipSMB port="1445" platforms="linux,macosx,solaris"/>
@@ -26,21 +26,21 @@
       <netBIOSSMB sessionPort="1139" namePort="1137" datagramPort="1138" platforms="linux,macosx,solaris"/>
       <tcpipSMB port="1445" platforms="linux,macosx,solaris"/>
       -->
-      
+
       <hostAnnounce interval="5"/>
       <!-- <sessionTimeout>15</sessionTimeout> -->
     </host>
     <sessionDebug flags="Negotiate,Socket,IPC"/>
-	  
+	
 <!--    <netbiosDebug/> -->
 <!--    <announceDebug/> -->
-    
+
 	<authenticator type="enterprise">
 <!--
 				<KDC>192.168.1.240</KDC>
         <Realm>WIN2003.STARLASOFT.CO.UK</Realm>
         <Password>Autobahn79</Password>
-          
+
         <kerberosDebug/>
 
 		<disableNTLM/>
@@ -51,14 +51,14 @@
 
 	    <Debug/>
 	</authenticator>
-    
+
   </SMB>
 
   <FTP>
     <port>1121</port>
     <NOallowAnonymous/>
     <debug flags="File,Search,Error,DataPort,Directory,RxData,TxData,SSL"/>
-	  
+	
 	<!-- Enable FTPS -->
     <keyStore>/Users/gkspencer/testKeystore</keyStore>
 	<trustStore>/Users/gkspencer/testTruststore</trustStore>
@@ -87,14 +87,14 @@
         <LocalPath>.</LocalPath>
       </driver>
     </diskshare>
-	  
+	
 	<diskshare name="DerbyBlob" comment="Derby JDBC virtual filesystem using BLOB">
 		<driver>
 			<class>org.alfresco.jlan.server.filesys.db.DBDiskDriver</class>
 			<CacheTime>30</CacheTime>
 			<!-- <RetentionPeriod>7</RetentionPeriod> -->
 			<NODebug/>
-        
+
 			<DatabaseInterface>
 				<class>org.alfresco.jlan.server.filesys.db.derby.DerbyDBInterface</class>
 				<DSN>jdbc:derby:DerbyBlobDB;create=true</DSN>
@@ -104,7 +104,7 @@
 				<NODebug/>
 				<NOSQLDebug/>
 			</DatabaseInterface>
-        
+
 			<FileLoader>
 				<class>org.alfresco.jlan.server.filesys.db.DBFileLoader</class>
 				<ThreadPoolSize>6:2</ThreadPoolSize>
@@ -116,7 +116,7 @@
 				<FilesPerJar>500</FilesPerJar>
 				<SizePerJar>1000K</SizePerJar>
 				<JarCompressionLevel>9</JarCompressionLevel>
--->      
+-->
 				<Debug/>
 				<NOThreadDebug/>
 			</FileLoader>
@@ -136,13 +136,13 @@
 -->
 	</diskshare>
 
-<!--	  	  
+<!--	  	
 	<diskshare name="DerbyObjId" comment="Derby JDBC virtual filesystem using object id loader">
 		<driver>
 			<class>org.alfresco.jlan.server.filesys.db.DBDiskDriver</class>
 			<CacheTime>30</CacheTime>
 			<Debug/>
-        
+
 			<DatabaseInterface>
 				<class>org.alfresco.jlan.server.filesys.db.derby.DerbyDBInterface</class>
 				<DSN>jdbc:derby:DerbyObjIdDB;create=true</DSN>
@@ -152,7 +152,7 @@
 				<Debug/>
 				<noSQLDebug/>
 			</DatabaseInterface>
-        
+
 			<FileLoader>
 				<class>org.alfresco.jlan.server.filesys.db.DummyObjectIdFileLoader</class>
 				<ThreadPoolSize>6:2</ThreadPoolSize>
@@ -163,7 +163,7 @@
 				<FilesPerJar>500</FilesPerJar>
 				<SizePerJar>1000K</SizePerJar>
 				<JarCompressionLevel>9</JarCompressionLevel>
-          
+
 				<Debug/>
 				<noThreadDebug/>
 			</FileLoader>
@@ -182,13 +182,13 @@
 		</accessControl>
 	</diskshare>
 -->
-	  	  
+	  	
 	<diskshare name="JDBCBlob" comment="JDBC virtual filesystem using BLOB">
 		<driver>
 			<class>org.alfresco.jlan.server.filesys.db.DBDiskDriver</class>
 			<CacheTime>300</CacheTime>
 			<Debug/>
-        
+
 			<DatabaseInterface>
 			  <class>org.alfresco.jlan.server.filesys.db.mysql.MySQLDBInterface</class>
 			  <DSN>jdbc:mysql://localhost/JLAN</DSN>
@@ -211,7 +211,7 @@
 				<FilesPerJar>500</FilesPerJar>
 				<SizePerJar>1000K</SizePerJar>
 				<JarCompressionLevel>9</JarCompressionLevel>
-			  
+			
 				<Debug/>
 				<noThreadDebug/>
 			</FileLoader>

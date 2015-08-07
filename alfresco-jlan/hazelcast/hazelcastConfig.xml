@@ -123,7 +123,7 @@
         -->
         <merge-policy>hz.ADD_NEW_ENTRY</merge-policy>
     </map>
-    <!-- Add your own map merge policy implementations here:     
+    <!-- Add your own map merge policy implementations here:
     	<merge-policies>
            	<map-merge-policy name="MY_MERGE_POLICY">
             	<class-name>com.acme.MyOwnMergePolicy</class-name>

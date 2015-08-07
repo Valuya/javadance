@@ -20,7 +20,7 @@
 
       <Win32NetBIOS/>
       <Win32Announce interval="5"/>
-      
+
       <!-- Requires running the server using the root account -->
       <netBIOSSMB sessionPort="1139" namePort="1137" datagramPort="1138" platforms="linux,macosx,solaris"/>
       <tcpipSMB port="1445" platforms="linux,macosx,solaris"/>
@@ -30,21 +30,21 @@
       <netBIOSSMB sessionPort="1139" namePort="1137" datagramPort="1138" platforms="linux,macosx,solaris"/>
       <tcpipSMB port="1445" platforms="linux,macosx,solaris"/>
       -->
-      
+
       <hostAnnounce interval="5"/>
       <!-- <sessionTimeout>15</sessionTimeout> -->
     </host>
     <sessionDebug flags="Negotiate,Error"/>
-	  
+	
 <!--    <netbiosDebug/> -->
 <!--    <announceDebug/> -->
-    
+
 	<authenticator type="enterprise">
 <!--
 				<KDC>192.168.1.240</KDC>
         <Realm>WIN2003.STARLASOFT.CO.UK</Realm>
         <Password>Autobahn79</Password>
-          
+
         <kerberosDebug/>
 
 		<disableNTLM/>
@@ -55,14 +55,14 @@
 
 	    <Debug/>
 	</authenticator>
-    
+
   </SMB>
 
   <FTP>
     <port>1121</port>
     <NOallowAnonymous/>
     <debug flags="File,Search,Error,DataPort,Directory,RxData,TxData,SSL"/>
-	  
+	
 	<!-- Enable FTPS -->
     <!--
     <keyStore>/Users/gkspencer/testKeystore</keyStore>
@@ -78,12 +78,12 @@
     <debug flags="Session,Error,File,FileIO"/>
   </NFS>
 
-  <debug>  
+  <debug>
     <output>
       <class>org.alfresco.jlan.debug.cluster.ClusterDebug</class>
 	  <debugTopic>AlfrescoJLANDebug</debugTopic>
       <receiveOnly/>
-      
+
       <localOutput>
         <class>org.alfresco.jlan.debug.ConsoleDebug</class>
         <logFile>jlansrv.log</logFile>
@@ -105,7 +105,7 @@
 			<class>org.alfresco.jlan.server.filesys.db.DBDiskDriver</class>
 			<CacheTime>300</CacheTime>
 			<NODebug/>
-        
+
 			<DatabaseInterface>
 			  <class>org.alfresco.jlan.server.filesys.db.mysql.MySQLDBInterface</class>
 			  <DSN>jdbc:mysql://linuxsrv/JLAN</DSN>
@@ -114,10 +114,10 @@
 			  <ConnectionPool>10:20</ConnectionPool>
 			  <FileSystemTable>filesys</FileSystemTable>
 			  <StreamsTable>filestrm</StreamsTable>
-			  
+			
 			  <QueueTable>queueMacpro</QueueTable>
 			  <TransactQueueTable>transMacpro</TransactQueueTable>
-			  
+			
 			  <NODebug/>
 			  <NOSQLDebug/>
 			</DatabaseInterface>
@@ -132,7 +132,7 @@
 				<FilesPerJar>500</FilesPerJar>
 				<SizePerJar>1000K</SizePerJar>
 				<JarCompressionLevel>9</JarCompressionLevel>
-	-->		  
+	-->		
 				<NODebug/>
 				<NOThreadDebug/>
 			</FileLoader>
@@ -143,7 +143,7 @@
 		  <clusterName>AlfrescoFilesysCache</clusterName>
 		  <clusterTopic>AlfrescoTopic</clusterTopic>
 		  <nearCache timeout="10"/>
-		  
+		
 		  <cacheDebug flags="Rename"/>
 		</stateCache>
 	</diskshare>
