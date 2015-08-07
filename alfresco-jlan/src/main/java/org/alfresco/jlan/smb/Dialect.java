@@ -312,7 +312,7 @@ public final class Dialect {
     -1, // SendMultiEnd
     -1 // SendMultiText
   };
-  
+
   /**
    * Return the required SMB dialect string.
    *
@@ -328,10 +328,10 @@ public final class Dialect {
       return null;
     return protList[i];
   }
-  
+
   /**
    * Determine if the SMB dialect supports the SMB command
-   * 
+   *
    * @return boolean
    * @param dialect int  SMB dialect type.
    * @param cmd int      SMB command code.
@@ -349,7 +349,7 @@ public final class Dialect {
       return true;
     return false;
   }
-  
+
   /**
    * Return the SMB dialect type for the specified SMB dialect string index.
    *
@@ -360,7 +360,7 @@ public final class Dialect {
   public static int DialectType(int i) {
     return protIdx[i];
   }
-  
+
   /**
    * Return the SMB dialect type for the specified string.
    *
@@ -383,7 +383,7 @@ public final class Dialect {
     else
       return Unknown;
   }
-  
+
   /**
    * Return the dialect type as a string.
    *
@@ -394,7 +394,7 @@ public final class Dialect {
   public static String DialectTypeString(int dia) {
     return protType[dia];
   }
-  
+
   /**
    * Return the number of available SMB dialect strings.
    *

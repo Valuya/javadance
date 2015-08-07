@@ -24,7 +24,7 @@ import org.alfresco.jlan.server.filesys.SearchContext;
 
 /**
  * Pseudo File Search Context Class
- * 
+ *
  * <p>
  * Search context implementation that blends a list of pseudo files/folders into a folder search.
  *
@@ -52,7 +52,7 @@ public abstract class PseudoSearchContext extends SearchContext {
 
   /**
    * Class constructor
-   * 
+   *
    * @param relPath String
    */
   public PseudoSearchContext( String relPath) {
@@ -61,7 +61,7 @@ public abstract class PseudoSearchContext extends SearchContext {
 
   /**
    * Check if there are pseudo files to be blended into the search results
-   * 
+   *
    * @return boolean
    */
   public final boolean hasPseudoFiles() {
@@ -69,19 +69,19 @@ public abstract class PseudoSearchContext extends SearchContext {
       return true;
     return false;
   }
-  
+
   /**
    * Set the pseudo file list for the search
-   * 
+   *
    * @param pseudoList PseudoFileList
    */
   public final void setPseudoFileList( PseudoFileList pseudoList) {
     m_pseudoList = pseudoList;
   }
-  
+
   /**
    * Return the resume id for the current file/directory in the search.
-   * 
+   *
    * @return int
    */
   public int getResumeId() {
@@ -90,7 +90,7 @@ public abstract class PseudoSearchContext extends SearchContext {
 
   /**
    * Determine if there are more files for the active search.
-   * 
+   *
    * @return boolean
    */
   public boolean hasMorePseudoFiles() {
@@ -105,7 +105,7 @@ public abstract class PseudoSearchContext extends SearchContext {
   /**
    * Return file information for the next pseudo file in the active search. Returns false if there are no
    * more pseudo files/folders to be returned
-   * 
+   *
    * @param info FileInfo to return the file information.
    * @return true if the file information is valid, else false
    */
@@ -124,12 +124,12 @@ public abstract class PseudoSearchContext extends SearchContext {
     // If the pseudo file list is valid return the pseudo files first
 
     if (m_donePseudoFiles == false && m_pseudoList != null) {
-      
+
       if (m_index < m_pseudoList.numberOfFiles()) {
-        
+
         PseudoFile pfile = m_pseudoList.getFileAt( m_index);
         if (pfile != null) {
-          
+
           // Get the file information for the pseudo file
 
           FileInfo pinfo = pfile.getFileInfo();
@@ -150,7 +150,7 @@ public abstract class PseudoSearchContext extends SearchContext {
           // Check if we have finished with the pseudo file list, switch to the normal file list
 
           if ( m_index == (m_pseudoList.numberOfFiles() - 1)) {
-            
+
             // Switch to the main file list
 
             m_donePseudoFiles = true;
@@ -172,7 +172,7 @@ public abstract class PseudoSearchContext extends SearchContext {
   /**
    * Return the file name of the next pseudo file in the active search. Returns null is there are no
    * more pseudo file names to return
-   * 
+   *
    * @return String
    */
   public String nextPseudoFileName() {
@@ -190,12 +190,12 @@ public abstract class PseudoSearchContext extends SearchContext {
     // If the pseudo file list is valid return the pseudo files first
 
     if (m_donePseudoFiles == false && m_pseudoList != null) {
-      
+
       if (m_index < m_pseudoList.numberOfFiles()) {
-        
+
         PseudoFile pfile = m_pseudoList.getFileAt( m_index);
         if (pfile != null) {
-          
+
           // Get the file information for the pseudo file
 
           FileInfo pinfo = pfile.getFileInfo();
@@ -205,7 +205,7 @@ public abstract class PseudoSearchContext extends SearchContext {
           return pinfo.getFileName();
         }
       } else {
-        
+
         // Switch to the main file list
 
         m_donePseudoFiles = true;
@@ -220,7 +220,7 @@ public abstract class PseudoSearchContext extends SearchContext {
 
   /**
    * Restart a search at the specified pseudo file resume point.
-   * 
+   *
    * @param info FileInfo
    * @return true if the search can be restarted, else false.
    */
@@ -231,14 +231,14 @@ public abstract class PseudoSearchContext extends SearchContext {
     int resId = 0;
 
     if (m_pseudoList != null) {
-      
+
       while (resId < m_pseudoList.numberOfFiles()) {
-        
+
         // Check if the current pseudo file matches the resume file name
 
         PseudoFile pfile = m_pseudoList.getFileAt(resId);
         if (pfile.getFileName().equals(info.getFileName())) {
-          
+
           // Found the restart point
 
           m_donePseudoFiles = false;
@@ -258,7 +258,7 @@ public abstract class PseudoSearchContext extends SearchContext {
 
   /**
    * Restart the current search at the specified pseudo file.
-   * 
+   *
    * @param resumeId int
    * @return true if the search can be restarted, else false.
    */
@@ -267,9 +267,9 @@ public abstract class PseudoSearchContext extends SearchContext {
     // Check if the resume point is in the pseudo file list
 
     if (m_pseudoList != null) {
-      
+
       if (resumeId < m_pseudoList.numberOfFiles()) {
-        
+
         // Resume at a pseudo file
 
         m_index = resumeId;

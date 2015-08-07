@@ -45,7 +45,7 @@ public class ShareType {
   //	Unknown share type
 
   public static final int UNKNOWN = -1;
-  
+
   /**
    * Return the share type as a share information type.
    *
@@ -73,7 +73,7 @@ public class ShareType {
     }
     return shrTyp;
   }
-  
+
   /**
    * Return the SMB service name as a shared device type.
    *
@@ -95,7 +95,7 @@ public class ShareType {
 
     return UNKNOWN;
   }
-  
+
   /**
    * Return the share type as a service string.
    *
@@ -112,7 +112,7 @@ public class ShareType {
       return "IPC";
     return "";
   }
-  
+
   /**
    * Return the share type as a string.
    *

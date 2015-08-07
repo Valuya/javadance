@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb;
 
 /**
  * File Sharing Mode Class
- * 
+ *
  * <p>Defines sharing mode constants used when opening a file via the CIFSDiskSession.NTCreate() method.
  *
  * @author gkspencer
@@ -29,25 +29,25 @@ package org.alfresco.jlan.smb;
 public class SharingMode {
 
 	//	File sharing mode constants
-	
+
 	public final static int NOSHARING = 0x0000;
 	public final static int READ	  = 0x0001;
 	public final static int WRITE	  = 0x0002;
 	public final static int DELETE	  = 0x0004;
-	
+
 	public final static int READWRITE = READ + WRITE;
 	public final static int READWRITEDELETE = READ + WRITE + DELETE;
-	
+
 	/**
 	 * Return a sharing mode as a string
-	 * 
+	 *
 	 * @param mode int
 	 * @return String
 	 */
 	public final static String getSharingModeAsString( int mode) {
-		
+
 		String modeStr = "";
-		
+
 		switch ( mode) {
 			case NOSHARING:
 				modeStr = "Exclusive";
@@ -71,7 +71,7 @@ public class SharingMode {
 				modeStr = "0x" + Integer.toHexString( mode);
 				break;
 		}
-		
+
 		return modeStr;
 	}
 }

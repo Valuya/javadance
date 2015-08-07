@@ -23,7 +23,7 @@ import org.alfresco.jlan.server.SrvSession;
 
 /**
  * Passthru Details Class
- * 
+ *
  * <p>Contains the details of a passthru connection to a remote server and the local session that the
  * request originated from.
  *
@@ -32,13 +32,13 @@ import org.alfresco.jlan.server.SrvSession;
 public class PassthruDetails {
 
 	//	Server session
-	
+
 	private SrvSession m_sess;
 
 	//	Authentication session connected to the remote server
-	
-	private AuthenticateSession m_authSess;	
-		
+
+	private AuthenticateSession m_authSess;
+
 	/**
 	 * Class constructor
 	 *
@@ -52,19 +52,19 @@ public class PassthruDetails {
 
 	/**
 	 * Return the session details
-	 * 
+	 *
 	 * @return SrvSession
 	 */
 	public final SrvSession getSession() {
 		return m_sess;
 	}
-	
+
 	/**
 	 * Return the authentication session that is connected to the remote server
-	 * 
+	 *
 	 * @return AuthenticateSession
 	 */
 	public final AuthenticateSession getAuthenticateSession() {
-		return m_authSess;	
+		return m_authSess;
 	}
 }

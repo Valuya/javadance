@@ -27,10 +27,10 @@ import org.alfresco.jlan.smb.dcerpc.info.ServiceStatusInfo;
 
 /**
  * Service Information Class.
- * 
+ *
  * <p>
  * The service information class contains the details of a service on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class RAPServiceInfo extends ServiceStatusInfo implements RAPReadable, Serializable {
@@ -44,7 +44,7 @@ public class RAPServiceInfo extends ServiceStatusInfo implements RAPReadable, Se
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */
@@ -54,7 +54,7 @@ public class RAPServiceInfo extends ServiceStatusInfo implements RAPReadable, Se
 
 	/**
 	 * Load the service information from the vector of objects
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */

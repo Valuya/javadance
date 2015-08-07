@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys;
 
 /**
  * File Status Class
- * 
+ *
  * @author gkspencer
  */
 public class FileStatus {
@@ -32,12 +32,12 @@ public class FileStatus {
     public final static int NotExist        = 0;
     public final static int FileExists      = 1;
     public final static int DirectoryExists = 2;
-    
+
     public final static int MaxStatus       = 2;
 
     /**
      * Return the file status as a string
-     * 
+     *
      * @param sts int
      * @return String
      */

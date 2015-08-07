@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * NetBIOS Socket Exception Class
- * 
+ *
  * @author gkspencer
  */
 public class NetBIOSSocketException extends IOException {
@@ -32,7 +32,7 @@ public class NetBIOSSocketException extends IOException {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public NetBIOSSocketException(String msg) {

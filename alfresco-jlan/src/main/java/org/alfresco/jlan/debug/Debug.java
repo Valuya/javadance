@@ -31,54 +31,54 @@ import java.util.StringTokenizer;
 public final class Debug {
 
 	//	Global constants used to control compiling of debug statements
-	
+
 	public static final boolean EnableInfo	= true;
 	public static final boolean EnableWarn	= true;
 	public static final boolean EnableError	= true;
 	public static final boolean EnableDbg	  = true;
 
 	//	Line seperator used for exception stack traces
-	
+
 	private static final String LineSeperator	= System.getProperty("line.separator");
 
 	//  Debug output levels
 	//
 	//  Note: These should map to the standard Log4j levels
-	
+
 	public static final int Fatal   = 0;
 	public static final int Error   = 1;
 	public static final int Warn    = 2;
 	public static final int Info	= 3;
 	public static final int Debug   = 4;
-	
+
 	//	Global debug interface
-	
+
 	private static DebugInterface m_debug = new ConsoleDebug();
-	
+
 	/**
 	 * Default constructor
 	 */
-	private Debug() {	
+	private Debug() {
 	}
 
 	/**
 	 * Get the debug interface
-	 * 
+	 *
 	 * @return dbg
 	 */
 	public static final DebugInterface getDebugInterface() {
 		return m_debug;
 	}
-	
+
 	/**
 	 * Set the debug interface
-	 * 
+	 *
 	 * @param dbg DebugInterface
-	 */	
+	 */
 	public static final void setDebugInterface(DebugInterface dbg) {
 		m_debug = dbg;
 	}
-	
+
 	/**
 	 * Output a debug string.
 	 *
@@ -106,7 +106,7 @@ public final class Debug {
 	public static final void println(String str) {
 		m_debug.debugPrintln(str);
 	}
-	
+
 	/**
 	 * Output a debug string, and a newline.
 	 *
@@ -116,7 +116,7 @@ public final class Debug {
 	public static final void println(String str, int level) {
 		m_debug.debugPrintln(str, level);
 	}
-	
+
 	/**
 	 * Output an exception trace to the debug device
 	 *
@@ -125,14 +125,14 @@ public final class Debug {
 	public static final void println(Exception ex) {
 		println(ex, Error);
 	}
-	
+
 	/**
 	 * Output an exception trace to the debug device
 	 *
 	 * @param ex Exception
 	 * @param level int
 	 */
-	public static final void println(Exception ex, int level) {			
+	public static final void println(Exception ex, int level) {
 		m_debug.debugPrintln( ex, level);
 	}
 
@@ -144,24 +144,24 @@ public final class Debug {
 	public static final void println(Throwable ex) {
 		println(ex, Error);
 	}
-	
+
 	/**
 	 * Output an exception trace to the debug device
 	 *
 	 * @param ex Throwable
 	 * @param level int
 	 */
-	public static final void println(Throwable ex, int level) {			
+	public static final void println(Throwable ex, int level) {
 
 		//	Write the exception stack trace records to an in-memory stream
-				
+
 		StringWriter strWrt = new StringWriter();
 		ex.printStackTrace(new PrintWriter(strWrt, true));
-				
+
 		//	Split the resulting string into seperate records and output to the debug device
-				
+
 		StringTokenizer strTok = new StringTokenizer(strWrt.toString(), LineSeperator);
-				
+
 		while ( strTok.hasMoreTokens())
 			m_debug.debugPrintln(strTok.nextToken(), level);
 	}

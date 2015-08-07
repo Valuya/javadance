@@ -45,7 +45,7 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * Database Device Context Class
- * 
+ *
  * @author gkspencer
  */
 public class DBDeviceContext extends DiskDeviceContext implements FileStateCacheListener {
@@ -109,20 +109,20 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 	private FileRequestQueue m_offlineDeleteList;
 
 	// File state based lock/oplock manager
-	
+
 	private FileStateLockManager m_lockManager;
-	
+
 	// Oplocks enable/disable
 
 	private boolean m_oplocksEnabled = true;
-	
+
 	// Debug enable
 
 	private boolean m_debug;
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param args ConfigElement
 	 * @exception DeviceContextException
 	 */
@@ -136,7 +136,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param args ConfigElement
 	 * @exception DeviceContextException
@@ -155,7 +155,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Initialize the database device context
-	 * 
+	 *
 	 * @param args ConfigElement
 	 * @exception DeviceContextException
 	 */
@@ -253,10 +253,10 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 		}
 
 		// Check if oplocks should be disabled
-		
+
 		if ( args.getChild("disableOplocks") != null)
 			m_oplocksEnabled = false;
-		
+
 		// Check if offline files are enabled above a specified size
 
 		ConfigElement nameVal = args.getChild("offlineFileSize");
@@ -358,9 +358,9 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 				// this file loader
 
 				dbFeatures = m_loader.getRequiredDBFeatures();
-				
+
 				// Set the device context in the loader
-				
+
 				m_loader.setContext( this);
 			}
 			catch (Exception ex) {
@@ -449,28 +449,28 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 				throw new DeviceContextException(ex.getMessage());
 			}
 		}
-		
+
 		// Check if NTFS streams are enabled, if so then enable the filesystem attribute
-		
+
 		if ( hasNTFSStreamsEnabled()) {
-			
+
 			// Add the NTFS streams filesystem attribute
 
 			setFilesystemAttributes(getFilesystemAttributes() + FileSystem.NTFSStreams);
 		}
-		
+
 		// Indicate that the filesystem requires a file state cache
-		
+
 		setRequiresStateCache( true);
-		
+
 		// Mark the filesystem as unavailable until the file state cache has finished initializing
-		
+
 		setAvailable( false);
 	}
 
 	/**
 	 * Return the database interface class name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getDBInterfaceClass() {
@@ -479,7 +479,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the database interface class
-	 * 
+	 *
 	 * @return DBInterface
 	 */
 	public final DBInterface getDBInterface() {
@@ -488,7 +488,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the database interface configuration parameters
-	 * 
+	 *
 	 * @return ConfigElement
 	 */
 	public final ConfigElement getDBInterfaceConfiguration() {
@@ -497,7 +497,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the file loader class name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFileLoaderClass() {
@@ -506,7 +506,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the file data loader class
-	 * 
+	 *
 	 * @return FileLoader
 	 */
 	public final FileLoader getFileLoader() {
@@ -515,7 +515,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the file loader class arguments list
-	 * 
+	 *
 	 * @return ConfigElement
 	 */
 	public final ConfigElement getLoaderConfiguration() {
@@ -524,7 +524,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Determine if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
@@ -533,7 +533,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Check if files should be marked as offline
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasOfflineFiles() {
@@ -542,7 +542,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Check if files are only to be marked offline above a certain size
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasOfflineFileSize() {
@@ -551,7 +551,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the file size to mark as offline
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getOfflineFileSize() {
@@ -560,7 +560,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the lock manager
-	 * 
+	 *
 	 * @return FileStateLockManager
 	 */
 	public FileStateLockManager getFileStateLockManager() {
@@ -569,16 +569,16 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
     /**
      * Return the lock manager, if enabled
-     * 
+     *
      * @return LockManager
      */
     public LockManager getLockManager() {
     	return m_lockManager;
     }
-    
+
     /**
      * Return the oplock manager, if enabled
-     * 
+     *
      * @return OpLockManager
      */
     public OpLockManager getOpLockManager() {
@@ -586,16 +586,16 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
     }
 	/**
 	 * Check if oplocks should be enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isOpLocksEnabled() {
 		return m_oplocksEnabled;
 	}
-	
+
 	/**
 	 * Determine if the retention period is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasRetentionPeriod() {
@@ -604,7 +604,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the retention period, in milliseconds
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getRetentionPeriod() {
@@ -613,7 +613,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the root directory file information
-	 * 
+	 *
 	 * @return DBFileInfo
 	 */
 	public final DBFileInfo getRootDirectoryInfo() {
@@ -622,7 +622,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Check if NTFS streams are enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasNTFSStreamsEnabled() {
@@ -631,7 +631,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Determine if the trashcan feature is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isTrashCanEnabled() {
@@ -640,7 +640,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Check if a mamximum file size has been specified
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasMaximumFileSize() {
@@ -649,7 +649,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the maximum file size allowed on this filesystem
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getMaximumFileSize() {
@@ -658,7 +658,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Check if there are files to be deleted in the offline delete list
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasOfflineFileDeletes() {
@@ -667,7 +667,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the offline file delete list
-	 * 
+	 *
 	 * @param clearList boolean
 	 * @return FileRequestQueue
 	 */
@@ -682,7 +682,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Add an offline file delete request
-	 * 
+	 *
 	 * @param deleteReq DeleteFileRequest
 	 */
 	public synchronized final void addOfflineFileDelete(DeleteFileRequest deleteReq) {
@@ -693,17 +693,17 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Set the lock/oplock manager
-	 * 
+	 *
 	 * @param lockManager FileStateLockManager
 	 */
 	protected final void setFileStateLockManager( FileStateLockManager lockManager) {
 		m_lockManager = lockManager;
 	}
-	
+
 	/**
 	 * File state has expired. The listener can control whether the file state is removed from the
 	 * cache, or not.
-	 * 
+	 *
 	 * @param state FileState
 	 * @return true to remove the file state from the cache, or false to leave the file state in the
 	 *         cache
@@ -745,7 +745,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * File state cache is closing down, any resources attached to the file state must be released.
-	 * 
+	 *
 	 * @param state FileState
 	 */
 	public void fileStateClosed(FileState state) {
@@ -770,7 +770,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Return the JDBC context as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
@@ -803,7 +803,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 		// Check if the file state cache is enabled, if so then release the file states and
 		// associated resources.
 
-		if ( hasStateCache()) 
+		if ( hasStateCache())
 			getStateCache().removeAllFileStates();
 
 		// Call the base class
@@ -813,7 +813,7 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 
 	/**
 	 * Start the shared filesystem, perform startup processing here.
-	 * 
+	 *
 	 * @param disk DiskSharedDevice
 	 * @throws DeviceContextException
 	 */
@@ -821,9 +821,9 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 		throws DeviceContextException {
 
 		// Start the file loader
-		
+
 		getFileLoader().startLoader( this);
-		
+
 		// Start the quota manager, if configured
 
 		if ( hasQuotaManager()) {
@@ -838,17 +838,17 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
 				throw new DeviceContextException(ex.toString());
 			}
 		}
-		
+
 		// Create the file state based lock manager
-		
+
 		setFileStateLockManager( new FileStateLockManager( getStateCache()));
-		
+
 		// Start the lock manager, use the thread pool if available
-		
+
 		if ( getLockManager() != null) {
-		    
+
 		    // Get the thread pool, if available
-		    
+
     		ThreadRequestPool threadPool = null;
     		ServerConfiguration config = disk.getConfiguration();
     		if ( config != null) {
@@ -856,40 +856,40 @@ public class DBDeviceContext extends DiskDeviceContext implements FileStateCache
     		    if ( coreConfig != null)
     		        threadPool = coreConfig.getThreadPool();
     		}
-		
+
     		// Start the lock manager
-    		
+
     		getFileStateLockManager().startLockManager( "OplockExpire_" + disk.getName(), threadPool);
 		}
 	}
-	
+
 	/**
 	 * Cache initializing
 	 */
 	public void stateCacheInitializing() {
-		
+
 		// Set the filesystem as unavailable until the file state cache has initialized
-		
+
 		setAvailable( false);
 	}
-	
+
 	/**
 	 * Cache running
 	 */
 	public void stateCacheRunning() {
-		
+
 		// Set the filesystem as available
-		
+
 		setAvailable( true);
 	}
-	
+
 	/**
 	 * Cache shutting down
 	 */
 	public void stateCacheShuttingDown() {
-		
+
 		// Set the filesystem as unavailable
-		
+
 		setAvailable( false);
 	}
 }

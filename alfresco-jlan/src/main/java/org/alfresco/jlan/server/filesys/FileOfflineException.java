@@ -37,10 +37,10 @@ public class FileOfflineException extends IOException {
 	public FileOfflineException() {
 		super();
 	}
-  
+
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s java.lang.String
 	 */
 	public FileOfflineException(String s) {

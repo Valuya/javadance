@@ -52,13 +52,13 @@ public class JavaFileSearchContext extends SearchContext {
   private boolean m_single;
 
 	//	Wildcard checker
-	
+
 	private WildCard m_wildcard;
-	
+
   // Relative path to folder being searched
-  
+
   private String m_relPath;
-  
+
   /**
    * Class constructor
    */
@@ -106,7 +106,7 @@ public class JavaFileSearchContext extends SearchContext {
 
   /**
    * Determine if there are more files to return for this search
-   * 
+   *
    * @return boolean
    */
   public boolean hasMoreFiles() {
@@ -170,9 +170,9 @@ public class JavaFileSearchContext extends SearchContext {
 			String root = pathStr[0];
 			if ( root.endsWith(":"))
 				root = root + java.io.File.separator;
-				
+
       m_root = new File(root);
-      
+
       if (isDirectory(m_root)) {
 
         //  Check if there is a file spec, if not then the search is for the directory only
@@ -197,9 +197,9 @@ public class JavaFileSearchContext extends SearchContext {
           //  Indicate a multi-file search
 
           setSingleFileSearch(false);
-          
+
           //	Create the wildcard checker
-          
+
           m_wildcard = new WildCard(pathStr[1],false);
         }
       }
@@ -254,7 +254,7 @@ public class JavaFileSearchContext extends SearchContext {
 
   /**
    * Return the next file information for this search
-   * 
+   *
    * @param info FileInfo
    * @return boolean
    */
@@ -286,7 +286,7 @@ public class JavaFileSearchContext extends SearchContext {
           flen = m_root.length();
 
         //	Check if the file/folder is read-only
-        
+
         if ( m_root.canWrite() == false)
         	fattr += FileAttribute.ReadOnly;
 
@@ -296,13 +296,13 @@ public class JavaFileSearchContext extends SearchContext {
         info.setSize(flen);
         info.setFileAttributes(fattr);
         info.setFileId(m_root.getAbsolutePath().hashCode());
-        
+
         long modifyDate = m_root.lastModified();
         info.setModifyDateTime(modifyDate);
 				info.setChangeDateTime(modifyDate);
-				
+
 				long dummyCreate = JavaFileDiskDriver.getGlobalCreateDateTime();
-				
+
 				if ( dummyCreate > modifyDate)
 				  dummyCreate = modifyDate;
 				info.setCreationDateTime(dummyCreate);
@@ -322,31 +322,31 @@ public class JavaFileSearchContext extends SearchContext {
       while (foundMatch == false && curFile != null) {
 
 				//	Check if the file name matches the search pattern
-				
+
 				if ( m_wildcard.matchesPattern(curFile.getName()) == true) {
-					
+
 	        //  Check if the file matches the search attributes
-	
+
 	        if (FileAttribute.hasAttribute(m_attr, FileAttribute.Directory) &&
 	            isDirectory(curFile)) {
-	
+
 	          //  Found a match
-	
+
 	          foundMatch = true;
 	        }
 	        else if ( curFile.isFile()) {
 	          // && SMBFileAttribute.hasAttribute(m_attr,SMBFileAttribute.System) == false) {
-	
+
 	          //  Found a match
-	
+
 	          foundMatch = true;
 	        }
 				}
 
 				//	Check if we found a match
-				
+
 				if ( foundMatch == false) {
-					
+
           //  Get the next file from the list
 
           if (m_idx < m_list.length)
@@ -366,29 +366,29 @@ public class JavaFileSearchContext extends SearchContext {
         long flen = 0L;
 
         String fname = curFile.getName();
-        
+
         if (isDirectory(curFile)) {
-          
+
           // Set the directory attribute
-        
+
           fattr = FileAttribute.Directory;
-          
+
           // Check if the diretory should be hidden
-          
+
           if ( fname.startsWith( "."))
             fattr += FileAttribute.Hidden;
         }
         else {
-        	
+
         	//	Set the file length
-        	
+
           flen = curFile.length();
 
           //	Check if the file/folder is read-only
-          
+
           if ( curFile.canWrite() == false)
           	fattr += FileAttribute.ReadOnly;
-          
+
           //	Check for common hidden files
 
 	        if ( fname.equalsIgnoreCase("Desktop.ini") ||
@@ -402,23 +402,23 @@ public class JavaFileSearchContext extends SearchContext {
         info.setFileName(curFile.getName());
         info.setSize(flen);
         info.setFileAttributes(fattr);
-        
+
         // Build the share relative file path to generate the file id
-        
+
         StringBuffer relPath = new StringBuffer();
         relPath.append(m_relPath);
         relPath.append(curFile.getName());
-        
+
         info.setFileId(relPath.toString().hashCode());
 
         // Set the file timestamps
-        
+
         long modifyDate = m_root.lastModified();
         info.setModifyDateTime(modifyDate);
 				info.setChangeDateTime(modifyDate);
-				
+
 				long dummyCreate = JavaFileDiskDriver.getGlobalCreateDateTime();
-				
+
 				if ( dummyCreate > modifyDate)
 				  dummyCreate = modifyDate;
 				info.setCreationDateTime(dummyCreate);
@@ -436,7 +436,7 @@ public class JavaFileSearchContext extends SearchContext {
 
   /**
    * Return the next file name for this search
-   * 
+   *
    * @return String
    */
   public String nextFileName() {
@@ -461,20 +461,20 @@ public class JavaFileSearchContext extends SearchContext {
     //  Return the next file name from the list
 
     else if (m_list != null && m_idx < m_list.length) {
-    	
+
     	//	Find the next matching file name
-    	
+
     	while ( m_idx < m_list.length) {
-    		
+
     		//	Check if the current file name matches the search pattern
-    		
+
     		String fname = m_list[m_idx++];
-    		
+
     		if ( m_wildcard.matchesPattern(fname))
     			return fname;
     	}
     }
-    
+
     //  No more file names
 
     return null;
@@ -501,7 +501,7 @@ public class JavaFileSearchContext extends SearchContext {
 
   /**
    * Restart the file search at the specified file
-   * 
+   *
    * @param info FileInfo
    * @return boolean
    */
@@ -540,16 +540,16 @@ public class JavaFileSearchContext extends SearchContext {
   protected final void setSingleFileSearch(boolean single) {
     m_single = single;
   }
-  
+
 	/**
 	 * Return the total number of file entries for this search if known, else return -1
-	 * 
+	 *
 	 * @return int
 	 */
 	public int numberOfEntries() {
-		
+
 		//	return the count of file entries to be returned by this search
-		
+
 		if ( isSingleFileSearch())
 			return 1;
 		else if ( m_list != null)
@@ -557,15 +557,15 @@ public class JavaFileSearchContext extends SearchContext {
 		else
 			return -1;
 	}
-  
+
   /**
    * Set the share relative path to the search folder
-   * 
+   *
    * @param relPath String
    */
   public final void setRelativePath(String relPath) {
     m_relPath = relPath;
-    
+
     if ( m_relPath != null && m_relPath.endsWith( FileName.DOS_SEPERATOR_STR) == false)
       m_relPath = m_relPath + FileName.DOS_SEPERATOR_STR;
   }

@@ -44,7 +44,7 @@ public class LogFileDebug extends DebugInterfaceBase {
 	 */
 	public LogFileDebug() {
 	}
-	
+
 	/**
 	 * Create a log file debug object using the specified file name. Append to an existing file
 	 * if the append flag is true, else truncate the existing file.
@@ -61,7 +61,7 @@ public class LogFileDebug extends DebugInterfaceBase {
 
 	/**
 	 * Open the output file stream
-	 * 
+	 *
 	 * @param fname String
 	 * @param append boolean
 	 * @exception IOException
@@ -70,12 +70,12 @@ public class LogFileDebug extends DebugInterfaceBase {
 		throws IOException {
 
 		//	Open the output file and also redirect the standard output stream to it
-				
+
 		FileOutputStream fout = new FileOutputStream( fname, append);
 		m_out = new PrintStream ( fout);
 		System.setOut(m_out);
 	}
-	
+
 	/**
 	 * Close the debug output.
 	 */
@@ -91,7 +91,7 @@ public class LogFileDebug extends DebugInterfaceBase {
 
 	/**
 	 * Output a debug string with a specific logging level
-	 * 
+	 *
 	 * @param str String
 	 * @param level int
 	 */
@@ -99,7 +99,7 @@ public class LogFileDebug extends DebugInterfaceBase {
 	  if ( level <= getLogLevel())
 		m_out.print(str);
 	}
-	
+
 	/**
 	 * Output a debug string, and a newline, with a specific logging level
 	 *
@@ -122,19 +122,19 @@ public class LogFileDebug extends DebugInterfaceBase {
 		throws Exception {
 
 		// Call the base class
-		
+
 		super.initialize( params, config);
-		
+
 		//	Get the output file name and append flag settings
 
 		ConfigElement logFile = params.getChild( "logFile");
 		boolean append = params.getChild( "append") != null ? true : false;
-		
+
 		//	Check if the log file has been specified
-		
+
 		if ( logFile.getValue() == null || logFile.getValue().length() == 0)
 			throw new Exception("logFile parameter not specified");
-		
+
 		//  Open the file
 
 		open(logFile.getValue(), append);

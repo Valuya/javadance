@@ -34,10 +34,10 @@ public class BadCookieException extends Exception {
 	public BadCookieException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public BadCookieException(String msg) {

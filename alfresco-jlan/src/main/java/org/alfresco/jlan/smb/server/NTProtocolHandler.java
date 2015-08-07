@@ -108,11 +108,11 @@ import org.alfresco.jlan.util.WildCard;
 
 /**
  * NT SMB Protocol Handler Class
- * 
+ *
  * <p>
  * The NT protocol handler processes the additional SMBs that were added to the protocol in the NT
  * SMB dialect.
- * 
+ *
  * @author gkspencer
  */
 public class NTProtocolHandler extends CoreProtocolHandler {
@@ -140,9 +140,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 	public static final int MaxPathLength = 255;
 
 	// NTFS streams information buffer size
-	
+
 	public static final int NTFSStreamsInfoBufsize	= 4096;	// 4K buffer
-	
+
 	// Security descriptor to allow Everyone access, returned by the QuerySecurityDescrptor NT
 	// transaction when NTFS streams are enabled for a virtual filesystem.
 
@@ -161,7 +161,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 */
 	protected NTProtocolHandler(SMBSrvSession sess) {
@@ -170,7 +170,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Return the protocol name
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getName() {
@@ -179,7 +179,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Run the NT SMB protocol handler to process the received SMB packet
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @return boolean true if the packet was processed, else false
 	 * @exception IOException
@@ -208,7 +208,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		// needs to be set for lock ownership checking
 		//
 		// TODO: Need to remove this
-		
+
 		m_sess.setProcessId(smbPkt.getProcessId());
 
 		// Determine the SMB command type
@@ -218,168 +218,168 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		switch (smbPkt.getCommand()) {
 
 			// NT Session setup
-	
+
 			case PacketType.SessionSetupAndX:
 				procSessionSetup(smbPkt);
 				break;
-	
+
 			// Tree connect
-	
+
 			case PacketType.TreeConnectAndX:
 				procTreeConnectAndX(smbPkt);
 				break;
-	
+
 			// Transaction/transaction2
-	
+
 			case PacketType.Transaction:
 			case PacketType.Transaction2:
 				procTransact2(smbPkt);
 				break;
-	
+
 			// Transaction/transaction2 secondary
-	
+
 			case PacketType.TransactionSecond:
 			case PacketType.Transaction2Second:
 				procTransact2Secondary(smbPkt);
 				break;
-	
+
 			// Close a search started via the FindFirst transaction2 command
-	
+
 			case PacketType.FindClose2:
 				procFindClose(smbPkt);
 				break;
-	
+
 			// Open a file
-	
+
 			case PacketType.OpenAndX:
 				procOpenAndX(smbPkt);
 				break;
-	
+
 			// Close a file
-	
+
 			case PacketType.CloseFile:
 				procCloseFile(smbPkt);
 				break;
-	
+
 			// Read a file
-	
+
 			case PacketType.ReadAndX:
 				procReadAndX(smbPkt);
 				break;
-	
+
 			// Write to a file
-	
+
 			case PacketType.WriteAndX:
 				procWriteAndX(smbPkt);
 				break;
-	
+
 			// Rename file
-	
+
 			case PacketType.RenameFile:
 				procRenameFile(smbPkt);
 				break;
-	
+
 			// Delete file
-	
+
 			case PacketType.DeleteFile:
 				procDeleteFile(smbPkt);
 				break;
-	
+
 			// Delete directory
-	
+
 			case PacketType.DeleteDirectory:
 				procDeleteDirectory(smbPkt);
 				break;
-	
+
 			// Tree disconnect
-	
+
 			case PacketType.TreeDisconnect:
 				procTreeDisconnect(smbPkt);
 				break;
-	
+
 			// Lock/unlock regions of a file
-	
+
 			case PacketType.LockingAndX:
 				procLockingAndX(smbPkt);
 				break;
-	
+
 			// Logoff a user
-	
+
 			case PacketType.LogoffAndX:
 				procLogoffAndX(smbPkt);
 				break;
-	
+
 			// NT Create/open file
-	
+
 			case PacketType.NTCreateAndX:
 				procNTCreateAndX(smbPkt);
 				break;
-	
+
 			// Tree connection (without AndX batching)
-	
+
 			case PacketType.TreeConnect:
 				super.runProtocol(smbPkt);
 				break;
-	
+
 			// NT cancel
-	
+
 			case PacketType.NTCancel:
 				procNTCancel(smbPkt);
 				break;
-	
+
 			// NT transaction
-	
+
 			case PacketType.NTTransact:
 				procNTTransaction(smbPkt);
 				break;
-	
+
 			// NT transaction secondary
-	
+
 			case PacketType.NTTransactSecond:
 				procNTTransactionSecondary(smbPkt);
 				break;
-	
+
 			// Echo request
-	
+
 			case PacketType.Echo:
 				super.procEcho(smbPkt);
 				break;
-	
+
 			// Default
-	
+
 			default:
-	
+
 				// Get the tree connection details, if it is a disk or printer type connection then pass
 				// the request to the core protocol handler
-	
+
 				int treeId = smbPkt.getTreeId();
 				TreeConnection conn = null;
 				if ( treeId != -1)
 					conn = m_sess.findTreeConnection(smbPkt);
-	
+
 				if ( conn != null) {
-	
+
 					// Check if this is a disk or print connection, if so then send the request to the
 					// core protocol handler
-	
+
 					if ( conn.getSharedDevice().getType() == ShareType.DISK || conn.getSharedDevice().getType() == ShareType.PRINTER) {
-	
+
 						// Chain to the core protocol handler
-	
+
 						handledOK = super.runProtocol( smbPkt);
 					}
 					else if ( conn.getSharedDevice().getType() == ShareType.ADMINPIPE) {
-	
+
 						// Send the request to IPC$ remote admin handler
-	
+
 						IPCHandler.processIPCRequest(m_sess, smbPkt);
 						handledOK = true;
 					}
 				}
 				else {
-					
+
 					// Need to send a response or the client may hang
-					
+
 					m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.SRVInvalidTID, SMBStatus.ErrSrv);
 //					m_sess.sendErrorResponseSMB( smbPkt, 0x00010002, SMBStatus.DOSInvalidDrive, SMBStatus.ErrDos);
 				}
@@ -387,9 +387,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		}
 
 		// Run any request post processors
-		
+
 		runRequestPostProcessors( m_sess);
-		
+
 		// Return the handled status
 
 		return handledOK;
@@ -397,7 +397,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the NT SMB session setup request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -425,11 +425,11 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		}
 
 		// Check if a new packet was allocated for the response
-		
+
 		SMBSrvPacket outPkt = smbPkt;
 		if ( smbPkt.hasAssociatedPacket() && smbPkt.hasAndXCommand() == false)
 			outPkt = outPkt.getAssociatedPacket();
-		
+
 		// Check if there is a chained command, or commands
 
 		int pos = outPkt.getLength();
@@ -440,9 +440,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 			pos = procAndXCommands(outPkt, null);
 			pos -= RFCNetBIOSProtocol.HEADER_LEN;
-			
+
 			// Switch to the response packet
-			
+
 			outPkt = smbPkt.getAssociatedPacket();
 		}
 		else {
@@ -466,9 +466,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			m_sess.setState(SMBSrvSessionState.SMBSESSION);
 
 			// Find the virtual circuit allocated, this will set the per-thread ClientInfo on the session
-			
+
 			m_sess.findVirtualCircuit( outPkt.getUserId());
-			
+
 			// Notify listeners that a user has logged onto the session
 
 			m_sess.getSMBServer().sessionLoggedOn(m_sess);
@@ -477,7 +477,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the chained SMB commands (AndX).
-	 * 
+	 *
 	 * @param smbPkt Request packet.
 	 * @param file Current file , or null if no file context in chain
 	 * @return New offset to the end of the reply packet
@@ -485,11 +485,11 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 	protected final int procAndXCommands(SMBSrvPacket smbPkt, NetworkFile file) {
 
 		// Get the response packet
-		
+
 		SMBSrvPacket respPkt = smbPkt.getAssociatedPacket();
 		if ( respPkt == null)
 			throw new RuntimeException("No response packet allocated for AndX request");
-		
+
 		// Get the chained command and command block offset
 
 		int andxCmd = smbPkt.getAndXCommand();
@@ -586,7 +586,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a chained tree connect request.
-	 * 
+	 *
 	 * @param cmdOff int Offset to the chained command within the request packet.
 	 * @param smbPkt Request packet.
 	 * @param respPkt Response packet
@@ -840,7 +840,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			}
 		}
 		catch (InvalidDeviceInterfaceException ex) {
-			
+
 			// Debug
 
 			if ( Debug.EnableError && m_sess.hasDebug(SMBSrvSession.DBG_TREE))
@@ -861,7 +861,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a chained read file request
-	 * 
+	 *
 	 * @param cmdOff Offset to the chained command within the request packet.
 	 * @param smbPkt Request packet.
 	 * @param respPkt Response packet
@@ -968,7 +968,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a chained close file request
-	 * 
+	 *
 	 * @param cmdOff int Offset to the chained command within the request packet.
 	 * @param smbPkt Request packet.
 	 * @param respPkt Response packet
@@ -1052,7 +1052,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the SMB tree connect request.
-	 * 
+	 *
 	 * @param smbPkt Request packet.
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1266,37 +1266,37 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 					+ FileAccess.asString(sharePerm) + ", extendedResponse=" + TreeConnectAndX.hasExtendedResponse( flags));
 
 		// Check if an extended format response is required, only return for filesystem shares
-		
+
 		if ( TreeConnectAndX.hasExtendedResponse( flags) && servType != ShareType.ADMINPIPE) {
 
 			// Build the extended tree connect response
-			
+
 			smbPkt.setParameterCount(7);
 			smbPkt.setAndXCommand(0xFF); // no chained reply
 			smbPkt.setParameter(1, 0);
 			smbPkt.setParameter(2, 0);	// response flags
-			
+
 			// Maximal user access rights
-			
+
 			if (sharePerm == FileAccess.Writeable)
 				smbPkt.setParameterLong(3, AccessMode.NTFileGenericAll);
 			else
 				smbPkt.setParameterLong(3, AccessMode.NTFileGenericRead);
-			
+
 			// Guest maximal access rights
-			
+
 			smbPkt.setParameterLong(5, 0);
 		}
 		else {
-			
+
 			// Build the standard tree connect response
-	
+
 			smbPkt.setParameterCount(3);
 			smbPkt.setAndXCommand(0xFF); // no chained reply
 			smbPkt.setParameter(1, 0);
 			smbPkt.setParameter(2, 0);	// response flags
 		}
-		
+
 		// Pack the service type
 
 		int pos = smbPkt.getByteOffset();
@@ -1358,7 +1358,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Close a file that has been opened on the server.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1414,7 +1414,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		// Close the file
 
 		boolean delayedClose = false;
-		
+
 		try {
 
 			// Access the disk interface that is associated with the shared device
@@ -1426,70 +1426,70 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			// The disk interface may be null if the file is a named pipe file
 
 			if ( disk != null) {
-				
+
 				// DEBUG
-				
+
 				long startTime = 0L;
-				
+
 				if ( netFile.hasDeleteOnClose() && Debug.EnableInfo && m_sess.hasDebug( SMBSrvSession.DBG_BENCHMARK))
 					startTime = System.currentTimeMillis();
-			
+
 				// Check if the file has an oplock
-				
+
 				if ( netFile.hasOpLock())
 					releaseOpLock( m_sess, smbPkt, disk, conn, netFile);
-				
+
 				// Close the file
-				
+
 				disk.closeFile(m_sess, conn, netFile);
 
 				// Release any byte range locks that are on the file
-				
+
 			    if ( netFile.hasLocks() && disk instanceof FileLockingInterface) {
-			          
+
 			    	//  Get the lock manager
-			          
+
 			        FileLockingInterface flIface = (FileLockingInterface) disk;
 			        LockManager lockMgr = flIface.getLockManager( m_sess, conn);
-			          
+
 			        //  DEBUG
-			          
+
 			        if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_LOCK))
 			        	Debug.println("Releasing locks for closed file, file=" + netFile.getFullName() + ", locks=" + netFile.numberOfLocks());
-			            
+
 			        //  Release all locks on the file owned by this session
-			          
+
 			        lockMgr.releaseLocksForFile( m_sess, conn, netFile);
 			    }
-			        
+
 				// Check if the file close has been delayed by the filesystem driver
-				
+
 				if ( netFile.hasDelayedClose()) {
 				    delayedClose = true;
-				    
+
 				    // Reset the delayed close status
-				    
+
 				    netFile.setDelayedClose( false);
 
 				    // DEBUG
-		            
+
 		            if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_FILE))
 		                m_sess.debugPrintln("File close delayed [" + smbPkt.getTreeId() + "] fid=" + fid + ", path=" + netFile.getFullName());
 				}
-				
+
 				// DEBUG
-				
+
 				if ( startTime != 0L && Debug.EnableInfo && m_sess.hasDebug( SMBSrvSession.DBG_BENCHMARK))
 					Debug.println("Benchmark: Delete on close " + netFile.getName() + " took " + ( System.currentTimeMillis() - startTime) + "ms");
 			}
-			
+
 			// Indicate that the file has been closed
 
 			if ( delayedClose == false)
 			    netFile.setClosed(true);
-			
+
 			// DEBUG
-			
+
 			if ( Debug.EnableInfo && m_sess.hasDebug( SMBSrvSession.DBG_BENCHMARK)) {
 				if ( netFile.isDirectory() == false) {
 					if ( netFile.wasCreated() && netFile.getWriteCount() > 0)
@@ -1547,7 +1547,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 request. The transact2 can contain many different sub-requests.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1633,9 +1633,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		transBuf.setReturnLimits(tranPkt.getMaximumReturnSetupCount(), tranPkt.getMaximumReturnParameterCount(), tranPkt.getMaximumReturnDataCount());
 
 		// Clear the transaction packet buffer, as it is owned by the original packet
-		
+
 		tranPkt.setBuffer( null);
-		
+
 		// Check for a multi-packet transaction, for a multi-packet transaction we just acknowledge
 		// the receive with an empty response SMB
 
@@ -1670,7 +1670,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 secondary request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1810,7 +1810,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transaction buffer
-	 * 
+	 *
 	 * @param tbuf TransactBuffer
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException If a network error occurs
@@ -1824,53 +1824,53 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		switch (tbuf.getFunction()) {
 
 			// Start a file search
-	
+
 			case PacketType.Trans2FindFirst:
 				procTrans2FindFirst(tbuf, smbPkt);
 				break;
-	
+
 			// Continue a file search
-	
+
 			case PacketType.Trans2FindNext:
 				procTrans2FindNext(tbuf, smbPkt);
 				break;
-	
+
 			// Query file system information
-	
+
 			case PacketType.Trans2QueryFileSys:
 				procTrans2QueryFileSys(tbuf, smbPkt);
 				break;
-	
+
 			// Query path
-	
+
 			case PacketType.Trans2QueryPath:
 				procTrans2QueryPath(tbuf, smbPkt);
 				break;
-	
+
 			// Query file information via handle
-	
+
 			case PacketType.Trans2QueryFile:
 				procTrans2QueryFile(tbuf, smbPkt);
 				break;
-	
+
 			// Set file information via handle
-	
+
 			case PacketType.Trans2SetFile:
 				procTrans2SetFile(tbuf, smbPkt);
 				break;
-	
+
 			// Set file information via path
-	
+
 			case PacketType.Trans2SetPath:
 				procTrans2SetPath(tbuf, smbPkt);
 				break;
-	
+
 			// Unknown transact2 command
-	
+
 			default:
-	
+
 				// Return an unrecognized command error
-	
+
 				if ( Debug.EnableError)
 					m_sess.debugPrintln("NT Error Transact2 Command = 0x" + Integer.toHexString(tbuf.getFunction()));
 				m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTInvalidParameter, SMBStatus.SRVNonSpecificError, SMBStatus.ErrSrv);
@@ -1880,7 +1880,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Close a search started via the transact2 find first/next command.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1956,7 +1956,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file lock/unlock request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -2037,213 +2037,213 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		}
 
 		// Check for an oplock break
-		
+
 		if ( LockingAndX.hasOplockBreak( lockType)) {
-			
+
 			// Debug
 
 			if ( Debug.EnableDbg && m_sess.hasDebug(SMBSrvSession.DBG_OPLOCK))
 				Debug.println("Oplock break, flags=0x" + Integer.toHexString( lockType) + " file=" + netFile);
-				
+
 			// Access the oplock manager via the filesystem
-			
+
 			if ( disk instanceof OpLockInterface) {
-				
+
 				// Get the oplock manager
-				
+
 				OpLockInterface oplockIface = (OpLockInterface) disk;
 				OpLockManager oplockMgr = oplockIface.getOpLockManager( m_sess, conn);
-				
+
 				if ( oplockMgr == null) {
-					
+
 					// DEBUG
-					
+
 					if ( Debug.EnableDbg && m_sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 						Debug.print( "  OpLock manager is null, tree=" + conn);
-					
+
 					// Return a not supported error
-					
+
 					m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.SRVNotSupported, SMBStatus.ErrSrv);
 					return;
 				}
 
 				// Get the oplock details for the file
-				
+
 				OpLockDetails oplock = oplockMgr.getOpLockDetails( netFile.getFullName());
 				if ( oplock == null) {
-					
+
 					// Return a not locked error
-					
+
 					m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTRangeNotLocked, SMBStatus.DOSNotLocked, SMBStatus.ErrDos);
 					return;
 				}
-				
+
 				// Check if the oplock should be released or converted to a shared Level II oplock
-				
+
 				if ( LockingAndX.hasLevelIIOplock( lockType) == false) {
-					
+
 					// Release the oplock
-					
+
 					oplockMgr.releaseOpLock( oplock.getPath());
-					
+
 					// DEBUG
-					
+
 					if ( Debug.EnableDbg && m_sess.hasDebug(SMBSrvSession.DBG_OPLOCK))
 						Debug.println("  Oplock released, oplock=" + oplock);
 				}
 				else {
-					
+
 					// Change the oplock type to a LevelII
-					
+
 					oplockMgr.changeOpLockType( oplock, OpLock.TypeLevelII);
-					
+
 					// DEBUG
-					
+
 					if ( Debug.EnableDbg && m_sess.hasDebug(SMBSrvSession.DBG_OPLOCK))
 						Debug.println("  Oplock converted to LevelII, oplock=" + oplock);
 				}
 			}
 			else {
-				
+
 				// Return a not supported error
-				
+
 				m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.SRVNotSupported, SMBStatus.ErrSrv);
 				return;
 			}
 		}
-		
+
 		// Check for byte range locks/unlocks
-		
+
 		if ( unlockCnt > 0 || lockCnt > 0) {
-			
+
 			// Check if the virtual filesystem supports file locking
-	
+
 			if ( disk instanceof FileLockingInterface) {
-	
+
 				// Get the lock manager
-	
+
 				FileLockingInterface lockInterface = (FileLockingInterface) disk;
 				LockManager lockMgr = lockInterface.getLockManager(m_sess, conn);
-	
+
 				// Unpack the lock/unlock structures
-	
+
 				smbPkt.resetBytePointer();
 				boolean largeFileLock = LockingAndX.hasLargeFiles(lockType);
 
 				int lockIdx = 0;
-				
+
 				while ( lockIdx < (unlockCnt + lockCnt)) {
-	
+
 					// Get the unlock/lock structure
-	
+
 					int pid = smbPkt.unpackWord();
 					long offset = -1;
 					long length = -1;
-	
+
 					if ( largeFileLock == false) {
-	
+
 						// Get the lock offset and length, short format
-	
+
 						offset = smbPkt.unpackInt();
 						length = smbPkt.unpackInt();
 					}
 					else {
-	
+
 						// Get the lock offset and length, large format
-	
+
 						smbPkt.skipBytes(2);
-	
+
 						offset = ((long) smbPkt.unpackInt()) << 32;
 						offset += (long) smbPkt.unpackInt();
-	
+
 						length = ((long) smbPkt.unpackInt()) << 32;
 						length += (long) smbPkt.unpackInt();
 					}
-	
+
 					// Create the lock/unlock details
-	
+
 					FileLock fLock = lockMgr.createLockObject(m_sess, conn, netFile, offset, length, pid);
 					boolean isLock = lockIdx++ < lockCnt;
-					
+
 					// Debug
-	
+
 					if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_LOCK))
 						m_sess.debugPrintln("  " + (isLock ? "Lock" : "UnLock") + " lock=" + fLock);
-	
+
 					// Perform the lock/unlock request
-	
+
 					try {
-	
+
 						// Check if the request is an unlock
-	
+
 						if ( isLock == false) {
-	
+
 							// Unlock the file
-	
+
 							lockMgr.unlockFile(m_sess, conn, netFile, fLock);
 						}
 						else {
-	
+
 							// Lock the file
-	
+
 							lockMgr.lockFile(m_sess, conn, netFile, fLock);
 						}
 					}
 					catch (NotLockedException ex) {
-	
+
 						// Return an error status
-	
+
 						m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTRangeNotLocked, SMBStatus.DOSNotLocked, SMBStatus.ErrDos);
 						return;
 					}
 					catch (LockConflictException ex) {
-	
+
 						// Return an error status
-	
+
 						m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTLockNotGranted, SMBStatus.DOSLockConflict, SMBStatus.ErrDos);
 						return;
 					}
 					catch (IOException ex) {
-	
+
 						// Return an error status
-	
+
 						m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.SRVInternalServerError, SMBStatus.ErrSrv);
 						return;
 					}
 				}
 			}
 			else {
-	
+
 				// Filesystem does not support byte range locking
 				//
 				// Return a 'not locked' status if there are unlocks in the request else return a
 				// success status
-	
+
 				if ( unlockCnt > 0) {
-	
+
 					// Return an error status
-	
+
 					m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTRangeNotLocked, SMBStatus.DOSNotLocked, SMBStatus.ErrDos);
 					return;
 				}
 			}
-	
+
 			// Return a success response
-	
+
 			smbPkt.setParameterCount(2);
 			smbPkt.setAndXCommand(0xFF);
 			smbPkt.setParameter(1, 0);
 			smbPkt.setByteCount(0);
-	
+
 			// Send the lock request response
-	
+
 			m_sess.sendResponseSMB(smbPkt);
 		}
 	}
 
 	/**
 	 * Process the logoff request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -2278,41 +2278,41 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		vc.setLoggedOn( false);
 
 		// Check if there are no tree connections on this virtual circuit
-		
+
 		if ( vc.getConnectionCount() == 0) {
-			
+
 			// Remove the virtual circuit
-			
+
 			m_sess.removeVirtualCircuit( vc.getUID());
-			
+
 			// Debug
 
 			if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_NEGOTIATE))
 				m_sess.debugPrintln("  Removed virtual circuit " + vc);
 		}
-			
+
 		// Return a success status SMB
 
 		m_sess.sendSuccessResponseSMB( smbPkt);
-		
+
 		// If there are no active virtual circuits then close the session/socket
-		
+
 		if ( m_sess.numberOfVirtualCircuits() == 0) {
-			
+
 			// DEBUG
-			
+
 			if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_NEGOTIATE))
 				Debug.println("  Closing session, no more virtual circuits");
-			
+
 			// Close the session/socket
-			
+
 			m_sess.hangupSession( "Client logoff");
 		}
 	}
 
 	/**
 	 * Process the file open request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -2407,12 +2407,12 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			m_sess.debugPrintln("File Open AndX [" + treeId + "] params=" + params);
 
         // Check if the file name is valid
-        
+
         if ( isValidPath( params.getPath()) == false) {
             m_sess.sendErrorResponseSMB(smbPkt, SMBStatus.NTObjectNameInvalid, SMBStatus.DOSInvalidData, SMBStatus.ErrDos);
             return;
         }
-        
+
 		// Access the disk interface and open the requested file
 
 		int fid;
@@ -2584,7 +2584,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file read request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -2685,19 +2685,19 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			dataPos = DataPacker.wordAlign(dataPos); // align the data buffer
 
 			// Check if the requested data will fit into the current packet
-			
+
 			if ( maxCount > ( buf.length - dataPos)) {
 
 				// Allocate a larger packet for the response
-				
+
 				respPkt = m_sess.getPacketPool().allocatePacket( maxCount + dataPos, smbPkt);
-				
+
 				// Switch to the response buffer
-				
+
 				buf = respPkt.getBuffer();
 				respPkt.setParameterCount( 12);
 			}
-			
+
 			// Check if the requested data length will fit into the buffer
 
 			int dataLen = buf.length - dataPos;
@@ -2816,7 +2816,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Rename a file.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -2901,12 +2901,12 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			m_sess.debugPrintln("File Rename [" + treeId + "] old name=" + oldName + ", new name=" + newName);
 
         // Check if the from/to paths are valid
-        
+
         if ( isValidPath( oldName) == false) {
             m_sess.sendErrorResponseSMB(smbPkt, SMBStatus.NTObjectNameInvalid, SMBStatus.DOSInvalidData, SMBStatus.ErrDos);
             return;
         }
-        
+
         if ( isValidPath( newName) == false) {
             m_sess.sendErrorResponseSMB(smbPkt, SMBStatus.NTObjectNameInvalid, SMBStatus.DOSInvalidData, SMBStatus.ErrDos);
             return;
@@ -3002,7 +3002,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Delete a file.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -3078,14 +3078,14 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		int fid;
 		NetworkFile netFile = null;
 		long startTime = 0L;
-		
+
 		try {
 
 			// DEBUG
-			
+
 			if ( Debug.EnableInfo && m_sess.hasDebug( SMBSrvSession.DBG_BENCHMARK))
 				startTime = System.currentTimeMillis();
-			
+
 			// Access the disk interface that is associated with the shared device
 
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
@@ -3093,9 +3093,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			// Delete file(s)
 
 			disk.deleteFile(m_sess, conn, fileName);
-			
+
 			// DEBUG
-			
+
 			if ( Debug.EnableInfo && m_sess.hasDebug( SMBSrvSession.DBG_BENCHMARK))
 				Debug.println("Benchmark: Delete file " + fileName + " took " + ( System.currentTimeMillis() - startTime) + "ms");
 		}
@@ -3133,7 +3133,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		smbPkt.setParameterCount(0);
 		smbPkt.setByteCount(0);
 		smbPkt.setSuccessStatus();
-		
+
 		// Send the response packet
 
 		m_sess.sendResponseSMB(smbPkt);
@@ -3147,7 +3147,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Delete a directory.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -3285,7 +3285,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 file search request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -3350,12 +3350,12 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		}
 
         // Check if the search path is valid
-        
+
         if ( isValidSearchPath( srchPath) == false) {
             m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTObjectNameInvalid, SMBStatus.DOSInvalidData, SMBStatus.ErrDos);
             return;
         }
-        
+
 		// Check if the search path is valid
 
 		if ( srchPath == null || srchPath.length() == 0) {
@@ -3372,9 +3372,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			srchPath = srchPath + "*.*";
 		}
 		else if ( srchPath.startsWith( FileName.DOS_SEPERATOR_STR) == false) {
-			
+
 			// Prefix the search path to make it a relative path
-			
+
 			srchPath = FileName.DOS_SEPERATOR_STR + srchPath;
 
 			// Debug
@@ -3494,12 +3494,12 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				}
 
 				lastNameOff = dataBuf.getPosition();
-				
+
 				// Check if the search has the '.' file entry details
-				
+
 				FileInfo dotInfo = new FileInfo(".", 0, FileAttribute.Directory);
 				dotInfo.setFileId(dotInfo.getFileName().hashCode());
-				
+
 				if ( ctx.hasDotFiles())
 					ctx.getDotInfo( dotInfo);
 
@@ -3518,22 +3518,22 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				}
 
 				lastNameOff = dataBuf.getPosition();
-				
+
 				// Check if the search has the '..' file entry details
-				
+
 				if ( ctx.hasDotFiles())
 					ctx.getDotDotInfo( dotInfo);
 				else {
-					
+
 					// Set dummy details for the '..' file entry
-				
+
 					dotInfo.setFileName("..");
 					dotInfo.setFileId(dotInfo.getFileName().hashCode());
 					dotInfo.setCreationDateTime(DotFileDateTime);
 					dotInfo.setModifyDateTime(DotFileDateTime);
 					dotInfo.setAccessDateTime(DotFileDateTime);
 				}
-				
+
 				packLen = FindInfoPacker.packInfo(dotInfo, dataBuf, infoLevl, tbuf.isUnicode());
 
 				// Update the file count for this packet, update the remaining buffer length
@@ -3725,7 +3725,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 file search continue request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -3979,7 +3979,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 file system query request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -4204,7 +4204,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 					userTotalSpace = userTotalSpace / diskInfo.getUnitSize();
 				else
 					userTotalSpace = diskInfo.getTotalUnits();
-				
+
 				if ( userLimit != -1L)
 					userLimit = userLimit / diskInfo.getUnitSize();
 				else
@@ -4243,7 +4243,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 query path information request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -4293,10 +4293,10 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			path = FileName.DOS_SEPERATOR_STR;
 
 		// Normalize paths that end with the NTFS data stream name
-		
+
 		if ( path.endsWith( FileName.DataStreamName))
 			path = path.substring( 0, path.length() - FileName.DataStreamName.length());
-		
+
 		// Debug
 
 		if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_INFO))
@@ -4345,7 +4345,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			// or not enabled
 
 			if ( streams == false && path.indexOf(FileOpenParams.StreamSeparator) != -1) {
-				
+
 				// NTFS streams not supported, return an error status
 
 				m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTObjectNameInvalid, SMBStatus.DOSFileNotFound, SMBStatus.ErrDos);
@@ -4403,24 +4403,24 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			}
 
 			// Check if the file information response will fit into the current packet
-			
+
 			SMBSrvPacket respPkt = smbPkt;
 			SMBSrvTransPacket.initTransactReply( respPkt, 2, prmPos, dataLen, dataPos);
-			
+
 			if ( respPkt.getAvailableLength() < (dataLen + 4)) {
-				
+
 				// Allocate a new buffer for the response
-				
+
 				respPkt = m_sess.getPacketPool().allocatePacket( smbPkt.getByteOffset() + dataLen + 4, smbPkt, smbPkt.getByteOffset());
 			}
 
 			// Copy the file information to the response packet
-			
+
 			replyBuf.setEndOfBuffer();
 			replyBuf.copyData( respPkt.getBuffer(), dataPos);
-			
+
 			// Set the byte count
-			
+
 			respPkt.setByteCount(( dataPos + dataLen) - respPkt.getByteOffset());
 
 			// Send the transact reply
@@ -4464,17 +4464,17 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			return;
 		}
 		catch (AccessDeniedException ex) {
-		    
+
 		    // access denied
 
 		    m_sess.sendErrorResponseSMB(smbPkt, SMBStatus.NTAccessDenied, SMBStatus.DOSAccessDenied, SMBStatus.ErrDos);
 		    return;
-		} 
+		}
 	}
 
 	/**
 	 * Process a transact2 query file information (via handle) request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -4592,18 +4592,18 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				}
 
 				// Allocate a larger response buffer if there is more than one stream to return information for
-				
+
 				if ( streamList.numberOfStreams() > 1 && buf.length < NTFSStreamsInfoBufsize) {
-					
+
 					// Allocate a larger packet for the response
-					
+
 					smbPkt = m_sess.getPacketPool().allocatePacket( NTFSStreamsInfoBufsize, smbPkt, dataPos);
-					
+
 					// Switch to the response buffer
-					
+
 					buf = smbPkt.getBuffer();
 				}
-				
+
 				// Create a data buffer using the SMB packet. The response should always fit into a
 				// single reply packet.
 
@@ -4625,13 +4625,13 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				}
 
 				// Copy current file size and access date/time from the open file
-				
+
 				fileInfo.setFileSize( netFile.getFileSize());
 				fileInfo.setAllocationSize((fileInfo.getSize() + 511L) & 0xFFFFFE00L);
-				
+
 				if ( netFile.hasAccessDate())
 					fileInfo.setAccessDateTime( netFile.getAccessDate());
-				
+
 				// Create a data buffer using the SMB packet. The response should always fit into a
 				// single reply packet.
 
@@ -4694,7 +4694,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 set file information (via handle) request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -4849,9 +4849,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				}
 
 				// Store the associated network file in the file information object
-				
+
 				finfo.setNetworkFile(netFile);
-				
+
 				// Set the file information for the specified file/directory
 
 				finfo.setFileInformationFlags(setFlags);
@@ -4915,7 +4915,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				int rootFid = dataBuf.getInt();
 				int nameLen = dataBuf.getInt();
 				String newName = dataBuf.getString(nameLen, true);
-				
+
 				// Debug
 
 				if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_INFO))
@@ -4951,59 +4951,59 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				if ( streams == false) {
 
 					// Check if this is a rename of a file rather than a stream
-					
+
 					if ( FileName.containsStreamName( newName) == false) {
-						
+
 						// Build the target file relative path
-						
+
 						String[] paths = FileName.splitPath( netFile.getFullName());
 						String newPath = null;
 						if ( paths[0] != null)
 							newPath = paths[0] + FileName.DOS_SEPERATOR_STR + newName;
 						else
 							newPath = FileName.DOS_SEPERATOR_STR + newName;
-						
+
 						// Check if the target file exists
-						
+
 						int fileSts = disk.fileExists( m_sess, conn, newPath);
-						
+
 						if ( fileSts == FileStatus.FileExists && overwrite == false) {
-							
+
 							// Return an error status, rename would overwrite an existing file
-							
+
 							m_sess.sendErrorResponseSMB(smbPkt, SMBStatus.NTAccessDenied, SMBStatus.DOSAccessDenied, SMBStatus.ErrDos);
 							return;
 						}
 						else {
-							
+
 							// Debug
 
 							if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_FILE))
 								m_sess.debugPrintln("Transact rename via standard rename from=" + netFile.getFullName() + " to=" + newPath);
-							
+
 							// Call the standard disk interface rename method to rename the file
-							
+
 							disk.renameFile( m_sess, conn, netFile.getFullName(), newPath);
 						}
 					}
 					else {
-						
+
 						// Return a not supported error status
-	
+
 						m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTNotSupported, SMBStatus.SRVNotSupported, SMBStatus.ErrSrv);
 						return;
 					}
 				}
 				else {
-					
+
 					// Debug
-	
+
 					if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_STREAMS))
 						m_sess.debugPrintln("Rename stream fid=" + fid + ", name=" + netFile.getFullNameStream() + ", newName="
 								+ newName + ", overwrite=" + overwrite);
-	
+
 					// Rename the stream
-	
+
 					NTFSStreamsInterface ntfsStreams = (NTFSStreamsInterface) disk;
 					ntfsStreams.renameStream(m_sess, conn, netFile.getFullNameStream(), newName, overwrite);
 				}
@@ -5149,7 +5149,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 set path information request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -5204,12 +5204,12 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			m_sess.debugPrintln("Set Path - path=" + path + ", level=0x" + Integer.toHexString(infoLevl));
 
         // Check if the file name is valid
-        
+
         if ( isValidPath( path) == false) {
             m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTObjectNameInvalid, SMBStatus.DOSInvalidData, SMBStatus.ErrDos);
             return;
         }
-        
+
 		// Access the shared device disk interface
 
 		try {
@@ -5468,7 +5468,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file write request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -5528,7 +5528,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		int fid = smbPkt.getParameter(2);
 
 		// Bottom 32bits of file offset
-		
+
 		long offset = (long) (((long) smbPkt.getParameterLong(3)) & 0xFFFFFFFFL);
 		int dataPos = smbPkt.getParameter(11) + RFCNetBIOSProtocol.HEADER_LEN;
 
@@ -5574,11 +5574,11 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
 
 			// Synchronize writes using the network file
-			
+
 			synchronized ( netFile) {
-				
+
 				// Write to the file
-	
+
 				wrtlen = disk.writeFile(m_sess, conn, netFile, buf, dataPos, dataLen, offset);
 			}
 		}
@@ -5694,7 +5694,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file create/open request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -5830,9 +5830,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 		FileOpenParams params = new FileOpenParams(fileName, createDisp, accessMask, attrib, shrAccess, allocSize, createOptn,
 				rootFID, impersonLev, secFlags, smbPkt.getProcessIdFull());
-		
+
 		// Set the create flags, with oplock requests
-		
+
 		params.setNTCreateFlags( flags);
 		params.setTreeId( treeId);
 		params.setSession( m_sess);
@@ -5843,12 +5843,12 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			m_sess.debugPrintln("NT Create AndX [" + treeId + "] params=" + params);
 
         // Check if the file name is valid
-        
+
         if ( isValidPath( params.getPath()) == false) {
             m_sess.sendErrorResponseSMB(smbPkt, SMBStatus.NTObjectNameInvalid, SMBStatus.DOSInvalidData, SMBStatus.ErrDos);
             return;
         }
-        
+
 		// Access the disk interface and open the requested file
 
 		int fid;
@@ -5861,42 +5861,42 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			// Check if the requested file already exists
 
 			int fileSts = disk.fileExists(m_sess, conn, params.getFullPath());
-			
+
 			// Check if the path is to a folder, make sure the Directory flag is set in the open parameters for oplock checking
-			
+
 			if ( params.isDirectory() == false && fileSts == FileStatus.DirectoryExists) {
 			    params.setCreateOption(WinNT.CreateDirectory);
 			}
 
             // Check if the file exists and it is a pseudo file, in which case the file already exists so change a create request to
             // an open request
-            
+
             if ( fileSts == FileStatus.FileExists) {
-                
+
                 // Check for a pseudo file
-                
+
                 FileInfo finfo = disk.getFileInformation(m_sess, conn, params.getFullPath());
                 if ( finfo != null && finfo.isPseudoFile()) {
                     createDisp = FileAction.NTOpen;
 
                     // Clear any oplock request for pseudo files
-                    
+
                     if ( params.requestBatchOpLock() || params.requestExclusiveOpLock()) {
                     	if ( params.requestExtendedResponse())
                     		params.setNTCreateFlags( WinNT.ExtendedResponse);
                     	else
                     		params.setNTCreateFlags( 0);
                     }
-                    
+
 	                // Debug
-	
+
 	                if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_FILE))
 	                    m_sess.debugPrintln("Converted create to open for pseudo file " + params);
                 }
             }
 
             // Check if the file should be created
-            
+
 			if ( fileSts == FileStatus.NotExist) {
 
 				// Check if the file should be created if it does not exist
@@ -5921,39 +5921,39 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 						// Create a new file
 
 						netFile = disk.createFile(m_sess, conn, params);
-						
+
 						// Indicate the file was created
-						
+
 						if ( netFile != null && m_sess.hasDebug( SMBSrvSession.DBG_BENCHMARK)) {
 							netFile.setStatusFlag( NetworkFile.Created, true);
 							netFile.setCreationDate( System.currentTimeMillis());
 						}
-						
+
 						// Check if an oplock was requested, grant the oplock if possible and return the granted oplock details, or null
 						// if no oplock granted or requested.
-						
+
 						oplock = grantOpLock( m_sess, smbPkt, disk, conn, params, netFile);
 					}
 					else {
 
 						// Split the path and walk to see which folder(s) need creating
-						
+
 						String[] paths = FileName.splitAllPaths( params.getPath());
 						StringBuilder pathStr = new StringBuilder( params.getPath().length());
 						int fldrSts = FileStatus.Unknown;
 						int idx = 0;
-						
+
 						while ( idx < paths.length) {
-						
+
 							// Add the current path component and check if it exists, and it is a folder
-							
+
 							pathStr.append( FileName.DOS_SEPERATOR_STR);
 							pathStr.append( paths[ idx++]);
 
 							fldrSts = disk.fileExists( m_sess, conn, pathStr.toString());
-							
+
 							// If the current path exists and it is a file then return an error
-							
+
 							if ( fldrSts == FileStatus.FileExists) {
 								if ( idx < paths.length)
 									m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTObjectNameCollision, SMBStatus.DOSFileAlreadyExists, SMBStatus.ErrDos);
@@ -5962,21 +5962,21 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 								return;
 							}
 							else if ( fldrSts == FileStatus.NotExist) {
-								
+
 								// Create the current part of the path
-								
+
 								FileOpenParams fldrParams = new FileOpenParams( pathStr.toString(), createDisp, accessMask, attrib, shrAccess, allocSize, createOptn,
 										rootFID, impersonLev, secFlags, smbPkt.getProcessIdFull());
 								disk.createDirectory( m_sess, conn, fldrParams);
 							}
 						}
-						
+
 						// Open the requested folder, should now exist
 
 						netFile = disk.openFile(m_sess, conn, params);
-						
+
 						// Indicate the directory was created
-						
+
 						if ( netFile != null && m_sess.hasDebug( SMBSrvSession.DBG_BENCHMARK)) {
 							netFile.setStatusFlag( NetworkFile.Created, true);
 							netFile.setCreationDate( System.currentTimeMillis());
@@ -6045,18 +6045,18 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				}
 
 				// Check if the filesystem supports oplocks, check if there is an oplock on the file
-				
+
 				checkOpLock( m_sess, smbPkt, disk, params, conn);
-				
+
 				// Open the requested file/directory
 
 				netFile = disk.openFile(m_sess, conn, params);
 
 				// Check if an oplock was requested, grant the oplock if possible and return the granted oplock details, or null
 				// if no oplock granted or requested.
-				
+
 				oplock = grantOpLock( m_sess, smbPkt, disk, conn, params, netFile);
-				
+
 				// Check if the file should be truncated
 
 				if ( createDisp == FileAction.NTSupersede || createDisp == FileAction.NTOverwriteIf) {
@@ -6069,14 +6069,14 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 					if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_FILE))
 						m_sess.debugPrintln("  [" + treeId + "] name=" + fileName + " truncated");
-					
+
 					// Treat the file as if it is a newly created file
-					
+
 					if ( netFile != null && m_sess.hasDebug( SMBSrvSession.DBG_BENCHMARK)) {
 						netFile.setStatusFlag( NetworkFile.Created, true);
 						netFile.setCreationDate( System.currentTimeMillis());
 					}
-					
+
 				}
 
 				// Set the file action response
@@ -6087,14 +6087,14 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			// Add the file to the list of open files for this tree connection
 
 			fid = conn.addFile(netFile, getSession());
-			
+
 			// If the file has been granted an oplock then update the file id, needed for the oplock break
-			
+
 			if ( oplock != null && (oplock.getLockType() != OpLock.TypeNone && oplock.getLockType() != OpLock.TypeLevelII))
 				oplock.setOwnerFileId( fid);
-			
+
 			// DEBUG
-			
+
 			if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_FILE))
 				m_sess.debugPrintln("  [" + treeId + "] name=" + fileName + " fid=" + fid + ", fileId=" + netFile.getFileId() + ", opLock=" + oplock);
 		}
@@ -6155,9 +6155,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			return;
 		}
 		catch (DeferredPacketException ex) {
-			
+
 			// Deferred packet, oplock break in progress, rethrow the exception
-			
+
 			throw ex;
 		}
 		catch (IOException ex) {
@@ -6205,7 +6205,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		if ( netFile.hasAccessDate())
 			prms.packLong(NTTime.toNTTime(netFile.getAccessDate()));
 		else {
-			
+
 			// Use the modify date/time if access ate/time has not been set
 
 			if ( netFile.hasModifyDate())
@@ -6213,7 +6213,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			else
 				prms.packLong(0);
 		}
-		
+
 		if ( netFile.hasModifyDate()) {
 			long modDate = NTTime.toNTTime(netFile.getModifyDate());
 			prms.packLong(modDate);
@@ -6239,27 +6239,27 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		prms.packByte(netFile.isDirectory() ? 1 : 0);
 
 		prms.packWord(0); // byte count = 0
-		
+
 		// Pack the extra extended response area, if requested
-		
+
 		if ( extendedResponse == true) {
-			
+
 			// 22 byte block of zeroes
-			
+
 			prms.packLong( 0);
 			prms.packLong( 0);
 			prms.packInt( 0);
 			prms.packWord( 0);
-			
+
 			// Pack the permissions
-			
+
 			if ( netFile.isDirectory() || netFile.getAllowedAccess() == NetworkFile.READWRITE)
 				prms.packInt( AccessMode.NTFileGenericAll);
 			else
 				prms.packInt( AccessMode.NTFileGenericRead);
-			
+
 			// 8 byte block of zeroes
-			
+
 			prms.packInt( 0);
 			prms.packInt( 0);
 		}
@@ -6270,9 +6270,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		smbPkt.setParameter(1, endPos - RFCNetBIOSProtocol.HEADER_LEN);
 
 		// Set the status
-		
+
 		smbPkt.setLongErrorCode( SMBStatus.NTSuccess);
-		
+
 		// Check if there is a chained request
 
 		if ( smbPkt.hasAndXCommand()) {
@@ -6302,7 +6302,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the cancel request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -6387,7 +6387,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process an NT transaction
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -6534,7 +6534,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process an NT transaction secondary packet
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -6661,7 +6661,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process an NT transaction buffer
-	 * 
+	 *
 	 * @param tbuf TransactBuffer
 	 * @param smbPkt NTTransPacket
 	 * @exception IOException
@@ -6675,69 +6675,69 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		switch (tbuf.getFunction()) {
 
 			// Create file/directory
-	
+
 			case PacketType.NTTransCreate:
 				procNTTransactCreate(tbuf, smbPkt);
 				break;
-	
+
 			// I/O control
-	
+
 			case PacketType.NTTransIOCtl:
 				procNTTransactIOCtl(tbuf, smbPkt);
 				break;
-	
+
 			// Query security descriptor
-	
+
 			case PacketType.NTTransQuerySecurityDesc:
 				procNTTransactQuerySecurityDesc(tbuf, smbPkt);
 				break;
-	
+
 			// Set security descriptor
-	
+
 			case PacketType.NTTransSetSecurityDesc:
 				procNTTransactSetSecurityDesc(tbuf, smbPkt);
 				break;
-	
+
 			// Rename file/directory via handle
-	
+
 			case PacketType.NTTransRename:
 				procNTTransactRename(tbuf, smbPkt);
 				break;
-	
+
 			// Get user quota
-	
+
 			case PacketType.NTTransGetUserQuota:
-	
+
 				// DEBUG
-	
+
 				if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_TRAN))
 					m_sess.debugPrintln("NT GetUserQuota transaction");
-	
+
 				// Return a not implemented error status
-	
+
 				m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTNotImplemented, SMBStatus.SRVNotSupported, SMBStatus.ErrSrv);
 				break;
-	
+
 			// Set user quota
-	
+
 			case PacketType.NTTransSetUserQuota:
-	
+
 				// DEBUG
-	
+
 				if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_TRAN))
 					m_sess.debugPrintln("NT SetUserQuota transaction");
-	
+
 				// Return a not implemented error status
-	
+
 				m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTNotImplemented, SMBStatus.SRVNotSupported, SMBStatus.ErrSrv);
 				break;
-	
+
 			// Unknown NT transaction command
-	
+
 			default:
-	
+
 				// Return an unrecognized command error
-	
+
 				if ( Debug.EnableError)
 					m_sess.debugPrintln("NT Error unknown NT transact command = 0x" + Integer.toHexString(tbuf.isType()));
 				m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTInvalidParameter, SMBStatus.SRVNonSpecificError, SMBStatus.ErrSrv);
@@ -6747,7 +6747,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process an NT create file/directory transaction
-	 * 
+	 *
 	 * @param tbuf TransactBuffer
 	 * @param smbPkt NTTransPacket
 	 * @exception IOException
@@ -6885,7 +6885,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 		FileOpenParams params = new FileOpenParams(fileName, createDisp, accessMask, attrib, shrAccess, allocSize, createOptn,
 				rootFID, impersonLev, secFlags, smbPkt.getProcessIdFull());
-		
+
 		// Debug
 
 		if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_FILE)) {
@@ -7139,7 +7139,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process an NT I/O control transaction
-	 * 
+	 *
 	 * @param tbuf TransactBuffer
 	 * @param smbPkt NTTransPacket
 	 * @exception IOException
@@ -7219,20 +7219,20 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 				if ( response != null) {
 
 					// Check if a larger buffer needs to be allocated for the response packet
-					
+
 					int respPktLen = NTTransPacket.calculateResponseLength( 0, response.getLength(), 1);
-					
+
 					if ( smbPkt.getBufferLength() < respPktLen) {
 
 						// Allocate a larger response packet
-						
+
 						SMBSrvPacket pkt = m_sess.getPacketPool().allocatePacket( respPktLen, smbPkt, smbPkt.getLength());
-						
+
 						// Create a new NT transaction packet from the new buffer
-						
+
 						respPkt = new NTTransPacket( pkt.getBuffer());
 					}
-						
+
 					// Pack the response data block
 
 					respPkt.initTransactReply(null, 0, response.getBuffer(), response.getLength(), 1);
@@ -7275,7 +7275,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process an NT query security descriptor transaction
-	 * 
+	 *
 	 * @param tbuf TransactBuffer
 	 * @param smbPkt NTTransPacket
 	 * @exception IOException
@@ -7354,7 +7354,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		// Check if the disk interface implements the optional security descriptor interface
 
 		NTTransPacket respPkt = smbPkt;
-		
+
 		if ( disk instanceof SecurityDescriptorInterface) {
 
 			// Access the security descriptor interface
@@ -7410,18 +7410,18 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 					}
 
 					// Calculate the available space for the security descriptor in the current packet
-					
+
 					respPkt.initTransactReply(paramblk, paramblk.length, null, 0);
 					int availLen = respPkt.getBufferLength() - respPkt.getLength();
-					
+
 					if ( availLen <= (secLen + 8)) {
-						
+
 						// Allocate a larger packet for the response
-						
+
 						SMBSrvPacket pkt = m_sess.getPacketPool().allocatePacket( respPkt.getLength() + secLen + 8, smbPkt);
-						
+
 						// Create a new NT transaction packet from the new buffer
-						
+
 						respPkt = new NTTransPacket( pkt.getBuffer());
 					}
 				}
@@ -7477,7 +7477,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process an NT set security descriptor transaction
-	 * 
+	 *
 	 * @param tbuf TransactBuffer
 	 * @param smbPkt NTTransPacket
 	 * @exception IOException
@@ -7595,14 +7595,14 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 		else {
 
 			// Return a success response
-			
+
 			m_sess.sendSuccessResponseSMB( smbPkt);
 		}
 	}
 
 	/**
 	 * Process an NT change notification transaction
-	 * 
+	 *
 	 * @param ntpkt NTTransPacket
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -7756,7 +7756,7 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process an NT rename via handle transaction
-	 * 
+	 *
 	 * @param tbuf TransactBuffer
 	 * @param smbPkt NTTransPacket
 	 * @exception IOException
@@ -7807,12 +7807,12 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 
 		m_sess.sendErrorResponseSMB( smbPkt, SMBStatus.SRVNonSpecificError, SMBStatus.ErrSrv);
 	}
-	
-	
+
+
 	/**
 	 * Check if a file has an oplock, start the oplock break and defer the packet until the oplock
 	 * break has finished processing.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param pkt SMBSrvPacket
 	 * @param disk DiskInterface
@@ -7823,223 +7823,223 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 	 */
 	private final void checkOpLock(SMBSrvSession sess, SMBSrvPacket pkt, DiskInterface disk, FileOpenParams params, TreeConnection tree)
 		throws DeferredPacketException, AccessDeniedException {
-		
+
 		// Check if the filesystem supports oplocks
-		
+
 		if ( disk instanceof OpLockInterface) {
-			
+
 			// Get the oplock interface, check if oplocks are enabled
-			
+
 			OpLockInterface oplockIface = (OpLockInterface) disk;
 			if ( oplockIface.isOpLocksEnabled(sess, tree) == false)
 				return;
-			
+
 			OpLockManager oplockMgr = oplockIface.getOpLockManager( sess, tree);
-			
+
 			if ( oplockMgr == null) {
-				
+
 				// DEBUG
-				
+
 				if ( Debug.EnableDbg && sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 					m_sess.debugPrintln( "OpLock manager is null, tree=" + tree);
-				
+
 				// Nothing to do
-				
+
 				return;
 			}
-			
+
 			// Check if the file has an oplock, and it is not a shared level II oplock
-			
+
 			OpLockDetails oplock = oplockMgr.getOpLockDetails( params.getFullPath());
-			
+
 			if ( oplock != null && oplock.getLockType() != OpLock.TypeLevelII) {
 
 				// DEBUG
-				
+
 				if ( Debug.EnableDbg && sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 					m_sess.debugPrintln( "Check oplock on file " + params.getPath() + ", oplock=" + oplock);
-				
+
 				// Check if the oplock is local
-				
+
 				boolean deferredPkt = false;
-				
+
 				if ( oplock instanceof LocalOpLockDetails) {
-					
+
 					// Access the local oplock details
-					
+
 					LocalOpLockDetails localOpLock = (LocalOpLockDetails) oplock;
-					
+
 					// Check if the session that owns the oplock is still valid
-					
+
 					SMBSrvSession opSess = localOpLock.getOwnerSession();
-					
+
 					if ( opSess.isShutdown() == false) {
-						
+
 						// Check if the file open is for attributes/metadata only
-						
+
 						if (( params.getAccessMode() & (AccessMode.NTRead + AccessMode.NTWrite + AccessMode.NTAppend)) == 0 &&
-								(params.getAccessMode() & (AccessMode.NTGenericRead + AccessMode.NTGenericWrite + AccessMode.NTGenericExecute)) == 0) {	
-							
+								(params.getAccessMode() & (AccessMode.NTGenericRead + AccessMode.NTGenericWrite + AccessMode.NTGenericExecute)) == 0) {
+
 							// DEBUG
-							
+
 							if ( Debug.EnableDbg && m_sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 								m_sess.debugPrintln("No oplock break, access attributes only, params=" + params + ", oplock=" + oplock);
-							
+
 							// Oplock break not required
-							
+
 							return;
 						}
-					
+
 						// Check if the oplock has a failed break timeout, do not send another break request to the client, fail the open
 						// request with an access denied error
-						
+
 						if ( oplock.hasOplockBreakFailed()) {
-						
+
 							// DEBUG
-							
+
 							if ( Debug.EnableDbg && m_sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 								m_sess.debugPrintln("Oplock has failed break attempt, failing open request params=" + params);
-							
+
 							// Fail the open request with an access denied error
-							
+
 							throw new AccessDeniedException( "Oplock has failed break");
 						}
-						
+
 						// Need to send an oplock break to the oplock owner before we can continue processing the current file open request
-						
+
 						try {
-							
+
 							// DEBUG
-							
+
 							if ( Debug.EnableDbg && m_sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 								m_sess.debugPrintln("Oplock break required, owner=" + oplock + ", open=" + sess.getUniqueId() + ", PID=" + pkt.getProcessId() + ", MID=" + pkt.getMultiplexId());
-								
+
 							// Request the owner session break the oplock
-							
+
 							oplockMgr.requestOpLockBreak( oplock.getPath(), oplock, m_sess, pkt);
-							
+
 							// Indicate that the current CIFS request packet processing should be deferred, until the oplock break is received
 							// from the owner
-							
+
 							deferredPkt = true;
 						}
 						catch ( DeferFailedException ex) {
-							
+
 							// Log the error
-							
+
 							if ( Debug.EnableError)
 								Debug.println("Failed to defer request for local oplock break, oplock=" + oplock, Debug.Error);
-							
+
 							// Throw an access denied exception so that the file open is rejected
-							
+
 							throw new AccessDeniedException( "Oplock break defer failed");
 						}
 						catch ( IOException ex) {
-							
+
 							// Log the error
-							
+
 							if ( Debug.EnableError) {
 								Debug.println("Failed to send local oplock break:", Debug.Error);
 								Debug.println(ex, Debug.Error);
 							}
-							
+
 							// Throw an access denied exception so that the file open is rejected
-							
+
 							throw new AccessDeniedException( "Oplock break send failed");
 						}
 					}
 					else {
-						
+
 						//	Oplock owner session is no longer valid, release the oplock
-						
+
 						oplockMgr.releaseOpLock( oplock.getPath());
-	
+
 						// DEBUG
-						
+
 						if ( Debug.EnableDbg && m_sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 							m_sess.debugPrintln("Oplock released, session invalid sess=" + opSess.getUniqueId());
 					}
 				}
 				else if ( oplock.isRemoteLock()) {
-					
+
 					// Check if the open is not accessing the file data, ie. accessing attributes only
-					
+
 					if (( params.getAccessMode() & (AccessMode.NTRead + AccessMode.NTWrite + AccessMode.NTAppend)) == 0 &&
 							(params.getAccessMode() & (AccessMode.NTGenericRead + AccessMode.NTGenericWrite + AccessMode.NTGenericExecute)) == 0)
 						return;
 
 					// Check if the oplock has a failed break timeout, do not send another break request to the client, fail the open
 					// request with an access denied error
-					
+
 					if ( oplock.hasOplockBreakFailed()) {
-					
+
 						// DEBUG
-						
+
 						if ( Debug.EnableDbg && m_sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 							m_sess.debugPrintln("Oplock has failed break attempt, failing open request params=" + params);
-						
+
 						// Fail the open request with an access denied error
-						
+
 						throw new AccessDeniedException( "Oplock has failed break");
 					}
-					
+
 					try {
-						
+
 						// Send a remote oplock break request to the owner node
-						
+
 						oplockMgr.requestOpLockBreak( oplock.getPath(), oplock, m_sess, pkt);
-						
+
 						// DEBUG
-						
+
 						if ( Debug.EnableDbg && m_sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 							m_sess.debugPrintln("Remote oplock break sent, oplock=" + oplock);
-						
+
 						// Indicate that the current CIFS request packet processing should be deferred, until the oplock break is received
 						// from the owner
-						
+
 						deferredPkt = true;
 					}
 					catch ( DeferFailedException ex) {
-						
+
 						// Log the error
-						
+
 						if ( Debug.EnableError)
 							Debug.println("Failed to defer request for remote oplock break, oplock=" + oplock, Debug.Error);
-						
+
 						// Throw an access denied exception so that the file open is rejected
-						
+
 						throw new AccessDeniedException( "Oplock break defer failed");
 					}
 					catch ( IOException ex) {
-						
+
 						// Log the error
-						
+
 						if ( Debug.EnableError) {
 							Debug.println("Failed to send remote oplock break:", Debug.Error);
 							Debug.println(ex, Debug.Error);
 						}
-						
+
 						// Throw an access denied exception so that the file open is rejected
-						
+
 						throw new AccessDeniedException( "Oplock break send failed");
 					}
 				}
 
 				// Check if the CIFS file open request processing should be deferred until the oplock break has completed
-				
+
 				if ( deferredPkt == true)
 					throw new DeferredPacketException( "Waiting for oplock break");
 			}
 		}
-		
+
 		// Returning without an exception indicates that there is no oplock on the file, or a shared oplock, so the
 		// file open request can continue
 	}
-	
+
 	/**
 	 * Grant an oplock, check if the filesystem supports oplocks, grant the requested oplock and return the
 	 * oplock details, or null if no oplock granted or requested.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param pkt SMBSrvPacket
 	 * @param disk DiskInterface
@@ -8049,105 +8049,105 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 	 * @return LocalOpLockDetails
 	 */
 	private final OpLockDetails grantOpLock(SMBSrvSession sess, SMBSrvPacket pkt, DiskInterface disk, TreeConnection tree, FileOpenParams params, NetworkFile netFile) {
-		
+
 		// Check if the file open is on a folder
-		
+
 		if ( netFile.isDirectory())
 			return null;
-		
+
 		// Check if the filesystem supports oplocks
-		
+
 		OpLockDetails oplock = null;
-		
+
 		if ( disk instanceof OpLockInterface) {
-			
+
 			// Get the oplock interfcae, check if oplocks are enabled
-			
+
 			OpLockInterface oplockIface = (OpLockInterface) disk;
 			if ( oplockIface.isOpLocksEnabled(sess, tree) == false)
 				return null;
-			
+
 			OpLockManager oplockMgr = oplockIface.getOpLockManager( sess, tree);
-			
+
 			if ( oplockMgr != null) {
-				
+
 				// Check if there is a shared level II oplock on the file
-				
+
 				oplock = oplockMgr.getOpLockDetails( params.getPath());
 				if ( oplock != null && oplock.getLockType() == OpLock.TypeLevelII)
 					return oplock;
-				
+
 				// Get the oplock type
-				
+
 				int oplockTyp = OpLock.TypeNone;
-				
+
 				if ( params.requestBatchOpLock())
 					oplockTyp = OpLock.TypeBatch;
 				else if ( params.requestExclusiveOpLock())
 					oplockTyp = OpLock.TypeExclusive;
 				else
 					return null;
-					
+
 				// Create the oplock details
-				
+
 				oplock = new LocalOpLockDetails( oplockTyp, params.getPath(), sess, pkt, netFile.isDirectory());
-				
+
 				try {
-					
+
 					// Store the oplock via the oplock manager, check if the oplock grant was allowed
-					
+
 					if ( oplockMgr.grantOpLock( params.getPath(), oplock, netFile)) {
 
 						// Save the oplock details with the opened file
-						
+
 						netFile.setOpLock( oplock);
-						
+
 						// DEBUG
-						
+
 						if ( Debug.EnableDbg && sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 							m_sess.debugPrintln( "Granted oplock sess=" + sess.getUniqueId() + " oplock=" + oplock);
 					}
 					else {
-						
+
 						// DEBUG
-						
+
 						if ( Debug.EnableDbg && sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 							m_sess.debugPrintln( "Oplock not granted sess=" + sess.getUniqueId() + " oplock=" + oplock + " (Open count)");
 
 						// Clear the oplock, not granted
-						
+
 						oplock = null;
 					}
 				}
 				catch (ExistingOpLockException ex) {
-					
+
 					// DEBUG
-					
+
 					if ( Debug.EnableDbg && sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 						m_sess.debugPrintln( "Failed to grant oplock sess=" + sess.getUniqueId() + ", file=" + params.getPath() + " (Oplock exists)");
-					
+
 					// Indicate no oplock was granted
-					
+
 					oplock = null;
 				}
 			}
 			else {
-				
+
 				// DEBUG
-				
+
 				if ( Debug.EnableDbg && sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 					m_sess.debugPrintln( "OpLock manager is null, tree=" + tree);
 			}
 		}
 
 		// Return the oplock details, or null if no oplock granted/not requested/not supported
-		
+
 		return oplock;
 	}
-	
+
 	/**
 	 * Release an oplock
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param pkt SMBSrvPacket
 	 * @param disk DiskInterface
@@ -8155,34 +8155,34 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 	 * @param netFile NetworkFile
 	 */
 	private final void releaseOpLock(SMBSrvSession sess, SMBSrvPacket pkt, DiskInterface disk, TreeConnection tree, NetworkFile netFile) {
-		
+
 		// Check if the filesystem supports oplocks
-		
+
 		if ( disk instanceof OpLockInterface) {
-			
+
 			// Get the oplock manager
-			
+
 			OpLockInterface oplockIface = (OpLockInterface) disk;
 			OpLockManager oplockMgr = oplockIface.getOpLockManager( sess, tree);
-			
+
 			if ( oplockMgr != null) {
-				
+
 				// Get the oplock details
-				
+
 				OpLockDetails oplock = netFile.getOpLock();
 
 				if ( oplock != null) {
-					
+
 					// Release the oplock
-					
+
 					oplockMgr.releaseOpLock( oplock.getPath());
-					
+
 					// Clear the network file oplock
-					
+
 					netFile.setOpLock( null);
-					
+
 					// DEBUG
-					
+
 					if ( Debug.EnableDbg && sess.hasDebug( SMBSrvSession.DBG_OPLOCK))
 						m_sess.debugPrintln( "Released oplock sess=" + sess.getUniqueId() + " oplock=" + oplock);
 				}

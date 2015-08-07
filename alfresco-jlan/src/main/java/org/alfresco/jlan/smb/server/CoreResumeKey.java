@@ -42,7 +42,7 @@ class CoreResumeKey {
   private static final int RESCONSUMLEN = 4;
 
   public static final int LENGTH 		= 21;
-  
+
   /**
    * Dump the resume key to the specified output stream.
    *
@@ -57,7 +57,7 @@ class CoreResumeKey {
     out.print("[" + getReservedByte(buf, pos) + ", ");
     out.print(getFileName(buf, pos, false) + "]");
   }
-  
+
   /**
    * Return the consumer area of the resume key.
    *
@@ -69,7 +69,7 @@ class CoreResumeKey {
       conArea[i] = buf[pos + RESCONSUMER + i];
     return conArea;
   }
-  
+
   /**
    * Return the file name from the resume key.
    *
@@ -95,7 +95,7 @@ class CoreResumeKey {
 
     return new String(buf, pos + FILENAME, FILENAMELEN).trim();
   }
-  
+
   /**
    * Return the reserved byte from the resume key.
    *
@@ -104,7 +104,7 @@ class CoreResumeKey {
   public static final byte getReservedByte(byte[] buf, int pos) {
     return buf[pos];
   }
-  
+
   /**
    * Copy the resume key from the buffer to the user buffer.
    *
@@ -118,7 +118,7 @@ class CoreResumeKey {
 
     System.arraycopy(buf, pos, key, 0, LENGTH);
   }
-  
+
   /**
    * Return the server area resume key value. This is the search context index in our case.
    *
@@ -127,7 +127,7 @@ class CoreResumeKey {
   public static final int getServerArea(byte[] buf, int pos) {
     return DataPacker.getIntelInt(buf, pos + RESSERVER + 1);
   }
-  
+
   /**
    * Generate a resume key with the specified filename and search context id.
    *
@@ -155,7 +155,7 @@ class CoreResumeKey {
     setServerArea(buf, pos, ctxId);
     //  setServerArea( buf, pos, 0);
   }
-  
+
   /**
    * Set the consumer reserved area value.
    *
@@ -165,7 +165,7 @@ class CoreResumeKey {
     for (int i = 0; i < RESCONSUMLEN; i++)
       buf[pos + RESCONSUMER + i] = conArea[i];
   }
-  
+
   /**
    * Set the resume key file name string.
    *
@@ -195,7 +195,7 @@ class CoreResumeKey {
 
     DataPacker.putString(str.toString(), buf, pos + FILENAME, false);
   }
-  
+
   /**
    * Set the resume key reserved byte value.
    *
@@ -206,7 +206,7 @@ class CoreResumeKey {
   public static final void setReservedByte(byte[] buf, int pos, byte val) {
     buf[pos] = val;
   }
-  
+
   /**
    * Set the resume key server area value. This is the search context index in our case.
    *

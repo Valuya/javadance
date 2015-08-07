@@ -28,7 +28,7 @@ public interface ClientInfoFactory {
 
 	/**
 	 * Create a new client information object
-	 * 
+	 *
 	 * @param user String
 	 * @param password byte[]
 	 * @return ClientInfo

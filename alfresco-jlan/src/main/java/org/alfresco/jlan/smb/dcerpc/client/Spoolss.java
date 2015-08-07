@@ -21,15 +21,15 @@ package org.alfresco.jlan.smb.dcerpc.client;
 
 /**
  * Spoolss Operation Ids Class
- * 
+ *
  * <p>Contains constants for requests to the SPOOLSS/printing DCE/RPC service on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class Spoolss {
 
 	//	Spoolss opcodes
-	
+
 	public static final int EnumPrinters		= 0x00;
 	public static final int OpenPrinter			= 0x01;
 	public static final int SetJob				= 0x02;

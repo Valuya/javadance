@@ -23,7 +23,7 @@ import org.alfresco.jlan.smb.dcerpc.PolicyHandle;
 
 /**
  * SAM Database Policy Handle Class
- * 
+ *
  * @author gkspencer
  */
 public class SamrPolicyHandle extends PolicyHandle {
@@ -38,7 +38,7 @@ public class SamrPolicyHandle extends PolicyHandle {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param off int
 	 */

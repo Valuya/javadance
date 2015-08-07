@@ -26,7 +26,7 @@ import org.alfresco.jlan.server.SrvSession;
 
 /**
  * File Id Interface
- * 
+ *
  * <p>Optional interface that a DiskInterface driver can implement to provide file id to path conversion.
  *
  * @author gkspencer
@@ -41,7 +41,7 @@ public interface FileIdInterface {
 	 * @param dirid int
 	 * @param fileid int
 	 * @return String
-	 * @exception FileNotFoundException 
+	 * @exception FileNotFoundException
 	 */
 	public String buildPathForFileId(SrvSession sess, TreeConnection tree, int dirid, int fileid)
 		throws FileNotFoundException;

@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb.dcerpc;
 
 /**
  * DCE/RPC Readable Interface
- * 
+ *
  * <p>A class that implements the DCEReadable interface can load itself from a DCE buffer.
  *
  * @author gkspencer
@@ -30,7 +30,7 @@ public interface DCEReadable {
 
 	/**
 	 * Read the object state from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -39,7 +39,7 @@ public interface DCEReadable {
 
   /**
 	 * Read the strings for object from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
    */

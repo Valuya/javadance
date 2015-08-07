@@ -23,32 +23,32 @@ import java.util.ArrayList;
 
 /**
  * SMB Packet Queue Class
- * 
+ *
  * <p>Packet queue used for asynchronous I/O queueing.
- * 
+ *
  * @author gkspencer
  */
 public class SMBSrvPacketQueue {
 
 	// Queue of pending CIFS response packets
-	
+
 	private ArrayList<QueuedSMBPacket> m_pktQueue;
-	
+
 	/**
 	 * Queued SMB Packet Class
 	 */
 	public class QueuedSMBPacket {
-		
+
 		// SMB response details
-		
+
 		private SMBSrvPacket m_pkt;
 		private int m_offset;
 		private int m_len;
 		private boolean m_writeRaw;
-		
+
 		/**
 		 * Class constructor
-		 * 
+		 *
 		 * @param pkt SMBSrvPacket
 		 * 2param offset int
 		 * @param len int
@@ -60,46 +60,46 @@ public class SMBSrvPacketQueue {
 			m_len      = len;
 			m_writeRaw = writeRaw;
 		}
-		
+
 		/**
 		 * Return the SMB packet
-		 * 
+		 *
 		 * @return SMBSrvPacket
 		 */
 		public final SMBSrvPacket getPacket() {
 			return m_pkt;
 		}
-		
+
 		/**
 		 * Return the write buffer offset
-		 * 
+		 *
 		 * @return int
 		 */
 		public final int getWriteOffset() {
 			return m_offset;
 		}
-		
+
 		/**
 		 * Return the write request length
-		 * 
+		 *
 		 * @return int
 		 */
 		public final int getWriteLength() {
 			return m_len;
 		}
-		
+
 		/**
 		 * Return the write raw flag
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public final boolean hasWriteRaw() {
 			return m_writeRaw;
 		}
-		
+
 		/**
 		 * Update the queued packet details
-		 * 
+		 *
 		 * @param offset int
 		 * @param len int
 		 */
@@ -108,36 +108,36 @@ public class SMBSrvPacketQueue {
 			m_len    = len;
 		}
 	}
-	
+
 	/**
 	 * Default constructor
 	 */
 	public SMBSrvPacketQueue() {
 		m_pktQueue = new ArrayList<QueuedSMBPacket>();
 	}
-	
+
 	/**
 	 * Add an SMB packet to the queue
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 * @param offset int
 	 * @param len int
 	 * @param writeRaw boolean
 	 */
 	public final synchronized void addToQueue( SMBSrvPacket pkt, int offset, int len, boolean writeRaw) {
-		
+
 		// Mark the packet as queued
-		
+
 		pkt.setQueuedForAsyncIO( true);
-		
+
 		// Add to the queue of pending packets
-		
+
 		m_pktQueue.add( new QueuedSMBPacket( pkt, offset, len, writeRaw));
 	}
-	
+
 	/**
 	 * Remove an SMB packet from the head of the queue
-	 * 
+	 *
 	 * @return QueuedSMBPacket
 	 */
 	public final synchronized QueuedSMBPacket removeFromQueue() {
@@ -146,40 +146,40 @@ public class SMBSrvPacketQueue {
 
 	/**
 	 * Return the request at the head of the queue without removing from the queue
-	 * 
+	 *
 	 * @return QueuedSMBPacket
 	 */
 	public final synchronized QueuedSMBPacket getHeadOfQueue() {
 		return m_pktQueue.get( 0);
 	}
-	
+
 	/**
 	 * Return the count of packets in the queue
-	 * 
+	 *
 	 *  @return int
 	 */
 	public final synchronized int numberOfPackets() {
 		return m_pktQueue.size();
 	}
-	
+
 	/**
 	 * Return the queue details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[QueueLen=");
 		str.append( numberOfPackets());
 		str.append(":");
-		
+
 		if ( numberOfPackets() > 0) {
-			
+
 			// Dump the first few packet types from the queue
-			
+
 			int idx = 0;
-			
+
 			while ( idx < 5 && idx < m_pktQueue.size()) {
 				str.append( idx);
 				str.append( "=");
@@ -188,7 +188,7 @@ public class SMBSrvPacketQueue {
 			}
 		}
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

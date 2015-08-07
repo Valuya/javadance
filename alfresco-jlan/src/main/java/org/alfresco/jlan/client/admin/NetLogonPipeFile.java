@@ -30,14 +30,14 @@ import org.alfresco.jlan.smb.dcerpc.client.NetLogon;
 
 /**
  * NetLogon Pipe File Class
- * 
+ *
  * @author gkspencer
  */
 public class NetLogonPipeFile extends IPCPipeFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param pkt DCEPacket
 	 * @param handle int
@@ -51,7 +51,7 @@ public class NetLogonPipeFile extends IPCPipeFile {
 
 	/**
 	 * Get a server challenge
-	 * 
+	 *
 	 * @param client String
 	 * @param challenge byte[]
 	 * @return byte[]

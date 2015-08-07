@@ -34,7 +34,7 @@ import org.alfresco.jlan.util.DataBuffer;
 
 /**
  * SMB transact protocol search context class
- * 
+ *
  * @author gkspencer
  */
 class TransSearchContext extends SearchContext {
@@ -77,18 +77,18 @@ class TransSearchContext extends SearchContext {
 
 	private TransPacket m_pkt;
 	private TransactBuffer m_tbuf;
-	private TransactBuffer m_rxtbuf;  
+	private TransactBuffer m_rxtbuf;
 
 	//	Received data block containing the file information
-	
+
 	private DataBuffer m_dbuf;
-	
+
 	//	Search id
 
 	private int m_searchId;
-  
+
 	//	Resume name and id
-  
+
 	private String m_resumeName;
 
 	//	Current/maximum directory entry index
@@ -99,10 +99,10 @@ class TransSearchContext extends SearchContext {
 	//	Flag to indicate that the current data packet is the end of the search
 
 	private boolean m_eof;
-  
+
 	/**
 	 * Construct an SMB search context on the specified disk session.
-	 * 
+	 *
 	 * @param sess Disk session that this search is associated with.
 	 */
 	protected TransSearchContext(DiskSession sess) {
@@ -111,7 +111,7 @@ class TransSearchContext extends SearchContext {
 
 	/**
 	 * Continue the current search, request another packet of directory entries.
-	 * 
+	 *
 	 * @return true if more files were returned, else false
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -189,7 +189,7 @@ class TransSearchContext extends SearchContext {
 
 	/**
 	 * Return the next file in this search as an SMB file information object.
-	 * 
+	 *
 	 * @return FileInfo object, or null if there are no more files.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -258,7 +258,7 @@ class TransSearchContext extends SearchContext {
 
 	/**
 	 * Return the next file name in this search.
-	 * 
+	 *
 	 * @return Next file name string, or null if there are no more files.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -331,7 +331,7 @@ class TransSearchContext extends SearchContext {
 	/**
 	 * Start a new search using the specified file name string and search attributes, return the
 	 * specified file information level
-	 * 
+	 *
 	 * @param fname File name string, may contain wilcards.
 	 * @param attr File attributes bit mask. @see org.alfresco.jlan.smb.client.FileAttribute
 	 * @param level File information level to return. @see org.alfresco.jlan.smb.FileInfoLevel
@@ -443,7 +443,7 @@ class TransSearchContext extends SearchContext {
 
 	/**
 	 * Unpack the standard file information
-	 * 
+	 *
 	 * @param eaSize boolean
 	 * @return FileInfo
 	 */
@@ -498,7 +498,7 @@ class TransSearchContext extends SearchContext {
 
 	/**
 	 * Unpack the standard file information file name
-	 * 
+	 *
 	 * @return String
 	 */
 	private final String unpackStandardName() {
@@ -533,7 +533,7 @@ class TransSearchContext extends SearchContext {
 
 	/**
 	 * Unpack the file/directory information level
-	 * 
+	 *
 	 * @return FileInfo
 	 */
 	private final FileInfo unpackFileDirectoryInfo() {
@@ -640,7 +640,7 @@ class TransSearchContext extends SearchContext {
 
 	/**
 	 * Unpack the file name information level
-	 * 
+	 *
 	 * @return FileInfo
 	 */
 	private final FileInfo unpackFileNameInfo() {
@@ -679,7 +679,7 @@ class TransSearchContext extends SearchContext {
 
 	/**
 	 * Unpack the resume file name
-	 * 
+	 *
 	 * @param off int
 	 * @return String
 	 */

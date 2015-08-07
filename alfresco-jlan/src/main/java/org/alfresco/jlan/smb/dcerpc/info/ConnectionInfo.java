@@ -25,10 +25,10 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Connection Information Class
- * 
+ *
  * <p>
  * Contains the details of a connection on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class ConnectionInfo implements DCEReadable {
@@ -70,7 +70,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 */
 	public ConnectionInfo(int infoLevel) {
@@ -79,7 +79,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Get the information level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getInformationLevel() {
@@ -88,7 +88,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Get the connection id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getConnectionId() {
@@ -97,7 +97,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Get the connection type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getConnectionType() {
@@ -106,7 +106,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Get the number of open files on the connection
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getOpenFileCount() {
@@ -115,7 +115,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Return the number of users on the connection
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNumberOfUsers() {
@@ -124,7 +124,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Return the connection time in seconds
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getConnectionTime() {
@@ -133,7 +133,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Return the user name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getUserName() {
@@ -142,7 +142,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Return the client name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getClientName() {
@@ -151,7 +151,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Read a connection information object from a DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @throws DCEBufferException
 	 */
@@ -187,7 +187,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Read the strings for this connection information from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -211,7 +211,7 @@ public class ConnectionInfo implements DCEReadable {
 
 	/**
 	 * Return the connection information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

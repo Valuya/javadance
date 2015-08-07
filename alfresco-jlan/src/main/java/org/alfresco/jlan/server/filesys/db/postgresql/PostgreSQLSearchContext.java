@@ -31,14 +31,14 @@ import org.alfresco.jlan.util.WildCard;
 
 /**
  * PostgreSQL Database Search Context Class
- * 
+ *
  * @author gkspencer
  */
 public class PostgreSQLSearchContext extends DBSearchContext {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param rs
 	 *            ResultSet
 	 * @param filter
@@ -51,7 +51,7 @@ public class PostgreSQLSearchContext extends DBSearchContext {
 	/**
 	 * Return the next file from the search, or return false if there are no
 	 * more files
-	 * 
+	 *
 	 * @param info
 	 *            FileInfo
 	 * @return boolean
@@ -140,7 +140,7 @@ public class PostgreSQLSearchContext extends DBSearchContext {
 						|| m_filter.matchesPattern(info.getFileName()) == true)
 					return true;
 			}
-		} 
+		}
 		catch (SQLException ex) {
 		}
 
@@ -153,7 +153,7 @@ public class PostgreSQLSearchContext extends DBSearchContext {
 	/**
 	 * Return the file name of the next file in the active search. Returns null
 	 * if the search is complete.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String nextFileName() {
@@ -180,7 +180,7 @@ public class PostgreSQLSearchContext extends DBSearchContext {
 						|| m_filter.matchesPattern(fileName) == true)
 					return fileName;
 			}
-		} 
+		}
 		catch (SQLException ex) {
 		}
 
@@ -197,7 +197,7 @@ public class PostgreSQLSearchContext extends DBSearchContext {
 		// Check if the resultset is valid, if so then close it
 
 		if ( m_rs != null) {
-			
+
 			try {
 
 				// Close the associated statement
@@ -206,10 +206,10 @@ public class PostgreSQLSearchContext extends DBSearchContext {
 				if (stmt != null)
 					stmt.close();
 				m_rs.close();
-			} 
+			}
 			catch (Exception ex) {
 			}
-			
+
 			m_rs = null;
 		}
 

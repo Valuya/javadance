@@ -41,11 +41,11 @@ import org.w3c.dom.NodeList;
 
 /**
  * XML File Server Configuration Class
- * 
+ *
  * <p>
  * XML implementation of the SMB server configuration. Save/load the server configuration to an XML
  * format file using the DOM API.
- * 
+ *
  * @author gkspencer
  */
 public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
@@ -82,7 +82,7 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 
 	/**
 	 * Load the configuration from the specified document
-	 * 
+	 *
 	 * @param doc Document
 	 * @exception IOException
 	 * @exception InvalidConfigurationException
@@ -106,7 +106,7 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 			// Process the cluster settings element
 
 			procClusterElement(findChildNode("cluster", childNodes));
-			
+
 			// Process the debug settings element
 
 			procDebugElement(findChildNode("debug", childNodes));
@@ -116,9 +116,9 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 			procServersElement(findChildNode("servers", childNodes));
 
 			// Process the core server configuration settings
-			
+
 			procServerCoreElement(findChildNode("server-core", childNodes));
-			
+
 			// Process the global configuration settings
 
 			procGlobalElement(findChildNode("global", childNodes));
@@ -156,7 +156,7 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 
 	/**
 	 * Check if the CIFS server is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isCIFSServerEnabled() {
@@ -165,7 +165,7 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 
 	/**
 	 * Check if the FTP server is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isFTPServerEnabled() {
@@ -174,7 +174,7 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 
 	/**
 	 * Check if the NFS server is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isNFSServerEnabled() {
@@ -183,7 +183,7 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 
 	/**
 	 * Process the servers XML element
-	 * 
+	 *
 	 * @param servers Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -214,7 +214,7 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 
 	/**
 	 * Process the FTP server XML element
-	 * 
+	 *
 	 * @param ftp Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -523,115 +523,115 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 		// FTPS parameter parsing
 		//
 		// Check if a key store path has been specified
-		
+
 		elem = findChildNode("keyStore", ftp.getChildNodes());
 		if ( elem != null) {
 
 			// Get the path to the key store, check that the file exists
-			
+
 			String keyStorePath = getText( elem);
 			File keyStoreFile = new File( keyStorePath);
-			
+
 			if ( keyStoreFile.exists() == false)
 				throw new InvalidConfigurationException("FTPS key store file does not exist, " + keyStorePath);
 			else if ( keyStoreFile.isDirectory())
 				throw new InvalidConfigurationException("FTPS key store path is a directory, " + keyStorePath);
-			
+
 			// Set the key store path
-			
+
 			ftpConfig.setKeyStorePath( keyStorePath);
 		}
 
 		// Check if a key store type has been specified
-		
+
 		elem = findChildNode("keyStoreType", ftp.getChildNodes());
 		if ( elem != null) {
-			
+
 			// Get the key store type, and validate
-			
+
 			String keyStoreType = getText( elem);
-			
+
 			if ( keyStoreType == null || keyStoreType.length() == 0)
 				throw new InvalidConfigurationException("FTPS key store type is invalid");
-			
+
 			try {
 				KeyStore.getInstance( keyStoreType);
 			}
 			catch ( KeyStoreException ex) {
 				throw new InvalidConfigurationException("FTPS key store type is invalid, " + keyStoreType, ex);
 			}
-			
+
 			// Set the key store type
-			
+
 			ftpConfig.setKeyStoreType( keyStoreType);
 		}
-		
+
 		// Check if the key store passphrase has been specified
-		
+
 		elem = findChildNode("keyStorePassphrase", ftp.getChildNodes());
 		if ( elem != null) {
 
 			// Set the key store passphrase
-			
+
 			ftpConfig.setKeyStorePassphrase( getText( elem));
 		}
-		
+
 		// Check if the trust store path has been specified
-		
+
 		elem = findChildNode("trustStore", ftp.getChildNodes());
 		if ( elem != null) {
 
 			// Get the path to the trust store, check that the file exists
-			
+
 			String trustStorePath = getText( elem);
 			File trustStoreFile = new File( trustStorePath);
-			
+
 			if ( trustStoreFile.exists() == false)
 				throw new InvalidConfigurationException("FTPS trust store file does not exist, " + trustStorePath);
 			else if ( trustStoreFile.isDirectory())
 				throw new InvalidConfigurationException("FTPS trust store path is a directory, " + trustStorePath);
-			
+
 			// Set the trust store path
-			
+
 			ftpConfig.setTrustStorePath( trustStorePath);
 		}
-		
+
 		// Check if a trust store type has been specified
-		
+
 		elem = findChildNode("trustStoreType", ftp.getChildNodes());
 		if ( elem != null) {
-			
+
 			// Get the trust store type, and validate
-			
+
 			String trustStoreType = getText( elem);
-			
+
 			if ( trustStoreType == null || trustStoreType.length() == 0)
 				throw new InvalidConfigurationException("FTPS trust store type is invalid");
-			
+
 			try {
 				KeyStore.getInstance( trustStoreType);
 			}
 			catch ( KeyStoreException ex) {
 				throw new InvalidConfigurationException("FTPS trust store type is invalid, " + trustStoreType, ex);
 			}
-			
+
 			// Set the trust store type
-			
+
 			ftpConfig.setTrustStoreType( trustStoreType);
 		}
-		
+
 		// Check if the trust store passphrase has been specified
-		
+
 		elem = findChildNode("trustStorePassphrase", ftp.getChildNodes());
 		if ( elem != null) {
 
 			// Set the key store passphrase
-			
+
 			ftpConfig.setTrustStorePassphrase( getText( elem));
 		}
-		
+
 		// Check if only secure sessions should be allowed to logon
-		
+
 		elem = findChildNode("requireSecureSession", ftp.getChildNodes());
 		if ( elem != null) {
 
@@ -639,19 +639,19 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 
 			ftpConfig.setRequireSecureSession( true);
 		}
-		
+
 		// Check that all the required FTPS parameters have been set
 		// MNT-7301 FTPS server requires unnecessarly to have a trustStore while a keyStore should be sufficient
 		if ( ftpConfig.getKeyStorePath() != null) {
-			
+
 			// Make sure all parameters are set
-			
+
 			if ( ftpConfig.getKeyStorePath() == null)
 				throw new InvalidConfigurationException("FTPS configuration requires keyStore to be set");
 		}
-		
+
 		// Check if SSLEngine debug output should be enabled
-		
+
 		elem = findChildNode("sslEngineDebug", ftp.getChildNodes());
 		if ( elem != null) {
 
@@ -663,7 +663,7 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 
 	/**
 	 * Process the NFS server XML element
-	 * 
+	 *
 	 * @param nfs Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -747,9 +747,9 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 		// Check for a port mapper server port
 
 		if ( findChildNode("disablePortMapperRegistration", nfs.getChildNodes()) != null) {
-			
+
 			// Disable port mapper registration for the mount/NFS servers
-			
+
 			nfsConfig.setPortMapperPort( -1);
 		}
 		else {
@@ -825,9 +825,9 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 			nfsConfig.setRpcAuthenticator(getText(classElem), params);
 		}
 		else {
-			
+
 			// Use the null RPC authenticator as the default
-			
+
 			nfsConfig.setRpcAuthenticator( "org.alfresco.jlan.oncrpc.DefaultRpcAuthenticator", new ConfigElement( "", ""));
 		}
 
@@ -953,10 +953,10 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 		if ( findChildNode("fileCacheDebug", nfs.getChildNodes()) != null)
 			nfsConfig.setNFSFileCacheDebug(true);
 	}
-	
+
 	/**
 	 * Process the servers XML element
-	 * 
+	 *
 	 * @param cluster Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -968,17 +968,17 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 		if ( cluster != null) {
 
 			// Check if the Hazelcast classes are available on the classpath
-			
+
 			try {
-				
+
 				// Check for various Hazelcast classes
-				
+
 				Class.forName( "com.hazelcast.core.HazelcastInstance");
 				Class.forName( "com.hazelcast.core.IMap");
 				Class.forName( "com.hazelcast.core.ITopic");
-				
+
 				// Check for the cluster configuration section
-				
+
 				Class.forName( "org.alfresco.jlan.server.filesys.cache.hazelcast.ClusterConfigSection");
 			}
 			catch ( ClassNotFoundException ex) {
@@ -986,29 +986,29 @@ public class XMLServerConfiguration extends CifsOnlyXMLServerConfiguration {
 			}
 
 			// Create the cluster configuration section
-			
+
 			ClusterConfigSection clusterConfig = new ClusterConfigSection( this);
-			
+
 			// Get the path to the HazelCast configuration file
 
 			Element elem = findChildNode("configFile", cluster.getChildNodes());
-			
+
 			if ( elem != null) {
-				
+
 				// Check that the configuration file exists, and is a file
 
 				String configPath = getText( elem);
-				
+
 				try {
 					File confFile = new File( configPath);
 					if ( confFile.exists() == false)
 						throw new InvalidConfigurationException( "HazelCast configuration file does not exist, " + configPath);
-					
+
 					if ( confFile.isDirectory())
 						throw new InvalidConfigurationException( "HazelCast configuration file is a folder path, " + configPath);
-					
+
 					// Set the Hazelcast cluster configuration file location
-					
+
 					clusterConfig.setConfigFile( configPath);
 				}
 				catch ( Exception ex) {

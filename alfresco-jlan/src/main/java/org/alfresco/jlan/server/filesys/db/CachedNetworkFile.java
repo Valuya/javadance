@@ -36,10 +36,10 @@ import org.alfresco.jlan.server.filesys.loader.SingleFileRequest;
 
 /**
  * Cached Data Network File Class
- * 
+ *
  * <p>
  * Caches the file data in the local filesystem in a temporary area.
- * 
+ *
  * @author gkspencer
  */
 public class CachedNetworkFile extends DBNetworkFile {
@@ -70,7 +70,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fid int
 	 * @param stid int
@@ -97,7 +97,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Return the associated file segment
-	 * 
+	 *
 	 * @return FileSegment
 	 */
 	public final FileSegment getFileSegment() {
@@ -106,7 +106,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Determine if the file will only be accessed sequentially
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isSequentialOnly() {
@@ -115,7 +115,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Set the sequential access only flag
-	 * 
+	 *
 	 * @param seq boolean
 	 */
 	public final void setSequentialOnly(boolean seq) {
@@ -124,7 +124,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Open the file
-	 * 
+	 *
 	 * @param createFlag boolean
 	 * @exception IOException
 	 */
@@ -152,9 +152,9 @@ public class CachedNetworkFile extends DBNetworkFile {
 			// Open the temporary file
 
 			m_cacheFile.openFile();
-			
+
 			// Mark the file as open
-			
+
 			setClosed( false);
 		}
 		catch (FileNotFoundException ex) {
@@ -172,7 +172,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Read from the file.
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param len int
 	 * @param pos int
@@ -404,7 +404,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Write a block of data to the file.
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param len int
 	 * @param pos int
@@ -436,7 +436,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Flush any buffered output to the file
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public void flushFile()
@@ -450,7 +450,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Seek to the specified file position.
-	 * 
+	 *
 	 * @param pos long
 	 * @param typ int
 	 * @return long
@@ -463,7 +463,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Truncate the file to the specified file size
-	 * 
+	 *
 	 * @param siz long
 	 * @exception IOException
 	 */
@@ -526,7 +526,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Update the cached file information file size
-	 * 
+	 *
 	 * @param siz long
 	 * @param alloc long
 	 */
@@ -558,17 +558,17 @@ public class CachedNetworkFile extends DBNetworkFile {
 	/**
 	 * Create a file load or save request. This method may be overridden to allow extending of the
 	 * SingleFileRequest class.
-	 * 
+	 *
 	 * @param typ int
 	 * @return FileRequest
 	 */
 	protected FileRequest createFileRequest(int typ) {
 
 		// DEBUG
-		
+
 		if ( DEBUG)
 			Debug.println("CachedNetworkFile.createFileRequest() fullName=" + getFullName() + ", state=" + getFileState());
-		
+
 		// Create a file load or save request
 
 		return new SingleFileRequest(typ, getFileId(), getStreamId(), m_cacheFile.getInfo(), getFullName(), getFileState());
@@ -576,7 +576,7 @@ public class CachedNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Determine if network file debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected final boolean hasDebug() {

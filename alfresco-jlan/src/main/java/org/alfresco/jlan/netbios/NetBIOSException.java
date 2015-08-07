@@ -37,7 +37,7 @@ public class NetBIOSException extends Exception {
 
 	/**
 	 * NetBIOSException constructor comment.
-	 * 
+	 *
 	 * @param s java.lang.String
 	 */
 	public NetBIOSException(String s) {

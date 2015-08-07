@@ -82,15 +82,15 @@ import org.alfresco.jlan.util.StringList;
  *
  * <p>An AdminSession can also be used to access various DCE/RPC services for remote registry,
  * remote eventlog, service manager and server/workstation functions.
- * 
+ *
  * @author gkspencer
  */
 public final class SessionFactory {
 
 	//	Constants
-	
+
 	private static final int BROADCAST_LOOKUP_TIMEOUT		= 4000;	// ms
-	
+
 	//  Session index, used to make each session request call id unique
 
 	private static int m_sessIdx = 1;
@@ -108,18 +108,18 @@ public final class SessionFactory {
 	private static int m_defPktSize = 4096 + RFCNetBIOSProtocol.HEADER_LEN;
 
 	//	List of local TCP/IP addresses
-  
+
 	private static InetAddress[] m_localAddrList;
-  
+
 	//	Password encryptor
-  
+
 	private static PasswordEncryptor m_encryptor;
-  
+
 	//	Flag to indicate if SMB signing is enabled, and if received packets are checked when signing is enabled.
-  
+
 	private static boolean m_smbSigningEnabled = true;
 	private static boolean m_smbSigningCheckRx = true;
-  
+
 	//  Default user name, password and domain used by methods that create their own connections.
 
 	private static String m_defUserName = "";
@@ -127,9 +127,9 @@ public final class SessionFactory {
 	private static String m_defDomain = "?";
 
 	//  Default session settings
-  
+
 	private static SessionSettings m_defaultSettings;
-  
+
 	//  Session factory debug flag
 
 	private static boolean m_debug = false;
@@ -140,9 +140,9 @@ public final class SessionFactory {
 	private static boolean m_localChecked = false;
 
 	//  Use a global process id, so that all sessions share locks
-  
+
 	private static boolean m_globalPID = false;
-  
+
 	static {
 
 		// Use the JCE based password encryptor if available, else use the BouncyCastle API based
@@ -182,7 +182,7 @@ public final class SessionFactory {
 
 	/**
 	 * Build an SMB negotiate dialect packet.
-	 * 
+	 *
 	 * @param pkt SMBPacket to build the negotiate request
 	 * @param dlct SMB dialects to negotiate
 	 * @param pid Process id to be used by this new session
@@ -298,7 +298,7 @@ public final class SessionFactory {
 
 	/**
 	 * Connect to a remote device.
-	 * 
+	 *
 	 * @param shr Remote device details
 	 * @param sess SMB session.
 	 * @param devtyp Device type to connect to.
@@ -464,7 +464,7 @@ public final class SessionFactory {
 
 	/**
 	 * Connect to a remote file server.
-	 * 
+	 *
 	 * @param shr PC share information and access control information.
 	 * @param sess SMB negotiate packet containing the receive negotiate packet.
 	 * @param negpkt Negotiate SMB packet response.
@@ -870,7 +870,7 @@ public final class SessionFactory {
 
 	/**
 	 * Create a new SMB disk session
-	 * 
+	 *
 	 * @param shr PC share information and access control information.
 	 * @param pkt SMB negotiate packet containing the receive negotiate packet.
 	 * @param netSess NetBIOS transport session connected to the remote file server.
@@ -936,7 +936,7 @@ public final class SessionFactory {
 
 	/**
 	 * Create a new SMB session that is connected to a remote pipe resource.
-	 * 
+	 *
 	 * @param shr PC share information and access control information.
 	 * @param pkt SMB negotiate packet containing the received negotiate response.
 	 * @param netSess Network transport session connected to the remote file server.
@@ -991,7 +991,7 @@ public final class SessionFactory {
 
 	/**
 	 * Create a new SMB session that is connected to a remote printer resource.
-	 * 
+	 *
 	 * @param shr PC share information and access control information.
 	 * @param pkt SMB negotiate packet containing the received negotiate response.
 	 * @param netSess Network transport session connected to the remote file server.
@@ -1057,7 +1057,7 @@ public final class SessionFactory {
 
 	/**
 	 * Create a new SMB session
-	 * 
+	 *
 	 * @param shr PC share information and access control information.
 	 * @param pkt SMB negotiate packet containing the receive negotiate packet.
 	 * @param netSess Network transport session connected to the remote file server.
@@ -1087,7 +1087,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the default SMB packet size
-	 * 
+	 *
 	 * @return Default SMB packet size to allocate.
 	 */
 	protected final static int DefaultPacketSize() {
@@ -1103,7 +1103,7 @@ public final class SessionFactory {
 
 	/**
 	 * Disable the specified SMB dialect when setting up new sessions.
-	 * 
+	 *
 	 * @param d int
 	 */
 	public final static void disableDialect(int d) {
@@ -1127,7 +1127,7 @@ public final class SessionFactory {
 
 	/**
 	 * Enable the specified SMB dialect when setting up new sessions.
-	 * 
+	 *
 	 * @param d int
 	 */
 	public final static void enableDialect(int d) {
@@ -1144,7 +1144,7 @@ public final class SessionFactory {
 
 	/**
 	 * Find the browse master for this network.
-	 * 
+	 *
 	 * @return NetBIOSName
 	 * @exception SMBException The exception description.
 	 */
@@ -1172,7 +1172,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the list of SMB dialects that will be negotiated when a new session is created.
-	 * 
+	 *
 	 * @return org.alfresco.jlan.smb.DialectSelector List of enabled SMB dialects.
 	 */
 	public final static DialectSelector getDefaultDialects() {
@@ -1181,7 +1181,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the default domain name
-	 * 
+	 *
 	 * @return String
 	 */
 	public static String getDefaultDomain() {
@@ -1190,7 +1190,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the default password.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public static String getDefaultPassword() {
@@ -1199,7 +1199,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the default user name.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public static String getDefaultUserName() {
@@ -1208,7 +1208,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the default session settings
-	 * 
+	 *
 	 * @return SessionSettings
 	 */
 	public static SessionSettings getDefaultSettings() {
@@ -1217,7 +1217,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the list of available domains/workgroups.
-	 * 
+	 *
 	 * @return org.alfresco.jlan.smb.SMBServerList List of available domains.
 	 * @exception SMBException If an SMB error occurs.
 	 * @exception IOException If an I/O error occurs.
@@ -1303,7 +1303,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the local browse master node name.
-	 * 
+	 *
 	 * @return Local browse master node name string.
 	 */
 	private String getLocalBrowser() {
@@ -1312,7 +1312,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the local domain name, if known.
-	 * 
+	 *
 	 * @return Local domain name string, else null.
 	 */
 	public static String getLocalDomain() {
@@ -1329,7 +1329,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return a list of the local servers, if the local domain/workgroup can be determined.
-	 * 
+	 *
 	 * @return org.alfresco.jlan.smb.SMBServerList
 	 * @exception SMBException The exception description.
 	 * @exception java.io.IOException The exception description.
@@ -1354,7 +1354,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the NetBIOS scope id, or null if not set
-	 * 
+	 *
 	 * @return String
 	 */
 	public static String getNetBIOSNameScope() {
@@ -1363,7 +1363,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the NetBIOS socket number that new sessions are connected to.
-	 * 
+	 *
 	 * @return int NetBIOS session socket number.
 	 */
 	public static int getNetBIOSPort() {
@@ -1372,7 +1372,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the primary connection protocol (either Protocol.TCPNetBIOS or Protocol.NativeSMB)
-	 * 
+	 *
 	 * @return int
 	 */
 	public static final int getPrimaryProtocol() {
@@ -1382,7 +1382,7 @@ public final class SessionFactory {
 	/**
 	 * Return the secondary connection protocol (Protocol.TCPNetBIOS, Protocol.NativeSMB or
 	 * Protocol.None)
-	 * 
+	 *
 	 * @return int
 	 */
 	public static final int getSecondaryProtocol() {
@@ -1391,7 +1391,7 @@ public final class SessionFactory {
 
 	/**
 	 * Get the list of nodes in the specified domain
-	 * 
+	 *
 	 * @param domnam Domain name to return nodes for
 	 * @return SMBServerList containing the details of the nodes found
 	 * @exception java.io.IOException I/O error occurred
@@ -1407,7 +1407,7 @@ public final class SessionFactory {
 
 	/**
 	 * Get the list of nodes in the specified domain that match the node type flags.
-	 * 
+	 *
 	 * @param domnam Domain name to return nodes for
 	 * @param srvFlags Node type flags
 	 * @return SMBServerList containing the details of the nodes found.
@@ -1561,7 +1561,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return the next session id
-	 * 
+	 *
 	 * @return int
 	 */
 	private static synchronized int getSessionId() {
@@ -1571,7 +1571,7 @@ public final class SessionFactory {
 
 	/**
 	 * Get the list of local TCP/IP addresses
-	 * 
+	 *
 	 * @return InetAddress[]
 	 */
 	private static synchronized InetAddress[] getLocalTcpipAddresses() {
@@ -1593,7 +1593,7 @@ public final class SessionFactory {
 
 	/**
 	 * Determine if session factory debugging is enabled.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final static boolean hasDebug() {
@@ -1602,7 +1602,7 @@ public final class SessionFactory {
 
 	/**
 	 * Determine if a global process id is used for all sessions
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final static boolean hasGlobalProcessId() {
@@ -1611,7 +1611,7 @@ public final class SessionFactory {
 
 	/**
 	 * Determine if the NetBIOS name scope is set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final static boolean hasNetBIOSNameScope() {
@@ -1620,7 +1620,7 @@ public final class SessionFactory {
 
 	/**
 	 * Determine if SMB session debugging is enabled.
-	 * 
+	 *
 	 * @return true if SMB session debugging is enabled, else false.
 	 */
 	public final static boolean hasSessionDebug() {
@@ -1629,7 +1629,7 @@ public final class SessionFactory {
 
 	/**
 	 * Determine if SMB signing is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final static boolean isSMBSigningEnabled() {
@@ -1638,7 +1638,7 @@ public final class SessionFactory {
 
 	/**
 	 * Determine if received packets should validate the SMB signing value
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final static boolean isReceivedSMBSigningEnabled() {
@@ -1647,7 +1647,7 @@ public final class SessionFactory {
 
 	/**
 	 * Return a version string for this software release
-	 * 
+	 *
 	 * @return Software version number string
 	 */
 	static final public String isVersion() {
@@ -1656,7 +1656,7 @@ public final class SessionFactory {
 
 	/**
 	 * Open a connection to a remote server admin pipe
-	 * 
+	 *
 	 * @param shr Remote share information object.
 	 * @return SMBAdminSession used to perform admin operations
 	 * @exception java.io.IOException Network I/O error occurred.
@@ -1674,7 +1674,7 @@ public final class SessionFactory {
 
 	/**
 	 * Open a connection to a remote server admin pipe
-	 * 
+	 *
 	 * @param shr Remote share information object.
 	 * @param settings Session settings
 	 * @return SMBAdminSession used to perform admin operations
@@ -1698,7 +1698,7 @@ public final class SessionFactory {
 
 	/**
 	 * Open a connection to a remote file server disk share.
-	 * 
+	 *
 	 * @param shr Remote share information object.
 	 * @return SMBSession used to access the remote share.
 	 * @exception java.io.IOException Network I/O error occurred.
@@ -1715,7 +1715,7 @@ public final class SessionFactory {
 
 	/**
 	 * Open a connection to a remote file server disk share.
-	 * 
+	 *
 	 * @param shr Remote share information object.
 	 * @param settings Session settings
 	 * @return SMBSession used to access the remote share.
@@ -1734,7 +1734,7 @@ public final class SessionFactory {
 	/**
 	 * Open a connection to a remote file server disk share using the existing sessions network
 	 * session.
-	 * 
+	 *
 	 * @param shr Remote share information object.
 	 * @param sess Existing connection to the remote server.
 	 * @return SMBSession used to access the remote share.
@@ -1798,7 +1798,7 @@ public final class SessionFactory {
 
 	/**
 	 * Open a connection to a remote pipe/IPC
-	 * 
+	 *
 	 * @param shr Remote share information object.
 	 * @return SMBSession used to access the pipe/IPC session.
 	 * @exception java.io.IOException Network I/O error occurred.
@@ -1815,7 +1815,7 @@ public final class SessionFactory {
 
 	/**
 	 * Open a connection to a remote pipe/IPC
-	 * 
+	 *
 	 * @param shr Remote share information object.
 	 * @param settings Session settings
 	 * @return SMBSession used to access the pipe/IPC session.
@@ -1833,7 +1833,7 @@ public final class SessionFactory {
 
 	/**
 	 * Open a connection to a remote pipe/IPC, in data mode
-	 * 
+	 *
 	 * @param shr Remote share information object.
 	 * @param pipeName String
 	 * @return DataPipeFile used to read/write to the named pipe
@@ -1851,9 +1851,9 @@ public final class SessionFactory {
 
 	/**
 	 * Open a connection to a remote pipe/IPC, in data mode
-	 * 
+	 *
 	 * @param shr Remote share information object.
-	 * 
+	 *
 	 * @param settings Session settings
 	 * @return DataPipeFile used to read/write to the named pipe
 	 * @exception java.io.IOException Network I/O error occurred.
@@ -1946,7 +1946,7 @@ public final class SessionFactory {
 
 	/**
 	 * Open a connection to a remote print server
-	 * 
+	 *
 	 * @param shr Remote share information object.
 	 * @param settings Session settings
 	 * @return SMBSession used to access the remote share.
@@ -1964,7 +1964,7 @@ public final class SessionFactory {
 
 	/**
 	 * Open a session to a remote server.
-	 * 
+	 *
 	 * @param shr Remote server share and access control details.
 	 * @param devtyp Device type to connect to on the remote node.
 	 * @param settings Session settings
@@ -2182,7 +2182,7 @@ public final class SessionFactory {
 	 * Open a session to a remote server, negotiate an SMB dialect and get the returned challenge
 	 * key. Returns an AuthenticateSession which can then be used to provide passthru
 	 * authentication.
-	 * 
+	 *
 	 * @param shr Remote server share and access control details.
 	 * @return AuthenticateSession for the new session, else null.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -2201,7 +2201,7 @@ public final class SessionFactory {
 	 * Open a session to a remote server, negotiate an SMB dialect and get the returned challenge
 	 * key. Returns an AuthenticateSession which can then be used to provide passthru
 	 * authentication.
-	 * 
+	 *
 	 * @param shr Remote server share and access control details.
 	 * @param settings Session settings
 	 * @return AuthenticateSession for the new session, else null.
@@ -2355,7 +2355,7 @@ public final class SessionFactory {
 
 	/**
 	 * Send a message to a remote user.
-	 * 
+	 *
 	 * @param dNode Destination node name.
 	 * @param msg Message to be sent (maximum of 128 bytes).
 	 * @param tmo int
@@ -2456,7 +2456,7 @@ public final class SessionFactory {
 
 	/**
 	 * Send a message to a remote user.
-	 * 
+	 *
 	 * @param dNode Destination node name.
 	 * @param msg Message to be sent (maximum of 128 bytes).
 	 * @exception SMBException If an SMB error occurs.
@@ -2473,7 +2473,7 @@ public final class SessionFactory {
 
 	/**
 	 * Set the default SMB dialects that are to be negotiated when a new session is created.
-	 * 
+	 *
 	 * @param dialist DialectSelector containing the SMB dialects to negotiate.
 	 */
 	public final static void setDefaultDialects(DialectSelector dialist) {
@@ -2485,7 +2485,7 @@ public final class SessionFactory {
 
 	/**
 	 * Set the default domain.
-	 * 
+	 *
 	 * @param domain String
 	 */
 	public static void setDefaultDomain(String domain) {
@@ -2494,7 +2494,7 @@ public final class SessionFactory {
 
 	/**
 	 * Set the default password.
-	 * 
+	 *
 	 * @param pwd java.lang.String
 	 */
 	public static void setDefaultPassword(String pwd) {
@@ -2503,7 +2503,7 @@ public final class SessionFactory {
 
 	/**
 	 * Set the default user name.
-	 * 
+	 *
 	 * @param user java.lang.String
 	 */
 	public static void setDefaultUserName(String user) {
@@ -2513,7 +2513,7 @@ public final class SessionFactory {
 	/**
 	 * Set/clear the global process id flag. If the flag is false a unique process id is generated
 	 * for each session.
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	public final static void setGlobalProcessId(boolean ena) {
@@ -2523,7 +2523,7 @@ public final class SessionFactory {
 	/**
 	 * Set the NetBIOS socket number to be used when setting up new sessions. The default socket is
 	 * 139.
-	 * 
+	 *
 	 * @param port int
 	 */
 	public static void setNetBIOSPort(int port) {
@@ -2532,7 +2532,7 @@ public final class SessionFactory {
 
 	/**
 	 * Set the NetBIOS scope id
-	 * 
+	 *
 	 * @param scope String
 	 */
 	public static void setNetBIOSNameScope(String scope) {
@@ -2544,7 +2544,7 @@ public final class SessionFactory {
 
 	/**
 	 * Set the protocol connection order
-	 * 
+	 *
 	 * @param pri Primary connection protocol
 	 * @param sec Secondary connection protocol, or none
 	 * @return boolean
@@ -2571,7 +2571,7 @@ public final class SessionFactory {
 
 	/**
 	 * Enable/disable SMB signing support
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	public final static void setSMBSigningEnabled(boolean ena) {
@@ -2580,7 +2580,7 @@ public final class SessionFactory {
 
 	/**
 	 * Enable/disable validation of received SMB signatures when signing is enabled
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	public final static void setReceivedSMBSigningEnabled(boolean ena) {
@@ -2589,7 +2589,7 @@ public final class SessionFactory {
 
 	/**
 	 * Enable/disable SMB session debugging.
-	 * 
+	 *
 	 * @param dbg true to enable SMB session debugging, else false.
 	 */
 	public final static void setSessionDebug(boolean dbg) {
@@ -2601,10 +2601,10 @@ public final class SessionFactory {
 
 	/**
 	 * Set the subnet mask string for network broadcast requests
-	 * 
+	 *
 	 * If the subnet mask is not set a default broadcast mask for the TCP/IP address class will be
 	 * used.
-	 * 
+	 *
 	 * @param subnet Subnet mask string, in 'nnn.nnn.nnn.nnn' format.
 	 */
 	public final static void setSubnetMask(String subnet) {
@@ -2658,7 +2658,7 @@ public final class SessionFactory {
 
 	/**
 	 * Connect a NetBIOS network session
-	 * 
+	 *
 	 * @param toName Host name/address to connect to
 	 * @param fromName Local host name/address
 	 * @param settings Session settings
@@ -2924,7 +2924,7 @@ public final class SessionFactory {
 
 	/**
 	 * Connect a native SMB network session
-	 * 
+	 *
 	 * @param toName Host name/address to connect to
 	 * @param fromName Local host name/address
 	 * @param settings Session settings

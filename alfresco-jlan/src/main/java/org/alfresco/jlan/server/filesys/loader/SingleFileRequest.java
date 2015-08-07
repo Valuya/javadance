@@ -23,7 +23,7 @@ import org.alfresco.jlan.server.filesys.cache.FileState;
 
 /**
  * Single File Request Class
- * 
+ *
  * <p>Contains the details of a single file load or save request.
  *
  * @author gkspencer
@@ -31,29 +31,29 @@ import org.alfresco.jlan.server.filesys.cache.FileState;
 public class SingleFileRequest extends FileRequest {
 
 	//	File id and stream id
-	
+
 	private int m_fid;
 	private int m_stid;
-	
+
 	//	Unique request id
-	
+
 	private int m_seqNo = -1;
 
 	//	Temporary file path
-	
+
 	private String m_tempPath;
-		
+
 	//	Virtual path of file
-	
+
 	private String m_virtPath;
 
 	//	Associated file state
-	
+
 	private FileState m_state;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param typ int
 	 * @param fid int
 	 * @param stid int
@@ -69,10 +69,10 @@ public class SingleFileRequest extends FileRequest {
 		m_virtPath = virtPath;
 		m_state    = state;
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param typ int
 	 * @param fid int
 	 * @param stid int
@@ -87,15 +87,15 @@ public class SingleFileRequest extends FileRequest {
 		m_tempPath = segInfo.getTemporaryFile();
 		m_virtPath = virtPath;
 		m_state    = state;
-		
+
 		//	Mark the file segment as queued
-		
+
 		segInfo.setQueued(true);
 	}
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param typ int
 	 * @param fid int
 	 * @param stid int
@@ -112,10 +112,10 @@ public class SingleFileRequest extends FileRequest {
 		m_virtPath = virtPath;
 		m_seqNo    = seq;
 	}
-	
+
 	/**
 	 * Return the file identifier
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -124,34 +124,34 @@ public class SingleFileRequest extends FileRequest {
 
 	/**
 	 * Return the stream identifier, zero for the main file stream
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getStreamId() {
 		return m_stid;
 	}
-	
+
 	/**
 	 * Return the unique request id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSequenceNumber() {
 		return m_seqNo;
 	}
-		
+
 	/**
 	 * Return the files virtual path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getVirtualPath() {
 		return m_virtPath;
 	}
-	
+
 	/**
 	 * Return the temporary file path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTemporaryFile() {
@@ -160,7 +160,7 @@ public class SingleFileRequest extends FileRequest {
 
 	/**
 	 * Check if the request has an associated file state
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasFileState () {
@@ -169,25 +169,25 @@ public class SingleFileRequest extends FileRequest {
 
 	/**
 	 * Return the associated file state
-	 * 
+	 *
 	 * @return FileState
 	 */
 	public final FileState getFileState() {
 		return m_state;
 	}
-		
+
 	/**
 	 * Set the associated file state for the request
-	 * 
+	 *
 	 * @param state FileState
 	 */
 	public final void setFileState(FileState state) {
 		m_state = state;
 	}
-		
+
 	/**
 	 * Set the request unique id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setSequenceNumber(int id) {
@@ -196,7 +196,7 @@ public class SingleFileRequest extends FileRequest {
 
 	/**
 	 * Set the files virtual path
-	 * 
+	 *
 	 * @param path String
 	 */
 	public final void setVirtualPath(String path) {
@@ -205,27 +205,27 @@ public class SingleFileRequest extends FileRequest {
 
 	/**
 	 * Return the file request as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		
+
 		str.append("[FID=");
 		str.append(getFileId());
 		str.append(",STID=");
 		str.append(getStreamId());
 		str.append(",Seq=");
 		str.append(getSequenceNumber());
-				
+
 		if ( isTransaction()) {
 			str.append(",Tran=");
 			str.append(getTransactionId());
-			
+
 			if ( isLastTransactionFile())
 				str.append("(Last)");
 		}
-		
+
 		if ( isType() == LOAD)
 			str.append(",LOAD:");
 		else
@@ -234,17 +234,17 @@ public class SingleFileRequest extends FileRequest {
 		str.append(getTemporaryFile());
 		str.append(",");
 		str.append(getVirtualPath());
-		
+
 		str.append(",State=");
 		str.append(getFileState());
-		
+
     if ( hasAttributes()) {
       str.append(",Attr=");
       str.append( getAttributes());
     }
-    
+
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

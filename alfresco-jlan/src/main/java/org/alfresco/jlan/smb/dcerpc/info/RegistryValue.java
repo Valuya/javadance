@@ -29,10 +29,10 @@ import org.alfresco.jlan.util.StringList;
 
 /**
  * Registry Value Class
- * 
+ *
  * <p>
  * Contains the value and type of a registry value.
- * 
+ *
  * @author gkspencer
  */
 public class RegistryValue implements DCEReadable {
@@ -51,7 +51,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 */
 	public RegistryValue(String name) {
@@ -60,7 +60,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param typ int
 	 * @param value byte[]
@@ -73,7 +73,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param value String
 	 */
@@ -87,7 +87,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param value int
 	 */
@@ -101,7 +101,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Return the raw registry value
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getRawValue() {
@@ -110,7 +110,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Return the value as an object, converted using the type
-	 * 
+	 *
 	 * @return Object
 	 */
 	public final Object getValue() {
@@ -168,7 +168,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Return the registry value name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
@@ -177,7 +177,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Return the registry value type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataType() {
@@ -186,7 +186,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Return the registry value type string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getDataTypeString() {
@@ -195,7 +195,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Read the value and type from a DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -222,7 +222,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Read the registry value information
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -249,7 +249,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Read the strings for this object from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -261,7 +261,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Unpack a REG_MULTI_SZ data type into a list of strings
-	 * 
+	 *
 	 * @return StringList
 	 */
 	private final StringList unpackMultiSz() {
@@ -305,7 +305,7 @@ public class RegistryValue implements DCEReadable {
 
 	/**
 	 * Return the registry value as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

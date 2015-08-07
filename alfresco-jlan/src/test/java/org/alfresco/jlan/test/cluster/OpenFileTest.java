@@ -46,46 +46,46 @@ public class OpenFileTest extends Test {
 	public OpenFileTest() {
 		super( "OpenFile");
 	}
-	
+
 	/**
 	 * Initialize the test setup
-	 * 
+	 *
 	 * @param threadId int
 	 * @param curIter int
 	 * @param sess DiskSession
 	 * @return boolean
 	 */
 	public boolean runInit( int threadId, int curIter, DiskSession sess) {
-		
+
 		// Create the test file, if this is the first test thread
-		
+
 		boolean initOK = false;
-		
+
 		if ( threadId == 1) {
 
 			try {
-				
+
 				// Check if the test file exists
-				
+
 				String testFileName = getPerTestFileName( threadId, curIter);
-				
+
 				if ( sess.FileExists( testFileName)) {
 					if ( isVerbose())
 						Debug.println( "File " + testFileName + " exists");
 					initOK = true;
 				}
 				else {
-					
+
 					// Create a new file
-					
+
 					if ( isVerbose())
 						Debug.println( "Creating file " + testFileName + " via " + sess.getServer());
 					SMBFile testFile = sess.CreateFile( testFileName);
 					if ( testFile != null)
 						testFile.Close();
-					
+
 					// Check the file exists
-	
+
 					if ( sess.FileExists( testFileName))
 						initOK = true;
 				}
@@ -96,12 +96,12 @@ public class OpenFileTest extends Test {
 		}
 		else
 			initOK = true;
-		
+
 		// Return the initialization status
-		
+
 		return initOK;
 	}
-	
+
 	/**
 	 * Run the open file test
 	 *
@@ -114,97 +114,97 @@ public class OpenFileTest extends Test {
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
 
 		TestResult result = null;
-		
+
 		try {
 
 			// Create a test file name for this iteration
-			
+
 			String testFileName = getPerTestFileName( threadId, iteration);
-			
+
 			// DEBUG
-			
+
 			testLog( log, "OpenFile Test");
-			
+
 			// Open an existing file with no shared access
-			
+
 			testLog( log, "Opening file " + testFileName + " via " + sess.getServer());
-			
+
 			CIFSDiskSession cifsSess = (CIFSDiskSession) sess;
 			CIFSFile openFile = null;
-			
+
 			try {
-				
+
 				// Open existing file for exclusive access, else fail
-				
+
 				openFile = cifsSess.NTCreate( "\\" + testFileName, AccessMode.NTReadWrite, FileAttribute.NTNormal,
 					       						SharingMode.NOSHARING, FileAction.NTOpen, 0, 0);
-	
+
 				if ( openFile != null) {
-					
+
 					// DEBUG
-					
+
 					testLog ( log, "Opened file " + testFileName + " with no shared access allowed");
-					
+
 					// Hold the file open for a short while, other threads should fail to open the file
-					
+
 					testSleep( 2000);
-					
+
 					// Close the test file
-					
+
 					openFile.Close();
-					
+
 					// Successful test result
-					
+
 					result = new BooleanTestResult( true);
 				}
 			}
 			catch ( SMBException ex) {
 
 				// Check for an access denied error code
-				
+
 				if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
-					
+
 					// DEBUG
-					
+
 					testLog ( log, "Open failed with access denied error (expected)");
-					
+
 					// Successful test result
-					
+
 					result = new BooleanTestResult( true, "Access denied exception (expected)");
 				}
 				else {
-					
+
 					// DEBUG
-					
+
 					testLog ( log, "Open failed with wrong error, ex=" + ex);
-					
+
 					// Failure test result
-					
+
 					result = new ExceptionTestResult( ex);
 				}
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
-				
+
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			// Failure test result
-			
+
 			result = new ExceptionTestResult( ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -215,7 +215,7 @@ public class OpenFileTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		if ( threadId == 1)
 			sess.DeleteFile( getPerTestFileName( threadId, iter));
 	}

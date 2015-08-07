@@ -38,7 +38,7 @@ public class InvalidUNCPathException extends Exception {
 
   public InvalidUNCPathException() {
   }
-  
+
   /**
    * Invalid UNC path exception constructor, with additional details string.
    */

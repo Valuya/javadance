@@ -35,47 +35,47 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * IPC Pipe File Class
- * 
+ *
  * <p>Base class for the various IPC$ pipe file classes that are used to connect to remote
  * DCE/RPC services, such as for remote registry access.
- * 
+ *
  * @author gkspencer
  */
 public class IPCPipeFile {
 
 	//	IPC session that this pipe is associated with
-	
+
 	private IPCSession m_sess;
-	
+
 	//	DCE/RPC packet
-	
+
 	private DCEPacket m_pkt;
-	
+
 	//	DCE buffer for packing/receiving requests
-	
+
 	private DCEBuffer m_buffer;
 	private DCEBuffer m_rxBuffer;
-	
+
 	//	Handle of the pipe file
-	
+
 	private int m_handle;
-	
+
 	//	Pipe file name
-	
+
 	private String m_name;
-	
+
 	//	DCE/RPC call id
-	
+
 	private int m_callId;
-	
+
 	//	Maximum transmit/receive size
-	
+
 	private int m_maxTxSize;
 	private int m_maxRxSize;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param handle int
 	 * @param name String
@@ -102,7 +102,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the pipe name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPipeName() {
@@ -111,7 +111,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the associated SMB session
-	 * 
+	 *
 	 * @return SMBIPCSession
 	 */
 	protected final IPCSession getSession() {
@@ -120,7 +120,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the DCE buffer
-	 * 
+	 *
 	 * @return DCEBuffer
 	 */
 	protected final DCEBuffer getBuffer() {
@@ -129,7 +129,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the receive DCE buffer
-	 * 
+	 *
 	 * @return DCEBuffer
 	 */
 	protected final DCEBuffer getRxBuffer() {
@@ -138,7 +138,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the DCE packet
-	 * 
+	 *
 	 * @return DCEPacket
 	 */
 	protected final DCEPacket getPacket() {
@@ -147,7 +147,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the pipe file handle
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final int getHandle() {
@@ -156,7 +156,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the current DCE/RPC call id
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final int getCallId() {
@@ -165,7 +165,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Increment the call id and return the new value
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final int getNextCallId() {
@@ -174,7 +174,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the maximum transmit data size
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumTransmitSize() {
@@ -183,7 +183,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the maximum receive data size
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumReceiveSize() {
@@ -192,7 +192,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Set the maximum transmit data size
-	 * 
+	 *
 	 * @param siz int
 	 */
 	public final void setMaximumTransmitSize(int siz) {
@@ -201,7 +201,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Set the maximum receive data size
-	 * 
+	 *
 	 * @param siz int
 	 */
 	public final void setMaximumReceiveSize(int siz) {
@@ -212,7 +212,7 @@ public class IPCPipeFile {
 	 * Send the DCE request to the server and receive the response data. The response may not fit
 	 * into a single reply packet in which case read requests must be made on the pipe to return the
 	 * remaining data.
-	 * 
+	 *
 	 * @param pkt DCEPacket
 	 * @exception IOException
 	 * @exception SMBException
@@ -433,7 +433,7 @@ public class IPCPipeFile {
 	 * Send the DCE request to the server and receive the response data. The response may not fit
 	 * into a single reply packet in which case read requests must be made on the pipe to return the
 	 * remaining data.
-	 * 
+	 *
 	 * @param opCode int
 	 * @param buf DCEBuffer
 	 * @param maxTx int
@@ -701,7 +701,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Check the specified return status, it if is an error status then throw an exception
-	 * 
+	 *
 	 * @param sts int
 	 * @exception SMBException
 	 */
@@ -716,7 +716,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Close the pipe
-	 * 
+	 *
 	 * @exception IOException
 	 * @exception SMBException
 	 */
@@ -749,7 +749,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Determine if the pipe file is closed
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isClosed() {
@@ -758,7 +758,7 @@ public class IPCPipeFile {
 
 	/**
 	 * Return the pipe file as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

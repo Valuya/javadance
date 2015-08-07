@@ -23,7 +23,7 @@ import org.alfresco.jlan.server.filesys.cache.FileState;
 
 /**
  * Cached File Information Class
- * 
+ *
  * <p>Contains the details of a file in the temporary cache area.
  *
  * @author gkspencer
@@ -31,25 +31,25 @@ import org.alfresco.jlan.server.filesys.cache.FileState;
 public class CachedFileInfo {
 
 	//	File id and stream id
-	
+
 	private int m_fid;
 	private int m_stid;
-	
+
 	//	Temporary file path
-	
+
 	private String m_tempPath;
-	
+
 	//	Virtual path
-	
+
 	private String m_virtPath;
-	
+
 	//	Associated file state
-	
+
 	private FileState m_state;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param fid int
 	 * @param stid int
 	 * @param tempPath String
@@ -61,10 +61,10 @@ public class CachedFileInfo {
 		m_tempPath = tempPath;
 		m_virtPath = virtPath;
 	}
-	
+
 	/**
 	 * Return the file id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -73,43 +73,43 @@ public class CachedFileInfo {
 
 	/**
 	 * Return the stream id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getStreamId() {
 		return m_stid;
 	}
-	
+
 	/**
 	 * Check if there is an associated file state
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasFileState() {
 		return m_state != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the associated file state
-	 * 
+	 *
 	 * @return FileState
 	 */
 	public final FileState getFileState() {
 		return m_state;
 	}
-		
+
 	/**
 	 * Return the temporary file path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTemporaryPath() {
 		return m_tempPath;
 	}
-	
+
 	/**
 	 * Return the virtual file path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getVirtualPath() {
@@ -118,21 +118,21 @@ public class CachedFileInfo {
 
 	/**
 	 * Set the associated file state
-	 * 
+	 *
 	 * @param state FileState
 	 */
 	public final void setFileState(FileState state) {
 		m_state = state;
 	}
-		
+
 	/**
 	 * Return the cached file information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		
+
 		str.append("[FID=");
 		str.append(getFileId());
 		str.append(",Temp=");
@@ -140,7 +140,7 @@ public class CachedFileInfo {
 		str.append(",Virt=");
 		str.append(getVirtualPath());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

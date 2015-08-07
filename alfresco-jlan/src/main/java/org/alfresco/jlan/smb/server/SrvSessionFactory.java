@@ -28,17 +28,17 @@ public interface SrvSessionFactory {
 
 	/**
 	 * Create a new server session object
-	 * 
+	 *
 	 * @param handler PacketHandler
 	 * @param server SMBServer
    * @param sessId int
 	 * @return SMBSrvSession
 	 */
 	public SMBSrvSession createSession(PacketHandler handler, SMBServer server, int sessId);
-	
+
 	/**
 	 * Set the maximum virtual circuits per session
-	 * 
+	 *
 	 * @param maxVC int
 	 */
 	public void setMaximumVirtualCircuits( int maxVC);

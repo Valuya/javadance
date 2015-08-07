@@ -21,7 +21,7 @@ package org.alfresco.jlan.netbios;
 
 /**
  * Name Template Exception Class
- * 
+ *
  * <p>Thrown when a NetBIOS name template contains invalid characters or is too long.
  *
  * @author gkspencer
@@ -39,7 +39,7 @@ public class NameTemplateException extends Exception {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param s java.lang.String
 	 */
 	public NameTemplateException(String s) {

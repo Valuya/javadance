@@ -23,7 +23,7 @@ import org.alfresco.jlan.debug.Debug;
 
 /**
  * ONC/RPC Request Thread Pool Class
- * 
+ *
  * <p>Processes RPC requests using a pool of worker threads.
  *
  * @author gkspencer
@@ -31,58 +31,58 @@ import org.alfresco.jlan.debug.Debug;
 public class RpcRequestThreadPool {
 
 	//	Default/minimum/maximum number of worker threads to use
-	
+
 	public static final int DefaultWorkerThreads			= 8;
 	public static final int MinimumWorkerThreads			= 4;
 	public static final int MaximumWorkerThreads			= 50;
 
 	//	Queue of RPC requests
-	
+
 	private RpcRequestQueue m_queue;
 
 	//	Worker threads
-	
+
 	private ThreadWorker[] m_workers;
-	
+
 	//	RPC dispatcher
-	
+
 	private RpcProcessor m_rpcProcessor;
-	
+
 	//	Debug enable flag
-	
+
 	private static boolean m_debug = true;
-		
+
 	/**
 	 * Thread Worker Inner Class
 	 */
 	protected class ThreadWorker implements Runnable {
 
 		//	Worker thread
-		
+
 		private Thread mi_thread;
 
 		//	Worker unique id
-		
+
 		private int mi_id;
 
 		//	Shutdown flag
-		
+
 		private boolean mi_shutdown = false;
 
 		/**
 		 * Class constructor
-		 * 
+		 *
 		 * @param name String
 		 * @param id int
 		 */
 		public ThreadWorker(String name, int id) {
-			
+
 			//	Save the thread id
-			
+
 			mi_id     = id;
-			
+
 			//	Create the worker thread
-			
+
 			mi_thread = new Thread(this);
 			mi_thread.setName(name);
 			mi_thread.setDaemon(true);
@@ -100,35 +100,35 @@ public class RpcRequestThreadPool {
 			catch (Exception ex) {
 			}
 		}
-				
+
 		/**
 		 * Run the thread
 		 */
 		public void run() {
-			
+
 			//	Loop until shutdown
-			
+
 			RpcPacket rpc = null;
 			RpcPacket response = null;
-			
+
 			while ( mi_shutdown == false) {
 
 				try {
-					
+
 					//	Wait for an RPC request to be queued
-					
+
 					rpc = m_queue.removeRequest();
 				}
 				catch (InterruptedException ex) {
-				
+
 					//	Check for shutdown
-					
+
 					if ( mi_shutdown == true)
 						break;
 				}
-					
+
 				//	If the request is valid process it
-				
+
 				if ( rpc != null) {
 
 					try {
@@ -140,25 +140,25 @@ public class RpcRequestThreadPool {
 					    response.getPacketHandler().sendRpcResponse(response);
 					}
 					catch (Throwable ex) {
-					  
+
 					  //	Do not display errors if shutting down
-					  
+
 					  if ( mi_shutdown == false) {
 						  Debug.println("Worker " + Thread.currentThread().getName() + ":");
 						  Debug.println(ex);
 					  }
 					}
 					finally {
-					  
+
 					  //	Release the RPC packet(s) back to the packet pool
-					  
+
 					  if ( rpc.getClientProtocol() == Rpc.TCP && rpc.isAllocatedFromPool())
 					    rpc.getOwnerPacketPool().releasePacket(rpc);
-					  
+
 					  if ( response != null && response.getClientProtocol() == Rpc.TCP &&
 					       response.getBuffer() != rpc.getBuffer() && response.isAllocatedFromPool())
 					    response.getOwnerPacketPool().releasePacket(response);
-					  
+
 					}
 				}
 			}
@@ -167,7 +167,7 @@ public class RpcRequestThreadPool {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param threadName String
 	 * @param rpcServer RpcProcessor
 	 */
@@ -177,7 +177,7 @@ public class RpcRequestThreadPool {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param threadName String
 	 * @param poolSize int
 	 * @param rpcServer RpcProcessor
@@ -185,29 +185,29 @@ public class RpcRequestThreadPool {
 	public RpcRequestThreadPool(String threadName, int poolSize, RpcProcessor rpcServer) {
 
 		//	Save the RPC handler
-		
+
 		m_rpcProcessor  = rpcServer;
-		
+
 		//	Create the request queue
-		
+
 		m_queue = new RpcRequestQueue();
 
 		//	Check that we have at least minimum worker threads
-		
+
 		if ( poolSize < MinimumWorkerThreads)
 			poolSize = MinimumWorkerThreads;
-					
+
 		//	Create the worker threads
-		
+
 		m_workers = new ThreadWorker[poolSize];
-		
+
 		for ( int i = 0; i < m_workers.length; i++)
 			m_workers[i] = new ThreadWorker(threadName + ( i+1), i);
 	}
-	
+
 	/**
 	 * Check if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final static boolean hasDebug() {
@@ -222,7 +222,7 @@ public class RpcRequestThreadPool {
 	public final int getNumberOfRequests() {
 		return m_queue.numberOfRequests();
 	}
-	
+
 	/**
 	 * Queue an RPC request to the thread pool for processing
 	 *
@@ -231,14 +231,14 @@ public class RpcRequestThreadPool {
 	public final void queueRpcRequest(RpcPacket pkt) {
 	  m_queue.addRequest(pkt);
 	}
-	
+
 	/**
 	 * Shutdown the thread pool and release all resources
 	 */
 	public void shutdownThreadPool() {
 
 		//	Shutdown the worker threads
-		
+
 		if ( m_workers != null) {
 			for ( int i = 0; i < m_workers.length; i++)
 				m_workers[i].shutdownRequest();

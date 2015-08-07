@@ -30,7 +30,7 @@ import com.hazelcast.core.ITopic;
 
 /**
  * Release File Access Task Class
- * 
+ *
  * <p>Release access to a file, and return the updated file open count.
  *
  * @author gkspencer
@@ -38,26 +38,26 @@ import com.hazelcast.core.ITopic;
 public class ReleaseFileAccessTask extends RemoteStateTask<Integer> {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
 
 	// Access token, allocated via a grant file access call
-	
+
 	private FileAccessToken m_token;
-	
+
 	// Cluster topic used to publish file server messages to
-	
+
 	private String m_clusterTopic;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public ReleaseFileAccessTask() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mapName String
 	 * @param key String
 	 * @param token FileAccessToken
@@ -67,13 +67,13 @@ public class ReleaseFileAccessTask extends RemoteStateTask<Integer> {
 	 */
 	public ReleaseFileAccessTask( String mapName, String key, FileAccessToken token, String clusterTopic, boolean debug, boolean timingDebug) {
 		super( mapName, key, true, false, debug, timingDebug);
-		
+
 		m_token = token;
 	}
-	
+
 	/**
 	 * Run a remote task against a file state
-	 * 
+	 *
 	 * @param stateCache IMap<String, ClusterFileState>
 	 * @param fState ClusterFileState
 	 * @return Integer
@@ -81,66 +81,66 @@ public class ReleaseFileAccessTask extends RemoteStateTask<Integer> {
 	 */
 	protected Integer runRemoteTaskAgainstState( IMap<String, ClusterFileState> stateCache, ClusterFileState fState)
 		throws Exception {
-	
+
 		// DEBUG
-		
+
 		if ( hasDebug())
 			Debug.println( "ReleaseFileAccessTask: Release token=" + m_token + " path " + fState);
-		
+
 		// Get the current file open count
-		
+
 		int openCount = fState.getOpenCount();
-		
+
 		// Release the oplock
-		
+
 		if ( m_token instanceof HazelCastAccessToken) {
 
 			HazelCastAccessToken hcToken = (HazelCastAccessToken) m_token;
 
 			// Decrement the file open count, unless the token is from an attributes only file open
-			
+
 			if ( hcToken.isAttributesOnly() == false) {
-				
+
 				// Decrement the file open count
-			
+
 				openCount = fState.decrementOpenCount();
-			
+
 				if ( openCount == 0) {
-					
+
 					// Reset the sharing mode and clear the primary owner, no current file opens
-				
+
 					fState.setSharedAccess( SharingMode.READWRITEDELETE);
 					fState.setPrimaryOwner( null);
 				}
 			}
-			
+
 			// Check if the token indicates an oplock was granted during the file open
-			
+
 			if ( fState.hasOpLock() && hcToken.getOpLockType() != OpLock.TypeNone) {
-				
+
 				// Release the remote oplock
-				
+
 				fState.clearOpLock();
-				
+
 				// Inform cluster nodes that an oplock has been released
-				
+
 				ITopic<ClusterMessage> clusterTopic = getHazelcastInstance().getTopic( m_clusterTopic);
 				OpLockMessage oplockMsg = new OpLockMessage( ClusterMessage.AllNodes, ClusterMessageType.OpLockBreakNotify, fState.getPath());
 				clusterTopic.publish( oplockMsg);
-				
+
 				// DEBUG
-				
+
 				if ( hasDebug())
 					Debug.println( "Cleared remote oplock during token release");
 			}
 
 			// This is a copy of the access token, mark it as released
-			
+
 			hcToken.setReleased( true);
 		}
-		
+
 		// Return the new file open count
-		
+
 		return new Integer( openCount);
 	}
 }

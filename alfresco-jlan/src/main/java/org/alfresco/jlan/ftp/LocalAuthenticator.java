@@ -43,14 +43,14 @@ public class LocalAuthenticator implements FTPAuthenticator {
 
   protected ServerConfiguration m_config;
   protected SecurityConfigSection m_securityConfig;
-  
+
   // Debug output enable
-  
+
   private boolean m_debug;
-  
+
   /**
    * Authenticate an FTP user
-   * 
+   *
    * @param cInfo ClientInfo
    * @param sess FTPSrvSession
    * @return boolean
@@ -65,25 +65,25 @@ public class LocalAuthenticator implements FTPAuthenticator {
       //  Validate the password
 
       boolean authSts = false;
-      
+
       if ( cInfo.getPassword() != null) {
-        
+
         //  Check if the user details has the MD4 password
-        
+
         if ( userAcc.hasMD4Password()) {
-          
+
           //  Convert the client password to an MD4 hash
-          
+
           try {
             MessageDigest md4 = MessageDigest.getInstance("MD4");
-  
+
             md4.update( cInfo.getPassword());
             byte[] md4Hash = md4.digest();
 
             //  Compare the passwords
 
             byte[] userMd4 = userAcc.getMD4Password();
-            
+
             for ( int i = 0; i < userMd4.length; i++)
               if ( userMd4[i] != md4Hash[i])
                 authSts = false;
@@ -92,18 +92,18 @@ public class LocalAuthenticator implements FTPAuthenticator {
           }
         }
         else {
-          
+
           //  Compare the plaintext passwords
-          
+
           byte[] userPwd   = userAcc.getPassword().getBytes();
           byte[] clientPwd = cInfo.getPassword();
-          
+
           if ( userPwd.length == clientPwd.length) {
 
             //  Compare the passwords
-            
+
             authSts = true;
-            
+
             for ( int i = 0; i < userPwd.length; i++)
               if ( userPwd[i] != clientPwd[i])
                 authSts = false;
@@ -112,7 +112,7 @@ public class LocalAuthenticator implements FTPAuthenticator {
       }
 
       //  Return the authentication status
-      
+
       return authSts;
     }
 
@@ -123,29 +123,29 @@ public class LocalAuthenticator implements FTPAuthenticator {
 
   /**
    * Search for the requried user account details
-   * 
+   *
    * @param user String
    * @return UserAccount
    */
   public final UserAccount getUserDetails(String user) {
-    
+
     // Get the user account details via the users interface
-    
+
     return m_securityConfig.getUsersInterface().getUserAccount( user);
   }
-  
+
   /**
    * Check if debug output is enabled
-   * 
+   *
    * @return boolean
    */
   public final boolean hasDebug() {
     return m_debug;
   }
-  
+
   /**
    * Initialize the FTP authenticator
-   * 
+   *
    * @param config ServerConfiguration
    * @param params ConfigElement
    * @throws InvalidConfigurationException
@@ -158,11 +158,11 @@ public class LocalAuthenticator implements FTPAuthenticator {
     m_config = config;
 
     //  Get the security configuration
-    
+
     m_securityConfig = (SecurityConfigSection) m_config.getConfigSection( SecurityConfigSection.SectionName);
 
     // Check if debug output is enabled
-    
+
     if ( params.getChild( "Debug") != null)
       m_debug = true;
   }

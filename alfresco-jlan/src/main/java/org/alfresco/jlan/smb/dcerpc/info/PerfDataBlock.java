@@ -27,10 +27,10 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Performance Data Block Class
- * 
+ *
  * <p>
  * Contains the details from PERF_DATA_BLOCK
- * 
+ *
  * @author gkspencer
  */
 public class PerfDataBlock implements DCEReadable {
@@ -76,7 +76,7 @@ public class PerfDataBlock implements DCEReadable {
 
 	/**
 	 * Read the performance data block object
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 */
 	public void readObject(DCEBuffer buf)
@@ -125,7 +125,7 @@ public class PerfDataBlock implements DCEReadable {
 
 	/**
 	 * Read the strings for this object from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */

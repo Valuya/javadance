@@ -28,7 +28,7 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Session Information List Class
- * 
+ *
  * @author gkspencer
  */
 public class SessionInfoList extends DCEList {
@@ -42,7 +42,7 @@ public class SessionInfoList extends DCEList {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -52,7 +52,7 @@ public class SessionInfoList extends DCEList {
 
 	/**
 	 * Return session information object from the list
-	 * 
+	 *
 	 * @param idx int
 	 * @return SessionInfo
 	 */
@@ -62,7 +62,7 @@ public class SessionInfoList extends DCEList {
 
 	/**
 	 * Add a session to the list
-	 * 
+	 *
 	 * @param sess SessionInfo
 	 */
 	public final void addSession(SessionInfo sess) {
@@ -79,7 +79,7 @@ public class SessionInfoList extends DCEList {
 
 	/**
 	 * Create a new session information object
-	 * 
+	 *
 	 * @return DCEReadable
 	 */
 	protected DCEReadable getNewObject() {

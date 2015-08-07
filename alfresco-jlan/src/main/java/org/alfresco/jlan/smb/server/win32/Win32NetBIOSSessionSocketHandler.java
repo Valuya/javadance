@@ -41,11 +41,11 @@ import org.alfresco.jlan.smb.server.SMBSrvSession;
 
 /**
  * Win32 NetBIOS Session Socket Handler Class
- * 
+ *
  * <p>
  * Uses the Win32 Netbios() call to provide the low level session layer for better integration with
  * Windows.
- * 
+ *
  * @author gkspencer
  */
 public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase implements Runnable, LanaListener {
@@ -110,7 +110,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param srv SMBServer
 	 * @param debug boolean
 	 */
@@ -159,7 +159,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param srv SMBServer
 	 * @param lana int
 	 * @param debug boolean
@@ -209,7 +209,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Return the LANA number that is being used
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLANANumber() {
@@ -219,7 +219,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Return the LANA offline polling interval to check for the LANA coming back online
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getLANAOfflinePollingInterval() {
@@ -229,7 +229,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Return the assigned NetBIOS name number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNameNumber() {
@@ -239,7 +239,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Return the local server name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getServerName() {
@@ -249,7 +249,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Determine if Netbios() API calls or Winsock calls are being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isUsingWinsock() {
@@ -259,7 +259,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Initialize the session socket handler.
-	 * 
+	 *
 	 * @param server NetworkServer
 	 * @throws IOException
 	 */
@@ -340,7 +340,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Initialize the Win32 Netbios() API interface, add the server names
-	 * 
+	 *
 	 * @exception IOException If the NetBIOS add name fails
 	 */
 	private final void initializeNetbiosAPI()
@@ -368,7 +368,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Initialize the Winsock NetBIOS interface
-	 * 
+	 *
 	 * @exception IOException If a Winsock error occurs
 	 */
 	private final void initializeWinsockNetBIOS()
@@ -386,7 +386,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 	/**
 	 * Check if the LANA is valid and accepting incoming sessions or the associated network adapter
 	 * is unplugged/disabled/offline.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLANAValid() {
@@ -396,15 +396,15 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Close the session handler
-	 * 
+	 *
 	 * @param server NetworkServer
 	 */
 	public void closeSessionHandler(NetworkServer server) {
 
 		// Set the shutdown flag
-		
+
 		setShutdown( true);
-		
+
 		// Reset the LANA, if valid, to wake the main session listener thread
 
 		if ( isLANAValid())
@@ -512,7 +512,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Run the Win32 Netbios() API listen code
-	 * 
+	 *
 	 * @exception Exception If an unhandled error occurs
 	 */
 	private final void runNetBIOS()
@@ -626,7 +626,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Run the Winsock NetBIOS listen code
-	 * 
+	 *
 	 * @exception Exception If an unhandled error occurs
 	 */
 	private final void runWinsock()
@@ -751,7 +751,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Create the Win32 NetBIOS session socket handlers for the main SMB/CIFS server
-	 * 
+	 *
 	 * @param server SMBServer
 	 * @param sockDbg boolean
 	 */
@@ -943,7 +943,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * Check if the specified LANA is online
-	 * 
+	 *
 	 * @param lana int
 	 * @return boolean
 	 */
@@ -970,7 +970,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 
 	/**
 	 * LANA listener status change callback
-	 * 
+	 *
 	 * @param lana int
 	 * @param online boolean
 	 */
@@ -1002,7 +1002,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 	/**
 	 * Check if the new session should be accepted, if we are only allowing connections from a
 	 * specific name the session may be rejected.
-	 * 
+	 *
 	 * @param callerName String
 	 * @return boolean
 	 */
@@ -1026,7 +1026,7 @@ public class Win32NetBIOSSessionSocketHandler extends SessionHandlerBase impleme
 	/**
 	 * Check if the new session should be accepted, if we are only allowing connections from a
 	 * specific name the session may be rejected.
-	 * 
+	 *
 	 * @param callerNBName NetBIOSName
 	 * @return boolean
 	 */

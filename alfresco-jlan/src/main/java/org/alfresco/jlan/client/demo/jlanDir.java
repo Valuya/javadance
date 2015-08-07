@@ -30,7 +30,7 @@ import org.alfresco.jlan.util.*;
 
 /**
  * jlanDir Application
- * 
+ *
  * @author gkspencer
  */
 public class jlanDir extends jlanApp {
@@ -48,7 +48,7 @@ public class jlanDir extends jlanApp {
 
 	/**
 	 * Output the command help
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
@@ -63,7 +63,7 @@ public class jlanDir extends jlanApp {
 
 	/**
 	 * Perform the main command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @exception Exception
 	 */
@@ -119,7 +119,7 @@ public class jlanDir extends jlanApp {
 
 	/**
 	 * Validate the command line arguments
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -171,7 +171,7 @@ public class jlanDir extends jlanApp {
 
 	/**
 	 * Format a date/time string
-	 * 
+	 *
 	 * @param modifyDate SMBDate
 	 * @param createDate SMBDate
 	 * @return String
@@ -204,7 +204,7 @@ public class jlanDir extends jlanApp {
 
 	/**
 	 * Run the jlanDir command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public static void main(String[] args) {

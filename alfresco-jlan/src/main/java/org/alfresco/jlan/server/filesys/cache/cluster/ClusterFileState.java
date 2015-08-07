@@ -38,11 +38,11 @@ import org.alfresco.jlan.server.locking.OpLockDetails;
 public abstract class ClusterFileState extends FileState implements Serializable {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;;
-	
+
 	// File state update masks
-	
+
 	public final static int UpdateOplock			= 0x0001;
 	public final static int UpdateSharingMode		= 0x0002;
 	public final static int UpdateByteLock			= 0x0004;
@@ -55,57 +55,57 @@ public abstract class ClusterFileState extends FileState implements Serializable
 	public final static int UpdateRetentionExpire	= 0x0200;
 
 	// State update strings
-	
+
 	private static final String[] _updateStr = { "OpLock", "SharingMode", "ByteLock", "FileSts", "ChangeDate", "ModDate", "Size", "Alloc", "OpenCount", "Retention" };
 	public static final int UpdateMaskCount = _updateStr.length + 1;
-	
+
 	// Bit mask of pending state updates
-	
+
 	private transient int m_stateUpdates;
-	
+
 	// State cache that this file state belongs to
-	
+
 	private transient ClusterFileStateCache m_stateCache;
-	
+
 	// Primary owner of the file, when there are multiple file opens on the same file
-	
+
 	private Object m_primaryOwner;
-	
+
 	// Data update in progress on the specified cluster node
-	
+
 	private Object m_dataUpdateNode;
-	
+
 	// File status change reason code
-	
+
 	private transient int m_fileStsReason;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public ClusterFileState() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param fname String
 	 * @param caseSensitive boolean
 	 */
 	public ClusterFileState(String fname, boolean caseSensitive) {
 		super( fname, caseSensitive);
 	}
-	
+
 	/**
 	 * Return the oplock details
-	 * 
+	 *
 	 * @return OpLockDetails
 	 */
 	public OpLockDetails getOpLock() {
 		OpLockDetails oplock = super.getOpLock();
 		if ( oplock != null && oplock instanceof RemoteOpLockDetails) {
-			
+
 			// Need to fill in the oplock state cache details
-			
+
 			RemoteOpLockDetails remoteOplock = ( RemoteOpLockDetails) oplock;
 			remoteOplock.setStateCache( getStateCache());
 		}
@@ -114,67 +114,67 @@ public abstract class ClusterFileState extends FileState implements Serializable
 
 	/**
 	 * Return the primary owner
-	 * 
+	 *
 	 * @return Object
 	 */
 	public final Object getPrimaryOwner() {
 		return m_primaryOwner;
 	}
-	
+
 	/**
 	 * Check if there is a primary owner
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasPrimaryOwner() {
 		return m_primaryOwner != null ? true : false;
 	}
-	
+
 	/**
 	 * Set the primary owner, only if the file open count is currently zero
-	 * 
+	 *
 	 * @param priOwner Object
 	 */
 	public final void setPrimaryOwner( Object priOwner) {
 		if ( getOpenCount() == 0)
 			m_primaryOwner = priOwner;
 	}
-	
+
 	/**
 	 * Set the path using an already normalized path string
-	 * 
+	 *
 	 * @param path String
 	 */
 	public final void setNormalizedPath( String path) {
 		setPathInternal( path);
 	}
-	
+
 	/**
 	 * Get the state cache that this state belongs to
-	 * 
+	 *
 	 * @return ClusterFileStateCache
 	 */
 	protected final ClusterFileStateCache getStateCache() {
 		return m_stateCache;
 	}
-	
+
 	/**
 	 * Set the state cache that this state belongs to
-	 * 
+	 *
 	 * @param stateCache ClusterFileStateCache
 	 */
 	public void setStateCache( ClusterFileStateCache stateCache) {
 		m_stateCache = stateCache;
 	}
-	
+
 	/**
 	 * Get the file id
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getFileId() {
 		int fileId = FileState.UnknownFileId;
-		
+
 		if ( getStateCache() != null) {
 			PerNodeState perNode = getStateCache().getPerNodeState( this, false);
 			if ( perNode != null)
@@ -186,7 +186,7 @@ public abstract class ClusterFileState extends FileState implements Serializable
 
 	/**
 	 * Set the file identifier
-	 * 
+	 *
 	 * @param id int
 	 */
 	public void setFileId(int id) {
@@ -196,15 +196,15 @@ public abstract class ClusterFileState extends FileState implements Serializable
 				perNode.setFileId( id);
 		}
 	}
-	
+
 	/**
 	 * Return the file data status
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getDataStatus() {
 		int dataSts = FileState.FILE_AVAILABLE;
-		
+
 		if ( getStateCache() != null) {
 			PerNodeState perNode = getStateCache().getPerNodeState( this, false);
 			if ( perNode != null)
@@ -213,10 +213,10 @@ public abstract class ClusterFileState extends FileState implements Serializable
 
 		return dataSts;
 	}
-	
+
 	/**
 	 * Set the file data status
-	 * 
+	 *
 	 * @param sts int
 	 */
 	public void setDataStatus(int sts) {
@@ -230,60 +230,60 @@ public abstract class ClusterFileState extends FileState implements Serializable
 	/**
 	 * Return the map of additional attribute objects attached to this file state, and
 	 * optionally create the map if it does not exist
-	 * 
+	 *
 	 * @param createMap boolean
 	 * @return HashMap
 	 */
 	protected HashMap<String, Object> getAttributeMap( boolean createMap) {
 		HashMap<String, Object> attrMap = null;
-		
+
 		if ( getStateCache() != null) {
 			PerNodeState perNode = getStateCache().getPerNodeState( this, createMap);
 			if ( perNode != null)
 				attrMap = perNode.getAttributeMap( createMap);
 		}
-		
+
 		return attrMap;
 	}
-	
+
     /**
      * Return the pseudo file list, optionally create a new list
      *
-     * @param createList boolean 
+     * @param createList boolean
      * @return PseudoFileList
      */
     protected PseudoFileList getPseudoFileList( boolean createList) {
     	PseudoFileList pseudoList = null;
-    	
+
 		if ( getStateCache() != null) {
 			PerNodeState perNode = getStateCache().getPerNodeState( this, createList);
 			if ( perNode != null)
 				pseudoList = perNode.getPseudoFileList(createList);
 		}
-		
+
 		return pseudoList;
     }
-    
+
     /**
      * Return the filesystem object
-     * 
+     *
      * @return Object
      */
     public Object getFilesystemObject() {
     	Object fileSysObj = null;
-    	
+
 		if ( getStateCache() != null) {
 			PerNodeState perNode = getStateCache().getPerNodeState( this, false);
 			if ( perNode != null)
 				fileSysObj = perNode.getFilesystemObject();
 		}
-		
+
 		return fileSysObj;
     }
-    
+
     /**
      * Set the filesystem object
-     * 
+     *
      * @param filesysObj Object
      */
     public void setFilesystemObject( Object filesysObj) {
@@ -293,44 +293,44 @@ public abstract class ClusterFileState extends FileState implements Serializable
 				perNode.setFilesystemObject( filesysObj);
 		}
     }
-    
+
 	/**
 	 * Check if the file has an active local oplock
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasLocalOpLock() {
 		boolean oplockSts = false;
-		
+
 		if ( getStateCache() != null) {
 			PerNodeState perNode = getStateCache().getPerNodeState( this, false);
 			if ( perNode != null && perNode.hasOpLock())
 				oplockSts = true;
 		}
-		
+
 		return oplockSts;
 	}
 
 	/**
 	 * Return the local oplock details
-	 * 
+	 *
 	 * @return LocalOpLockDetails
 	 */
 	public LocalOpLockDetails getLocalOpLock() {
 		LocalOpLockDetails localOpLock = null;
-		
+
 		if ( getStateCache() != null) {
 			PerNodeState perNode = getStateCache().getPerNodeState( this, false);
 			if ( perNode != null && perNode.hasOpLock())
 				localOpLock = perNode.getOpLock();
 		}
-		
+
 		return localOpLock;
 	}
 
 	/**
 	 * Set the oplock for this file
-	 * 
+	 *
 	 * @param oplock LocalOpLockDetails
 	 * @exception ExistingOpLockException If there is an active oplock on this file
 	 */
@@ -357,7 +357,7 @@ public abstract class ClusterFileState extends FileState implements Serializable
 
 	/**
 	 * Check if the file is readable for the specified section of the file and process id
-	 * 
+	 *
 	 * @param offset long
 	 * @param len long
 	 * @param pid int
@@ -368,10 +368,10 @@ public abstract class ClusterFileState extends FileState implements Serializable
 			return getStateCache().canReadFile( this, offset, len, pid);
 		throw new RuntimeException( "State cache not set for cluster state, path=" + getPath() + " (canRead)");
 	}
-	
+
 	/**
 	 * Check if the file is writeable for the specified section of the file and process id
-	 * 
+	 *
 	 * @param offset long
 	 * @param len long
 	 * @param pid int
@@ -385,16 +385,16 @@ public abstract class ClusterFileState extends FileState implements Serializable
 
 	/**
 	 * Return the pending updates mask
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPendingUpdates() {
 		return m_stateUpdates;
 	}
-	
+
 	/**
 	 * Clear the pending updates flags and return the current update mask value
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int clearPendingUpdates() {
@@ -402,10 +402,10 @@ public abstract class ClusterFileState extends FileState implements Serializable
 		m_stateUpdates = 0;
 		return updMask;
 	}
-	
+
     /**
      * Set the update mask
-     * 
+     *
      * @param updMask int
      */
     public final void setUpdateMask( int updMask) {
@@ -414,123 +414,123 @@ public abstract class ClusterFileState extends FileState implements Serializable
 
     /**
      * Set the file status value, internal method
-     * 
+     *
      * @param fSts int
      * @param reason int
      */
     public final void setFileStatusInternal( int fSts, int reason) {
     	super.setFileStatus( fSts, reason);
-    	
+
     	m_fileStsReason = reason;
     }
-    
+
     /**
      * Return the file status change reason code
-     * 
+     *
      * @return int
      */
     public final int getStatusChangeReason() {
     	return m_fileStsReason;
     }
-    
+
     /**
      * Set the file status change reason code
-     * 
+     *
      * @param reason int
      */
     public final void setStatusChangeReason( int reason) {
     	m_fileStsReason = reason;
     }
-    
+
     /**
      * Check if there is a data update in progress for this file
-     * 
+     *
      * @return boolean
      */
     public boolean hasDataUpdateInProgress() {
-    	
+
     	// Check if there is a data update in progress for this file
-    	
+
     	if ( m_dataUpdateNode != null && m_dataUpdateNode instanceof ClusterNode) {
-    		
+
     		// If the update is by the local node we ignore it, only return true if
     		// the data update is on a remote node
-    	
+
     		if ( getStateCache() != null) {
-    			
+
     			// Check if the data update is on the local node
-    		
+
     			ClusterNode updateNode = (ClusterNode) m_dataUpdateNode;
-    			
+
     			if ( getStateCache().getCluster().getLocalNode().equals( updateNode))
     				return false;
     		}
-    	
+
     		// Remote data update in progress for this file, or cannot determine if the local
     		// node is updating the data
-    		
+
     		return true;
     	}
-    	
+
     	// No data update in progress
-    	
+
     	return false;
     }
-    
+
     /**
      * Return the data update node details, or null if no data update is in progress
-     * 
+     *
      * @return Object
      */
     public Object getDataUpdateNode() {
     	return m_dataUpdateNode;
     }
-    
+
     /**
      * Set the data update node details
-     * 
+     *
      * @param updateNode Object
      */
     public void setDataUpdateNode( Object updateNode) {
     	m_dataUpdateNode = updateNode;
     }
-    
+
     /**
      * Return the update mask as a string
-     * 
+     *
      * @param updMask int
      * @return String
      */
     public static final String getUpdateMaskAsString( int updMask) {
     	if ( updMask == 0)
     		return "[Empty]";
-    	
+
     	StringBuilder str = new StringBuilder( 32);
-    	
+
     	str.append("[");
-    	
+
     	for ( int idx = 0; idx < _updateStr.length; idx++) {
     		if (( updMask & (1 << idx)) != 0) {
     			str.append( _updateStr[ idx]);
     			str.append( ",");
     		}
     	}
-    	
+
     	if ( str.length() > 1)
     		str.setLength( str.length() - 1);
     	str.append( "]");
-    	
+
     	return str.toString();
     }
-    
+
 	/**
 	 * Return the file state as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 	  StringBuffer str = new StringBuffer();
-	  
+
 	  str.append("[");
 	  str.append(getPath());
 	  str.append(",");
@@ -540,9 +540,9 @@ public abstract class ClusterFileState extends FileState implements Serializable
 		  str.append( FileState.getChangeReasonString( getStatusChangeReason()));
 		  str.append(")");
 	  }
-	  
+
 	  str.append(":Opn=");
-	  
+
 	  str.append(super.getOpenCount());	// Local open count only
 	  if ( getOpenCount() > 0) {
 		  str.append( "(shr=0x");
@@ -557,24 +557,24 @@ public abstract class ClusterFileState extends FileState implements Serializable
 
 	  str.append(",Expire=");
 	  str.append(getSecondsToExpire(System.currentTimeMillis()));
-		
+
 	  str.append(",Sts=");
 	  str.append(getStatusAsString());
 
 	  str.append(",Locks=");
 	  str.append(numberOfLocks());
-		
+
 	  if ( hasOpLock()) {
 		  str.append(",OpLock=");
 		  str.append(getOpLock());
 	  }
-		
+
 	  if ( hasDataUpdateInProgress()) {
 		  str.append(",DataUpd=");
 		  str.append( getDataUpdateNode());
 	  }
 	  str.append("]");
-	  
+
 	  return str.toString();
 	}
 }

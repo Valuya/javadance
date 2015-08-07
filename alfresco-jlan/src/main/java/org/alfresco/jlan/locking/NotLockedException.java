@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * Not Locked Exception Class
- * 
+ *
  * <p>Thrown when an unlock request is received that has not active lock on a file.
  *
  * @author gkspencer
@@ -38,10 +38,10 @@ public class NotLockedException extends IOException {
 	public NotLockedException() {
 		super();
 	}
-  
+
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s String
 	 */
 	public NotLockedException(String s) {
@@ -50,7 +50,7 @@ public class NotLockedException extends IOException {
 
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s String
 	 * @param ex Throwable
 	 */

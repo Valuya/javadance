@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys.cache.hazelcast;
 
 /**
  * OpLock Message Class
- * 
+ *
  * <p>Contains the details of an oplock break request or notification of an oplock break completing.
  *
  * @author gkspencer
@@ -29,22 +29,22 @@ package org.alfresco.jlan.server.filesys.cache.hazelcast;
 public class OpLockMessage extends ClusterMessage {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// Oplock path
-	
+
 	private String m_path;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public OpLockMessage() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param targetNode String
 	 * @param msgType int
 	 * @param path String
@@ -53,30 +53,30 @@ public class OpLockMessage extends ClusterMessage {
 		super ( targetNode, msgType);
 		m_path = path;
 	}
-	
+
 	/**
 	 * Return the normalized path of the oplocked file/folder
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPath() {
 		return m_path;
 	}
-	
+
 	/**
 	 * Return the oplock message as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[");
 		str.append( super.toString());
 		str.append( ",path=");
 		str.append( getPath());
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

@@ -35,7 +35,7 @@ public interface DCEHandler {
 
 	/**
 	 * Process a DCE/RPC request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param inBuf DCEBuffer
 	 * @param pipeFile DCEPipeFile

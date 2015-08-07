@@ -96,7 +96,7 @@ public class UserAccountList {
 
 	/**
 	 * Return the specified user account details
-	 * 
+	 *
 	 * @param idx int
 	 * @return UserAccount
 	 */
@@ -105,7 +105,7 @@ public class UserAccountList {
 	  	return null;
 	  return m_users.get(idx);
 	}
-	
+
   /**
    * Return the number of defined user accounts.
    *

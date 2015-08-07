@@ -24,7 +24,7 @@ import org.ietf.jgss.Oid;
 
 /**
  * OID Class
- * 
+ *
  * <p>Contains Oids used by SPNEGO
  *
  * @author gkspencer
@@ -39,7 +39,7 @@ public class OID {
 
   public static final String ID_KERBEROS5   = "1.2.840.113554.1.2.2";
   public static final String ID_MSKERBEROS5 = "1.2.840.48018.1.2.2";
-  
+
   public static final String ID_KRB5USERTOUSER = "1.2.840.113554.1.2.2.3";
 
   // Microsoft NTLM security support provider
@@ -68,7 +68,7 @@ public class OID {
       KERBEROS5 = new Oid(ID_KERBEROS5);
       MSKERBEROS5 = new Oid(ID_MSKERBEROS5);
       KRB5USERTOUSER = new Oid(ID_KRB5USERTOUSER);
-      
+
       NTLMSSP = new Oid(ID_NTLMSSP);
     }
     catch (GSSException ex) {

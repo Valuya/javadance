@@ -29,7 +29,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * SMB core protocol search context class
- * 
+ *
  * @author gkspencer
  */
 class CoreSearchContext extends SearchContext {
@@ -52,10 +52,10 @@ class CoreSearchContext extends SearchContext {
 	//	Current directory entry index
 
 	private int m_dirIdx;
-  
+
 	/**
 	 * Construct an SMB search context on the specified disk session.
-	 * 
+	 *
 	 * @param sess Disk session that this search is associated with.
 	 */
 	protected CoreSearchContext(DiskSession sess) {
@@ -64,7 +64,7 @@ class CoreSearchContext extends SearchContext {
 
 	/**
 	 * Continue the current search, request another packet of directory entries.
-	 * 
+	 *
 	 * @return true if more files were returned, else false
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -124,7 +124,7 @@ class CoreSearchContext extends SearchContext {
 
 	/**
 	 * Return the number of directory entries in the SMB search response packet.
-	 * 
+	 *
 	 * @return Number of directory entries in the current SMB search packet.
 	 */
 	private int getDirEntryCount() {
@@ -133,7 +133,7 @@ class CoreSearchContext extends SearchContext {
 
 	/**
 	 * Return the buffer offset of the specified directory entry.
-	 * 
+	 *
 	 * @param idx Directory entry index.
 	 * @return Offset within the SMB packet buffer that the directory entry is stored.
 	 */
@@ -148,7 +148,7 @@ class CoreSearchContext extends SearchContext {
 
 	/**
 	 * Return the next file in this search as an SMB file information object.
-	 * 
+	 *
 	 * @return SMBFileInfo object, or null if there are no more files.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -193,7 +193,7 @@ class CoreSearchContext extends SearchContext {
 
 	/**
 	 * Return the next file name in this search.
-	 * 
+	 *
 	 * @return Next file name string, or null if there are no more files.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -227,7 +227,7 @@ class CoreSearchContext extends SearchContext {
 	/**
 	 * Start a new search using the specified file name string and search attributes, return the
 	 * specified file information level
-	 * 
+	 *
 	 * @param fname File name string, may contain wilcards.
 	 * @param attr File attributes bit mask.
 	 * @param level File information level to return

@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb;
 
 /**
  * LockingAndX SMB Constants Class
- * 
+ *
  * <p>Contains constants used by the LockingAndX SMB/CIFS request, plus methods for decoding the flags values.
  *
  * @author gkspencer
@@ -29,26 +29,26 @@ package org.alfresco.jlan.smb;
 public class LockingAndX {
 
 	//	Lock type flags
-	
+
 	public static final int SharedLock		= 0x0001;
 	public static final int OplockBreak		= 0x0002;
 	public static final int ChangeType		= 0x0004;
 	public static final int Cancel			= 0x0008;
 	public static final int LargeFiles		= 0x0010;
-	
+
 	public static final int Level2OpLock	= 0x0100;
 
 	/**
 	 * Check if this is a normal lock/unlock, ie. no flags except the LargeFiles flag may
 	 * be set
-	 * 
+	 *
 	 * @param flags
 	 * @return boolean
-	 */	
+	 */
 	public final static boolean isNormalLockUnlock(int flags) {
 		return (flags & 0x000F) == 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the large files flag is set
 	 *
@@ -81,13 +81,13 @@ public class LockingAndX {
 
 	/**
 	 * Check if the LevelII oplock flag is set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final static boolean hasLevelIIOplock( int flags) {
 		return (flags & Level2OpLock) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the change type flag is set
 	 *

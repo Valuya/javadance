@@ -34,7 +34,7 @@ import org.alfresco.jlan.util.HexDump;
 
 /**
  * Kerberos Authenitcator Class
- * 
+ *
  * @author gkspencer
  */
 public class KrbAuthenticator {
@@ -42,37 +42,37 @@ public class KrbAuthenticator {
 	// Kerberos authenticator fields
 	//
 	// Realm and principal
-	
+
 	private String m_realm;
 	private PrincipalName m_principalName;
-	
+
 	// Microseconds
-	
+
 	private long m_microseconds;
-	
+
 	// Timestamp
-	
+
 	private String m_timestamp;
-	
+
 	// Sub-key
-	
+
 	private int m_subKeyType;
 	private byte[] m_subKey;
-	
+
 	// Sequence number
-	
+
 	private int m_seqNo;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public KrbAuthenticator()
 	{
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param blob byte[]
 	 * @exception IOException
 	 */
@@ -81,30 +81,30 @@ public class KrbAuthenticator {
 	{
 		parseAuthenticator( blob);
 	}
-	
+
 	/**
 	 * Return the realm
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getRealm()
 	{
 		return m_realm;
 	}
-	
+
 	/**
 	 * Return the principal name
-	 * 
+	 *
 	 * @return PrincipalName
 	 */
 	public final PrincipalName getPrincipalName()
 	{
 		return m_principalName;
 	}
-	
+
 	/**
 	 * Return the timestamp
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTimestamp()
@@ -114,36 +114,36 @@ public class KrbAuthenticator {
 
 	/**
 	 * Return the sub-key type
-	 * 
+	 *
 	 * @return int
 	 */public final int getSubKeyType()
 	 {
 		 return m_subKeyType;
 	 }
-	 
+
 	 /**
 	  * Return the sub-key
-	  * 
+	  *
 	  * @return byte[]
 	  */
 	 public final byte[] getSubKey()
 	 {
 		 return m_subKey;
 	 }
-	 
+
 	/**
 	 * Return the sequence number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSequenceNumber()
 	{
 		return m_seqNo;
 	}
-	
+
 	/**
 	 * Parse the ASN/1 encoded authenticator
-	 * 
+	 *
 	 * @param auth byte[]
 	 * @exception IOException
 	 */
@@ -151,29 +151,29 @@ public class KrbAuthenticator {
 		throws IOException
 	{
 			// Create a stream to parse the ASN.1 encoded Kerberos ticket blob
-			
+
 			DERBuffer derBuf = new DERBuffer( auth);
-			
+
 			DERObject derObj = derBuf.unpackObject();
 			if ( derObj instanceof DERSequence)
 			{
 				// Enumerate the Kerberos ticket objects
-				
+
 				DERSequence derSeq = (DERSequence) derObj;
 				Iterator<DERObject> iterObj = derSeq.getObjects();
-				
+
 				while ( iterObj.hasNext())
 				{
 					// Read an object
-				
+
 					derObj = iterObj.next();
-					
+
 					if ( derObj != null && derObj.isTagged())
 					{
 						switch ( derObj.getTagNo())
 						{
 							// Authenticator VNO
-							
+
 							case 0:
 								if ( derObj instanceof DERInteger)
 								{
@@ -182,9 +182,9 @@ public class KrbAuthenticator {
 										throw new IOException("");
 								}
 								break;
-								
+
 							// Realm
-								
+
 							case 1:
 								if ( derObj instanceof DERGeneralString)
 								{
@@ -192,9 +192,9 @@ public class KrbAuthenticator {
 									m_realm = derStr.getValue();
 								}
 								break;
-								
+
 							// Principal name
-								
+
 							case 2:
 								if ( derObj instanceof DERSequence)
 								{
@@ -203,14 +203,14 @@ public class KrbAuthenticator {
 									m_principalName.parsePrincipalName( derPrincSeq);
 								}
 								break;
-								
+
 							// Checksum
-								
+
 							case 3:
 								break;
-								
+
 							// Microseconds
-								
+
 							case 4:
 								if ( derObj instanceof DERInteger)
 								{
@@ -218,9 +218,9 @@ public class KrbAuthenticator {
 									m_microseconds = derInt.intValue();
 								}
 								break;
-								
+
 							// Timestamp
-								
+
 							case 5:
 								if ( derObj instanceof DERGeneralizedTime)
 								{
@@ -228,30 +228,30 @@ public class KrbAuthenticator {
 									m_timestamp = derTime.getValue();
 								}
 								break;
-								
+
 							// Sub-key
-								
+
 							case 6:
 								if ( derObj instanceof DERSequence)
 								{
 									DERSequence derEncSeq = (DERSequence) derObj;
-									
+
 									// Enumerate the sequence
-									
+
 									Iterator<DERObject> iterSeq = derEncSeq.getObjects();
-									
+
 									while ( iterSeq.hasNext())
 									{
 										// Get the current sequence element
-										
+
 										derObj = iterSeq.next();
-										
+
 										if ( derObj != null && derObj.isTagged())
 										{
 											switch ( derObj.getTagNo())
 											{
 												// Encryption key type
-											
+
 												case 0:
 													if ( derObj instanceof DERInteger)
 													{
@@ -259,9 +259,9 @@ public class KrbAuthenticator {
 														m_subKeyType = derInt.intValue();
 													}
 													break;
-													
+
 												// Encryption key
-													
+
 												case 1:
 													if ( derObj instanceof DEROctetString)
 													{
@@ -274,9 +274,9 @@ public class KrbAuthenticator {
 									}
 								}
 								break;
-								
+
 							// Sequence number
-								
+
 							case 7:
 								if ( derObj instanceof DERInteger)
 								{
@@ -284,9 +284,9 @@ public class KrbAuthenticator {
 									m_seqNo = derInt.intValue();
 								}
 								break;
-								
+
 							// Authorization data
-								
+
 							case 8:
 								break;
 						}
@@ -294,16 +294,16 @@ public class KrbAuthenticator {
 				}
 			}
 	}
-	
+
 	/**
 	 * Return the authentcator as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString()
 	{
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[KrbAuth Realm=");
 		str.append( getRealm());
 		str.append(",Principal=");
@@ -319,7 +319,7 @@ public class KrbAuthenticator {
 		str.append(",SeqNo=");
 		str.append( getSequenceNumber());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

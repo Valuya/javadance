@@ -28,8 +28,8 @@ import org.alfresco.jlan.server.config.ServerConfiguration;
 
 /**
  * Network File Server Class
- * 
- * <p>Base class for all network file servers. 
+ *
+ * <p>Base class for all network file servers.
  *
  * @author gkspencer
  */
@@ -38,34 +38,34 @@ public abstract class NetworkFileServer extends NetworkServer {
 	//	File listener list
 
 	private Vector<FileListener> m_fileListeners;
-	
+
   // filesystems configuration
-  
+
   private FilesystemsConfigSection m_filesysConfig;
-  
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param proto String
 	 * @param config ServerConfiguration
 	 */
 	public NetworkFileServer(String proto, ServerConfiguration config) {
 		super(proto, config);
-    
+
     //  Get the filesystems configuration
-    
+
     m_filesysConfig = (FilesystemsConfigSection) config.getConfigSection( FilesystemsConfigSection.SectionName);
 	}
-	
+
   /**
    * Return the filesystems configuration
-   * 
+   *
    * @return FilesystemConfigSection
    */
   public final FilesystemsConfigSection getFilesystemConfiguration() {
     return m_filesysConfig;
   }
-  
+
 	/**
 	 * Add a file listener
 	 *

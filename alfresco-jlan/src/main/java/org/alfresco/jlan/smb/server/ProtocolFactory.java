@@ -36,7 +36,7 @@ class ProtocolFactory {
   public ProtocolFactory() {
     super();
   }
-  
+
   /**
    * Return a protocol handler for the specified SMB dialect type, or null if there
    * is no appropriate protocol handler.

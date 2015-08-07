@@ -29,15 +29,15 @@ import org.alfresco.jlan.util.*;
 
 /**
  * jlanServices Application
- * 
+ *
  * <p>Display a list of services on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class jlanServices extends jlanApp {
 
 	//	Service type filter strings
-  
+
 	private final static String[] _svcTypesStr = { "All", "Driver", "FileSys", "Adapter", "Interactive" };
 	private final static int[] _svcTypes       = { NTService.TypeAll,
       											 NTService.TypeDriver,
@@ -45,11 +45,11 @@ public class jlanServices extends jlanApp {
       											 NTService.TypeAdapter,
       											 NTService.TypeInteractive
 	};
-  
+
 	//	Service type filter, defaults to display all services
-  
+
 	private int m_serviceType = NTService.TypeAll;
- 
+
 	/**
 	 * Class constructor
 	 */
@@ -59,7 +59,7 @@ public class jlanServices extends jlanApp {
 
 	/**
 	 * Display the usage information for the command
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
@@ -77,7 +77,7 @@ public class jlanServices extends jlanApp {
 
 	/**
 	 * Perform the main command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @throws Exception
 	 */
@@ -130,7 +130,7 @@ public class jlanServices extends jlanApp {
 
 	/**
 	 * Validate the command line parameters
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -200,7 +200,7 @@ public class jlanServices extends jlanApp {
 
 	/**
 	 * Return the service type filter value
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final int getServiceType() {
@@ -209,7 +209,7 @@ public class jlanServices extends jlanApp {
 
 	/**
 	 * Set the service type filter
-	 * 
+	 *
 	 * @param filter int
 	 */
 	protected final void setServiceType(int filter) {
@@ -218,7 +218,7 @@ public class jlanServices extends jlanApp {
 
 	/**
 	 * Run the jlanServices command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public static void main(String[] args) {

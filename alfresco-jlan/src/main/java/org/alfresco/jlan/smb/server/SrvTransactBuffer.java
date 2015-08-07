@@ -26,16 +26,16 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * Transact Buffer Class
- * 
+ *
  * <p>Contains the parameters and data for a transaction, transaction2 or NT transaction request.
- * 
+ *
  * @author gkspencer
  */
 class SrvTransactBuffer extends TransactBuffer {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param slen int
 	 * @param plen int
 	 * @param dlen int
@@ -46,10 +46,10 @@ class SrvTransactBuffer extends TransactBuffer {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * <p>Construct a TransactBuffer using the maximum size settings from the specified transaction
 	 * buffer
-	 * 
+	 *
 	 * @param tbuf SrvTransactBuffer
 	 */
 	public SrvTransactBuffer(SrvTransactBuffer tbuf) {
@@ -70,7 +70,7 @@ class SrvTransactBuffer extends TransactBuffer {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param ntpkt NTTransPacket
 	 */
 	public SrvTransactBuffer(NTTransPacket ntpkt) {
@@ -122,7 +122,7 @@ class SrvTransactBuffer extends TransactBuffer {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param tpkt SMBSrvTransPacket
 	 */
 	public SrvTransactBuffer(SMBSrvTransPacket tpkt) {

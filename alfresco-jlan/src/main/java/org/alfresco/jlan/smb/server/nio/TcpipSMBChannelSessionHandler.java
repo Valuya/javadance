@@ -30,16 +30,16 @@ import org.alfresco.jlan.smb.server.SMBServer;
 
 /**
  * TCP/IP SMB Channel Session Handler Class
- * 
+ *
  * <p>Handle CIFS socket connections via native SMB, usually port 445.
- * 
+ *
  * @author gkspencer
  */
 public class TcpipSMBChannelSessionHandler extends ChannelSessionHandler {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param server NetworkServer
 	 * @param addr InetAddress
 	 * @param port int
@@ -50,22 +50,22 @@ public class TcpipSMBChannelSessionHandler extends ChannelSessionHandler {
 
 	/**
 	 * Create a packet handler for the new client socket connection
-	 * 
+	 *
 	 * @param sockChannel SocketChannel
 	 * @return PacketHandler
 	 * @exception IOException
 	 */
 	public PacketHandler createPacketHandler( SocketChannel sockChannel)
 		throws IOException {
-		
+
 		// Create a native SMB packet handler
-		
+
 		return new TcpipSMBChannelHandler( sockChannel, getSMBServer().getPacketPool());
 	}
-	
+
 	/**
 	 * Return the CIFS server
-	 * 
+	 *
 	 * @return SMBServer
 	 */
 	public final SMBServer getSMBServer() {

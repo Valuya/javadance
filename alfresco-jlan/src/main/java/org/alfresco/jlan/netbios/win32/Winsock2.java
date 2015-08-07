@@ -21,13 +21,13 @@ package org.alfresco.jlan.netbios.win32;
 
 /**
  * Winsock2 Class
- * 
+ *
  * @author gkspencer
  */
 public class Winsock2 {
 
 	// Event select bit values
-	
+
 	public static final int FD_READ			= 0x0001;
 	public static final int FD_WRITE  		= 0x0002;
 	public static final int FD_OOB    		= 0x0004;
@@ -38,8 +38,8 @@ public class Winsock2 {
 	public static final int FD_GROUPQOS		= 0x0080;
 	public static final int FD_ROUTECHANGE	= 0x0100;
 	public static final int FD_ADDRCHANGE 	= 0x0200;
-	
+
 	// Infinite timeout for WinsockWaitForMultipleEvents
-	
+
 	public static final int WSA_INFINITE	= 0xFFFFFFFF;
 }

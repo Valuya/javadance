@@ -23,10 +23,10 @@ import org.alfresco.jlan.smb.nt.ReparsePoint;
 
 /**
  * Reparse Point File Info Class
- * 
+ *
  * <p>
  * Contains extra details about a reparse point type file entry.
- * 
+ *
  * @author gkspencer
  */
 public class ReparsePointFileInfo extends FileInfo {
@@ -44,7 +44,7 @@ public class ReparsePointFileInfo extends FileInfo {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param size long
 	 * @param attr int
@@ -58,7 +58,7 @@ public class ReparsePointFileInfo extends FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
 	 * @param fattr File attributes.
@@ -71,7 +71,7 @@ public class ReparsePointFileInfo extends FileInfo {
 
 	/**
 	 * Get the reparse point type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getReparsePointType() {
@@ -80,7 +80,7 @@ public class ReparsePointFileInfo extends FileInfo {
 
 	/**
 	 * Set the reparse point type
-	 * 
+	 *
 	 * @param reparseType int
 	 */
 	public final void setReparsePointType(int reparseType) {
@@ -89,7 +89,7 @@ public class ReparsePointFileInfo extends FileInfo {
 
 	/**
 	 * Return the file information as a string.
-	 * 
+	 *
 	 * @return File information string.
 	 */
 	public String toString() {

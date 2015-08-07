@@ -26,7 +26,7 @@ import org.alfresco.jlan.smb.dcerpc.DCEWriteable;
 
 /**
  * Share Information Class
- * 
+ *
  * <p>Holds the details of a share from a DCE/RPC request/response.
  *
  * @author gkspencer
@@ -34,15 +34,15 @@ import org.alfresco.jlan.smb.dcerpc.DCEWriteable;
 public class ShareInfo implements DCEWriteable, DCEReadable {
 
 	//	Information levels supported
-  
+
 	public static final int InfoLevel0		= 0;
 	public static final int InfoLevel1		= 1;
 	public static final int InfoLevel2  	= 2;
 	public static final int InfoLevel502	= 502;
 	public static final int InfoLevel1005	= 1005;
-  
+
 	//	Share types
-	
+
 	public static final int Disk		= 0x00000000;
 	public static final int PrintQueue	= 0x00000001;
 	public static final int Device		= 0x00000002;
@@ -61,15 +61,15 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 	public static final int All 		= 0x7F;
 
 	//	Information level
-	
+
 	private int m_infoLevel;
-	
+
 	//	Share details
-	
+
 	private String m_name;
 	private int m_type;
 	private String m_comment;
-	
+
 	private int m_permissions;
 	private int m_maxUsers;
 	private int m_curUsers;
@@ -77,25 +77,25 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 	private String m_password;
 
 	private int m_flags;
-	
+
 	/**
 	 * Class constructor
 	 */
 	public ShareInfo() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param lev int
 	 */
 	public ShareInfo(int lev) {
 	  m_infoLevel = lev;
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param lev int
 	 * @param name String
 	 * @param typ int
@@ -110,25 +110,25 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Return the information level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getInformationLevel() {
 	  return m_infoLevel;
 	}
-	
+
 	/**
 	 * Return the share name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
 	  return m_name;
 	}
-	
+
 	/**
 	 * Return the share type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getType() {
@@ -137,110 +137,110 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Get the share flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFlags() {
 	  return m_flags;
 	}
-	
+
 	/**
 	 * Check if this share is a hidden/admin share
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isHidden() {
 	  return (m_type & Hidden) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if this is a disk share
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isDisk() {
 	  return (m_type & 0x0000FFFF) == Disk ? true : false;
 	}
-	
+
 	/**
 	 * Check if this is a printer share
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isPrinter() {
 	  return (m_type & 0x0000FFFF) == PrintQueue ? true : false;
 	}
-	
+
 	/**
 	 * Check if this is a device share
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isDevice() {
 	  return (m_type & 0x0000FFFF) == Device ? true : false;
 	}
-	
+
 	/**
 	 * Check if this is a named pipe share
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isNamedPipe() {
 	  return (m_type & 0x0000FFFF) == IPC ? true : false;
 	}
-	
+
 	/**
 	 * Return the share permissions
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPermissions() {
 	  return m_permissions;
 	}
-	
+
 	/**
 	 * Return the maximum number of users allowed
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumUsers() {
 	  return m_maxUsers;
 	}
-	
+
 	/**
 	 * Return the current number of users
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCurrentUsers() {
 	  return m_curUsers;
 	}
-	
+
 	/**
 	 * Return the share local path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPath() {
 	  return m_path;
 	}
-	
+
 	/**
 	 * Return the share password
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPassword() {
 	  return m_password;
 	}
-	
+
 	/**
 	 * Return the share type as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTypeAsString() {
-		
+
 		String typ = "";
 		switch ( getType() & 0xFF) {
 			case Disk:
@@ -256,13 +256,13 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 				typ = "IPC";
 				break;
 		}
-		
+
 		return typ;
 	}
-	
+
 	/**
 	 * Return the comment
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getComment() {
@@ -271,7 +271,7 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the information level
-	 * 
+	 *
 	 * @param lev int
 	 */
 	public final void setInformationLevel(int lev) {
@@ -280,7 +280,7 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the share type
-	 * 
+	 *
 	 * @param typ int
 	 */
 	public final void setType(int typ) {
@@ -289,25 +289,25 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the share flags
-	 * 
+	 *
 	 * @param flags int
 	 */
 	public final void setFlags(int flags) {
 	  m_flags = flags;
 	}
-	
+
 	/**
 	 * Set the share name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setName(String name) {
 		m_name = name;
 	}
-	
+
 	/**
 	 * Set the share comment
-	 * 
+	 *
 	 * @param str String
 	 */
 	public final void setComment(String str) {
@@ -316,34 +316,34 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the share permissions
-	 * 
+	 *
 	 * @param perm int
 	 */
 	public final void setPermissions(int perm) {
 	  m_permissions = perm;
 	}
-	
+
 	/**
 	 * Set the maximum number of users
-	 * 
+	 *
 	 * @param maxUsers int
 	 */
 	public final void setMaximumUsers(int maxUsers) {
 	  m_maxUsers = maxUsers;
 	}
-	
+
 	/**
 	 * Set the current number of users
-	 * 
+	 *
 	 * @param curUsers int
 	 */
 	public final void setCurrentUsers(int curUsers) {
 	  m_curUsers = curUsers;
 	}
-	
+
 	/**
 	 * Set the local path
-	 * 
+	 *
 	 * @param path String
 	 */
 	public final void setPath(String path) {
@@ -354,18 +354,18 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 	 * Clear all string values
 	 */
 	protected final void clearStrings() {
-	  
+
 	  //	Clear the string values
-	  
+
     m_name     = null;
     m_comment  = null;
     m_path     = null;
     m_password = null;
 	}
-	
+
   /**
    * Read the share information from the DCE/RPC buffer
-   * 
+   *
    * @param buf DCEBuffer
 	 * @exception DCEBufferException
    */
@@ -373,29 +373,29 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
   	throws DCEBufferException {
 
     //	Clear all existing strings
-  
+
     clearStrings();
-    
+
 		//	Unpack the share information
-		
+
 		switch ( getInformationLevel()) {
-			
+
 			//	Information level 0
-			
+
 			case InfoLevel0:
 				m_name = buf.getPointer() != 0 ? "" : null;
 				break;
-				
+
 			//	Information level 1
-			
+
 			case InfoLevel1:
 				m_name = buf.getPointer() != 0 ? "" : null;
 				m_type = buf.getInt();
 				m_comment = buf.getPointer() != 0 ? "" : null;
 				break;
-				
+
 			//	Information level 2
-				
+
 			case InfoLevel2:
 				m_name = buf.getPointer() != 0 ? "" : null;
 				m_type = buf.getInt();
@@ -406,9 +406,9 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 				m_path = buf.getPointer() != 0 ? "" : null;
 				m_password = buf.getPointer() != 0 ? "" : null;
 				break;
-				
+
 			//	Information level 502
-				
+
 			case InfoLevel502:
 				m_name = buf.getPointer() != 0 ? "" : null;
 				m_type = buf.getInt();
@@ -418,9 +418,9 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 				m_curUsers = buf.getInt();
 				m_path = buf.getPointer() != 0 ? "" : null;
 				m_password = buf.getPointer() != 0 ? "" : null;
-				
+
 				buf.skipBytes(4);		//	Reserved value
-				
+
 				//	Security descriptor
 			  break;
 		}
@@ -428,7 +428,7 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Read the strings for this share from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
    */
@@ -436,27 +436,27 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
   	throws DCEBufferException {
 
 		//	Read the strings for this share information
-		
+
 		switch ( getInformationLevel()) {
-			
+
 			//	Information level 0
-			
+
 			case InfoLevel0:
 				if ( getName() != null)
 					m_name = buf.getString(DCEBuffer.ALIGN_INT);
 				break;
-				
+
 			//	Information level 1
-			
+
 			case InfoLevel1:
 				if ( getName() != null)
 					m_name = buf.getString(DCEBuffer.ALIGN_INT);
 				if ( getComment() != null)
 					m_comment = buf.getString(DCEBuffer.ALIGN_INT);
 				break;
-				
+
 			//	Information level 2 and 502
-				
+
 			case InfoLevel2:
 			case InfoLevel502:
 				if ( getName() != null)
@@ -470,39 +470,39 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 			  break;
 		}
   }
-   
+
   /**
    * Write the share information to the DCE buffer
-   * 
+   *
    * @param buf DCEBuffer
    * @param strBuf DCEBuffer
    */
   public void writeObject(DCEBuffer buf, DCEBuffer strBuf) {
 
 		//	Pack the share information
-		
+
 		switch ( getInformationLevel()) {
-		  
+
 		  //	Information level 0
-		  
+
 		  case InfoLevel0:
 		  	buf.putPointer(true);
 		  	strBuf.putString(getName(), DCEBuffer.ALIGN_INT, true);
 		  	break;
-		  	
+		
 		  //	Information level 1
-		  
+
 		  case InfoLevel1:
 		    buf.putPointer(true);
 		    buf.putInt(getType());
 		    buf.putPointer(true);
-		    
+
 				strBuf.putString(getName(), DCEBuffer.ALIGN_INT, true);
 				strBuf.putString(getComment() != null ? getComment() : "", DCEBuffer.ALIGN_INT, true);
 				break;
-				
+
 			//	Information level 2
-				
+
 			case InfoLevel2:
 		    buf.putPointer(true);
 		    buf.putInt(getType());
@@ -512,7 +512,7 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 		    buf.putInt(getCurrentUsers());
 		    buf.putPointer(getPath() != null);
 		    buf.putPointer(getPassword() != null);
-		    
+
 				strBuf.putString(getName(), DCEBuffer.ALIGN_INT, true);
 				strBuf.putString(getComment() != null ? getComment() : "", DCEBuffer.ALIGN_INT, true);
 				if ( getPath() != null)
@@ -520,9 +520,9 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 				if ( getPassword() != null)
 				  strBuf.putString(getPassword(), DCEBuffer.ALIGN_INT, true);
 			  break;
-			  
+
 			//	Information level 502
-			  
+
 			case InfoLevel502:
 		    buf.putPointer(true);
 		    buf.putInt(getType());
@@ -534,7 +534,7 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 		    buf.putPointer(getPassword() != null);
 		    buf.putInt(0);					//	Reserved, must be zero
 		    buf.putPointer(false);	//	Security descriptor
-		    
+
 				strBuf.putString(getName(), DCEBuffer.ALIGN_INT, true);
 				strBuf.putString(getComment() != null ? getComment() : "", DCEBuffer.ALIGN_INT, true);
 				if ( getPath() != null)
@@ -542,36 +542,36 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 				if ( getPassword() != null)
 				  strBuf.putString(getPassword(), DCEBuffer.ALIGN_INT, true);
 			  break;
-			  
+
 			//	Information level 1005
-			  
+
 			case InfoLevel1005:
 			  buf.putInt(getFlags());
 			  break;
 		}
   }
-  
+
   /**
    * Return the share information as a string
-   * 
+   *
    * @return String
    */
   public String toString() {
   	StringBuffer str = new StringBuffer();
-  	
+
   	str.append("[");
   	str.append(getName());
   	str.append(":");
   	str.append(getInformationLevel());
   	str.append(":");
-  	
+
   	if ( getInformationLevel() == 1) {
   		str.append("0x");
   		str.append(Integer.toHexString(getType()));
   		str.append(",");
   		str.append(getComment());
   	}
-  	
+
   	str.append("]");
   	return str.toString();
   }

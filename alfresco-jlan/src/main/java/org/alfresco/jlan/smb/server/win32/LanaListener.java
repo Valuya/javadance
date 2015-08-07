@@ -21,16 +21,16 @@ package org.alfresco.jlan.smb.server.win32;
 
 /**
  * LANA Listener Class
- * 
+ *
  * <p>Receive status change events for a particular NetBIOS LANA.
  *
  * @author gkspencer
  */
 public interface LanaListener {
-  
+
   /**
    * LANA status change callback
-   * 
+   *
    * @param lana int
    * @param online boolean
    */

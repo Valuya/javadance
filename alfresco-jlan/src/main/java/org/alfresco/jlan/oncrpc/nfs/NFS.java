@@ -27,16 +27,16 @@ package org.alfresco.jlan.oncrpc.nfs;
 public final class NFS {
 
   //	Default NFS server port
-  
+
   public static final int DefaultPort		= 2049;
-  
+
   //	Program and version id
-  
+
   public static final int ProgramId			= 100003;
-  public static final int VersionId			= 3; 
-    
+  public static final int VersionId			= 3;
+
   //	RPC procedure ids
-  
+
   public static final int ProcNull			= 0;
   public static final int ProcGetAttr		= 1;
   public static final int ProcSetAttr		= 2;
@@ -59,11 +59,11 @@ public final class NFS {
   public static final int ProcFsInfo		= 19;
   public static final int ProcPathConf		= 20;
   public static final int ProcCommit		= 21;
-  
+
   public static final int ProcMax			= 21;
-  
+
   //	NFS server status codes
-  
+
   public static final int StsSuccess		= 0;
   public static final int StsPerm			= 1;
   public static final int StsNoEnt			= 2;
@@ -93,16 +93,16 @@ public final class NFS {
   public static final int StsServerFault	= 10006;
   public static final int StsBadType		= 10007;
   public static final int StsJukeBox		= 10008;
-  
+
   //	Data structure limits
-  
+
   public static final int FileHandleSize	= 32;		//	can be 64 for NFS v3
   public static final int WriteVerfSize		= 8;
   public static final int CreateVerfSize	= 8;
   public static final int CookieVerfSize	= 8;
-  
+
   //	File types
-  
+
   public static final int FileTypeReg		= 1;
   public static final int FileTypeDir		= 2;
   public static final int FileTypeBlk		= 3;
@@ -110,50 +110,50 @@ public final class NFS {
   public static final int FileTypeLnk		= 5;
   public static final int FileTypeSock		= 6;
   public static final int FileTypeFifo		= 7;
-  
+
   //	Filesystem properties
-  
+
   public static final int FileSysLink			= 0x0001;		//	supports hard links
   public static final int FileSysSymLink		= 0x0002;		//	supports symbolic links
   public static final int FileSysHomogeneuos	= 0x0004;		//	PATHCONF valid for all files
   public static final int FileSysCanSetTime		= 0x0008;		//	can set time on server side
-  
+
   //	Access mask
-  
+
   public static final int AccessRead			= 0x0001;
   public static final int AccessLookup			= 0x0002;
   public static final int AccessModify			= 0x0004;
   public static final int AccessExtend			= 0x0008;
   public static final int AccessDelete			= 0x0010;
   public static final int AccessExecute			= 0x0020;
-  
+
   public static final int AccessAll				= 0x003F;
-  
+
   //	Create mode values
-  
+
   public static final int CreateUnchecked		= 1;
   public static final int CreateGuarded			= 2;
   public static final int CreateExclusive		= 3;
-  
+
   //	Write request stable values
-  
+
   public static final int WriteUnstable			= 0;
   public static final int WriteDataSync			= 1;
   public static final int WriteFileSync			= 2;
-  
+
   //	Set attributes file timestamp settings
-  
+
   public static final int DoNotSetTime			= 0;
   public static final int SetTimeServer			= 1;
   public static final int SetTimeClient			= 2;
-  
+
   //	RPC procedure names
-  
+
   private static final String[] _procNames = { "Null", "GetAttr", "SetAttr", "Lookup", "Access", "ReadLink", "Read",
       											 "Write", "Create", "MkDir", "SymLink", "MkNode", "Remove", "RmDir",
       											 "Rename", "Link", "ReadDir", "ReadDirPlus", "FsStat", "FsInfo",
       											 "PathConf", "Commit" };
-  
+
   /**
    * Return a procedure id as a name
    *
@@ -165,16 +165,16 @@ public final class NFS {
       return null;
     return _procNames[id];
   }
-  
+
 	/**
 	 * Return an error status string for the specified status code
-	 * 
+	 *
 	 * @param sts int
 	 * @return String
 	 */
 	public static final String getStatusString(int sts) {
 		String str = null;
-		
+
 		switch ( sts) {
 			case StsSuccess:
 				str = "Success status";
@@ -264,7 +264,7 @@ public final class NFS {
 				str = "Cross device hard link attempted";
 				break;
 		}
-		
+
 		return str;
 	}
 }

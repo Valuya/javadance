@@ -31,7 +31,7 @@ import org.alfresco.jlan.server.auth.asn.DERSequence;
 
 /**
  * Encrypted Part Kerberos Ticket Class
- * 
+ *
  * @author gkspencer
  */
 public class EncKrbTicket {
@@ -39,37 +39,37 @@ public class EncKrbTicket {
 	// Encrypted ticket fields
 	//
 	// Flags
-	
+
 	private int m_flags;
-	
+
 	// Encryption key
-	
+
 	private int m_encKeyType;
 	private byte[] m_encKey;
-	
+
 	// Realm
-	
+
 	private String m_realm;
-	
+
 	// Principal name
-	
+
 	private String m_principalName;
-	
+
 	// Authorization data
-	
+
 	private int m_authType = -1;
 	private byte[] m_authData;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public EncKrbTicket()
 	{
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param blob byte[]
 	 * @exception IOException
 	 */
@@ -78,70 +78,70 @@ public class EncKrbTicket {
 	{
 		parseEncTicket( blob);
 	}
-	
+
 	/**
 	 * Return the flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFlags()
 	{
 		return m_flags;
 	}
-	
+
 	/**
 	 * Return the realm
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getRealm()
 	{
 		return m_realm;
 	}
-	
+
 	/**
 	 * Return the encryption key type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getEncryptionKeyType()
 	{
 		return m_encKeyType;
 	}
-	
+
 	/**
 	 * Return the encryption key
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getEncryptionKey()
 	{
 		return m_encKey;
 	}
-	
+
 	/**
 	 * Return the authorization data type, or -1 if not present
-	 * 
+	 *
 	 *  @return int
 	 */
 	public final int getAuthorizationDataType()
 	{
 		return m_authType;
 	}
-	
+
 	/**
 	 * Return the authorization data
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getAuthorizationData()
 	{
 		return m_authData;
 	}
-	
+
 	/**
 	 * Parse an encrypted Kerberos ticket part
-	 * 
+	 *
 	 * @param blob byte[]
 	 * @exception IOException
 	 */
@@ -149,28 +149,28 @@ public class EncKrbTicket {
 		throws IOException
 	{
 		// Create a stream to parse the ASN.1 encoded Kerberos ticket blob
-		
+
 		DERBuffer derBuf = new DERBuffer( blob);
-		
+
 		DERObject derObj = derBuf.unpackObject();
 		if ( derObj instanceof DERSequence)
 		{
 			// Enumerate the Kerberos ticket objects
-			
+
 			DERSequence derSeq = (DERSequence) derObj;
-			
+
 			for ( int idx = 0; idx < derSeq.numberOfObjects(); idx++)
 			{
 				// Read an object
-			
+
 				derObj = (DERObject) derSeq.getObjectAt(idx);
-				
+
 				if ( derObj != null && derObj.isTagged())
 				{
 					switch ( derObj.getTagNo())
 					{
 						// Flags
-						
+
 						case 0:
 							if ( derObj instanceof DERBitString)
 							{
@@ -178,28 +178,28 @@ public class EncKrbTicket {
 								m_flags = derBits.intValue();
 							}
 							break;
-							
+
 						// Key
-						
+
 						case 1:
 							if ( derObj instanceof DERSequence)
 							{
 								DERSequence derEncSeq = (DERSequence) derObj;
-								
+
 								// Enumerate the sequence
-								
+
 								for ( int i = 0; i < derEncSeq.numberOfObjects(); i++)
 								{
 									// Get the current sequence element
-									
+
 									derObj = (DERObject) derEncSeq.getObjectAt(i);
-									
+
 									if ( derObj != null && derObj.isTagged())
 									{
 										switch ( derObj.getTagNo())
 										{
 											// Encryption key type
-										
+
 											case 0:
 												if ( derObj instanceof DERInteger)
 												{
@@ -207,9 +207,9 @@ public class EncKrbTicket {
 													m_encKeyType = (int) derInt.getValue();
 												}
 												break;
-												
+
 											// Encryption key
-												
+
 											case 1:
 												if ( derObj instanceof DEROctetString)
 												{
@@ -222,9 +222,9 @@ public class EncKrbTicket {
 								}
 							}
 							break;
-							
+
 						// Realm
-							
+
 						case 2:
 							if ( derObj instanceof DERGeneralString)
 							{
@@ -232,44 +232,44 @@ public class EncKrbTicket {
 								m_realm = derStr.getValue();
 							}
 							break;
-							
+
 						// Principal name
-							
+
 						case 3:
 							break;
-							
+
 						// Transited encoding
-							
+
 						case 4:
 							break;
-							
+
 						// Auth time
-							
+
 						case 5:
 							break;
-							
+
 						// Start time
-							
+
 						case 6:
 							break;
-							
+
 						// End time
-							
+
 						case 7:
 							break;
-							
+
 						// Renew till
-							
+
 						case 8:
 							break;
-							
+
 						// Host address
-							
+
 						case 9:
 							break;
-							
+
 						// Authorization data
-							
+
 						case 10:
 							break;
 					}
@@ -277,16 +277,16 @@ public class EncKrbTicket {
 			}
 		}
 	}
-	
+
 	/**
 	 * Return the encrypted ticket part as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString()
 	{
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[EncKrbTkt Flags=0x");
 		str.append(Integer.toHexString( getFlags()));
 		str.append(",Key=Type=");
@@ -296,7 +296,7 @@ public class EncKrbTicket {
 		str.append(",Realm=");
 		str.append(getRealm());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

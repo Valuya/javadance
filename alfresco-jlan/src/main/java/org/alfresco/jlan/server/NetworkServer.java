@@ -32,7 +32,7 @@ import org.alfresco.jlan.server.core.SharedDeviceList;
 
 /**
  * Network Server Base Class
- * 
+ *
  * <p>Base class for server implementations for different protocols.
  *
  * @author gkspencer
@@ -40,17 +40,17 @@ import org.alfresco.jlan.server.core.SharedDeviceList;
 public abstract class NetworkServer {
 
   //  Server shutdown thread timeout
-  
+
   protected final static int SHUTDOWN_TIMEOUT = 60000;  // 1 minute
-  
+
 	//	Protocol name
-	
+
 	private String m_protoName;
-	
+
 	//	Server version
-	
+
 	private String m_version;
-	
+
   //	Configuration sections used by all network servers
 
   private ServerConfiguration m_config;
@@ -58,10 +58,10 @@ public abstract class NetworkServer {
   private SecurityConfigSection m_securityConfig;
 
 	//	Debug enabled flag and debug flags
-	
+
 	private boolean m_debug;
 	private int m_debugFlags;
-	
+
   //	List of addresses that the server is bound to
 
   private InetAddress[] m_ipAddr;
@@ -72,15 +72,15 @@ public abstract class NetworkServer {
   private boolean m_active = false;
 
   //  Server enabled flag
-  
+
   private boolean m_enabled;
-  
+
 	//	Server error exception details
-	
+
 	private Exception m_exception;
-	
+
 	//	Server events listener
-	
+
 	private ServerListener m_listener;
 
 	//	Session listener list
@@ -89,20 +89,20 @@ public abstract class NetworkServer {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param proto String
 	 * @param config ServerConfiguration
 	 */
 	public NetworkServer(String proto, ServerConfiguration config) {
 		m_protoName = proto;
 		m_config    = config;
-    
+
     // Get the configuration sections
-    
+
     m_securityConfig = (SecurityConfigSection) m_config.getConfigSection( SecurityConfigSection.SectionName);
     m_globalConfig   = (GlobalConfigSection) m_config.getConfigSection( GlobalConfigSection.SectionName);
 	}
-	
+
   /**
    * Return the server configuration.
    *
@@ -114,7 +114,7 @@ public abstract class NetworkServer {
 
 	/**
 	 * Determine if an access control manager is configured
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasAccessControlManager() {
@@ -122,10 +122,10 @@ public abstract class NetworkServer {
       return m_securityConfig.getAccessControlManager() != null ? true : false;
 		return false;
 	}
-	
+
 	/**
 	 * Return the access control manager
-	 * 
+	 *
 	 * @return AccessControlManager
 	 */
 	public final AccessControlManager getAccessControlManager() {
@@ -133,7 +133,7 @@ public abstract class NetworkServer {
       return m_securityConfig.getAccessControlManager();
     return null;
 	}
-	
+
   /**
    * Return the list of IP addresses that the server is bound to.
    *
@@ -145,7 +145,7 @@ public abstract class NetworkServer {
 
 	/**
 	 * Return the share mapper
-	 * 
+	 *
 	 * @return ShareMapper
 	 */
 	public final ShareMapper getShareMapper() {
@@ -153,7 +153,7 @@ public abstract class NetworkServer {
       return m_securityConfig.getShareMapper();
     return null;
 	}
-	
+
 	/**
 	 * Return the available shared device list.
 	 *
@@ -182,7 +182,7 @@ public abstract class NetworkServer {
 
   /**
    * Return the global configuration
-   * 
+   *
    * @return GlobalConfigSection
    */
   public final GlobalConfigSection getGlobalConfiguration() {
@@ -190,10 +190,10 @@ public abstract class NetworkServer {
       m_globalConfig   = (GlobalConfigSection) m_config.getConfigSection( GlobalConfigSection.SectionName);
     return m_globalConfig;
   }
-  
+
   /**
    * Return the security configuration
-   * 
+   *
    * @return SecurityConfigSection
    */
   public final SecurityConfigSection getSecurityConfiguration() {
@@ -201,7 +201,7 @@ public abstract class NetworkServer {
       m_securityConfig = (SecurityConfigSection) m_config.getConfigSection( SecurityConfigSection.SectionName);
     return m_securityConfig;
   }
-  
+
 	/**
 	 * Find the shared device with the specified name.
 	 *
@@ -234,13 +234,13 @@ public abstract class NetworkServer {
 
   /**
    * Determine if the server is enabled
-   * 
+   *
    * @return boolean
    */
   public final boolean isEnabled() {
     return m_enabled;
   }
-  
+
   /**
    * Return the server version string, in 'n.n.n' format
    *
@@ -253,7 +253,7 @@ public abstract class NetworkServer {
 
 	/**
 	 * Check if there is a stored server exception
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasException() {
@@ -262,7 +262,7 @@ public abstract class NetworkServer {
 
 	/**
 	 * Return the stored exception
-	 * 
+	 *
 	 * @return Exception
 	 */
 	public final Exception getException() {
@@ -273,12 +273,12 @@ public abstract class NetworkServer {
 	 * Clear the stored server exception
 	 */
 	public final void clearException() {
-		m_exception = null;	
+		m_exception = null;
 	}
-	
+
 	/**
 	 * Return the server protocol name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getProtocolName() {
@@ -287,7 +287,7 @@ public abstract class NetworkServer {
 
 	/**
 	 * Determine if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
@@ -296,25 +296,25 @@ public abstract class NetworkServer {
 
 	/**
 	 * Determine if the specified debug flag is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebugFlag(int flg) {
 	  return ( m_debugFlags & flg) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the shutdown flag is set
-	 * 
+	 *
 	 * @return boolean
-	 */	
+	 */
 	public final boolean hasShutdown() {
 		return m_shutdown;
 	}
-	
+
 	/**
 	 * Set/clear the server active flag
-	 * 
+	 *
 	 * @param active boolean
 	 */
 	protected void setActive(boolean active) {
@@ -323,7 +323,7 @@ public abstract class NetworkServer {
 
   /**
    * Set/clear the server enabled flag
-   * 
+   *
    * @param ena boolean
    */
   protected void setEnabled(boolean ena) {
@@ -332,7 +332,7 @@ public abstract class NetworkServer {
 
 	/**
 	 * Set the stored server exception
-	 * 
+	 *
 	 * @param ex Exception
 	 */
 	protected final void setException(Exception ex) {
@@ -341,16 +341,16 @@ public abstract class NetworkServer {
 
 	/**
 	 * Set the addresses that the server is bound to
-	 * 
+	 *
 	 * @param addrs InetAddress[]
 	 */
 	protected final void setServerAddresses(InetAddress[] addrs) {
 		m_ipAddr = addrs;
 	}
-	
+
 	/**
 	 * Set the server version
-	 * 
+	 *
 	 * @param ver String
 	 */
 	protected final void setVersion(String ver) {
@@ -359,35 +359,35 @@ public abstract class NetworkServer {
 
 	/**
 	 * Enable/disable debug output for the server
-	 * 
+	 *
 	 * @param dbg boolean
 	 */
 	protected final void setDebug(boolean dbg) {
-		m_debug = dbg;	
+		m_debug = dbg;
 	}
 
 	/**
 	 * Set the debug flags
-	 * 
+	 *
 	 * @param flags int
 	 */
 	protected final void setDebugFlags(int flags) {
 	  m_debugFlags = flags;
 	  setDebug(flags == 0 ? false : true);
 	}
-	
+
 	/**
 	 * Set/clear the shutdown flag
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	protected final void setShutdown(boolean ena) {
 		m_shutdown = ena;
 	}
-	
+
 	/**
 	 * Add a server listener to this server
-	 * 
+	 *
 	 * @param l ServerListener
 	 */
 	public final void addServerListener(ServerListener l) {
@@ -401,7 +401,7 @@ public abstract class NetworkServer {
 	 */
 	public final void removeServerListener(ServerListener l) {
 		if ( m_listener == l)
-			m_listener = null;	
+			m_listener = null;
 	}
 
 	/**
@@ -438,26 +438,26 @@ public abstract class NetworkServer {
 	 * @param event int
 	 */
 	protected final void fireServerEvent(int event) {
-		
+
 		//	Check if there is a listener registered with this server
-		
+
 		if ( m_listener != null) {
 			try {
-				m_listener.serverStatusEvent(this, event);	
+				m_listener.serverStatusEvent(this, event);
 			}
 			catch (Exception ex) {
 			}
 		}
 	}
-	
+
 	/**
 	 * Start the network server
 	 */
 	public abstract void startServer();
-	
+
 	/**
 	 * Shutdown the network server
-	 * 
+	 *
 	 * @param immediate boolean
 	 */
 	public abstract void shutdownServer(boolean immediate);

@@ -23,7 +23,7 @@ import java.util.Vector;
 
 /**
  * Database Data Details List Class
- * 
+ *
  * <p>Contains a list of DBDataDetail objects.
  *
  * @author gkspencer
@@ -31,16 +31,16 @@ import java.util.Vector;
 public class DBDataDetailsList {
 
   //	List of database file/stream id details
-  
+
   private Vector<DBDataDetails> m_list;
-  
+
   /**
    * Default constructor
    */
   public DBDataDetailsList() {
-  
+
   	//	Allocate the list
-  
+
   	m_list = new Vector<DBDataDetails>();
   }
 
@@ -52,7 +52,7 @@ public class DBDataDetailsList {
   public final int numberOfFiles() {
     return m_list.size();
   }
-  
+
   /**
    * Add file details to the list
    *
@@ -61,7 +61,7 @@ public class DBDataDetailsList {
   public final void addFile(DBDataDetails details) {
     m_list.addElement(details);
   }
-  
+
   /**
    * Return the file details at the specified index
    *
@@ -76,7 +76,7 @@ public class DBDataDetailsList {
 
   /**
    * Remove the file at the specified index within the list
-   * 
+   *
    * @param idx int
    * @return DBDataDetails
    */
@@ -87,7 +87,7 @@ public class DBDataDetailsList {
     m_list.removeElementAt(idx);
     return dbDetails;
   }
-  
+
   /**
    * Clear the file details from the list
    */

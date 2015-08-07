@@ -31,20 +31,20 @@ import org.alfresco.jlan.locking.FileLock;
 public class ClusterFileLock extends FileLock implements Serializable {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// Lock owner node address/unique name
-	
+
 	private String m_ownerNode;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public ClusterFileLock() {
 		super( 0, 0, -1);
 	}
-	
+
 	/**
 	 * Class constructor
 	 *
@@ -55,33 +55,33 @@ public class ClusterFileLock extends FileLock implements Serializable {
 	 */
 	public ClusterFileLock( ClusterNode ownerNode, long offset, long len, int pid) {
 		super( offset, len, pid);
-		
+
 		m_ownerNode = ownerNode.getName();
-		
+
 		// Use the top half of the process id to add the node id, to make the PID unique
 		// across the cluster
-		
+
 		pid += ownerNode.getPriority() << 16;
 		setProcessId( pid);
 	}
 
 	/**
 	 * Return the owner node address
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getOwnerNode() {
 		return m_ownerNode;
 	}
-	
+
 	/**
 	 * Return the lock details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-  	
+
 		str.append("[Owner=");
 		str.append(getOwnerNode());
 		str.append(",PID=");
@@ -93,7 +93,7 @@ public class ClusterFileLock extends FileLock implements Serializable {
 		str.append(",Len=");
 		str.append(getLength());
 		str.append("]");
-  	
+
 		return str.toString();
 	}
 }

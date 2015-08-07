@@ -38,7 +38,7 @@ public class TooManyFilesException extends Exception {
 
   /**
    * TooManyFilesException constructor.
-   * 
+   *
    * @param s java.lang.String
    */
   public TooManyFilesException(String s) {

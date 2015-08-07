@@ -28,54 +28,54 @@ import org.alfresco.jlan.util.StringList;
 
 /**
  * Eventlog Record Class
- * 
+ *
  * <p>Contains the details of an eventlog record in a remote event log.
- * 
+ *
  * @author gkspencer
  */
 public class EventlogRecord implements DCEReadable {
 
 	//	Event types
-	
+
 	public static final int TypeSuccess		= 0x0000;
 	public static final int TypeError		= 0x0001;
 	public static final int TypeWarning		= 0x0002;
 	public static final int TypeInformation	=	0x0004;
 	public static final int TypeAuditSuccess= 0x0008;
 	public static final int TypeAuditFailure= 0x0010;
-	
+
 	//  Event id masks
-  
+
 	public static final int IdSeverityMask  = 0x80000000;
 	public static final int IdCustomerCode  = 0x20000000;
 	public static final int IdFacilityMask  = 0x0FFF0000;
 	public static final int IdEventCodeMask = 0x0000FFFF;
-  
+
 	//  Event id severity codes
-  
+
 	public static final int SeveritySuccess = 0;
 	public static final int SeverityInfo    = 0x40000000;
 	public static final int SeverityWarn    = 0x80000000;
   	public static final int SeverityError   = 0xC0000000;
-  
+
 	//	Record details
-	
+
 	private int m_recno;
 	private Date m_timeGenerated;
 	private Date m_timeWritten;
-	
+
 	//	Event details
-	
+
 	private int m_eventId;
 	private int m_eventType;
 	private int m_eventCategory;
-	
+
 	//	Strings and event data
 
 	private String m_source;
 	private String m_computer;
 	private StringList m_strings;
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -84,7 +84,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the record number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getRecordNumber() {
@@ -93,7 +93,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the time the event was generated
-	 * 
+	 *
 	 * @return Date
 	 */
 	public final Date getTimeGenerated() {
@@ -102,7 +102,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the time the event was written
-	 * 
+	 *
 	 * @return Date
 	 */
 	public final Date getTimeWritten() {
@@ -111,7 +111,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the raw/unmasked event id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getRawEventId() {
@@ -120,7 +120,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getEventId() {
@@ -129,7 +129,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event severity
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getEventSeverity() {
@@ -138,7 +138,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event facility code
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getEventFacility() {
@@ -147,7 +147,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Check if this is a system or customer event
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isCustomerEvent() {
@@ -156,7 +156,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getEventType() {
@@ -165,7 +165,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event type as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getEventTypeAsString() {
@@ -197,7 +197,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event severity as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getEventSeverityAsString() {
@@ -223,7 +223,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event category
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getEventCategory() {
@@ -232,7 +232,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event source
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getEventSource() {
@@ -241,7 +241,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event that generated the event
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getEventHost() {
@@ -250,7 +250,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event strings
-	 * 
+	 *
 	 * @return StringList
 	 */
 	public final StringList getEventStringList() {
@@ -259,7 +259,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the event strings as a concatenated string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getEventString() {
@@ -290,7 +290,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Read the eventlog record from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -353,7 +353,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Read the strings for this object from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -365,7 +365,7 @@ public class EventlogRecord implements DCEReadable {
 
 	/**
 	 * Return the eventlog record as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

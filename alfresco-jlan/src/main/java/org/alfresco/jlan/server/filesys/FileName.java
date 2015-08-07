@@ -36,14 +36,14 @@ public final class FileName {
 	public static final String DOS_SEPERATOR_STR 	= "\\";
 
 	//	NTFS Stream seperator
-	
+
 	public static final String NTFSStreamSeperator	= ":";
 
 	// Data stream names
-	
+
 	public static final String MainDataStreamName	= "::$DATA";
 	public static final String DataStreamName		= ":$DATA";
-	
+
   /**
    * Build a path using the specified components.
    *
@@ -121,7 +121,7 @@ public final class FileName {
       return convertSeperators(fullPath.toString(), sep);
     return fullPath.toString();
   }
-  
+
   /**
    * Convert the file seperators in a path to the specified path seperator character.
    *
@@ -349,7 +349,7 @@ public final class FileName {
 
     return mappedPath;
   }
-  
+
   /**
    * Remove the file name from the specified path string.
    *
@@ -368,7 +368,7 @@ public final class FileName {
 
     return "";
   }
-  
+
   /**
    * Split the path into seperate directory path and file name strings.
    *
@@ -378,7 +378,7 @@ public final class FileName {
   public static String[] splitPath(String path) {
   	return splitPath(path, DOS_SEPERATOR, null);
   }
-  
+
 	/**
 	 * Split the path into seperate directory path and file name strings.
 	 *
@@ -389,21 +389,21 @@ public final class FileName {
 	public static String[] splitPath(String path, char sep) {
 		return splitPath(path, sep, null);
 	}
-	
+
   /**
    * Split the path into seperate directory path and file name strings.
    *
    * @param path  Full path string.
    * @param sep   Path seperator character.
    * @param list	String list to return values in, or null to allocate
-   * @return String[] 
+   * @return String[]
    */
   public static String[] splitPath(String path, char sep, String[] list) {
 
     //  Create an array of strings to hold the path and file name strings
 
     String[] pathStr = list;
-    if ( pathStr == null) 
+    if ( pathStr == null)
     	pathStr = new String[2];
 
     //  Check if the path is valid
@@ -449,37 +449,37 @@ public final class FileName {
 
     return pathStr;
   }
-  
+
   /**
    * Split the path into all the component directories and filename
-   * 
+   *
    * @param path String
    * @return String[]
    */
   public static String[] splitAllPaths(String path) {
-  	
+
   	//	Check if the path is valid
-  	
+
   	if ( path == null || path.length() == 0)
   		return null;
-  	
+
   	//	Determine the number of components in the path
-  	
+
   	StringTokenizer token = new StringTokenizer(path,DOS_SEPERATOR_STR);
   	String[] names = new String[token.countTokens()];
-  	
+
   	//	Split the path
-  	
+
   	int i = 0;
-  	
+
   	while ( i < names.length && token.hasMoreTokens())
   		names[i++] = token.nextToken();
-  		
+
   	//	Return the path components
-  	
+
   	return names;
   }
-  
+
   /**
    * Split a path string into directory path, file name and stream name components
    *
@@ -487,44 +487,44 @@ public final class FileName {
 	 * @return java.lang.String[]
    */
   public static String[] splitPathStream(String path) {
-  	
+
   	//	Allocate the return list
-  	
+
   	String[] pathStr = new String[3];
-  	
+
   	//	Split the path into directory path and file/stream name
-  	
+
   	FileName.splitPath(path, DOS_SEPERATOR, pathStr);
   	if ( pathStr[1] == null)
   		return pathStr;
-  		
+
   	//	Split the file name into file and stream names
-  	
+
   	int pos = pathStr[1].indexOf(NTFSStreamSeperator);
-  	
+
   	if ( pos != -1) {
-  		
+
   		//	Split the file/stream name
-  		
+
   		pathStr[2] = pathStr[1].substring(pos);
   		pathStr[1] = pathStr[1].substring(0,pos);
   	}
-  	
+
   	//	Return the path components list
-  	
+
   	return pathStr;
   }
-  
+
   /**
    * Test if a file name contains an NTFS stream name
-   * 
+   *
    * @param path String
    * @return boolean
    */
   public static boolean containsStreamName(String path) {
-  	
+
   	//	Check if the path contains the stream name seperator character
-  	
+
   	if ( path.indexOf(NTFSStreamSeperator) != -1)
   		return true;
   	return false;
@@ -532,115 +532,115 @@ public final class FileName {
 
 	/**
 	 * Normalize the path to uppercase the directory names and keep the case of the file name.
-	 * 
+	 *
 	 * @param path String
 	 * @return String
 	 */
-	public final static String normalizePath(String path) {	
-		
+	public final static String normalizePath(String path) {
+
 		//	Split the path into directories and file name, only uppercase the directories to normalize
 		//	the path.
 
 		String normPath = path;
-				
+
 		if ( path.length() > 3) {
-			
+
 			//	Split the path to seperate the folders/file name
-			
+
 			int pos = path.lastIndexOf(DOS_SEPERATOR);
 			if ( pos != -1) {
-				
+
 				//	Get the path and file name parts, normalize the path
-				
+
 				String pathPart = path.substring(0, pos).toUpperCase();
 				String namePart = path.substring(pos);
-				
+
 				//	Rebuild the path string
-				
+
 				normPath = pathPart + namePart;
 			}
 		}
-		
+
 		//	Return the normalized path
-		
+
 		return normPath;
 	}
-	
+
 	/**
 	 * Make a path relative to the base path for the specified path.
-	 * 
+	 *
 	 * @param basePath String
 	 * @param fullPath String
 	 * @return String
 	 */
 	public final static String makeRelativePath(String basePath, String fullPath) {
-	  
+
 	  //	Check if the base path is the root path
-	  
+
 	  if ( basePath.length() == 0 || basePath.equals(DOS_SEPERATOR_STR)) {
-	    
+
 	    //	Return the full path, strip any leading seperator
-	    
+
 	    if ( fullPath.length() > 0 && fullPath.charAt(0) == DOS_SEPERATOR)
 	      return fullPath.substring(1);
 	    return fullPath;
 	  }
-	  
+
 	  //	Split the base and full paths into seperate components
-	  
+
 	  String[] baseNames = splitAllPaths(basePath);
 	  String[] fullNames = splitAllPaths(fullPath);
-	  
+
 	  //	Check that the full path is actually within the base path tree
-	  
+
 	  if ( baseNames != null && baseNames.length > 0 && fullNames != null && fullNames.length > 0 &&
 	       baseNames[0].equalsIgnoreCase(fullNames[0]) == false)
 	    return null;
 
 	  //	Match the path names
-	    
+
 	  int idx = 0;
-	  
+
 	  while ( idx < baseNames.length && idx < fullNames.length &&
 	          baseNames[idx].equalsIgnoreCase(fullNames[idx]))
 	    idx++;
-	  
+
 	  //	Build the relative path
-	  
+
 	  StringBuffer relPath = new StringBuffer(128);
-	  
+
 	  while ( idx < fullNames.length) {
 	    relPath.append(fullNames[idx++]);
 	    if ( idx < fullNames.length)
 	      relPath.append(DOS_SEPERATOR);
 	  }
-	  
+
 	  //	Return the relative path
-	  
+
 	  return relPath.toString();
 	}
-	
+
 	/**
 	 * Get the path to the parent file of an NTFS stream
-	 * 
+	 *
 	 * @param streamPath String
 	 * @return String
 	 */
 	public final static String getParentPathForStream( String streamPath) {
-		
+
 		// Validate the path
-		
+
 		if ( streamPath == null)
 			return null;
-		
+
 		// Find the stream name within the path
-		
+
 		int idx = streamPath.indexOf( NTFSStreamSeperator);
 		if ( idx == -1)
 			return streamPath;
-		
+
 		// Remvoe the stream name from the end of the path
-		
+
 		return streamPath.substring( 0, idx);
 	}
 }

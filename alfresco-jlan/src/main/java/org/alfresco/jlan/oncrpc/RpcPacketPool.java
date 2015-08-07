@@ -25,10 +25,10 @@ import org.alfresco.jlan.debug.Debug;
 
 /**
  * Rpc Packet Pool Class
- * 
+ *
  * <p>
  * Contains a pool of small and large RpcPacket objects for use by multi-threaded RPC servers.
- * 
+ *
  * @author gkspencer
  */
 public class RpcPacketPool {
@@ -89,7 +89,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param smallSize int
 	 * @param smallLimit int
 	 * @param largeSize int
@@ -113,7 +113,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param largeSize int
 	 * @param largeLimit int
 	 */
@@ -135,7 +135,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Return the small packet size
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSmallPacketSize() {
@@ -144,7 +144,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Return the count of allocated small packets
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSmallPacketCount() {
@@ -153,7 +153,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Return the small packet allocation limit
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSmallPacketAllocationLimit() {
@@ -162,7 +162,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Return the count of available large packets
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int availableLargePackets() {
@@ -171,7 +171,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Return the large packet size
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLargePacketSize() {
@@ -180,7 +180,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Return the count of allocated large packets
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLargePacketCount() {
@@ -189,7 +189,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Return the large packet allocation limit
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLargePacketAllocationLimit() {
@@ -198,7 +198,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Return the count of available small packets
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int availableSmallPackets() {
@@ -207,7 +207,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Allocate a packet from the packet pool
-	 * 
+	 *
 	 * @param reqSize int
 	 * @return RpcPacket
 	 */
@@ -249,7 +249,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Release an RPC packet back to the pool
-	 * 
+	 *
 	 * @param pkt RpcPacket
 	 */
 	public final void releasePacket(RpcPacket pkt) {
@@ -301,7 +301,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Allocate, or create, a small RPC packet
-	 * 
+	 *
 	 * @return RpcPacket
 	 */
 	private final RpcPacket allocateSmallPacket() {
@@ -356,7 +356,7 @@ public class RpcPacketPool {
 
 	/**
 	 * Allocate, or create, a large RPC packet
-	 * 
+	 *
 	 * @return RpcPacket
 	 */
 	private final RpcPacket allocateLargePacket() {

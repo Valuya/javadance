@@ -77,11 +77,11 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * mySQL Database Interface Class
- * 
+ *
  * <p>
  * mySQL specific implementation of the database interface used by the database filesystem driver
  * (DBDiskDriver).
- * 
+ *
  * @author gkspencer
  */
 public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterface, DBDataInterface, DBObjectIdInterface {
@@ -95,9 +95,9 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 	public final static String LockFileName = "MySQLLoader.lock";
 
 	// MySQL error codes
-	
+
 	private static final int ErrorDuplicateEntry	= 1062;
-	
+
 	// Database connection and prepared statement used to write file requests to the queue tables
 
 	private Connection m_dbConn;
@@ -113,7 +113,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the database interface name
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getDBInterfaceName() {
@@ -122,7 +122,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get the supported database features mask
-	 * 
+	 *
 	 * @return int
 	 */
 	protected int getSupportedFeatures() {
@@ -134,7 +134,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Initialize the database interface
-	 * 
+	 *
 	 * @param dbCtx DBDeviceContext
 	 * @param params ConfigElement
 	 * @exception InvalidConfigurationException
@@ -439,7 +439,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Check if a file/folder exists
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fname String
 	 * @return FileStatus.NotExist, FileStatus.FileExists or FileStatus.DirectoryExists
@@ -517,7 +517,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Create a file record for a new file or folder
-	 * 
+	 *
 	 * @param fname String
 	 * @param dirId int
 	 * @param params FileOpenParams
@@ -561,9 +561,9 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 			ResultSet rs = stmt.executeQuery(qsql);
 			if ( rs.next()) {
-				
+
 				// File record already exists, return the existing file id
-				
+
 				fileId = rs.getInt("FileId");
 				Debug.println("File record already exists for " + fname + ", fileId=" + fileId);
 				return fileId;
@@ -669,19 +669,19 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 			}
 		}
 		catch ( SQLException ex) {
-			
+
 			// Check for a duplicate key error, another client may have created the file
-			
+
 			if ( ex.getErrorCode() == ErrorDuplicateEntry) {
-				
+
 				// Flag that a duplicate key error occurred, we can return the previously allocated file id
-				
+
 				duplicateKey = true;
 			}
 			else {
-				
+
 				// Rethrow the exception
-			
+
 				throw new DBException(ex.toString());
 			}
 		}
@@ -725,11 +725,11 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 		}
 
 		// If a duplicate key error occurred get the previously allocated file id
-		
+
 		if ( duplicateKey == true) {
-			
+
 			// Get the previously allocated file id for the file record
-			
+
 			fileId = getFileId(dirId, fname, false, true);
 
 			// DEBUG
@@ -737,7 +737,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 			if ( Debug.EnableInfo && hasSQLDebug())
 				Debug.println("[mySQL] Duplicate key error, lookup file id, dirId=" + dirId + ", fname=" + fname + ", fid=" + fileId);
 		}
-		
+
 		// Return the allocated file id
 
 		return fileId;
@@ -745,7 +745,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Create a stream record for a new file stream
-	 * 
+	 *
 	 * @param sname String
 	 * @param fid int
 	 * @return int
@@ -844,7 +844,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a file or folder record
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param markOnly boolean
@@ -886,7 +886,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 				ResultSet rs = stmt.executeQuery( "SELECT * FROM " + getFileSysTableName() + " WHERE FileId = " + fid);
 				while ( rs.next())
 					Debug.println( "Found file " + rs.getString( "FileName"));
-			
+
 				throw new DBException( "Failed to delete file record for fid=" + fid);
 			}
 
@@ -940,7 +940,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a file stream record
-	 * 
+	 *
 	 * @param fid int
 	 * @param stid int
 	 * @param markOnly boolean
@@ -1006,7 +1006,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Set file information for a file or folder
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param finfo FileInfo
@@ -1178,7 +1178,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Set information for a file stream
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param stid int
@@ -1293,7 +1293,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get the id for a file/folder, or -1 if the file/folder does not exist.
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fname String
 	 * @param dirOnly boolean
@@ -1414,7 +1414,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get information for a file or folder
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param infoLevel int
@@ -1601,7 +1601,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get information for a file stream
-	 * 
+	 *
 	 * @param fid int
 	 * @param stid int
 	 * @param infoLevel int
@@ -1740,7 +1740,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the list of streams for the specified file
-	 * 
+	 *
 	 * @param fid int
 	 * @param infoLevel int
 	 * @return StreamInfoList
@@ -1891,7 +1891,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Rename a file or folder, may also change the parent directory.
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param newName String
@@ -1966,7 +1966,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Rename a file stream
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param stid int
@@ -1982,7 +1982,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 	/**
 	 * Return the retention period expiry date/time for the specified file, or zero if the
 	 * file/folder is not under retention.
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @return RetentionDetails
@@ -2050,7 +2050,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Start a directory search
-	 * 
+	 *
 	 * @param dirId int
 	 * @param searchPath String
 	 * @param attrib int
@@ -2185,7 +2185,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the used file space, or -1 if not supported.
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getUsedFileSpace() {
@@ -2250,7 +2250,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Queue a file request.
-	 * 
+	 *
 	 * @param req FileRequest
 	 * @exception DBException
 	 */
@@ -2367,7 +2367,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 	/**
 	 * Perform a queue cleanup deleting temporary cache files that do not have an associated save or
 	 * transaction request.
-	 * 
+	 *
 	 * @param tempDir File
 	 * @param tempDirPrefix String
 	 * @param tempFilePrefix String
@@ -2837,7 +2837,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Check if the specified temporary file has a queued request.
-	 * 
+	 *
 	 * @param tempFile String
 	 * @param lastFile boolean
 	 * @return boolean
@@ -2924,7 +2924,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a file request from the pending queue.
-	 * 
+	 *
 	 * @param fileReq FileRequest
 	 * @exception DBException
 	 */
@@ -2994,7 +2994,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load a block of file request from the database into the specified queue.
-	 * 
+	 *
 	 * @param fromSeqNo int
 	 * @param reqType int
 	 * @param reqQueue FileRequestQueue
@@ -3095,7 +3095,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load a transaction request from the queue.
-	 * 
+	 *
 	 * @param tranReq MultiplFileRequest
 	 * @return MultipleFileRequest
 	 * @exception DBException
@@ -3177,7 +3177,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Shutdown the database interface, release resources.
-	 * 
+	 *
 	 * @param context DBDeviceContext
 	 */
 	public void shutdownDatabase(DBDeviceContext context) {
@@ -3189,7 +3189,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get the retention expiry date/time for a file/folder
-	 * 
+	 *
 	 * @param conn Connection
 	 * @param stmt Statement
 	 * @param fid int
@@ -3230,7 +3230,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Determine if the specified file/folder is still within an active retention period
-	 * 
+	 *
 	 * @param conn Connection
 	 * @param stmt Statement
 	 * @param fid int
@@ -3258,7 +3258,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Create the prepared statements used by the file request queueing database
-	 * 
+	 *
 	 * @exception SQLException
 	 */
 	protected final void createQueueStatements()
@@ -3299,7 +3299,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the file data details for the specified file or stream.
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @return DBDataDetails
@@ -3385,7 +3385,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the maximum data fragment size supported
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getMaximumFragmentSize() {
@@ -3394,7 +3394,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load file data from the database into a temporary/local file
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param fileSeg FileSegment
@@ -3554,7 +3554,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load Jar file data from the database into a temporary file
-	 * 
+	 *
 	 * @param jarId int
 	 * @param jarSeg FileSegment
 	 * @throws DBException
@@ -3672,7 +3672,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Save the file data from the temporary/local file to the database
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param fileSeg FileSegment
@@ -3854,7 +3854,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Save the file data from a Jar file to the database
-	 * 
+	 *
 	 * @param jarPath String
 	 * @param fileList DBDataDetailsList
 	 * @return int
@@ -3969,7 +3969,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete the file data for the specified file/stream
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @throws DBException
@@ -4043,7 +4043,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete the file data for the specified Jar file
-	 * 
+	 *
 	 * @param jarId int
 	 * @throws DBException
 	 * @throws IOException
@@ -4111,7 +4111,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Create a file id to object id mapping
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param objectId String
@@ -4192,7 +4192,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load the object id for the specified file id
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @return String
@@ -4266,7 +4266,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a file id/object id mapping
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param objectId String
@@ -4330,7 +4330,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the data for a symbolic link
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @return String
@@ -4405,7 +4405,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a symbolic link record
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @exception DBException
@@ -4469,7 +4469,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Convert a file id to a share relative path
-	 * 
+	 *
 	 * @param fileid int
 	 * @param stmt Statement
 	 * @return String

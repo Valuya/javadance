@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb.dcerpc.server;
 
 /**
  * DCE Pipe Handler Class
- * 
+ *
  * <p>Contains a list of the available DCE pipe handlers.
  *
  * @author gkspencer
@@ -29,7 +29,7 @@ package org.alfresco.jlan.smb.dcerpc.server;
 public class DCEPipeHandler {
 
 	//	DCE/RPC pipe request handlers
-	
+
 	private static DCEHandler[] _handlers = { new SrvsvcDCEHandler(),
 	  																 				null,				// samr
 	  																 				null,				// winreg
@@ -42,10 +42,10 @@ public class DCEPipeHandler {
 	  																 				null,				// eventlog
 	  																 				null				// netlogon1
 	};
-	
+
 	/**
 	 * Return the DCE/RPC request handler for the pipe type
-	 * 
+	 *
 	 * @param typ int
 	 * @return DCEHandler
 	 */

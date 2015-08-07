@@ -26,7 +26,7 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * Users Interface
- * 
+ *
  * <p>Provides the user account information for the authenticator class.
  *
  * @author gkspencer
@@ -35,17 +35,17 @@ public interface UsersInterface {
 
   /**
    * Initialize the users interface
-   * 
+   *
    * @param config ServerConfiguration
    * @param params ConfigElement
    * @exception InvalidConfigurationException
    */
   void initializeUsers(ServerConfiguration config, ConfigElement params)
     throws InvalidConfigurationException;
-  
+
   /**
    * Return the specified user account details
-   * 
+   *
    * @param userName String
    * @return UserAccount
    */

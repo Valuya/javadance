@@ -27,7 +27,7 @@ import java.util.TimeZone;
 
 /**
  * FTP Date Utility Class
- * 
+ *
  * @author gkspencer
  */
 public class FTPDate {
@@ -48,24 +48,24 @@ public class FTPDate {
 	protected final static SimpleDateFormat _mlstFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 	protected final static SimpleDateFormat _mlstFormatLong = new SimpleDateFormat("yyyyMMddHHmmss.SSS");
 
-	
+
 	/**
 	 * Static initializer
 	 */
 	static {
-	
+
 		// Set the formatters to UTC
-		
+
 		_mlstFormat.setTimeZone( TimeZone.getTimeZone( "UTC"));
 		_mlstFormatLong.setTimeZone( TimeZone.getTimeZone( "UTC"));
 	}
-	
+
 	/**
 	 * Pack a date string in Unix format
-	 * 
+	 *
 	 * The format is 'Mmm dd hh:mm' if the file is less than six months old, else the format is 'Mmm
 	 * dd yyyy'.
-	 * 
+	 *
 	 * @param buf StringBuffer
 	 * @param dt Date
 	 */
@@ -128,7 +128,7 @@ public class FTPDate {
 
 	/**
 	 * Return a machine listing date/time, in the format 'YYYYMMDDHHSS'.
-	 * 
+	 *
 	 * @param dateTime long
 	 * @return String
 	 */
@@ -138,7 +138,7 @@ public class FTPDate {
 
 	/**
 	 * Return a machine listing date/time, in the format 'YYYYMMDDHHSS.sss'.
-	 * 
+	 *
 	 * @param dateTime long
 	 * @return String
 	 */

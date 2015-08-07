@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys;
 
 /**
  * I/O Control Not Implemented Exception Class
- * 
+ *
  * <p>This exception may be thrown by an IOCtlInterface implementation.
  *
  * @author gkspencer
@@ -39,7 +39,7 @@ public class IOControlNotImplementedException extends Exception {
 
   /**
    * Class constructor.
-   * 
+   *
    * @param s java.lang.String
    */
   public IOControlNotImplementedException(String s) {

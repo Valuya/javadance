@@ -26,7 +26,7 @@ import org.alfresco.jlan.server.filesys.cache.cluster.ClusterNode;
 
 /**
  * File State Update Message Class
- * 
+ *
  * <p>Used to send low priority file state update notifications to the cluster.
  *
  * @author gkspencer
@@ -34,38 +34,38 @@ import org.alfresco.jlan.server.filesys.cache.cluster.ClusterNode;
 public class StateUpdateMessage extends ClusterMessage {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// Update path
-	
+
 	private String m_path;
-	
+
 	// Update mask
-	
+
 	private int m_updateMask;
-	
+
 	// Update values
-	
+
 	private int m_fileStatus;
 	private int m_fileStsReason;
-	
+
 	private long m_fileSize;
 	private long m_allocSize;
-	
+
 	private long m_changeDate;
 	private long m_modifyDate;
 	private long m_retentionDate;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public StateUpdateMessage() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param targetNode String
 	 * @param fromNode ClusterNode
 	 * @param clState ClusterFileState
@@ -73,148 +73,148 @@ public class StateUpdateMessage extends ClusterMessage {
 	 */
 	public StateUpdateMessage( String targetNode, ClusterNode fromNode, ClusterFileState clState, int updateMask) {
 		super ( targetNode, fromNode, ClusterMessageType.FileStateUpdate);
-		
+
 		// Set the update mask and path
-		
+
 		m_updateMask = updateMask;
 		m_path = clState.getPath();
-		
+
 		// Set the updated values
-		
+
 		if ( hasUpdate ( ClusterFileState.UpdateFileStatus)) {
 			m_fileStatus = clState.getFileStatus();
 			m_fileStsReason = clState.getStatusChangeReason();
 		}
-		
+
 		if ( hasUpdate( ClusterFileState.UpdateFileSize))
 			m_fileSize = clState.getFileSize();
 		if ( hasUpdate( ClusterFileState.UpdateAllocSize))
 			m_allocSize = clState.getAllocationSize();
-		
+
 		if ( hasUpdate( ClusterFileState.UpdateChangeDate))
 			m_changeDate = clState.getChangeDateTime();
 		if ( hasUpdate( ClusterFileState.UpdateModifyDate))
 			m_modifyDate = clState.getModifyDateTime();
-			
+
 		if ( hasUpdate( ClusterFileState.UpdateRetentionExpire))
 			m_retentionDate = clState.getRetentionExpiryDateTime();
 	}
-	
+
 	/**
 	 * Check if the spceified value has an update
-	 * 
+	 *
 	 * @param upd int
 	 */
 	public boolean hasUpdate( int upd) {
 		return ( m_updateMask & upd) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Return the update mask
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getUpdateMask() {
 		return m_updateMask;
 	}
-	
+
 	/**
 	 * Return the path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPath() {
 		return m_path;
 	}
-	
+
 	/**
 	 * Return the file status
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileStatus() {
 		return m_fileStatus;
 	}
-	
+
     /**
      * Return the file status change reason code
-     * 
+     *
      * @return int
      */
     public final int getStatusChangeReason() {
     	return m_fileStsReason;
     }
-    
+
 	/**
 	 * Return the file size
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getFileSize() {
 		return m_fileSize;
 	}
-	
+
 	/**
 	 * Return the file allocation size
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getAllocationSize() {
 		return m_allocSize;
 	}
-	
+
 	/**
 	 * Return the change date/time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getChangeDateTime() {
 		return m_changeDate;
 	}
-	
+
 	/**
 	 * Return the modification date/time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getModificationDateTime() {
 		return m_modifyDate;
 	}
-	
+
 	/**
 	 * Return the retention expiry date/time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getRetentionDateTime() {
 		return m_retentionDate;
 	}
-	
+
 	/**
 	 * Return the state update message as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[");
 		str.append( super.toString());
 		str.append( ",path=");
 		str.append( getPath());
 		str.append(",updates=");
 		str.append(ClusterFileState.getUpdateMaskAsString( getUpdateMask()));
-		
+
 		if ( hasUpdate ( ClusterFileState.UpdateFileStatus)) {
 			str.append(",fileSts=");
 			str.append(FileStatus.asString( getFileStatus()));
-			
+
 			if ( getStatusChangeReason() != FileState.ReasonNone) {
 				str.append(",reason=");
 				str.append( FileState.getChangeReasonString( getStatusChangeReason()));
 			}
 		}
-		
+
 		if ( hasUpdate( ClusterFileState.UpdateFileSize)) {
 			str.append(",fsize=");
 			str.append(getFileSize());
@@ -223,7 +223,7 @@ public class StateUpdateMessage extends ClusterMessage {
 			str.append(",alloc=");
 			str.append(getAllocationSize());
 		}
-		
+
 		if ( hasUpdate( ClusterFileState.UpdateChangeDate)) {
 			str.append(",change=");
 			str.append(getChangeDateTime());
@@ -232,13 +232,13 @@ public class StateUpdateMessage extends ClusterMessage {
 			str.append(",modify=");
 			str.append(getModificationDateTime());
 		}
-			
+
 		if ( hasUpdate( ClusterFileState.UpdateRetentionExpire)) {
 			str.append(",retain=");
 			str.append(getRetentionDateTime());
 		}
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

@@ -26,7 +26,7 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * FTP SITE Command Interface
- * 
+ *
  * <p>Optional interface that is used to provide processing for the FTP SITE command.
  *
  * @author gkspencer
@@ -35,15 +35,15 @@ public interface FTPSiteInterface {
 
   /**
    * Initialize the site interface
-   * 
+   *
    * @param config ServerConfiguration
    * @param params ConfigElement
    */
   void initializeSiteInterface( ServerConfiguration config, ConfigElement params);
-  
+
   /**
    * Process an FTP SITE specific command
-   * 
+   *
    * @param sess FTPSrvSession
    * @param req FTPRequest
    */

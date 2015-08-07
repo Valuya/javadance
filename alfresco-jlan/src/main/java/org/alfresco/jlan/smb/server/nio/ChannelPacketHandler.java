@@ -28,10 +28,10 @@ import org.alfresco.jlan.smb.server.PacketHandler;
 
 /**
  * Channel Packet Handler Class
- * 
+ *
  * <p>
  * Provides the base class for Java SocketChannel based packet handler implementations.
- * 
+ *
  * @author gkspencer
  */
 public abstract class ChannelPacketHandler extends PacketHandler {
@@ -41,12 +41,12 @@ public abstract class ChannelPacketHandler extends PacketHandler {
 	private SocketChannel m_sockChannel;
 
 	// Buffer to read the request header
-	
+
 	protected byte[] m_headerBuf = new byte[4];
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sockChannel SocketChannel
 	 * @param typ int
 	 * @param name String
@@ -72,16 +72,16 @@ public abstract class ChannelPacketHandler extends PacketHandler {
 
 	/**
 	 * Return the socket channel
-	 * 
+	 *
 	 * @return SocketChannel
 	 */
 	public final SocketChannel getSocketChannel() {
 		return m_sockChannel;
 	}
-	
+
 	/**
 	 * Return the count of available bytes in the receive input stream
-	 * 
+	 *
 	 * @return int
 	 * @exception IOException If a network error occurs.
 	 */
@@ -93,7 +93,7 @@ public abstract class ChannelPacketHandler extends PacketHandler {
 
 	/**
 	 * Read bytes from the socket channel
-	 * 
+	 *
 	 * @param pkt byte[]
 	 * @param offset int
 	 * @param len int
@@ -104,14 +104,14 @@ public abstract class ChannelPacketHandler extends PacketHandler {
 		throws IOException {
 
 		// Wrap the buffer and read into it
-		
+
 		ByteBuffer buf = ByteBuffer.wrap( pkt, offset, len);
 		return m_sockChannel.read( buf);
 	}
 
 	/**
 	 * Write bytes to the output socket channel
-	 * 
+	 *
 	 * @param pkt byte[]
 	 * @param off int
 	 * @param len int
@@ -121,16 +121,16 @@ public abstract class ChannelPacketHandler extends PacketHandler {
 		throws IOException {
 
 		// Wrap the buffer and output to the socket channel
-		
+
 		ByteBuffer buf = ByteBuffer.wrap( pkt, off, len);
-		
+
 		while ( buf.hasRemaining())
 			m_sockChannel.write( buf);
 	}
 
 	/**
 	 * Flush the output socket
-	 * 
+	 *
 	 * @exception IOException If a network error occurs
 	 */
 	public void flushPacket()
@@ -145,16 +145,16 @@ public abstract class ChannelPacketHandler extends PacketHandler {
 		// Close the socket channel
 
 		if ( m_sockChannel != null) {
-			
+
 			try {
-				
+
 				// Close the associated socket
-				
+
 				if ( m_sockChannel.socket() != null)
 					m_sockChannel.socket().close();
-				
+
 				// Close the channel
-				
+
 				m_sockChannel.close();
 			}
 			catch (IOException ex) {

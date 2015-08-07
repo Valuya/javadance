@@ -91,10 +91,10 @@ import org.xml.sax.InputSource;
 
 /**
  * Cifs Only XML File Server Configuration Class
- * 
+ *
  * <p>
  * XML implementation of the SMB server configuration.
- * 
+ *
  * @author gkspencer
  */
 public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
@@ -123,30 +123,30 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 	private static final String _driveLetters = "CDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	// Default thread pool size
-	
+
 	private static final int DefaultThreadPoolInit	= 25;
 	private static final int DefaultThreadPoolMax	= 50;
-	
+
 	// Default memory pool settings
-	
+
 	private static final int[] DefaultMemoryPoolBufSizes  = { 256, 4096, 16384, 66000 };
 	private static final int[] DefaultMemoryPoolInitAlloc = {  20,   20,     5,     5 };
 	private static final int[] DefaultMemoryPoolMaxAlloc  = { 100,   50,    50,    50 };
-	
+
 	// Memory pool packet size limits
-	
+
 	private static final int MemoryPoolMinimumPacketSize	= 256;
-	private static final int MemoryPoolMaximumPacketSize	= 128 * (int) MemorySize.KILOBYTE; 
-		
+	private static final int MemoryPoolMaximumPacketSize	= 128 * (int) MemorySize.KILOBYTE;
+
 	// Memory pool allocation limits
-	
+
 	private static final int MemoryPoolMinimumAllocation	= 5;
 	private static final int MemoryPoolMaximumAllocation    = 500;
-	
+
 	// Maximum session timeout
-	
+
 	private static final int MaxSessionTimeout				= 60 * 60;	// 1 hour
-	
+
 	// Date formatter
 
 	private SimpleDateFormat m_dateFmt = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
@@ -160,7 +160,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Load the configuration from the specified file.
-	 * 
+	 *
 	 * @param fname java.lang.String
 	 * @exception IOException
 	 * @exception InvalidConfigurationException
@@ -180,7 +180,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Load the configuration from the specified input stream
-	 * 
+	 *
 	 * @param in Reader
 	 * @exception IOException
 	 * @exception InvalidConfigurationException
@@ -224,7 +224,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Load the configuration from the specified document
-	 * 
+	 *
 	 * @param doc Document
 	 * @exception IOException
 	 * @exception InvalidConfigurationException
@@ -250,9 +250,9 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 			procDebugElement(findChildNode("debug", childNodes));
 
 			// Process the core server configuration settings
-			
+
 			procServerCoreElement(findChildNode("server-core", childNodes));
-			
+
 			// Process the global configuration settings
 
 			procGlobalElement(findChildNode("global", childNodes));
@@ -283,7 +283,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Process the server core settings XML element
-	 * 
+	 *
 	 * @param srvCore Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -297,147 +297,147 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 		// Check if the server core element has been specified
 
 		if ( srvCore == null) {
-			
+
 			// Configure a default memory pool
-			
+
 			coreConfig.setMemoryPool( DefaultMemoryPoolBufSizes, DefaultMemoryPoolInitAlloc, DefaultMemoryPoolMaxAlloc);
-			
+
 			// Configure a default thread pool size
-			
+
 			coreConfig.setThreadPool( DefaultThreadPoolInit, DefaultThreadPoolMax);
 			return;
 		}
 
 		// Check if the thread pool size has been specified
-		
+
 		Element elem = findChildNode("threadPool", srvCore.getChildNodes());
 		if ( elem != null) {
-			
+
 			// Get the initial thread pool size
-			
+
 			String initSizeStr = elem.getAttribute("init");
 			if ( initSizeStr == null || initSizeStr.length() == 0)
 				throw new InvalidConfigurationException("Thread pool initial size not specified");
-			
+
 			// Validate the initial thread pool size
-			
+
 			int initSize = 0;
-			
+
 			try {
 				initSize = Integer.parseInt( initSizeStr);
 			}
 			catch (NumberFormatException ex) {
 				throw new InvalidConfigurationException("Invalid thread pool size value, " + initSizeStr);
 			}
-			
+
 			// Range check the thread pool size
-			
+
 			if ( initSize < ThreadRequestPool.MinimumWorkerThreads)
 				throw new InvalidConfigurationException("Thread pool size below minimum allowed size");
-			
+
 			if ( initSize > ThreadRequestPool.MaximumWorkerThreads)
 				throw new InvalidConfigurationException("Thread pool size above maximum allowed size");
-			
+
 			// Get the maximum thread pool size
-			
+
 			String maxSizeStr = elem.getAttribute("max");
 			int maxSize = initSize;
-			
+
 			if ( maxSizeStr.length() > 0) {
-				
+
 				// Validate the maximum thread pool size
-				
+
 				try {
 					maxSize = Integer.parseInt( maxSizeStr);
 				}
 				catch (NumberFormatException ex) {
 					throw new InvalidConfigurationException(" Invalid thread pool maximum size value, " + maxSizeStr);
 				}
-				
+
 				// Range check the maximum thread pool size
-				
+
 				if ( maxSize < ThreadRequestPool.MinimumWorkerThreads)
 					throw new InvalidConfigurationException("Thread pool maximum size below minimum allowed size");
-				
+
 				if ( maxSize > ThreadRequestPool.MaximumWorkerThreads)
 					throw new InvalidConfigurationException("Thread pool maximum size above maximum allowed size");
-				
+
 				if ( maxSize < initSize)
 					throw new InvalidConfigurationException("Initial size is larger than maxmimum size");
 			}
 			else if ( maxSizeStr != null)
 				throw new InvalidConfigurationException("Thread pool maximum size not specified");
-			
+
 			// Configure the thread pool
-			
+
 			coreConfig.setThreadPool( initSize, maxSize);
 		}
 		else {
-			
+
 			// Configure a default thread pool size
-			
+
 			coreConfig.setThreadPool( DefaultThreadPoolInit, DefaultThreadPoolMax);
 		}
-		
+
 		// Check if thread pool debug output is enabled
-		
+
 		if ( findChildNode("threadPoolDebug", srvCore.getChildNodes()) != null)
 			coreConfig.getThreadPool().setDebug( true);
-		
+
 		// Check if the memory pool configuration has been specified
-		
+
 		elem = findChildNode("memoryPool", srvCore.getChildNodes());
 		if ( elem != null) {
-			
+
 			// Check if the packet sizes/allocations have been specified
-			
+
 			Element pktElem = findChildNode("packetSizes", elem.getChildNodes());
 			if ( pktElem != null) {
 
 				// Calculate the array size for the packet size/allocation arrays
-				
+
 				NodeList nodeList = pktElem.getChildNodes();
 				int elemCnt = 0;
-				
+
 				for ( int i = 0; i < nodeList.getLength(); i++) {
 					if ( nodeList.item( i).getNodeType() == ELEMENT_TYPE)
 						elemCnt++;
 				}
-				
+
 				// Create the packet size, initial allocation and maximum allocation arrays
-				
+
 				int[] pktSizes  = new int[elemCnt];
 				int[] initSizes = new int[elemCnt];
 				int[] maxSizes  = new int[elemCnt];
-				
+
 				int elemIdx = 0;
-				
+
 				// Process the packet size elements
-				
+
 				for ( int i = 0; i < nodeList.getLength(); i++) {
-					
+
 					// Get the current element node
-					
+
 					Node curNode = nodeList.item( i);
 					if ( curNode.getNodeType() == ELEMENT_TYPE) {
-						
+
 						// Get the element and check if it is a packet size element
-						
+
 						Element curElem = (Element) curNode;
 						if ( curElem.getNodeName().equals("packet")) {
-							
+
 							// Get the packet size
-							
+
 							int pktSize   = -1;
 							int initAlloc = -1;
 							int maxAlloc  = -1;
-							
+
 							String pktSizeStr = curElem.getAttribute("size");
 							if ( pktSizeStr == null || pktSizeStr.length() == 0)
 								throw new InvalidConfigurationException("Memory pool packet size not specified");
-							
+
 							// Parse the packet size
-							
+
 							try {
 								pktSize = MemorySize.getByteValueInt( pktSizeStr);
 							}
@@ -446,41 +446,41 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 							}
 
 							// Make sure the packet sizes have been specified in ascending order
-							
+
 							if ( elemIdx > 0 && pktSizes[elemIdx - 1] >= pktSize)
 								throw new InvalidConfigurationException("Invalid packet size specified, less than/equal to previous packet size");
-							
+
 							// Get the initial allocation for the current packet size
-							
+
 							String initSizeStr = curElem.getAttribute("init");
 							if ( initSizeStr == null || initSizeStr.length() == 0)
 								throw new InvalidConfigurationException("Memory pool initial allocation not specified");
-							
+
 							// Parse the initial allocation
-							
+
 							try {
 								initAlloc = Integer.parseInt( initSizeStr);
 							}
 							catch (NumberFormatException ex) {
 								throw new InvalidConfigurationException("Invalid initial allocation, " + initSizeStr);
 							}
-							
+
 							// Range check the initial allocation
-							
+
 							if ( initAlloc < MemoryPoolMinimumAllocation)
 								throw new InvalidConfigurationException("Initial memory pool allocation below minimum of " + MemoryPoolMinimumAllocation);
-							
+
 							if ( initAlloc > MemoryPoolMaximumAllocation)
 								throw new InvalidConfigurationException("Initial memory pool allocation above maximum of " + MemoryPoolMaximumAllocation);
-							
+
 							// Get the maximum allocation for the current packet size
 
 							String maxSizeStr = curElem.getAttribute("max");
 							if ( maxSizeStr == null || maxSizeStr.length() == 0)
 								throw new InvalidConfigurationException("Memory pool maximum allocation not specified");
-							
+
 							// Parse the maximum allocation
-							
+
 							try {
 								maxAlloc = Integer.parseInt( maxSizeStr);
 							}
@@ -489,64 +489,64 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 							}
 
 							// Range check the maximum allocation
-							
+
 							if ( maxAlloc < MemoryPoolMinimumAllocation)
 								throw new InvalidConfigurationException("Maximum memory pool allocation below minimum of " + MemoryPoolMinimumAllocation);
-							
+
 							if ( initAlloc > MemoryPoolMaximumAllocation)
 								throw new InvalidConfigurationException("Maximum memory pool allocation above maximum of " + MemoryPoolMaximumAllocation);
 
 							// Set the current packet size elements
-							
+
 							pktSizes[elemIdx]  = pktSize;
 							initSizes[elemIdx] = initAlloc;
 							maxSizes[elemIdx]  = maxAlloc;
-							
+
 							elemIdx++;
 						}
 					}
-						
+
 				}
-				
+
 				// Check if all elements were used in the packet size/allocation arrays
-				
+
 				if ( elemIdx < pktSizes.length) {
-					
+
 					// Re-allocate the packet size/allocation arrays
-					
+
 					int[] newPktSizes  = new int[elemIdx];
 					int[] newInitSizes = new int[elemIdx];
 					int[] newMaxSizes  = new int[elemIdx];
-					
+
 					// Copy the values to the shorter arrays
-					
+
 					System.arraycopy(pktSizes, 0, newPktSizes, 0, elemIdx);
 					System.arraycopy(initSizes, 0, newInitSizes, 0, elemIdx);
 					System.arraycopy(maxSizes, 0, newMaxSizes, 0, elemIdx);
-					
+
 					// Move the new arrays into place
-					
+
 					pktSizes  = newPktSizes;
 					initSizes = newInitSizes;
 					maxSizes  = newMaxSizes;
 				}
-				
+
 				// Configure the memory pool
-				
+
 				coreConfig.setMemoryPool( pktSizes, initSizes, maxSizes);
 			}
 		}
 		else {
-			
+
 			// Configure a default memory pool
-			
+
 			coreConfig.setMemoryPool( DefaultMemoryPoolBufSizes, DefaultMemoryPoolInitAlloc, DefaultMemoryPoolMaxAlloc);
 		}
 	}
 
 	/**
 	 * Process the global settings XML element
-	 * 
+	 *
 	 * @param global Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -605,7 +605,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Process the SMB server XML element
-	 * 
+	 *
 	 * @param smb Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -686,34 +686,34 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 			cifsConfig.setSessionDebugFlags(sessDbg);
 		}
-		
+
 		// Check if NIO based code should be disabled
-		
+
 		if ( findChildNode( "disableNIO", smb.getChildNodes()) != null)
 			cifsConfig.setDisableNIOCode( true);
-		
+
 		// Check if a maximum virtual circuits per session limit has been specified
-		
+
 		elem = findChildNode("virtualCircuits", smb.getChildNodes());
 		if ( elem != null) {
-			
+
 			// Parse and validate the maximum virtual circuits value
-			
+
 			String maxVCVal = elem.getAttribute( "maxPerSession");
-			
+
 			if ( maxVCVal != null && maxVCVal.length() > 0) {
 				try {
-					
+
 					// Parse the value, and range check
-					
+
 					int maxVC = Integer.parseInt( maxVCVal);
-					
+
 					if ( maxVC < VirtualCircuitList.MinCircuits || maxVC > VirtualCircuitList.MaxCircuits)
 						throw new InvalidConfigurationException("Maximum virtual circuits value out of range, valid range " + VirtualCircuitList.MinCircuits + " - " +
 								VirtualCircuitList.MaxCircuits);
-					
+
 					// Set the maximum virtual circuits per session
-					
+
 					cifsConfig.setMaximumVirtualCircuits( maxVC);
 				}
 				catch (NumberFormatException ex) {
@@ -721,7 +721,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 				}
 			}
 		}
-		
+
 		// Check if an authenticator has been specified
 
 		Element authElem = findChildNode("authenticator", smb.getChildNodes());
@@ -786,7 +786,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Process the host XML element
-	 * 
+	 *
 	 * @param host Element 2param cifsConfig CIFSConfigSection
 	 * @exception InvalidConfigurationException
 	 */
@@ -967,7 +967,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 			boolean platformOK = false;
 
 			if ( elem.hasAttribute("platforms")) {
-				
+
 				// Get the list of platforms
 
 				String platformsStr = elem.getAttribute("platforms");
@@ -1430,26 +1430,26 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 			if ( secondaryWINS != null)
 				cifsConfig.setSecondaryWINSServer(secondaryWINS);
 		}
-		
+
 		// Check if a session timeout is configured
-		
+
 		elem = findChildNode("sessionTimeout", host.getChildNodes());
 		if ( elem != null) {
-			
+
 			// Validate the session timeout value
 
 			String sessTmo = getText( elem);
 			if ( sessTmo != null && sessTmo.length() > 0) {
 				try {
-					
+
 					// Convert the timeout value to milliseconds
-					
+
 					int tmo = Integer.parseInt(sessTmo);
 					if ( tmo < 0 || tmo > MaxSessionTimeout)
 						throw new InvalidConfigurationException("Session timeout out of range (0 - " + MaxSessionTimeout + ")");
-					
+
 					// Convert the session timeout to milliseconds
-					
+
 					cifsConfig.setSocketTimeout( tmo * 1000);
 				}
 				catch (NumberFormatException ex) {
@@ -1463,7 +1463,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Process the debug XML element
-	 * 
+	 *
 	 * @param debug Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -1499,7 +1499,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Process the shares XML element
-	 * 
+	 *
 	 * @param shares Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -1546,7 +1546,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Process the security XML element
-	 * 
+	 *
 	 * @param security Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -1669,7 +1669,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Process the drive mappings XML element
-	 * 
+	 *
 	 * @param mappings Element
 	 * @exception InvalidConfigurationException
 	 */
@@ -1795,7 +1795,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Process an access control sub-section and return the access control list
-	 * 
+	 *
 	 * @param acl Element
 	 * @param secConfig SecutiryConfigSection
 	 * @throws InvalidConfigurationException
@@ -1912,7 +1912,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Add a user
-	 * 
+	 *
 	 * @param user Element
 	 * @param secConfig SecurityConfigSection
 	 * @exception InvalidConfigurationException
@@ -2008,7 +2008,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Add a disk share
-	 * 
+	 *
 	 * @param disk Element 2param filesysConfig FilesystemConfigSection
 	 * @exception InvalidConfigurationException
 	 */
@@ -2197,29 +2197,29 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 		}
 
 		// Check if a state cache is configured
-		
+
 		Element cacheElem = findChildNode("stateCache", disk.getChildNodes());
 		FileStateCache stateCache = null;
-		
+
 		if ( cacheElem != null) {
 
 			// Convert the state cache configuration
-			
+
 			ConfigElement cacheConfig = buildConfigElement( cacheElem);
-			
+
 			// Get the cache type
-			
+
 			attr = cacheElem.getAttribute( "type");
 			if ( attr.equalsIgnoreCase( "standalone")) {
-				
+
 				// Create a standalone file state cache
-				
+
 				stateCache = new StandaloneFileStateCache();
 			}
 			else if ( attr.equalsIgnoreCase( "cluster")) {
-				
+
 				// Create a clustered file state cache, need to load the class to avoid a reference to it
-				
+
 				try {
 					stateCache = (FileStateCache) Class.forName( "org.alfresco.jlan.server.filesys.cache.hazelcast.HazelCastClusterFileStateCache").newInstance();
 				}
@@ -2233,19 +2233,19 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 			else if ( attr.equalsIgnoreCase( "custom")) {
 
 				// Get the custom state cache class name
-				
+
 				Element cacheClass = findChildNode( "class", cacheElem.getChildNodes());
 				if ( cacheClass == null || getText( cacheClass).length() == 0)
 					throw new InvalidConfigurationException( "Custom state cache class not specified");
-				
+
 				// Create a custom file state cache
-				
+
 				try {
 					Object cacheObj = Class.forName( getText( cacheClass)).newInstance();
 					if ( cacheObj instanceof FileStateCache == false)
 						throw new InvalidConfigurationException( "State cache class is not a FileStateCache based class");
-					
-					stateCache = (FileStateCache) cacheObj; 
+
+					stateCache = (FileStateCache) cacheObj;
 				}
 				catch ( ClassNotFoundException ex) {
 					throw new InvalidConfigurationException( "Clustered file state cache not available, check build/Jar");
@@ -2254,15 +2254,15 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 					throw new InvalidConfigurationException( "Failed to load clustered file state cache class, " + ex);
 				}
 			}
-			
+
 			// Initialize the cache
-			
+
 			if ( stateCache != null)
 				stateCache.initializeCache( cacheConfig, this);
 			else
 				throw new InvalidConfigurationException( "Failed to initialize state cache for filesystem " + name);
 		}
-		
+
 		// Check if a share with this name already exists
 
 		if ( filesysConfig.getShares().findShare(name) != null)
@@ -2304,17 +2304,17 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 				devCtx.setShareName(name);
 
 				// Create the default file state cache type if the filesystem requires it, for backwards compatability
-				
+
 				if ( devCtx.requiresStateCache() && stateCache == null) {
 					stateCache = new StandaloneFileStateCache();
 					stateCache.initializeCache( new GenericConfigElement( "stateCache"), this);
 				}
-				
+
 				if ( devCtx.requiresStateCache() == false && stateCache != null)
 					throw new InvalidConfigurationException( "Filesystem does not use state caching");
 
 				devCtx.setStateCache( stateCache);
-				
+
 				// Create the disk shared device and add to the server's list of shares
 
 				DiskSharedDevice diskDev = new DiskSharedDevice(name, diskDrv, devCtx);
@@ -2326,23 +2326,23 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 				diskDev.setAccessControlList(acls);
 
                 // Check if the filesystem uses the file state cache, if so then add to the file state reaper
-                
+
                 if ( devCtx.hasStateCache()) {
-                    
+
                     // Register the state cache with the reaper thread
-                    
+
                     filesysConfig.addFileStateCache( name, devCtx.getStateCache());
                 }
-                
+
 				// Start the filesystem
 
 				devCtx.startFilesystem(diskDev);
 
 				// Pass the driver/context details to the state cache
-				
+
 				if ( devCtx.hasStateCache())
 					devCtx.getStateCache().setDriverDetails(diskDev);
-				
+
 				// Add the new share to the list of available shares
 
 				filesysConfig.addShare(diskDev);
@@ -2361,7 +2361,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Find the specified child node in the node list
-	 * 
+	 *
 	 * @param name String
 	 * @param list NodeList
 	 * @return Element
@@ -2391,7 +2391,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Get the value text for the specified element
-	 * 
+	 *
 	 * @param elem Element
 	 * @return String
 	 */
@@ -2412,7 +2412,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Build a configuration element list from an elements child nodes
-	 * 
+	 *
 	 * @param root Element
 	 * @return GenericConfigElement
 	 */
@@ -2422,7 +2422,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Build a configuration element list from an elements child nodes
-	 * 
+	 *
 	 * @param root Element
 	 * @param cfgElem GenericConfigElement
 	 * @return GenericConfigElement
@@ -2520,7 +2520,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 	 */
 	/**
 	 * Parse a platform type string into a list of platform ids
-	 * 
+	 *
 	 * @param platforms String
 	 * @return List<Integer>
 	 * @exception InvalidConfigurationException
@@ -2572,7 +2572,7 @@ public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
 	/**
 	 * Parse an adapter name string and return the matching address
-	 * 
+	 *
 	 * @param adapter String
 	 * @return InetAddress
 	 * @exception InvalidConfigurationException

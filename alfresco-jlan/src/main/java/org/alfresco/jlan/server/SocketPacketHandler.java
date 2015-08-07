@@ -32,7 +32,7 @@ import java.net.Socket;
 public abstract class SocketPacketHandler implements PacketHandlerInterface {
 
   //	Socket to read/write to/from
-  
+
   private Socket m_socket;
 
   // Input/output streams for receiving/sending data
@@ -42,30 +42,30 @@ public abstract class SocketPacketHandler implements PacketHandlerInterface {
 
   /**
    * Class constructor
-   * 
+   *
    * @param socket Socket
    * @exception IOException
    */
   protected SocketPacketHandler(Socket socket)
   	throws IOException {
     m_socket = socket;
-    
+
 		//	Open the input/output streams
-		
+
     m_in  = new DataInputStream(m_socket.getInputStream());
     m_out = new DataOutputStream(m_socket.getOutputStream());
   }
-  
+
   /**
    * Return the protocol name
-   * 
+   *
    * @return String
    */
   public abstract String getProtocolName();
 
   /**
    * Return the number of bytes available for reading without blocking
-   * 
+   *
    * @return int
    * @exception IOException
    */
@@ -78,7 +78,7 @@ public abstract class SocketPacketHandler implements PacketHandlerInterface {
 
   /**
    * Read a packet of data
-   * 
+   *
    * @param pkt byte[]
    * @param offset int
    * @param maxLen int
@@ -87,7 +87,7 @@ public abstract class SocketPacketHandler implements PacketHandlerInterface {
    */
   public int readPacket(byte[] pkt, int offset, int maxLen)
   	throws IOException {
-		
+
 		//	Read a packet of data
 
 	  if ( m_in != null)
@@ -97,7 +97,7 @@ public abstract class SocketPacketHandler implements PacketHandlerInterface {
 
   /**
    * Write a packet of data
-   * 
+   *
    * @param pkt byte[]
    * @param offset int
    * @param len int
@@ -107,9 +107,9 @@ public abstract class SocketPacketHandler implements PacketHandlerInterface {
   	throws IOException {
 
 		//	Output the raw packet
-		
+
 	  if ( m_out != null) {
-	    
+
 	    synchronized ( m_out) {
 	      m_out.write(pkt, offset, len);
 	    }
@@ -122,7 +122,7 @@ public abstract class SocketPacketHandler implements PacketHandlerInterface {
   public void closePacketHandler() {
 
 		//	Close the socket
-		
+
 		if (m_socket != null) {
 			try {
 				m_socket.close();
@@ -131,9 +131,9 @@ public abstract class SocketPacketHandler implements PacketHandlerInterface {
 			}
 			m_socket = null;
 		}
-		
+
 		//	Close the input stream
-		
+
 		if ( m_in != null) {
 			try {
 				m_in.close();
@@ -142,9 +142,9 @@ public abstract class SocketPacketHandler implements PacketHandlerInterface {
 			}
 			m_in = null;
 		}
-		
+
 		//	Close the output stream
-		
+
 		if ( m_out != null) {
 			try {
 				m_out.close();
@@ -154,10 +154,10 @@ public abstract class SocketPacketHandler implements PacketHandlerInterface {
 			m_out = null;
 		}
   }
-  
+
   /**
    * Return the socket
-   * 
+   *
    * @return Socket
    */
   protected final Socket getSocket() {

@@ -21,16 +21,16 @@ package org.alfresco.jlan.server.filesys.cache;
 
 /**
  * Network File State Interface
- * 
+ *
  * <p>Used by NetworkFile implementations that use file state caching.
- * 
+ *
  * @author gkspencer
  */
 public interface NetworkFileStateInterface {
 
 	/**
 	 * Return the file state
-	 * 
+	 *
 	 * @return FileState
 	 */
 	public FileState getFileState();

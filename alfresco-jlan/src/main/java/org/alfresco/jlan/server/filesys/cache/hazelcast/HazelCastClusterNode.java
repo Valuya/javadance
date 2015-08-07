@@ -33,7 +33,7 @@ public class HazelCastClusterNode extends ClusterNode {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param priority int
 	 * @param cluster ClusterInterface
@@ -41,59 +41,59 @@ public class HazelCastClusterNode extends ClusterNode {
 	 */
 	public HazelCastClusterNode(String name, int priority, ClusterInterface cluster, Member addr) {
 		super( name, priority, cluster, addr);
-		
+
 		// Check for the local node
-		
+
 		if ( addr.localMember())
 			setLocalNode( true);
 	}
-	
+
 	/**
 	 * Return the cluster node state as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getStateAsString() {
 		return "Running";
 	}
-	
+
 	/**
 	 * Return the HazelCast node details
-	 * 
+	 *
 	 * @return Member
 	 */
 	public final Member getHazelCastAddress() {
 		return (Member) getAddress();
 	}
-	
+
 	/**
 	 * Check if this cluster node matches the specified name.
-	 * 
+	 *
 	 * Need to provide additional checking as names may be in the format 'name/ip-addr:port' or
 	 * '/ip-addr:port'
-	 * 
+	 *
 	 * @param name String
 	 */
 	public boolean nameMatches( String name) {
-		
+
 		// Get the '/ip-addr:port' part from this nodes name
-		
+
 		String thisName = getName();
 		int idx = thisName.indexOf( '/');
-		
+
 		if ( idx > 0)
 			thisName = thisName.substring( idx);
-		
+
 		// Make sure the name to check is also in the '/ip-addr:port' format
-		
+
 		String chkName = name;
 		idx = chkName.indexOf( '/');
-		
+
 		if ( idx > 0)
 			chkName = chkName.substring( idx);
-		
+
 		// Check if the addresses match
-		
+
 		return thisName.equalsIgnoreCase( chkName);
 	}
 }

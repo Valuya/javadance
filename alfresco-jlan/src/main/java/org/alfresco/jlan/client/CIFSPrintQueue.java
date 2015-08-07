@@ -24,7 +24,7 @@ import org.alfresco.jlan.client.info.PrintQueueEnumerator;
 
 /**
  * SMB CIFS protocol print queue class
- * 
+ *
  * @author gkspencer
  */
 class CIFSPrintQueue implements PrintQueueEnumerator {
@@ -43,7 +43,7 @@ class CIFSPrintQueue implements PrintQueueEnumerator {
 
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param sess SMBPrintSession that this queue is associated with.
 	 */
 
@@ -53,7 +53,7 @@ class CIFSPrintQueue implements PrintQueueEnumerator {
 
 	/**
 	 * Continue the queue search, get the next block of queue elements.
-	 * 
+	 *
 	 * @param stidx Starting index for the next block of elements to be returned.
 	 * @return true if more elements were returned, else false.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -66,7 +66,7 @@ class CIFSPrintQueue implements PrintQueueEnumerator {
 
 	/**
 	 * Return the number if queue elements in the current SMB packet.
-	 * 
+	 *
 	 * @return Number of queue elements in the current packet.
 	 */
 
@@ -76,7 +76,7 @@ class CIFSPrintQueue implements PrintQueueEnumerator {
 
 	/**
 	 * Return the offset of the specified print queue element within the current packet.
-	 * 
+	 *
 	 * @param idx Index of the specified print queue element.
 	 * @return Offset of the print queue element within the packet buffer.
 	 */
@@ -87,7 +87,7 @@ class CIFSPrintQueue implements PrintQueueEnumerator {
 
 	/**
 	 * Return the queue list restart index.
-	 * 
+	 *
 	 * @return Queue list restart index.
 	 */
 
@@ -97,7 +97,7 @@ class CIFSPrintQueue implements PrintQueueEnumerator {
 
 	/**
 	 * Return the next print queue entry.
-	 * 
+	 *
 	 * @return Next SMBPrintJob in this print queue.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
@@ -109,7 +109,7 @@ class CIFSPrintQueue implements PrintQueueEnumerator {
 
 	/**
 	 * Start a new scan of the print servers queue.
-	 * 
+	 *
 	 * @param idx Starting index for the first queue entry to return.
 	 * @param cnt Number of queue entries to return. A positive value indicates a forward search,
 	 *            and a negative value indicates a reverse search.

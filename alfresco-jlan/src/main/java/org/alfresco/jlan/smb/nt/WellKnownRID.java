@@ -29,13 +29,13 @@ public class WellKnownRID {
 	//	Well known RIDs
 	//
 	//	Well known users
-	
+
 	public static final int DomainUserAdmin					= 0x01F4;	//	500
 	public static final int DomainUserGuest					= 0x01F5;	//	501
 	public static final int DomainUserKrbtgt				= 0x01F6;	//	502
-	
+
 	//	Well known groups
-	
+
 	public static final int DomainGroupAdmins				= 0x0200;	//	512
 	public static final int DomainGroupUsers				= 0x0201;	//	513
 	public static final int DomainGroupGuests				= 0x0202;	//	514
@@ -43,9 +43,9 @@ public class WellKnownRID {
 	public static final int DomainGroupControllers			= 0x0204;	//	516
 	public static final int DomainGroupCertAdmins			= 0x0205;	//	517
 	public static final int DomainGroupSchemaAdmins			= 0x0206;	//	518
-	
+
 	//	Well know aliases
-	
+
 	public static final int DomainAliasAdmins				= 0x0220;	//	544
 	public static final int DomainAliasUsers				= 0x0221;	//	545
 	public static final int DomainAliasGuests				= 0x0222;	//	546
@@ -58,10 +58,10 @@ public class WellKnownRID {
 
 	/**
 	 * Check if a RID is a well known user
-	 * 
+	 *
 	 * @param id int
 	 * @return boolean
-	 */	
+	 */
 	public final static boolean isWellKnownUser(int id) {
 		if ( id >= DomainUserAdmin && id <= DomainUserKrbtgt)
 			return true;
@@ -70,19 +70,19 @@ public class WellKnownRID {
 
 	/**
 	 * Check if the RID is a well known group
-	 * 
+	 *
 	 * @param id int
 	 * @return boolean
-	 */	
+	 */
 	public final static boolean isWellKnownGroup(int id) {
 		if ( id >= DomainGroupAdmins && id <= DomainGroupSchemaAdmins)
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Check if the RID is a well known alias
-	 * 
+	 *
 	 * @param id int
 	 * @return boolean
 	 */
@@ -91,7 +91,7 @@ public class WellKnownRID {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Convert a well known user id to a name
 	 *
@@ -113,7 +113,7 @@ public class WellKnownRID {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Convert a well known group id to a name
 	 *
@@ -147,7 +147,7 @@ public class WellKnownRID {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Convert a well known alias id to a name
 	 *

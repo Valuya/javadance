@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys;
 
 /**
  * File Access Token Interface
- * 
+ *
  * <p>A file access token can be granted on a file after various file sharing mode checks have been
  * performed on a file open request.
  *

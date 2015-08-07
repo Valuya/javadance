@@ -23,10 +23,10 @@ import org.alfresco.jlan.smb.dcerpc.PolicyHandle;
 
 /**
  * LSA Policy Handle Class
- * 
+ *
  * <p>
  * Local Security Authority (LSA) policy handle, required to access LSA functions.
- * 
+ *
  * @author gkspencer
  */
 public class LSAPolicyHandle extends PolicyHandle {
@@ -41,7 +41,7 @@ public class LSAPolicyHandle extends PolicyHandle {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param off int
 	 */

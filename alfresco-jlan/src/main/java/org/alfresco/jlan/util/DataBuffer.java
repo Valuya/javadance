@@ -21,10 +21,10 @@ package org.alfresco.jlan.util;
 
 /**
  * Data Buffer Class
- * 
+ *
  * <p>
  * Dynamic buffer for getting/setting data blocks.
- * 
+ *
  * @author gkspencer
  */
 public class DataBuffer {
@@ -41,9 +41,9 @@ public class DataBuffer {
 	private int m_offset;
 
 	// Flag to indicate this is an external buffer, and cannot be extended
-	
+
 	private boolean m_external;
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -51,26 +51,26 @@ public class DataBuffer {
 		m_data = new byte[DefaultBufferSize];
 		m_pos = 0;
 		m_offset = 0;
-		
+
 		m_endpos = m_data.length;
 	}
 
 	/**
 	 * Create a data buffer to write data to
-	 * 
+	 *
 	 * @param siz int
 	 */
 	public DataBuffer(int siz) {
 		m_data = new byte[siz];
 		m_pos = 0;
 		m_offset = 0;
-		
+
 		m_endpos = m_data.length;
 	}
 
 	/**
 	 * Create a data buffer to read data from
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param off int
 	 * @param len int
@@ -80,15 +80,15 @@ public class DataBuffer {
 		m_offset = off;
 		m_pos = off;
 		m_endpos = off + len;
-		
+
 		// Indicate that this is an external buffer, do not try and extend it
-		
+
 		m_external = true;
 	}
 
 	/**
 	 * Return the data buffer
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getBuffer() {
@@ -97,7 +97,7 @@ public class DataBuffer {
 
 	/**
 	 * Return the data length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLength() {
@@ -108,7 +108,7 @@ public class DataBuffer {
 
 	/**
 	 * Return the data length in words
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLengthInWords() {
@@ -117,7 +117,7 @@ public class DataBuffer {
 
 	/**
 	 * Return the available data length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAvailableLength() {
@@ -128,16 +128,16 @@ public class DataBuffer {
 
 	/**
 	 * Return the used buffer length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getUsedLength() {
 		return m_pos - m_offset;
 	}
-	
+
 	/**
 	 * Return the displacement from the start of the buffer to the current buffer position
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDisplacement() {
@@ -146,7 +146,7 @@ public class DataBuffer {
 
 	/**
 	 * Return the buffer base offset
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getOffset() {
@@ -155,7 +155,7 @@ public class DataBuffer {
 
 	/**
 	 * Get a byte from the buffer
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getByte() {
@@ -174,7 +174,7 @@ public class DataBuffer {
 
 	/**
 	 * Get a short from the buffer
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getShort() {
@@ -193,7 +193,7 @@ public class DataBuffer {
 
 	/**
 	 * Get an integer from the buffer
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getInt() {
@@ -212,7 +212,7 @@ public class DataBuffer {
 
 	/**
 	 * Get a long (64 bit) value from the buffer
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getLong() {
@@ -231,7 +231,7 @@ public class DataBuffer {
 
 	/**
 	 * Get a string from the buffer
-	 * 
+	 *
 	 * @param uni boolean
 	 * @return String
 	 */
@@ -244,7 +244,7 @@ public class DataBuffer {
 
 	/**
 	 * Get a string from the buffer
-	 * 
+	 *
 	 * @param maxlen int
 	 * @param uni boolean
 	 * @return String
@@ -291,13 +291,13 @@ public class DataBuffer {
 
 	/**
 	 * Get a fixed length string from the buffer
-	 * 
+	 *
 	 * @param len int
 	 * @param uni boolean
 	 * @return String
 	 */
 	public final String getFixedString(int len, boolean uni) {
-		
+
 		// Check for Unicode or ASCII
 
 		String ret = null;
@@ -331,10 +331,10 @@ public class DataBuffer {
 
 		return ret != null ? ret : "";
 	}
-	
+
 	/**
 	 * Get a short from the buffer at the specified index
-	 * 
+	 *
 	 * @param idx int
 	 * @return int
 	 */
@@ -354,7 +354,7 @@ public class DataBuffer {
 
 	/**
 	 * Get an integer from the buffer at the specified index
-	 * 
+	 *
 	 * @param idx int
 	 * @return int
 	 */
@@ -374,7 +374,7 @@ public class DataBuffer {
 
 	/**
 	 * Get a long (64 bit) value from the buffer at the specified index
-	 * 
+	 *
 	 * @param idx int
 	 * @return long
 	 */
@@ -394,7 +394,7 @@ public class DataBuffer {
 
 	/**
 	 * Skip over a number of bytes
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void skipBytes(int cnt) {
@@ -411,7 +411,7 @@ public class DataBuffer {
 
 	/**
 	 * Return the data position
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPosition() {
@@ -420,7 +420,7 @@ public class DataBuffer {
 
 	/**
 	 * Set the read/write buffer position
-	 * 
+	 *
 	 * @param pos int
 	 */
 	public final void setPosition(int pos) {
@@ -437,7 +437,7 @@ public class DataBuffer {
 
 	/**
 	 * Set the end of buffer position, and reset the read position to the beginning of the buffer
-	 * 
+	 *
 	 * @param endPos int
 	 */
 	public final void setEndOfBuffer(int endPos) {
@@ -447,7 +447,7 @@ public class DataBuffer {
 
 	/**
 	 * Set the data length
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setLength(int len) {
@@ -461,10 +461,10 @@ public class DataBuffer {
 		m_pos = 0;
 		m_endpos = m_data.length;
 	}
-	
+
 	/**
 	 * Append a byte value to the buffer
-	 * 
+	 *
 	 * @param bval int
 	 */
 	public final void putByte(int bval) {
@@ -481,7 +481,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a short value to the buffer
-	 * 
+	 *
 	 * @param sval int
 	 */
 	public final void putShort(int sval) {
@@ -499,7 +499,7 @@ public class DataBuffer {
 
 	/**
 	 * Append an integer to the buffer
-	 * 
+	 *
 	 * @param ival int
 	 */
 	public final void putInt(int ival) {
@@ -517,7 +517,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a long to the buffer
-	 * 
+	 *
 	 * @param lval long
 	 */
 	public final void putLong(long lval) {
@@ -535,7 +535,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a short value to the buffer at the specified index
-	 * 
+	 *
 	 * @param idx int
 	 * @param sval int
 	 */
@@ -554,7 +554,7 @@ public class DataBuffer {
 
 	/**
 	 * Append an integer to the buffer at the specified index
-	 * 
+	 *
 	 * @param idx int
 	 * @param ival int
 	 */
@@ -573,7 +573,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a long to the buffer at the specified index
-	 * 
+	 *
 	 * @param idx int
 	 * @param lval long
 	 */
@@ -592,7 +592,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a string to the buffer
-	 * 
+	 *
 	 * @param str String
 	 * @param uni boolean
 	 */
@@ -602,7 +602,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a string to the buffer
-	 * 
+	 *
 	 * @param str String
 	 * @param uni boolean
 	 * @param nulTerm boolean
@@ -634,7 +634,7 @@ public class DataBuffer {
 		else {
 
 			// Check if there is enough space in the buffer
-			
+
 			int bytLen = str.length();
 			if (nulTerm)
 			{
@@ -655,7 +655,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a fixed length string to the buffer
-	 * 
+	 *
 	 * @param str String
 	 * @param len int
 	 */
@@ -674,7 +674,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a string to the buffer at the specified buffer position
-	 * 
+	 *
 	 * @param str String
 	 * @param pos int
 	 * @param uni boolean
@@ -719,7 +719,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a fixed length string to the buffer at the specified position
-	 * 
+	 *
 	 * @param str String
 	 * @param len int
 	 * @param pos int
@@ -739,7 +739,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a string pointer to the specified buffer offset
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void putStringPointer(int off) {
@@ -752,7 +752,7 @@ public class DataBuffer {
 
 	/**
 	 * Append zero bytes to the buffer
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void putZeros(int cnt) {
@@ -784,7 +784,7 @@ public class DataBuffer {
 
 	/**
 	 * Append a raw data block to the data buffer
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param off int
 	 * @param len int
@@ -804,7 +804,7 @@ public class DataBuffer {
 
 	/**
 	 * Copy all data from the data buffer to the user buffer, and update the read position
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param off int
 	 * @return int
@@ -815,7 +815,7 @@ public class DataBuffer {
 
 	/**
 	 * Copy data from the data buffer to the user buffer, and update the current read position.
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param off int
 	 * @param cnt int
@@ -831,7 +831,7 @@ public class DataBuffer {
 		// Calculate the amount of data to copy
 
 		int siz = m_endpos - m_pos;
-		
+
 		if ( siz > cnt)
 			siz = cnt;
 
@@ -847,16 +847,16 @@ public class DataBuffer {
 
 	/**
 	 * Extend the data buffer by the specified amount
-	 * 
+	 *
 	 * @param ext int
 	 */
 	private final void extendBuffer(int ext) {
 
 		// Do not extend an externally allocated buffer
-		
+
 		if ( isExternalBuffer())
 			throw new RuntimeException( "Attempt to extend externally allocated buffer, from " + m_data.length + " to " + (m_data.length + ext));
-		
+
 		// Create a new buffer of the required size
 
 		byte[] newBuf = new byte[m_data.length + ext];
@@ -868,9 +868,9 @@ public class DataBuffer {
 		// Set the new buffer to be the main buffer
 
 		m_data = newBuf;
-		
+
 		// Set the new buffer end position
-		
+
 		m_endpos = m_data.length;
 	}
 
@@ -883,16 +883,16 @@ public class DataBuffer {
 
 	/**
 	 * Check if the buffer is an externally allocated buffer
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected final boolean isExternalBuffer() {
 		return m_external;
 	}
-	
+
 	/**
 	 * Return the data buffer details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

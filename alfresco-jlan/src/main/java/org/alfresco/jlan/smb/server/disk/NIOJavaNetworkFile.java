@@ -73,16 +73,16 @@ public class NIOJavaNetworkFile extends NetworkFile {
 
 		setFileSize(m_file.length());
 		m_eof = false;
-    
+
 		//	Set the modification date/time, if available. Fake the creation date/time as it's not
 		//	available from the File class
-    
-		long modDate = m_file.lastModified(); 
+
+		long modDate = m_file.lastModified();
 		setModifyDate(modDate);
 		setCreationDate(modDate);
-    
+
 		//	Set the file id
-    
+
 		setFileId(netPath.hashCode());
 	}
 
@@ -141,16 +141,16 @@ public class NIOJavaNetworkFile extends NetworkFile {
 
 		setFileSize(m_file.length());
 		m_eof = false;
-    
+
 		//	Set the modification date/time, if available. Fake the creation date/time as it's not
 		//	available from the File class
-    
-		long modDate = m_file.lastModified(); 
+
+		long modDate = m_file.lastModified();
 		setModifyDate(modDate);
 		setCreationDate(modDate);
-    
+
 		//	Set the file id
-    
+
 		setFileId(netPath.hashCode());
 	}
 
@@ -208,11 +208,11 @@ public class NIOJavaNetworkFile extends NetworkFile {
 
 		setFileSize(m_file.length());
 		m_eof = false;
-    
+
 		//	Set the modification date/time, if available. Fake the creation date/time as it's not
 		//	available from the File class
-    
-		long modDate = m_file.lastModified(); 
+
+		long modDate = m_file.lastModified();
 		setModifyDate(modDate);
 		setCreationDate(modDate);
 	}
@@ -225,22 +225,22 @@ public class NIOJavaNetworkFile extends NetworkFile {
     //  Close the file, if used
 
     if (m_channel != null) {
-    	
+
     	//	Close the file
-    	
+
     	m_io.close();
     	m_io = null;
-    	
+
       m_channel.close();
       m_channel = null;
-      
+
       //	Set the last modified date/time for the file
 
-			if ( this.getWriteCount() > 0)      
+			if ( this.getWriteCount() > 0)
       	m_file.setLastModified(System.currentTimeMillis());
-      	
+
       //	Indicate that the file is closed
-      
+
       setClosed(true);
     }
   }
@@ -265,14 +265,14 @@ public class NIOJavaNetworkFile extends NetworkFile {
 
   /**
    * Flush the file.
-   * 
+   *
    * @exception IOException
    */
   public void flushFile()
   	throws IOException {
-  	
+
   	//	Flush all buffered data
-  	
+
   	if ( m_channel != null)
   		m_channel.force(false);
   }
@@ -293,7 +293,7 @@ public class NIOJavaNetworkFile extends NetworkFile {
 
   /**
    * Open the file.
-   * 
+   *
    * @param createFlag boolean
    * @exception IOException
    */
@@ -303,9 +303,9 @@ public class NIOJavaNetworkFile extends NetworkFile {
 
 		m_io = new RandomAccessFile(m_file, getGrantedAccess() == NetworkFile.READWRITE ? "rw" : "r");
 		m_channel = m_io.getChannel();
-		
+
 		//	Indicate that the file is open
-		
+
 		setClosed(false);
   }
 
@@ -328,15 +328,15 @@ public class NIOJavaNetworkFile extends NetworkFile {
       openFile(false);
 
 		//	Wrap the user buffer
-		
+
 		ByteBuffer byteBuf = ByteBuffer.wrap(buf, pos, len);
-		
+
     //  Read from the file
 
     int rdlen = m_channel.read(byteBuf);
-    
+
     //	Return the actual length of data read
-    
+
     return rdlen;
   }
 
@@ -389,7 +389,7 @@ public class NIOJavaNetworkFile extends NetworkFile {
 
 	/**
 	 * Truncate the file
-	 * 
+	 *
 	 * @param siz long
    * @exception IOException
 	 */
@@ -404,12 +404,12 @@ public class NIOJavaNetworkFile extends NetworkFile {
     //  Set the file length
 
     m_io.setLength(siz);
-    
+
     //	Update the write count to indicate that the file data has changed
-    
+
     incrementWriteCount();
 	}
-	
+
   /**
    * Write a block of data to the file.
    *
@@ -429,9 +429,9 @@ public class NIOJavaNetworkFile extends NetworkFile {
 
 		ByteBuffer byteBuf = ByteBuffer.wrap(buf, pos, len);
     m_channel.write(byteBuf);
-    
+
     //	Update the write count for the file
-    
+
     incrementWriteCount();
   }
 
@@ -458,34 +458,34 @@ public class NIOJavaNetworkFile extends NetworkFile {
     long fileLen = m_io.length();
 
 		if ( offset > fileLen) {
-			
+
 			//	Extend the file
-			
+
 			m_io.setLength(offset + len);
 		}
 
 		//	Check for a zero length write
-		
-		if ( len == 0)	
+
+		if ( len == 0)
 			return ;
-			
+
 	  //	Seek to the write position
-	
+
 	  m_channel.position(offset);
-	  
+
     //  Write to the file
 
 		ByteBuffer byteBuf = ByteBuffer.wrap(buf, pos, len);
     m_channel.write(byteBuf);
-    
+
 		//	Update the write count for the file
-    
+
 		incrementWriteCount();
   }
-  
+
   /**
    * Lock a byte range within the file
-   * 
+   *
    * @param lock NIOFileLock
    * @exception IOException
    */
@@ -498,22 +498,22 @@ public class NIOJavaNetworkFile extends NetworkFile {
       openFile(true);
 
     //	Check if lock overlaps any existing locks
-    
+
     if ( hasLocks() && getLockList().allowsLock( lock) == false) {
       Debug.println("** Lock conflict " + lock);
       throw new LockConflictException();
     }
-      
+
     //	If the file is open for write access get an exclusive lock, for read access get a shared lock
-    
+
     boolean sharedLock = getGrantedAccess() == NetworkFile.READONLY ? true : false;
-    
+
     //	Acquire the lock
-    
+
     java.nio.channels.FileLock nioLock = null;
-    
+
     try {
-      
+
       //	Try and acquire the lock
 
 	    if ( lock.isWholeFile()) {
@@ -531,23 +531,23 @@ public class NIOJavaNetworkFile extends NetworkFile {
     catch ( IOException ex) {
       Debug.println("** Lock IO error - " + lock + " - " + ex.toString() + " **");
     }
-    
+
     //	Failed to get the lock
-    
+
     if ( nioLock == null)
       throw new LockConflictException();
-    
+
     //	Save the lock and add the lock to the active lock list
-    
+
     lock.setNIOLock( nioLock);
     addLock( lock);
-    
+
     Debug.println("** Add lock " + lock + ", cnt=" + getLockList().numberOfLocks());
   }
-  
+
   /**
    * Unlock a byte range within the file
-   * 
+   *
    * @param lock NIOFileLock
    * @exception IOException
    */
@@ -555,18 +555,18 @@ public class NIOJavaNetworkFile extends NetworkFile {
   	throws IOException {
 
     //	Remove the matching lock from the files lock list
-    
+
     if ( getLockList() == null)
       return;
-    
+
     NIOFileLock fLock = (NIOFileLock) getLockList().removeLock( lock);
-    
+
     //	Release the lock
-    
+
     if ( fLock != null && fLock.getNIOLock() != null) {
-      
+
       //	Release the NIO file lock
-      
+
       fLock.getNIOLock().release();
       fLock.setNIOLock( null);
 

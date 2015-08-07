@@ -23,7 +23,7 @@ import org.alfresco.jlan.util.StringList;
 
 /**
  * Server Type Flags Class
- * 
+ *
  * <p>Defines server type flags that may be returned in a ServerInfo object.
  *
  * @author gkspencer
@@ -65,7 +65,7 @@ public class ServerType {
 	public static final int DomainEnum 			= 0x80000000;
 
 	//	Server type strings
-	
+
 	private static final String[] _srvType = { "Workstation",
 																						 "Server",
 																						 "SQLServer",
@@ -96,298 +96,298 @@ public class ServerType {
 																						 "",
 																						 "DCEServer"
 	};
-	
+
 	/**
 	 * Convert server type flags to a list of server type strings
-	 * 
+	 *
 	 * @param typ int
 	 * @return Vector
 	 */
 	public static final StringList TypeAsStrings(int typ) {
-		
+
 		//	Allocate the vector for the strings
-		
+
 		StringList strs = new StringList();
-		
+
 		//	Test each type bit and add the appropriate type string
-		
+
 		for ( int i = 0; i < _srvType.length; i++) {
-			
+
 			//	Check the current type flag
-			
+
 			int mask = 1 << i;
 			if (( typ & mask) != 0)
 				strs.addString(_srvType[i]);
 		}
-		
+
 		//	Return the list of type strings
-		
+
 		return strs;
 	}
-	
+
 	/**
 	 * Check if the workstation flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isWorkStation(int typ) {
 		return (typ & WorkStation) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isServer(int typ) {
 		return (typ & Server) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the SQL server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isSQLServer(int typ) {
 		return (typ & SQLServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the domain controller flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isDomainController(int typ) {
 		return (typ & DomainCtrl) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the backup domain controller flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isBackupDomainController(int typ) {
 		return (typ & DomainBakCtrl) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the time source flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isTimeSource(int typ) {
 		return (typ & TimeSource) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the AFP server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isAFPServer(int typ) {
 		return (typ & AFPServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the Novell server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isNovellServer(int typ) {
 		return (typ & NovellServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the domain member flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isDomainMember(int typ) {
 		return (typ & DomainMember) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the print server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isPrintServer(int typ) {
 		return (typ & PrintServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the dialin server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isDialinServer(int typ) {
 		return (typ & DialinServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the Unix server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isUnixServer(int typ) {
 		return (typ & UnixServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the NT server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isNTServer(int typ) {
 		return (typ & NTServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the WFW server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isWFWServer(int typ) {
 		return (typ & WfwServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the MFPN server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isMFPNServer(int typ) {
 		return (typ & MFPNServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the NT non-domain controller server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isNTNonDomainServer(int typ) {
 		return (typ & NTNonDCServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the potential browse master flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isPotentialBrowseMaster(int typ) {
 		return (typ & PotentialBrowse) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the backup browser flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isBackupBrowser(int typ) {
 		return (typ & BackupBrowser) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the browse master flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isBrowserMaster(int typ) {
 		return (typ & MasterBrowser) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the domain master flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isDomainMaster(int typ) {
 		return (typ & DomainMaster) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the OSF server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isOSFServer(int typ) {
 		return (typ & OSFServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the VMS server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isVMSServer(int typ) {
 		return (typ & VMSServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the Win95 plus flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isWin95Plus(int typ) {
 		return (typ & Win95Plus) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the DFS root flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isDFSRoot(int typ) {
 		return (typ & DFSRoot) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the NT cluster flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isNTCluster(int typ) {
 		return (typ & NTCluster) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the terminal server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */
 	public static final boolean isTerminalServer(int typ) {
 		return (typ & TerminalServer) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the DCE server flag is set
-	 * 
+	 *
 	 * @param typ int
 	 * @return boolean
 	 */

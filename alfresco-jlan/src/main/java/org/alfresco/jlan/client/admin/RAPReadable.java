@@ -23,17 +23,17 @@ import java.util.*;
 
 /**
  * RAP Readable Interface
- * 
+ *
  * <p>
  * A class that implements the RAP readable interface can load itself from an object list.
- * 
+ *
  * @author gkspencer
  */
 public interface RAPReadable {
 
 	/**
 	 * Read the object state from the supplied list of objects
-	 * 
+	 *
 	 * @param objs Vector
 	 * @param infoLevel int
 	 */

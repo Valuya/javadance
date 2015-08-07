@@ -21,15 +21,15 @@ package org.alfresco.jlan.server.auth.asn;
 
 /**
  * DER Class
- * 
+ *
  * <p>Contains constants for ASN.1 DER encoding.
  *
  * @author gkspencer
  */
 public class DER {
-  
+
   // Object types
-  
+
   public static final int Boolean             = 0x01;
   public static final int Integer             = 0x02;
   public static final int BitString           = 0x03;
@@ -47,42 +47,42 @@ public class DER {
   public static final int UniversalString     = 0x1C;
 
   // Type mask
-  
+
   public static final int TypeMask            = 0x1F;
-  
+
   // Tag class
-  
+
   public static final int Universal           = 0x00;
   public static final int Application         = 0x40;
   public static final int ContextSpecific     = 0x80;
   public static final int Private             = 0xC0;
-  
+
   public static final int Constructed         = 0x20;
   public static final int Tagged              = 0x80;
-  
+
   /**
    * Return the type field
-   * 
+   *
    * @param typ int
    * @return int
    */
   public static final int isType(int typ) {
     return typ & TypeMask;
   }
-  
+
   /**
    * Check if a type is constructed
-   * 
+   *
    * @param typ int
    * @return boolean
    */
   public final static boolean isConstructed(int typ) {
     return ( typ & Constructed) != 0 ? true : false;
   }
-  
+
   /**
    * Check if a type is tagged
-   * 
+   *
    * @param typ int
    * @return boolean
    */
@@ -92,7 +92,7 @@ public class DER {
 
   /**
    * Check for context specific flag
-   * 
+   *
    * @param typ int
    * @return boolean
    */
@@ -102,23 +102,23 @@ public class DER {
 
   /**
    * Check for the application flag
-   * 
+   *
    * @param typ int
    * @return boolean
    */
   public final static boolean isApplicationSpecific(int typ) {
     return ( typ & Application) != 0 ? true : false;
   }
-  
+
   /**
    * Return the type as a string
-   * 
+   *
    * @param typ int
    * @return String
    */
   public final static String isTypeString(int typ) {
 	  String typStr = null;
-	  
+
 	  switch ( typ) {
 		  case Boolean:
 			  typStr = "Boolean";
@@ -169,7 +169,7 @@ public class DER {
 			  typStr = "UnknownType (" + typ + ")";
 		  	  break;
 	  }
-	  
+
 	  return typStr;
   }
 }

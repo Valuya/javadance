@@ -30,46 +30,46 @@ import org.alfresco.jlan.server.config.ServerConfiguration;
 public class SharedDevice implements Comparable<SharedDevice> {
 
     //	Share attribute types
-    
+
     public static final int Admin 	= 0x0001;
     public static final int Hidden 	= 0x0002;
     public static final int ReadOnly  = 0x0004;
     public static final int Temporary = 0x0008;
-    
+
     //	Shared device name
-    
+
     private String m_name;
-    
+
     //	Shared device type
-    
+
     private int m_type;
-    
+
     //	Comment
-    
+
     private String m_comment;
-    
+
     // Device interface and context object
-    
+
     private DeviceInterface m_interface;
     private DeviceContext m_drvCtx;
-    
+
     //	Share attributes
-    
+
     private int m_attrib;
-      
+
     //	Current and maximum connections to this shared device
-      
+
     private int m_maxUses = -1;		//	unlimited
     private int m_curUses;
-  
+
    	//  Access control list
-    	
+
     private AccessControlList m_acls;
-	  
+
     // Server configuration
-      
+
     private ServerConfiguration m_config;
-      
+
   /**
    * SharedDevice constructor.
    *
@@ -85,7 +85,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
     setType(typ);
     setContext(ctx);
   }
-  
+
   /**
    * Return the shared device attribtues.
    *
@@ -97,7 +97,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
 
 	/**
 	 * Determine if the shared device has any access controls configured
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasAccessControls() {
@@ -105,25 +105,25 @@ public class SharedDevice implements Comparable<SharedDevice> {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * Return the access control list
-	 * 
+	 *
 	 * @return AccessControlList
 	 */
 	public final AccessControlList getAccessControls() {
 		return m_acls;
 	}
-	
+
 	/**
 	 * Check if the shared device has a comment
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasComment() {
 	  return m_comment != null ? true : false;
 	}
-	
+
   /**
    * Return the shared device comment.
    *
@@ -132,7 +132,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public final String getComment() {
     return m_comment;
   }
-  
+
   /**
    * Return the device interface specific context object.
    *
@@ -141,7 +141,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public final DeviceContext getContext() {
     return m_drvCtx;
   }
-  
+
   /**
    * Return the device interface for this shared device.
    *
@@ -150,7 +150,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public DeviceInterface getInterface() throws InvalidDeviceInterfaceException {
     return m_interface;
   }
-  
+
   /**
    * Return the shared device name.
    *
@@ -159,7 +159,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public final String getName() {
     return m_name;
   }
-  
+
   /**
    * Return the shared device type, as specified by the ShareType class.
    *
@@ -168,19 +168,19 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public int getType() {
     return m_type;
   }
-  
+
   /**
    * Return the current connection count for the share
-   * 
+   *
    * @return int
    */
   public final int getCurrentConnectionCount() {
     return m_curUses;
   }
-  
+
   /**
    * Return the maximum connection count for the share
-   * 
+   *
    * @return int
    */
   public final int getMaximumConnectionCount() {
@@ -189,7 +189,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
 
   /**
    * Check if the shared device has an assoicated server configuration
-   * 
+   *
    * @return boolean
    */
   public final boolean hasConfiguration() {
@@ -198,13 +198,13 @@ public class SharedDevice implements Comparable<SharedDevice> {
 
   /**
    * Return the associated server configuration
-   * 
+   *
    * @return ServerConfiguration
    */
   public final ServerConfiguration getConfiguration() {
       return m_config;
   }
-  
+
   /**
    * Generates a hash code for the receiver.
    * This method is supported primarily for
@@ -219,7 +219,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
 
     return getName().hashCode();
   }
-  
+
   /**
    * Determine if this is an admin share.
    *
@@ -228,7 +228,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public final boolean isAdmin() {
     return (m_attrib & Admin) == 0 ? false : true;
   }
-  
+
   /**
    * Determine if this is a hidden share.
    *
@@ -237,7 +237,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public final boolean isHidden() {
     return (m_attrib & Hidden) == 0 ? false : true;
   }
-  
+
   /**
    * Determine if the share is read-only.
    *
@@ -246,7 +246,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public final boolean isReadOnly() {
     return (m_attrib & ReadOnly) == 0 ? false : true;
   }
-  
+
   /**
    * Determine if the share is a temporary share
    *
@@ -255,7 +255,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public final boolean isTemporary() {
     return (m_attrib & Temporary) == 0 ? false : true;
   }
-  
+
   /**
    * Set the shared device comment string.
    *
@@ -264,7 +264,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public final void setComment(String comm) {
     m_comment = comm;
   }
-  
+
   /**
    * Set the shared device attributes.
    *
@@ -273,7 +273,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   public final void setAttributes(int attr) {
     m_attrib = attr;
   }
-  
+
   /**
    * Set the context that is passed to the device interface.
    *
@@ -282,7 +282,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   protected void setContext(DeviceContext ctx) {
     m_drvCtx = ctx;
   }
-  
+
   /**
    * Set the device interface for this shared device.
    *
@@ -291,7 +291,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   protected final void setInterface(DeviceInterface iface) {
     m_interface = iface;
   }
-  
+
   /**
    * Set the shared device name.
    *
@@ -300,7 +300,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
   protected final void setName(String name) {
     m_name = name;
   }
-  
+
   /**
    * Set the shared device type.
    *
@@ -309,10 +309,10 @@ public class SharedDevice implements Comparable<SharedDevice> {
   protected final void setType(int typ) {
     m_type = typ;
   }
-  
+
   /**
    * Set the maximum connection coutn for this shared device
-   * 
+   *
    * @param maxConn int
    */
   public final void setMaximumConnectionCount(int maxConn) {
@@ -321,54 +321,54 @@ public class SharedDevice implements Comparable<SharedDevice> {
 
 	/**
 	 * Set the access control list using the specified list
-	 * 
+	 *
 	 * @param acls AccessControlList
 	 */
 	public final void setAccessControlList(AccessControlList acls) {
 		m_acls = acls;
 	}
-	
+
 	/**
 	 * Set the associated server configuration
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 */
 	public final void setConfiguration(ServerConfiguration config) {
 	    m_config = config;
 	}
-	
+
 	/**
 	 * Add an access control to the shared device
-	 * 
+	 *
 	 * @param acl AccessControl
 	 */
 	public final void addAccessControl(AccessControl acl) {
-		
+
 		//	Check if the access control list has been allocated
-		
+
 		if ( m_acls == null)
 			m_acls = new AccessControlList();
-			
+
 		//	Add the access control
-		
-		m_acls.addControl(acl);	  
+
+		m_acls.addControl(acl);
 	}
-	
+
 	/**
 	 * Remove an access control
-	 * 
+	 *
 	 * @param idx int
 	 * @return AccessControl
 	 */
 	public final AccessControl removeAccessControl(int idx) {
-		
+
 		//	validate the index
-		
+
 		if ( m_acls == null || idx < 0 || idx >= m_acls.numberOfControls())
 			return null;
-			
+
 		//	Remove the access control
-		
+
 		return m_acls.removeControl(idx);
 	}
 
@@ -378,14 +378,14 @@ public class SharedDevice implements Comparable<SharedDevice> {
 	public final void removeAllAccessControls() {
 		if ( m_acls != null) {
 			m_acls.removeAllControls();
-			m_acls = null;	
+			m_acls = null;
 		}
 	}
-	
+
   /**
    * Parse and validate the parameters string and create a device context for the
    * shared device.
-   * 
+   *
    * @param args String[]
    * @return DeviceContext
    */
@@ -399,17 +399,17 @@ public class SharedDevice implements Comparable<SharedDevice> {
 	public synchronized void incrementConnectionCount() {
 	  m_curUses++;
 	}
-	
+
 	/**
 	 * Decrement the connection count for the share
 	 */
 	public synchronized void decrementConnectionCount() {
 	  m_curUses--;
 	}
-	
+
 	/**
 	 * Compare this shared device to another shared device using the device name
-	 * 
+	 *
 	 * @param sd SharedDevice
 	 */
 	public int compareTo(SharedDevice sd) {
@@ -442,7 +442,7 @@ public class SharedDevice implements Comparable<SharedDevice> {
 
     return false;
   }
-  
+
   /**
    * Returns a String that represents the value of this object.
    *
@@ -458,27 +458,27 @@ public class SharedDevice implements Comparable<SharedDevice> {
     str.append(",");
     str.append(ShareType.TypeAsString(getType()));
     str.append(",");
-    
+
     if ( hasAccessControls()) {
     	str.append("ACLs=");
     	str.append(m_acls.numberOfControls());
     }
-    
+
 		if ( isAdmin())
 			str.append(",Admin");
-			
+
 		if ( isHidden())
 			str.append(",Hidden");
-			
+
 		if ( isReadOnly())
 			str.append(",ReadOnly");
-			
+
 		if ( isTemporary())
 			str.append(",Temp");
-		
+
 		if ( getContext() != null && getContext().isAvailable() == false)
 		  str.append(",Offline");
-			
+
     if (m_drvCtx != null) {
       str.append(",");
       str.append(m_drvCtx.toString());

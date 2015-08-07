@@ -27,15 +27,15 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * User Information Class
- * 
+ *
  * <p>Contains the details of a user account on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class UserInfo implements DCEReadable {
 
 	//	Information levels supported
-  
+
 	public static final int InfoLevel1	= 1;
 	public static final int InfoLevel3	= 3;
 	public static final int InfoLevel21	= 21;
@@ -54,7 +54,7 @@ public class UserInfo implements DCEReadable {
   	public static final int OperAccounts 	= 3;
 
   	//	Account flags
-  
+
   	private static final int AccountDisabled				= 0x0001;
   	private static final int AccountHomeDirRequired			= 0x0002;
   	private static final int AccountPasswordNotRequired		= 0x0004;
@@ -66,7 +66,7 @@ public class UserInfo implements DCEReadable {
   	private static final int AccountServerTrust				= 0x0100;
   	private static final int AccountPasswordNotExpire		= 0x0200;
   	private static final int AccountAutoLocked				= 0x0400;
-  
+
   	//	Information level
 
   	private int m_infoLevel;
@@ -121,7 +121,7 @@ public class UserInfo implements DCEReadable {
   	private String m_unknown1;
   	private String m_unknown2;
   	private String m_unknown3;
-  
+
 	/**
 	 * Default constructor
 	 */
@@ -130,7 +130,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param lev int
 	 */
 	public UserInfo(int lev) {
@@ -139,7 +139,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Get the information level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getInformationLevel() {
@@ -148,7 +148,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the logon server name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getLogonServer() {
@@ -157,7 +157,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the date/time the account expires, or NTTime.Infinity if it does not expire
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getAccountExpires() {
@@ -166,7 +166,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the application parameter string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getApplicationParameter() {
@@ -175,7 +175,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the bad password count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getBadPasswordCount() {
@@ -184,7 +184,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the code page
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCodePage() {
@@ -193,7 +193,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the account comment
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getComment() {
@@ -202,7 +202,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the account description
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getDescription() {
@@ -211,7 +211,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the country code
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCountryCode() {
@@ -220,7 +220,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the account flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFlags() {
@@ -229,7 +229,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Check if the account is disabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isDisabled() {
@@ -238,7 +238,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Check if the account does not require a home directory
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean requiresHomeDirectory() {
@@ -247,7 +247,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Check if the account does not require a password
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean requiresPassword() {
@@ -256,7 +256,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Check if the account is a normal user account
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isNormalUser() {
@@ -265,7 +265,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Check if the account is a domain trust account
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isDomainTrust() {
@@ -274,7 +274,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Check if the account is a workstation trust account
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isWorkstationTrust() {
@@ -283,7 +283,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Check if the account is a server trust account
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isServerTrust() {
@@ -292,7 +292,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Check if the account password expires
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean passwordExpires() {
@@ -301,7 +301,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Check if the account is auto locked
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isAutoLocked() {
@@ -310,7 +310,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the full account name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFullName() {
@@ -319,7 +319,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the group resource id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getGroupRID() {
@@ -328,7 +328,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the home directory path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getHomeDirectory() {
@@ -337,7 +337,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the home drive
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getHomeDirectoryDrive() {
@@ -346,7 +346,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the date/time of last logoff
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getLastLogoff() {
@@ -355,7 +355,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the date/time of last logon, to this server
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getLastLogon() {
@@ -364,7 +364,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the allowed logon hours bit set
-	 * 
+	 *
 	 * @return BitSet
 	 */
 	public final BitSet getLogonHours() {
@@ -373,7 +373,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the number of logons for the account, to this server
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfLogons() {
@@ -382,7 +382,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the account provileges
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPrivileges() {
@@ -391,7 +391,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the profile path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getProfile() {
@@ -400,7 +400,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the password expired flag
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPasswordExpired() {
@@ -409,7 +409,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the logon script path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getLogonScriptPath() {
@@ -418,7 +418,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the allowed units per week
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getUnitsPerWeek() {
@@ -427,7 +427,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the account name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getUserName() {
@@ -436,7 +436,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the user resource id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getUserRID() {
@@ -445,7 +445,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the workstations that the account is allowed to logon from
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getWorkStations() {
@@ -454,7 +454,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the date/time of the last password change
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getLastPasswordChange() {
@@ -463,7 +463,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the date/time that the password must be changed by
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getPasswordMustChangeBy() {
@@ -492,7 +492,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Read the user information from the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @throws DCEBufferException
 	 */
@@ -609,7 +609,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Read the strings for this user information from the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @throws DCEBufferException
 	 */
@@ -673,7 +673,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return an account type as a string
-	 * 
+	 *
 	 * @param typ int
 	 * @return String
 	 */
@@ -695,7 +695,7 @@ public class UserInfo implements DCEReadable {
 
 	/**
 	 * Return the user information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

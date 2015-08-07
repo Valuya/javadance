@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys.cache;
 
 /**
  * File State Proxy Interface
- * 
+ *
  * <p>Used to store a link to a file state. Depending on the file state cache implementation
  * the proxy may reference the actual file state or retrieve it.
  *
@@ -31,7 +31,7 @@ public interface FileStateProxy {
 
 	/**
 	 * Return the file state object
-	 * 
+	 *
 	 * @return FileState
 	 */
 	public FileState getFileState();

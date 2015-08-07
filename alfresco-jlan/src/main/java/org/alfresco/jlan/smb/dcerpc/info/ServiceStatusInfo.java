@@ -25,10 +25,10 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Service Status Information Class
- * 
+ *
  * <p>
  * Contains the status details of a remote NT service.
- * 
+ *
  * @author gkspencer
  */
 public class ServiceStatusInfo implements DCEReadable {
@@ -56,7 +56,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param dispname String
 	 */
@@ -67,7 +67,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param dispname String
 	 * @param typ int
@@ -94,7 +94,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Return the service name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
@@ -103,7 +103,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Return the service display name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getDisplayName() {
@@ -112,7 +112,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Return the service type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getType() {
@@ -121,7 +121,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Return the current service state
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCurrentState() {
@@ -130,7 +130,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Return the service control functions accepted by this service
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getControlsAccepted() {
@@ -139,7 +139,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Return the service start/stop Win32 error code
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getWin32ErrorCode() {
@@ -148,7 +148,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Return the service specific error code
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getServiceErrorCode() {
@@ -158,7 +158,7 @@ public class ServiceStatusInfo implements DCEReadable {
 	/**
 	 * Return the checkpoint value, updated by the service during lengthy start/stop/pause
 	 * opertions.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCheckpoint() {
@@ -167,7 +167,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Return the wait hint for the service
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getWaitHint() {
@@ -176,7 +176,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Set the service name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setName(String name) {
@@ -185,7 +185,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Set the service display name
-	 * 
+	 *
 	 * @param dispname String
 	 */
 	public final void setDisplayName(String dispname) {
@@ -205,7 +205,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Read the service status information from the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 * @see DCEReadable#readObject(DCEBuffer)
@@ -226,7 +226,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Read the strings for this object from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -238,7 +238,7 @@ public class ServiceStatusInfo implements DCEReadable {
 
 	/**
 	 * Return the service status information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

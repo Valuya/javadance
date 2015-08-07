@@ -31,10 +31,10 @@ import org.alfresco.jlan.util.*;
 
 /**
  * jlanEventlog Application
- * 
+ *
  * <p>
  * Display the last 50 event log entries on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class jlanEventlog extends jlanApp {
@@ -58,7 +58,7 @@ public class jlanEventlog extends jlanApp {
 
 	/**
 	 * Display the usage information for the command
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
@@ -74,7 +74,7 @@ public class jlanEventlog extends jlanApp {
 
 	/**
 	 * Perform the main command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @throws Exception
 	 */
@@ -147,7 +147,7 @@ public class jlanEventlog extends jlanApp {
 
 	/**
 	 * Validate the command line parameters
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -213,7 +213,7 @@ public class jlanEventlog extends jlanApp {
 
 	/**
 	 * Get the event log to be displayed
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getEventLogName() {
@@ -222,7 +222,7 @@ public class jlanEventlog extends jlanApp {
 
 	/**
 	 * Set the event log to be displayed
-	 * 
+	 *
 	 * @param type String
 	 */
 	protected final void setEventLogName(String type) {
@@ -231,7 +231,7 @@ public class jlanEventlog extends jlanApp {
 
 	/**
 	 * Run the jlanEventlog command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public static void main(String[] args) {

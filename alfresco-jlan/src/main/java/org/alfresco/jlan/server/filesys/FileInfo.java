@@ -25,14 +25,14 @@ import org.alfresco.jlan.smb.SMBDate;
 
 /**
  * File information class.
- * 
+ *
  * <p>
  * The FileInfo class is returned by the DiskInterface.getFileInformation () and
  * SearchContext.nextFileInfo() methods.
- * 
+ *
  * @see DiskInterface
  * @see SearchContext
- * 
+ *
  * @author gkspencer
  */
 public class FileInfo {
@@ -54,10 +54,10 @@ public class FileInfo {
 	public static final int SetDeleteOnClose 	= 0x0400;
 
 	// State flags
-	
+
 	public static final int FlagDeleteOnClose	= 0x0001;
 	public static final int FlagPseudoFile		= 0x0002;
-	
+
 	// File name string
 
 	protected String m_name;
@@ -98,10 +98,10 @@ public class FileInfo {
 
 	private long m_allocSize;
 
-	// File identifier 
+	// File identifier
 
 	private int m_fileId = -1;
-	
+
 	// parent directory id
 	private int m_dirId = -1;
 
@@ -141,7 +141,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
 	 * @param fattr File attributes.
@@ -161,7 +161,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
 	 * @param fattr File attributes.
@@ -183,7 +183,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
 	 * @param fattr File attributes.
@@ -208,7 +208,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fpath File path string.
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
@@ -230,7 +230,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fpath File path string.
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
@@ -254,7 +254,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fpath File path string.
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
@@ -279,7 +279,7 @@ public class FileInfo {
 
 	/**
 	 * Return the files last access date/time.
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getAccessDateTime() {
@@ -288,7 +288,7 @@ public class FileInfo {
 
 	/**
 	 * Get the files allocated size.
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getAllocationSize() {
@@ -297,7 +297,7 @@ public class FileInfo {
 
 	/**
 	 * Get the files allocated size, as a 32bit value
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getAllocationSizeInt() {
@@ -306,9 +306,9 @@ public class FileInfo {
 
 	/**
 	 * Return the inode change date/time of the file.
-	 * 
+	 *
 	 * This is the time of last metadata change.
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getChangeDateTime() {
@@ -317,7 +317,7 @@ public class FileInfo {
 
 	/**
 	 * Return the creation date/time of the file.
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getCreationDateTime() {
@@ -326,7 +326,7 @@ public class FileInfo {
 
 	/**
 	 * Return the delete on close flag setting
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDeleteOnClose() {
@@ -335,7 +335,7 @@ public class FileInfo {
 
 	/**
 	 * Return the file attributes value.
-	 * 
+	 *
 	 * @return File attributes value.
 	 */
 	public int getFileAttributes() {
@@ -344,7 +344,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file name string
-	 * 
+	 *
 	 * @return File name string.
 	 */
 	public final String getFileName() {
@@ -353,7 +353,7 @@ public class FileInfo {
 
 	/**
 	 * Check if the short (8.3) file name is available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasShortName() {
@@ -362,7 +362,7 @@ public class FileInfo {
 
 	/**
 	 * Get the short file name (8.3 format)
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getShortName() {
@@ -371,7 +371,7 @@ public class FileInfo {
 
 	/**
 	 * Get the files date/time of last write
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getModifyDateTime() {
@@ -380,7 +380,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file path string.
-	 * 
+	 *
 	 * @return File path string, relative to the share.
 	 */
 	public final String getPath() {
@@ -389,7 +389,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file size, in bytes.
-	 * 
+	 *
 	 * @return File size in bytes.
 	 */
 	public final long getSize() {
@@ -398,7 +398,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file size in bytes, as a 32bit value
-	 * 
+	 *
 	 * @return File size in bytes, as an int
 	 */
 	public final int getSizeInt() {
@@ -407,7 +407,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file identifier
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -416,7 +416,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file identifier
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getFileIdLong() {
@@ -425,7 +425,7 @@ public class FileInfo {
 
 	/**
 	 * Get the parent directory identifier
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDirectoryId() {
@@ -434,7 +434,7 @@ public class FileInfo {
 
 	/**
 	 * Get the parent directory identifier
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getDirectoryIdLong() {
@@ -443,7 +443,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the last access date/time is available.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasAccessDateTime() {
@@ -452,9 +452,9 @@ public class FileInfo {
 
 	/**
 	 * Determine if the inode change date/time details are available.
-	 * 
+	 *
 	 * Wireshark says this is the "last write" data/time.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasChangeDateTime() {
@@ -463,7 +463,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the creation date/time details are available.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasCreationDateTime() {
@@ -472,7 +472,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the modify date/time details are available.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasModifyDateTime() {
@@ -481,7 +481,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the file attributes field has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasFileAttributes() {
@@ -490,7 +490,7 @@ public class FileInfo {
 
 	/**
 	 * Return the specified attribute status
-	 * 
+	 *
 	 * @param attr int
 	 */
 	public final boolean hasAttribute(int attr) {
@@ -499,7 +499,7 @@ public class FileInfo {
 
 	/**
 	 * Return the directory file attribute status.
-	 * 
+	 *
 	 * @return true if the file is a directory, else false.
 	 */
 	public final boolean isDirectory() {
@@ -508,7 +508,7 @@ public class FileInfo {
 
 	/**
 	 * Return the hidden file attribute status.
-	 * 
+	 *
 	 * @return true if the file is hidden, else false.
 	 */
 	public final boolean isHidden() {
@@ -517,7 +517,7 @@ public class FileInfo {
 
 	/**
 	 * Return the read-only file attribute status.
-	 * 
+	 *
 	 * @return true if the file is read-only, else false.
 	 */
 	public final boolean isReadOnly() {
@@ -526,16 +526,16 @@ public class FileInfo {
 
 	/**
 	 * Return the system file attribute status.
-	 * 
+	 *
 	 * @return true if the file is a system file, else false.
 	 */
 	public final boolean isSystem() {
 		return (m_attr & FileAttribute.System) != 0 ? true : false;
 	}
-	
+
 	/**
      * Return the temporary attribute status.
-     * 
+     *
      * @return true if the file is a temporary file, else false.
      */
     public final boolean isTemporary() {
@@ -544,7 +544,7 @@ public class FileInfo {
 
 	/**
 	 * Return the archived attribute status
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isArchived() {
@@ -553,16 +553,16 @@ public class FileInfo {
 
   /**
    * Check if this is a pseudo file
-   * 
+   *
    * @return boolean
    */
   public boolean isPseudoFile() {
       return (m_flags & FlagPseudoFile) != 0 ? true : false;
   }
-  
+
 	/**
 	 * Determine if the group id field has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasGid() {
@@ -571,7 +571,7 @@ public class FileInfo {
 
 	/**
 	 * Return the owner group id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getGid() {
@@ -580,7 +580,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the user id field has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasUid() {
@@ -589,7 +589,7 @@ public class FileInfo {
 
 	/**
 	 * Return the owner user id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getUid() {
@@ -598,7 +598,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the mode field has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasMode() {
@@ -607,7 +607,7 @@ public class FileInfo {
 
 	/**
 	 * Return the Unix mode
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMode() {
@@ -616,7 +616,7 @@ public class FileInfo {
 
 	/**
 	 * Return the file type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int isFileType() {
@@ -650,7 +650,7 @@ public class FileInfo {
 
 	/**
 	 * Copy the file information
-	 * 
+	 *
 	 * @param finfo FileInfo
 	 */
 	public final void copyFrom(FileInfo finfo) {
@@ -673,18 +673,18 @@ public class FileInfo {
 		m_gid = finfo.getGid();
 		m_uid = finfo.getUid();
 		m_mode = finfo.getMode();
-		
+
 		if ( finfo.isDirectory())
             setFileType(FileType.Directory);
         else
             setFileType(FileType.RegularFile);
-		
+
 		m_flags = finfo.getFileFlags();
 	}
 
 	/**
 	 * Set the files last access date/time.
-	 * 
+	 *
 	 * @param timesec long
 	 */
 	public void setAccessDateTime(long timesec) {
@@ -696,7 +696,7 @@ public class FileInfo {
 
 	/**
 	 * Set the files allocation size.
-	 * 
+	 *
 	 * @param siz long
 	 */
 	public void setAllocationSize(long siz) {
@@ -705,7 +705,7 @@ public class FileInfo {
 
 	/**
 	 * Set the inode change date/time for the file.
-	 * 
+	 *
 	 * @param timesec long
 	 */
 	public void setChangeDateTime(long timesec) {
@@ -717,7 +717,7 @@ public class FileInfo {
 
 	/**
 	 * Set the creation date/time for the file.
-	 * 
+	 *
 	 * @param timesec long
 	 */
 	public void setCreationDateTime(long timesec) {
@@ -729,7 +729,7 @@ public class FileInfo {
 
 	/**
 	 * Set/clear the delete on close flag
-	 * 
+	 *
 	 * @param del boolean
 	 */
 	public final void setDeleteOnClose(boolean del) {
@@ -741,7 +741,7 @@ public class FileInfo {
 
 	/**
 	 * Set/clear the pseudo file flag
-	 * 
+	 *
 	 * @param pseudo boolean
 	 */
 	public final void setPseudoFile(boolean pseudo) {
@@ -750,10 +750,10 @@ public class FileInfo {
 		else
 			m_flags = m_flags  & ~FlagPseudoFile;
 	}
-	
+
 	/**
 	 * Set the file attributes.
-	 * 
+	 *
 	 * @param attr int
 	 */
 	public final void setFileAttributes(int attr) {
@@ -762,7 +762,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 */
 	public final void setFileName(String name) {
@@ -771,7 +771,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file size in bytes
-	 * 
+	 *
 	 * @param siz long
 	 */
 	public final void setFileSize(long siz) {
@@ -780,7 +780,7 @@ public class FileInfo {
 
 	/**
 	 * Set the modification date/time for the file.
-	 * 
+	 *
 	 * @param timesec long
 	 */
 	public void setModifyDateTime(long timesec) {
@@ -792,7 +792,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file identifier
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setFileId(int id) {
@@ -801,7 +801,7 @@ public class FileInfo {
 
 	/**
 	 * Set the parent directory id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setDirectoryId(int id) {
@@ -810,7 +810,7 @@ public class FileInfo {
 
 	/**
 	 * Set the short (8.3 format) file name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setShortName(String name) {
@@ -819,7 +819,7 @@ public class FileInfo {
 
 	/**
 	 * Set the path
-	 * 
+	 *
 	 * @param path String
 	 */
 	public final void setPath(String path) {
@@ -828,7 +828,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file size.
-	 * 
+	 *
 	 * @param siz int
 	 */
 	public final void setSize(int siz) {
@@ -837,7 +837,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file size.
-	 * 
+	 *
 	 * @param siz long
 	 */
 	public final void setSize(long siz) {
@@ -846,7 +846,7 @@ public class FileInfo {
 
 	/**
 	 * Set the owner group id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setGid(int id) {
@@ -855,7 +855,7 @@ public class FileInfo {
 
 	/**
 	 * Set the owner user id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setUid(int id) {
@@ -864,7 +864,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file mode
-	 * 
+	 *
 	 * @param mode int
 	 */
 	public final void setMode(int mode) {
@@ -873,7 +873,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file type
-	 * 
+	 *
 	 * @param typ int
 	 */
 	public final void setFileType(int typ) {
@@ -882,7 +882,7 @@ public class FileInfo {
 
 	/**
 	 * Set the set file information flags to indicated which values are to be set
-	 * 
+	 *
 	 * @param setFlags int
 	 */
 	public final void setFileInformationFlags(int setFlags) {
@@ -891,7 +891,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the specified set file information flags is enabled
-	 * 
+	 *
 	 * @param flag int
 	 * @return boolean
 	 */
@@ -903,7 +903,7 @@ public class FileInfo {
 
 	/**
 	 * Return the set file information flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSetFileInformationFlags() {
@@ -912,7 +912,7 @@ public class FileInfo {
 
 	/**
 	 * Check if the associated network file is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasNetworkFile() {
@@ -921,7 +921,7 @@ public class FileInfo {
 
 	/**
 	 * Return the associated network file
-	 * 
+	 *
 	 * @return NetworkFile
 	 */
 	public final NetworkFile getNetworkFile() {
@@ -930,7 +930,7 @@ public class FileInfo {
 
 	/**
 	 * Set the associated network file
-	 * 
+	 *
 	 * @param netFile NetworkFile
 	 */
 	public final void setNetworkFile(NetworkFile netFile) {
@@ -939,21 +939,21 @@ public class FileInfo {
 
 	/**
 	 * Return the file flags
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final int getFileFlags() {
 		return m_flags;
 	}
-	
+
 	/**
 	 * Return the setter flags as a string
-	 * 
+	 *
 	 *  @return String
 	 */
 	public final String getSetFileInformationFlagsString() {
 		StringBuilder str = new StringBuilder();
-	
+
 		if ( hasSetFlag( SetFileSize))
 			str.append("Size,");
 		if ( hasSetFlag( SetAllocationSize))
@@ -979,13 +979,13 @@ public class FileInfo {
 
 		if ( str.length() > 0)
 			str.setLength( str.length() - 1);
-		
+
 		return str.toString();
 	}
 
 	/**
 	 * Return the file information as a string.
-	 * 
+	 *
 	 * @return File information string.
 	 */
 	public String toString() {
@@ -1053,10 +1053,10 @@ public class FileInfo {
 		}
 
 		// Check if this is a pseudo file
-		
+
 		if ( isPseudoFile())
 			str.append( ", Pseudo");
-		
+
 		// Return the file information string
 
 		return str.toString();

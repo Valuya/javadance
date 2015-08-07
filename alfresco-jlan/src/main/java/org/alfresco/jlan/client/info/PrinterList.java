@@ -25,15 +25,15 @@ import java.util.List;
 
 /**
  * SMB printer list class
- * 
+ *
  * <p>
  * The PrinterList class contains a list of PrintQueueInfo ojbects, which contain details of a
  * remote print queue.
- * 
+ *
  * <p>
  * The AdminSession.getPrinterList () method returns an PrinterList containing the list of remote
  * print queues on the remote server.
- * 
+ *
  * @author gkspencer
  */
 public class PrinterList implements Serializable {
@@ -51,7 +51,7 @@ public class PrinterList implements Serializable {
 
 	/**
 	 * Add a printer queue information object to the list.
-	 * 
+	 *
 	 * @param prninf PrintQueueInfo to add to the list.
 	 */
 	public final void addPrinterInfo(PrintQueueInfo prninf) {
@@ -60,7 +60,7 @@ public class PrinterList implements Serializable {
 
 	/**
 	 * Clear all printer information objects from the list
-	 * 
+	 *
 	 */
 	public final void clearList() {
 		m_list.clear();
@@ -68,7 +68,7 @@ public class PrinterList implements Serializable {
 
 	/**
 	 * Get a printer queue information object from the list
-	 * 
+	 *
 	 * @param idx Index of the printer information to return
 	 * @return PrintQueueInfo for the required printer.
 	 * @exception java.lang.ArrayIndexOutOfBoundsException If the index is invalid
@@ -88,7 +88,7 @@ public class PrinterList implements Serializable {
 
 	/**
 	 * Get the number of printers in the list
-	 * 
+	 *
 	 * @return Number of SMBPrintQueueInfo objects in the list.
 	 */
 	public final int NumberOfPrinters() {

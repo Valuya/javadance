@@ -25,7 +25,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * NT Transaction Packet Class
- * 
+ *
  * @author gkspencer
  */
 public class NTTransPacket extends SMBSrvPacket {
@@ -61,7 +61,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf byte[]
 	 */
 	public NTTransPacket(byte[] buf) {
@@ -70,7 +70,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Copy constructor
-	 * 
+	 *
 	 * @param pkt NTTransPacket
 	 */
 	public NTTransPacket(NTTransPacket pkt) {
@@ -79,7 +79,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the data block size
-	 * 
+	 *
 	 * @return Data block size in bytes
 	 */
 	public final int getDataLength() {
@@ -88,7 +88,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the data block offset
-	 * 
+	 *
 	 * @return Data block offset within the SMB packet.
 	 */
 	public final int getDataOffset() {
@@ -97,7 +97,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Unpack the parameter block
-	 * 
+	 *
 	 * @return int[]
 	 */
 	public final int[] getParameterBlock() {
@@ -132,7 +132,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the total parameter count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getTotalParameterCount() {
@@ -141,7 +141,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the total data count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getTotalDataCount() {
@@ -150,7 +150,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the maximum parameter block length to be returned
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumParameterReturn() {
@@ -159,7 +159,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the maximum data block length to be returned
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumDataReturn() {
@@ -168,7 +168,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the parameter block count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getParameterBlockCount() {
@@ -177,7 +177,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the parameter block offset
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getParameterBlockOffset() {
@@ -186,7 +186,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the paramater block displacement
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getParameterBlockDisplacement() {
@@ -195,7 +195,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the data block count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockCount() {
@@ -204,7 +204,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the data block offset
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockOffset() {
@@ -213,7 +213,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the data block displacment
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockDisplacement() {
@@ -222,7 +222,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Get an NT parameter (32bit)
-	 * 
+	 *
 	 * @param idx int
 	 * @return int
 	 */
@@ -233,7 +233,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Get the setup parameter count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSetupCount() {
@@ -243,7 +243,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the offset to the setup words data
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSetupOffset() {
@@ -252,7 +252,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Get the NT transaction function code
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNTFunction() {
@@ -262,7 +262,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Calculate the buffer length required to hold a transaction response
-	 * 
+	 *
 	 * @param plen Parameter block length
 	 * @param dlen Data block length @ param setupcnt Setup parameter count
 	 * @return int
@@ -270,13 +270,13 @@ public class NTTransPacket extends SMBSrvPacket {
 	public static final int calculateResponseLength(int plen, int dlen, int setupcnt) {
 
 		// Standard CIFS header + reply parameters + setup parameters + parameter block length + data block length
-		
+
 		return HeaderLength + ((ReplyParams + setupcnt) * 2) + plen + dlen;
 	}
 
 	/**
 	 * Initialize the transact SMB packet
-	 * 
+	 *
 	 * @param func NT transaction function code
 	 * @param paramblk Parameter block data bytes
 	 * @param plen Parameter block data length
@@ -290,7 +290,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Initialize the transact SMB packet
-	 * 
+	 *
 	 * @param func NT transaction function code
 	 * @param paramblk Parameter block data bytes
 	 * @param plen Parameter block data length
@@ -358,7 +358,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Initialize the NT transaction reply
-	 * 
+	 *
 	 * @param paramblk Parameter block data bytes
 	 * @param plen Parameter block data length
 	 * @param datablk Data block data bytes
@@ -422,7 +422,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Initialize the NT transaction reply
-	 * 
+	 *
 	 * @param paramblk Parameter block data bytes
 	 * @param plen Parameter block data length
 	 * @param datablk Data block data bytes
@@ -487,7 +487,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the total parameter count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setTotalParameterCount(int cnt) {
@@ -496,7 +496,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the total data count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setTotalDataCount(int cnt) {
@@ -505,7 +505,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the maximum return parameter count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setMaximumParameterReturn(int cnt) {
@@ -514,7 +514,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the maximum return data count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setMaximumDataReturn(int cnt) {
@@ -523,7 +523,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the paramater block count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setTransactParameterCount(int cnt) {
@@ -532,7 +532,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the reply parameter byte count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setReplyParameterCount(int cnt) {
@@ -541,7 +541,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the reply parameter offset
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setReplyParameterOffset(int off) {
@@ -550,7 +550,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the reply parameter bytes displacement
-	 * 
+	 *
 	 * @param disp int
 	 */
 	public final void setReplyParameterDisplacement(int disp) {
@@ -559,7 +559,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the reply data byte count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setReplyDataCount(int cnt) {
@@ -568,7 +568,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the reply data offset
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setReplyDataOffset(int off) {
@@ -577,7 +577,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the reply data bytes displacement
-	 * 
+	 *
 	 * @param disp int
 	 */
 	public final void setReplyDataDisplacement(int disp) {
@@ -586,7 +586,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the parameter block offset within the packet
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setParameterBlockOffset(int off) {
@@ -595,7 +595,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the data block count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setDataBlockCount(int cnt) {
@@ -604,7 +604,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the data block offset
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setDataBlockOffset(int off) {
@@ -613,7 +613,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set an NT parameter (32bit)
-	 * 
+	 *
 	 * @param idx int
 	 * @param val int
 	 */
@@ -624,7 +624,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the maximum setup parameter count
-	 * 
+	 *
 	 * @param cnt Maximum count of setup paramater words
 	 */
 	public final void setMaximumSetupCount(int cnt) {
@@ -634,7 +634,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the setup parameter count
-	 * 
+	 *
 	 * @param cnt Count of setup paramater words
 	 */
 	public final void setSetupCount(int cnt) {
@@ -644,7 +644,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the specified setup parameter
-	 * 
+	 *
 	 * @param setupIdx Setup parameter index
 	 * @param setupVal Setup parameter value
 	 */
@@ -655,7 +655,7 @@ public class NTTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Set the NT transaction function code
-	 * 
+	 *
 	 * @param func int
 	 */
 	public final void setNTFunction(int func) {

@@ -22,7 +22,7 @@ package org.alfresco.jlan.server.auth.acl;
 import java.util.Vector;
 /**
  * Access Control List Class
- * 
+ *
  * <p>Contains a list of access controls for a shared filesystem.
  *
  * @author gkspencer
@@ -34,9 +34,9 @@ public class AccessControlList {
 	private Vector<AccessControl> m_list;
 
 	//	Default access level applied when rules return a default status
-	
+
 	private int m_defaultAccess = AccessControl.ReadWrite;
-	
+
 	/**
 	 * Create an access control list.
 	 */
@@ -46,7 +46,7 @@ public class AccessControlList {
 
 	/**
 	 * Get the default access level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDefaultAccessLevel() {
@@ -55,23 +55,23 @@ public class AccessControlList {
 
 	/**
 	 * Set the default access level
-	 * 
+	 *
 	 * @param level int
 	 * @exception InvalidACLTypeException		If the access level is invalid
-	 */	
+	 */
 	public final void setDefaultAccessLevel(int level)
 		throws InvalidACLTypeException {
-		
+
 		//	Check the default access level
-		
+
 		if( level < AccessControl.NoAccess || level > AccessControl.MaxLevel)
 			throw new InvalidACLTypeException();
-			
+
 		//	Set the default access level for the access control list
-		
+
 		m_defaultAccess = level;
 	}
-	
+
 	/**
 	 * Add an access control to the list
 	 *
@@ -86,7 +86,7 @@ public class AccessControlList {
 
 	/**
 	 * Return the specified access control
-	 * 
+	 *
 	 * @param idx int
 	 * @return AccessControl
 	 */
@@ -95,7 +95,7 @@ public class AccessControlList {
 			return null;
 		return m_list.get(idx);
 	}
-	
+
 	/**
 	 * Return the number of access controls in the list
 	 *
@@ -135,7 +135,7 @@ public class AccessControlList {
 		str.append("[");
 		str.append(m_list.size());
 		str.append(":");
-		
+
 		str.append(":");
 		str.append(AccessControl.asAccessString(getDefaultAccessLevel()));
 		str.append(":");

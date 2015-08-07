@@ -29,7 +29,7 @@ import org.alfresco.jlan.smb.mailslot.TcpipNetBIOSHostAnnouncer;
 
 /**
  * NetBIOS Socket Session Handler Class
- * 
+ *
  * @author gkspencer
  */
 public class NetBIOSSessionSocketHandler extends SocketSessionHandler {
@@ -40,7 +40,7 @@ public class NetBIOSSessionSocketHandler extends SocketSessionHandler {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param srv SMBServer
 	 * @param port int
 	 * @param bindAddr InetAddress
@@ -48,15 +48,15 @@ public class NetBIOSSessionSocketHandler extends SocketSessionHandler {
 	 */
 	public NetBIOSSessionSocketHandler(SMBServer srv, int port, InetAddress bindAddr, boolean debug) {
 		super("NetBIOS", "SMB", srv, bindAddr, port);
-		
+
 		// Enable/disable debug output
-		
+
 		setDebug( debug);
 	}
 
 	/**
 	 * Accept a new connection on the specified socket
-	 * 
+	 *
 	 * @param sock Socket
 	 */
 	protected void acceptConnection(Socket sock) {
@@ -64,9 +64,9 @@ public class NetBIOSSessionSocketHandler extends SocketSessionHandler {
 		try {
 
 			// Set a socket timeout
-			
+
 			sock.setSoTimeout( getSocketTimeout());
-			
+
 			// Create a packet handler for the session
 
 			SMBServer smbServer = (SMBServer) getServer();
@@ -94,7 +94,7 @@ public class NetBIOSSessionSocketHandler extends SocketSessionHandler {
 
 	/**
 	 * Create the TCP/IP NetBIOS session socket handlers for the main SMB/CIFS server
-	 * 
+	 *
 	 * @param server SMBServer
 	 * @param sockDbg boolean
 	 * @exception Exception
@@ -111,7 +111,7 @@ public class NetBIOSSessionSocketHandler extends SocketSessionHandler {
 
 		SocketSessionHandler sessHandler = new NetBIOSSessionSocketHandler( server, cifsConfig.getSessionPort(), cifsConfig.getSMBBindAddress(), sockDbg);
 		sessHandler.setSocketTimeout( cifsConfig.getSocketTimeout());
-		
+
 		sessHandler.initializeSessionHandler( server);
 
 		// Run the NetBIOS session handler in a seperate thread

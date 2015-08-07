@@ -46,46 +46,46 @@ public class OpenFileShareReadTest extends Test {
 	public OpenFileShareReadTest() {
 		super( "OpenFileShareRead");
 	}
-	
+
 	/**
 	 * Initialize the test setup
-	 * 
+	 *
 	 * @param threadId int
 	 * @param curIter int
 	 * @param sess DiskSession
 	 * @return boolean
 	 */
 	public boolean runInit( int threadId, int curIter, DiskSession sess) {
-		
+
 		// Create the test file, if this is the first test thread
-		
+
 		boolean initOK = false;
-		
+
 		if ( threadId == 1) {
 
 			try {
-				
+
 				// Check if the test file exists
-				
+
 				String testFileName = getPerTestFileName( threadId, curIter);
-				
+
 				if ( sess.FileExists( testFileName)) {
 					if ( isVerbose())
 						Debug.println( "File " + testFileName + " exists");
 					initOK = true;
 				}
 				else {
-					
+
 					// Create a new file
-					
+
 					if ( isVerbose())
 						Debug.println( "Creating file " + testFileName + " via " + sess.getServer());
 					SMBFile testFile = sess.CreateFile( testFileName);
 					if ( testFile != null)
 						testFile.Close();
-					
+
 					// Check the file exists
-	
+
 					if ( sess.FileExists( testFileName))
 						initOK = true;
 				}
@@ -96,12 +96,12 @@ public class OpenFileShareReadTest extends Test {
 		}
 		else
 			initOK = true;
-		
+
 		// Return the initialization status
-		
+
 		return initOK;
 	}
-	
+
 	/**
 	 * Run the open file with sharing mode test
 	 *
@@ -114,169 +114,169 @@ public class OpenFileShareReadTest extends Test {
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
 
 		TestResult result = null;
-		
+
 		try {
 
 			// Create a test file name for this iteration
-			
+
 			String testFileName = getPerTestFileName( threadId, iteration);
-			
+
 			// DEBUG
-			
+
 			testLog( log, "OpenFileShareRead Test");
-			
+
 			// Open an existing file with no shared access
-			
+
 			testLog( log, "Opening file " + testFileName + " via " + sess.getServer());
-			
+
 			CIFSDiskSession cifsSess = (CIFSDiskSession) sess;
 			CIFSFile openFile = null;
 
 			boolean openForRead = false;
-			
+
 			try {
-				
+
 				// Open existing file allowing read access to others
-				
+
 				openFile = cifsSess.NTCreate( testFileName, AccessMode.NTReadWrite, FileAttribute.NTNormal,
 					       						SharingMode.READ, FileAction.NTOpen, 0, 0);
-				
+
 				// If we got the file then hold it open for a short while
-				
+
 				if ( openFile != null) {
-					
+
 					// DEBUG
-					
+
 					testLog ( log, "Opened file " + testFileName + " with shared read access allowed");
-					
+
 					// Hold the file open for a short while, other threads should fail to open the file
-					
+
 					testSleep( 2000);
-					
+
 					// Close the test file
-					
+
 					openFile.Close();
-					
+
 					// Successful test result
-					
+
 					result = new BooleanTestResult( true);
 				}
 			}
 			catch ( SMBException ex) {
 
 				// Check for an access denied error code
-				
+
 				if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
-					
+
 					// DEBUG
-					
+
 					testLog ( log, "Open failed with access denied error (expected)");
-					
+
 					// Indicate that the file should be opened for read access
-					
+
 					openForRead = true;
 				}
 				else if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTSharingViolation) {
-					
+
 					// DEBUG
-					
+
 					testLog ( log, "Open failed with sharing violation error (expected)");
-					
+
 					// Indicate that the file should be opened for read access
-					
+
 					openForRead = true;
 				}
 				else {
-					
+
 					// DEBUG
-					
+
 					testLog ( log, "Open failed with wrong error, ex=" + ex);
-					
+
 					result = new ExceptionTestResult( ex);
 				}
 			}
 
 			// Check if the file should be opened for read access
-			
+
 			if ( openForRead == true) {
-				
+
 				CIFSFile readFile = null;
-				
+
 				try {
 
 					// Open the file for read-only access
 
 					readFile = cifsSess.NTCreate( testFileName, AccessMode.NTRead, FileAttribute.NTNormal,
        												SharingMode.READ, FileAction.NTOpen, 0, 0);
-					
+
 					// Check if we opened the file
-					
+
 					if ( readFile != null) {
-						
+
 						// DEBUG
-						
+
 						testLog ( log, "Opened file " + testFileName + " for read-only access");
-						
+
 						// Close the file
-						
+
 						readFile.Close();
-						
+
 						// Successful test result
-						
+
 						result = new BooleanTestResult( true);
 					}
 					else {
-						
+
 						// DEBUG
 
 						String msg = "Failed to open file for read-only access, no exception";
 						testLog ( log, msg);
-						
+
 						// Failed test result
-						
+
 						result = new BooleanTestResult( false, msg);
 					}
 				}
 				catch ( SMBException ex) {
-					
+
 					// DEBUG
-					
+
 					testLog ( log, "Failed to open file for read access, ex=" + ex);
-					
+
 					result = new ExceptionTestResult( ex);
 				}
 			}
 			else if ( result == null) {
-				
+
 				// DEBUG
-				
+
 				String msg = "Failed to get shared read exception on file open";
 				testLog( log, msg);
-				
+
 				// Did not get the first open or an exception for the second open
-				
+
 				result = new BooleanTestResult( false, msg);
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
-				
+
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult( ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -287,7 +287,7 @@ public class OpenFileShareReadTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		if ( threadId == 1)
 			sess.DeleteFile( getPerTestFileName( threadId, iter));
 	}

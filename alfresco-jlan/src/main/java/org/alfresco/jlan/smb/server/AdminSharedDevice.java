@@ -24,7 +24,7 @@ import org.alfresco.jlan.server.core.SharedDevice;
 
 /**
  * Administration shared device, IPC$.
- * 
+ *
  * @author gkspencer
  */
 final class AdminSharedDevice extends SharedDevice {

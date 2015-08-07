@@ -59,7 +59,7 @@ public class SMBException extends Exception {
     m_errorclass = errclass;
     m_errorcode = errcode;
   }
-  
+
   /**
    *  Return the error class for this SMB exception.
    *
@@ -69,7 +69,7 @@ public class SMBException extends Exception {
   public int getErrorClass() {
     return m_errorclass;
   }
-  
+
   /**
    *  Return the error code for this SMB exception
    *
@@ -79,7 +79,7 @@ public class SMBException extends Exception {
   public int getErrorCode() {
     return m_errorcode;
   }
-  
+
   /**
    *  Return the error text for the SMB exception
    *

@@ -29,10 +29,10 @@ import org.alfresco.jlan.server.locking.OpLockDetails;
  * <p>
  * The network file represents a file or directory on a filesystem. The server keeps track of the
  * open files on a per session basis.
- * 
+ *
  * <p>
  * This class may be extended as required by your own disk driver class.
- * 
+ *
  * @author gkspencer
  */
 public abstract class NetworkFile {
@@ -62,9 +62,9 @@ public abstract class NetworkFile {
 	protected long m_uniqueId;
 
 	// File handle id (protocol level id/handle)
-	
+
 	private int m_protocolId = -1;
-	
+
 	// File/directory name
 
 	protected String m_name;
@@ -97,9 +97,9 @@ public abstract class NetworkFile {
 	protected int m_grantedAccess;
 
 	// Allowed file access (can be different to granted file access if read-only access was requested)
-	
+
 	protected int m_allowedAccess = NetworkFile.READWRITE;
-	
+
 	// Flag to indicate that the file has been closed
 
 	protected boolean m_closed = true;
@@ -120,20 +120,20 @@ public abstract class NetworkFile {
 	// File status flags
 
 	private int m_flags;
-	
+
 	private boolean m_force;
 
 	// Oplock details
-	
+
 	private OpLockDetails m_oplock;
-	
+
 	// Access token object
-	
+
 	private FileAccessToken m_accessToken;
-	
+
 	/**
 	 * Create a network file object with the specified file identifier.
-	 * 
+	 *
 	 * @param fid int
 	 */
 	public NetworkFile(int fid) {
@@ -142,7 +142,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Create a network file with the specified file and parent directory ids
-	 * 
+	 *
 	 * @param fid int
 	 * @param did int
 	 */
@@ -153,7 +153,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Create a network file with the specified file id, stream id and parent directory id
-	 * 
+	 *
 	 * @param fid int
 	 * @param stid int
 	 * @param did int
@@ -166,7 +166,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Create a network file object with the specified file/directory name.
-	 * 
+	 *
 	 * @param name File name string.
 	 */
 	public NetworkFile(String name) {
@@ -175,7 +175,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the parent directory identifier
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDirectoryId() {
@@ -184,7 +184,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the file attributes.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileAttributes() {
@@ -193,7 +193,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the file identifier.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -202,7 +202,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Get the file size, in bytes.
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getFileSize() {
@@ -211,7 +211,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Get the file size, in bytes.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileSizeInt() {
@@ -220,7 +220,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the full name, relative to the share.
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFullName() {
@@ -229,7 +229,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the full name including the stream name, relative to the share.
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFullNameStream() {
@@ -241,7 +241,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the granted file access mode.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getGrantedAccess() {
@@ -250,12 +250,12 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the granted access as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getGrantedAccessAsString() {
 	    String accStr = "Unknown";
-	    
+
 	    switch ( m_grantedAccess) {
 	        case READONLY:
 	            accStr = "ReadOnly";
@@ -270,22 +270,22 @@ public abstract class NetworkFile {
 	        	accStr = "AttributesOnly";
 	        	break;
 	    }
-	    
+
 	    return accStr;
 	}
-	
+
 	/**
 	 * Return the allowed file access mode
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAllowedAccess() {
 		return m_allowedAccess;
 	}
-	
+
 	/**
 	 * Return the file/directory name.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getName() {
@@ -294,7 +294,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the stream id, zero indicates the main file stream
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getStreamId() {
@@ -303,7 +303,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the stream name, if this is a stream
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getStreamName() {
@@ -312,7 +312,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the unique file identifier
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getUniqueId() {
@@ -321,7 +321,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Determine if the file has been closed.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isClosed() {
@@ -330,7 +330,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the directory file attribute status.
-	 * 
+	 *
 	 * @return true if the file is a directory, else false.
 	 */
 
@@ -340,7 +340,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the hidden file attribute status.
-	 * 
+	 *
 	 * @return true if the file is hidden, else false.
 	 */
 
@@ -350,7 +350,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the read-only file attribute status.
-	 * 
+	 *
 	 * @return true if the file is read-only, else false.
 	 */
 
@@ -360,7 +360,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the system file attribute status.
-	 * 
+	 *
 	 * @return true if the file is a system file, else false.
 	 */
 
@@ -370,7 +370,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the archived attribute status
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isArchived() {
@@ -379,7 +379,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Check if this is a stream file
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isStream() {
@@ -388,7 +388,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Check if there are active locks on this file by this session
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasLocks() {
@@ -399,7 +399,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Check for NT attributes
-	 * 
+	 *
 	 * @param attr int
 	 * @return boolean
 	 */
@@ -409,7 +409,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Determine if the file access date/time is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasAccessDate() {
@@ -418,7 +418,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the file access date/time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getAccessDate() {
@@ -427,7 +427,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Determine if the file creation date/time is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasCreationDate() {
@@ -436,7 +436,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the file creation date/time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getCreationDate() {
@@ -445,7 +445,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Check if a delayed write error has occurred on this file
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDelayedWriteError() {
@@ -454,7 +454,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Check if the delete on close flag has been set for this file
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDeleteOnClose() {
@@ -463,7 +463,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Check if the file has an I/O request pending
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasIOPending() {
@@ -472,25 +472,25 @@ public abstract class NetworkFile {
 
 	/**
 	 * Check if the delayed close is set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDelayedClose() {
 	    return (m_flags & DelayedClose) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the file was created during the open
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean wasCreated() {
 		return ( m_flags & Created) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Determine if the file modification date/time is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasModifyDate() {
@@ -499,7 +499,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the file modify date/time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getModifyDate() {
@@ -508,7 +508,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Get the write count for the file
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getWriteCount() {
@@ -524,16 +524,16 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the protocol file id/handle
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getProtocolId() {
 	    return m_protocolId;
 	}
-	
+
 	/**
 	 * Set the file attributes, as specified by the SMBFileAttribute class.
-	 * 
+	 *
 	 * @param attrib int
 	 */
 	public final void setAttributes(int attrib) {
@@ -542,7 +542,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set, or clear, the delete on close flag
-	 * 
+	 *
 	 * @param del boolean
 	 */
 	public final void setDeleteOnClose(boolean del) {
@@ -551,7 +551,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the parent directory identifier
-	 * 
+	 *
 	 * @param dirId int
 	 */
 	public final void setDirectoryId(int dirId) {
@@ -560,7 +560,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the file identifier.
-	 * 
+	 *
 	 * @param fid int
 	 */
 	public final void setFileId(int fid) {
@@ -569,7 +569,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the file size.
-	 * 
+	 *
 	 * @param siz long
 	 */
 	public final void setFileSize(long siz) {
@@ -578,7 +578,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the file size.
-	 * 
+	 *
 	 * @param siz int
 	 */
 	public final void setFileSize(int siz) {
@@ -587,7 +587,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the full file name, relative to the share.
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setFullName(String name) {
@@ -596,7 +596,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the granted file access mode.
-	 * 
+	 *
 	 * @param mode int
 	 */
 	public final void setGrantedAccess(int mode) {
@@ -605,16 +605,16 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the allowed access mode
-	 * 
+	 *
 	 * @param mode int
 	 */
 	public final void setAllowedAccess(int mode) {
 		m_allowedAccess = mode;
 	}
-	
+
 	/**
 	 * Set the file name.
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setName(String name) {
@@ -623,7 +623,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set/clear the I/O pending flag
-	 * 
+	 *
 	 * @param pending boolean
 	 */
 	public final void setIOPending(boolean pending) {
@@ -632,7 +632,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the stream id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setStreamId(int id) {
@@ -641,7 +641,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the stream name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setStreamName(String name) {
@@ -650,7 +650,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the file closed state.
-	 * 
+	 *
 	 * @param b boolean
 	 */
 	public final synchronized void setClosed(boolean b) {
@@ -659,7 +659,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the file access date/time
-	 * 
+	 *
 	 * @param dattim long
 	 */
 	public final void setAccessDate(long dattim) {
@@ -668,7 +668,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the file creation date/time
-	 * 
+	 *
 	 * @param dattim long
 	 */
 	public final void setCreationDate(long dattim) {
@@ -677,7 +677,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set or clear the delayed write error flag
-	 * 
+	 *
 	 * @param err boolean
 	 */
 	public final void setDelayedWriteError(boolean err) {
@@ -686,16 +686,16 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set or clear the delayed close flag
-	 * 
+	 *
 	 * @param delayClose boolean
 	 */
 	public final void setDelayedClose(boolean delayClose) {
 	    setStatusFlag( DelayedClose, delayClose);
 	}
-	
+
 	/**
 	 * Set the file modification date/time
-	 * 
+	 *
 	 * @param dattim long
 	 */
 	public final void setModifyDate(long dattim) {
@@ -704,7 +704,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set/clear a file status flag
-	 * 
+	 *
 	 * @param flag int
 	 * @param sts boolean
 	 */
@@ -718,7 +718,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Add a lock to the active lock list
-	 * 
+	 *
 	 * @param lock FileLock
 	 */
 	public final synchronized void addLock(FileLock lock) {
@@ -735,7 +735,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Remove a lock from the active lock list
-	 * 
+	 *
 	 * @param lock FileLock
 	 */
 	public final synchronized void removeLock(FileLock lock) {
@@ -763,7 +763,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the count of active locks
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfLocks() {
@@ -777,7 +777,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Get the details of an active lock from the list
-	 * 
+	 *
 	 * @param idx int
 	 * @return FileLock
 	 */
@@ -795,7 +795,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Return the lock list
-	 * 
+	 *
 	 * @return FileLockList
 	 */
 	public final FileLockList getLockList() {
@@ -804,34 +804,34 @@ public abstract class NetworkFile {
 
 	/**
 	 * Check if there is an oplock on this file/handle
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasOpLock() {
 		return m_oplock != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the oplock details
-	 * 
+	 *
 	 * @return OpLockDetails
 	 */
 	public final OpLockDetails getOpLock() {
 		return m_oplock;
 	}
-	
+
 	/**
 	 * Set/clear the oplock on this file
-	 * 
+	 *
 	 * @param oplock OpLockDetails
 	 */
 	public final void setOpLock(OpLockDetails oplock) {
 		m_oplock = oplock;
 	}
-	
+
 	/**
 	 * Set the unique file identifier
-	 * 
+	 *
 	 * @param id long
 	 */
 	protected final void setUniqueId(long id) {
@@ -840,7 +840,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the unique id using the file and directory id
-	 * 
+	 *
 	 * @param fid int
 	 * @param did int
 	 */
@@ -852,7 +852,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the unique id using the full path string
-	 * 
+	 *
 	 * @param path String
 	 */
 	protected final void setUniqueId(String path) {
@@ -861,7 +861,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Set the protocol level file id/handle
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setProtocolId(int id) {
@@ -870,34 +870,34 @@ public abstract class NetworkFile {
 
 	/**
 	 * Check if the file has an access token
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasAccessToken() {
 		return m_accessToken != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the access token
-	 * 
+	 *
 	 * @return FileAccessToken
 	 */
 	public final FileAccessToken getAccessToken() {
 		return m_accessToken;
 	}
-	
+
 	/**
 	 * Set, or clear, the access token
-	 * 
+	 *
 	 * @param token FileAccessToken
 	 */
 	public final void setAccessToken( FileAccessToken token) {
 		m_accessToken = token;
 	}
-	
+
 	/**
 	 * Open the file
-	 * 
+	 *
 	 * @param createFlag boolean
 	 * @exception IOException
 	 */
@@ -906,7 +906,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Read from the file.
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param len int
 	 * @param pos int
@@ -919,7 +919,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Write a block of data to the specified offset within file.
-	 * 
+	 *
 	 * @param buf byte[] buffer to write
 	 * @param len number of bytes to write from the buffer
 	 * @param pos offset within the buffer to write
@@ -931,7 +931,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Seek to the specified file position.
-	 * 
+	 *
 	 * @param pos long
 	 * @param typ int
 	 * @return int
@@ -942,7 +942,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Flush any buffered output to the file
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public abstract void flushFile()
@@ -950,7 +950,7 @@ public abstract class NetworkFile {
 
 	/**
 	 * Truncate the file to the specified file size
-	 * 
+	 *
 	 * @param siz long
 	 * @exception IOException
 	 */
@@ -964,66 +964,66 @@ public abstract class NetworkFile {
 		throws IOException;
 
 	/**
-	 * Close the file  
+	 * Close the file
 	 */
 	public void close()
 		throws IOException {
 		closeFile();
 	}
-	
+
 	/**
 	 * Indicate whether the file can be opened/closed via the NetworkFile methods rather than the DiskInterface.
-	 * 
+	 *
 	 * This is primarily for use by the NFS server code when caching open files. If possible the server will
 	 * close the network file to free up file handles, but keep it in the NFS file cache for a short while
 	 * in case the file is used again.
-	 * 
+	 *
 	 * Override this method to prevent the NFS server from closing the file until the file is removed from
 	 * the NFS file cache, by returning false.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean allowsOpenCloseViaNetworkFile() {
 		return true;
 	}
-	
+
     public boolean isForce() {
 	    return m_force;
 	}
-    
+
     public void setForce(boolean force){
         this.m_force = force;
     }
-	
+
 	/**
 	 * Return the file details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[");
 		str.append( getName());
 		str.append( "/");
 		str.append( getFullName());
-		
+
 		str.append( " ");
 		str.append( isDirectory() ? "D" : "-");
 		str.append( isArchived()  ? "A" : "-");
 		str.append( isSystem()    ? "S" : "-");
 		str.append( isHidden()    ? "H" : "-");
-		
+
 		str.append( " ");
 		str.append( getFileSize());
-		
+
 		str.append( ":");
 		str.append( getFileId());
 		str.append("/");
 		str.append( getDirectoryId());
-		
+
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

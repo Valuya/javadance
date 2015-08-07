@@ -26,7 +26,7 @@ import org.alfresco.jlan.smb.dcerpc.DCEWriteable;
 
 /**
  * Workstation Information Class
- * 
+ *
  * @author gkspencer
  */
 public class WorkstationInfo implements DCEWriteable, DCEReadable {
@@ -59,7 +59,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param lev int
 	 */
 	public WorkstationInfo(int lev) {
@@ -68,7 +68,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Get the information level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getInformationLevel() {
@@ -77,7 +77,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Get the workstation name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getWorkstationName() {
@@ -86,7 +86,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Get the domain/workgroup
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getDomain() {
@@ -95,7 +95,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Get the workstation platform id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPlatformId() {
@@ -104,7 +104,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Get the workstation major version
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMajorVersion() {
@@ -113,7 +113,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Get the workstation minor version
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMinorVersion() {
@@ -122,7 +122,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Reutrn the user name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getUserName() {
@@ -131,7 +131,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Return the workstations logon domain.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public String getLogonDomain() {
@@ -140,7 +140,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Return the list of domains that the workstation is enlisted in.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public String getOtherDomains() {
@@ -149,7 +149,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the logon domain name.
-	 * 
+	 *
 	 * @param logdom java.lang.String
 	 */
 	public void setLogonDomain(String logdom) {
@@ -158,7 +158,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the other domains that this workstation is enlisted in.
-	 * 
+	 *
 	 * @param othdom java.lang.String
 	 */
 	public void setOtherDomains(String othdom) {
@@ -167,7 +167,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the workstation name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setWorkstationName(String name) {
@@ -176,7 +176,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the domain/workgroup
-	 * 
+	 *
 	 * @param domain String
 	 */
 	public final void setDomain(String domain) {
@@ -185,7 +185,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the information level
-	 * 
+	 *
 	 * @param lev int
 	 */
 	public final void setInformationLevel(int lev) {
@@ -194,7 +194,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the platform id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setPlatformId(int id) {
@@ -203,7 +203,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the version
-	 * 
+	 *
 	 * @param verMajor int
 	 * @param verMinor int
 	 */
@@ -214,7 +214,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Set the logged in user name
-	 * 
+	 *
 	 * @param user String
 	 */
 	public final void setUserName(String user) {
@@ -236,7 +236,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Write a workstation information structure
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @param strBuf DCEBuffer
 	 */
@@ -278,7 +278,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Read the workstation information from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -315,7 +315,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Read the strings for this workstation from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -339,7 +339,7 @@ public class WorkstationInfo implements DCEWriteable, DCEReadable {
 
 	/**
 	 * Return the workstation information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

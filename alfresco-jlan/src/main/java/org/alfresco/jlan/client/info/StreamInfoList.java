@@ -23,7 +23,7 @@ import java.util.*;
 
 /**
  * Stream Information List Class
- * 
+ *
  * @author gkspencer
  */
 public class StreamInfoList {
@@ -41,7 +41,7 @@ public class StreamInfoList {
 
 	/**
 	 * Add an item to the list
-	 * 
+	 *
 	 * @param info StreamInfo
 	 */
 	public final void addStream(StreamInfo info) {
@@ -50,7 +50,7 @@ public class StreamInfoList {
 
 	/**
 	 * Return the stream details at the specified index
-	 * 
+	 *
 	 * @param idx int
 	 * @return StreamInfo
 	 */
@@ -68,7 +68,7 @@ public class StreamInfoList {
 
 	/**
 	 * Find a stream by name
-	 * 
+	 *
 	 * @param name String
 	 * @return StreamInfo
 	 */
@@ -95,7 +95,7 @@ public class StreamInfoList {
 
 	/**
 	 * Return the count of streams in the list
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfStreams() {
@@ -104,7 +104,7 @@ public class StreamInfoList {
 
 	/**
 	 * Remove the specified stream from the list
-	 * 
+	 *
 	 * @param idx int
 	 * @return StreamInfo
 	 */
@@ -122,7 +122,7 @@ public class StreamInfoList {
 
 	/**
 	 * Remove the specified stream from the list
-	 * 
+	 *
 	 * @param name String
 	 * @return StreamInfo
 	 */

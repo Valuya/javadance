@@ -26,23 +26,23 @@ import org.alfresco.jlan.smb.SeekType;
 
 /**
  * SMB input stream class.
- * 
+ *
  * <p>
  * The SMBInputStream class provides a standard InputStream interface to a remote file.
- * 
+ *
  * <p>
  * The class may be used with other I/O stream classes such as InputStreamReader, DataInputStream
  * etc.
- * 
+ *
  * <p>
  * <strong>Note:</strong> It is not necessary to use a BufferedInputStream or BufferedReader class
  * with the SMBInputStream as the underlying network connection will usually buffer 4Kb of data, up
  * to a maximum of 64Kb.
- * 
- * 
+ *
+ *
  * <p>
  * Example use of the SMBInputStream class
- * 
+ *
  * <p>
  * <code>PCShare shr = new PCShare ( "\\\\TEST\\C\\");<br>
  *      DiskSession sess = SessionFactory.OpenDisk ( shr);<br>
@@ -52,7 +52,7 @@ import org.alfresco.jlan.smb.SeekType;
  *      while (( inRec = lnRdr.readLine ()) != null)<br>
  *      &nbsp;&nbsp;System.out.println ( lnRdr.getLineNumber () + ": " + inRec);<br>
  *      in.close ();</code>
- * 
+ *
  * @author gkspencer
  */
 public class SMBInputStream extends java.io.InputStream {
@@ -68,7 +68,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Construct an SMB input stream attached to the specified SMB file.
-	 * 
+	 *
 	 * @param sfile SMBFile that this input stream is associated with.
 	 */
 	protected SMBInputStream(SMBFile sfile) {
@@ -77,7 +77,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Return the number of bytes that can be read from this input stream without blocking.
-	 * 
+	 *
 	 * @return Number of bytes that can be read without the input stream blocking.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
@@ -88,7 +88,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Close the input stream and release any system resources associated with the stream.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
 	public void close()
@@ -106,7 +106,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Return a reference to the associated SMBFile object.
-	 * 
+	 *
 	 * @return SMBFile associated with this input stream.
 	 */
 	public final SMBFile File() {
@@ -115,7 +115,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Read a byte of data from the input stream.
-	 * 
+	 *
 	 * @return The next byte of data, or -1 if the end of file has been reached.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
@@ -137,7 +137,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Read a block of bytes from the input stream.
-	 * 
+	 *
 	 * @param buf The buffer to read the data into.
 	 * @param off The start offset to place the received data.
 	 * @param len The maximum number of bytes to read.
@@ -162,7 +162,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Skip over a number of bytes in the input stream.
-	 * 
+	 *
 	 * @param n Number of bytes to skip.
 	 * @return The actual number of bytes skipped.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -189,7 +189,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Mark the current file position
-	 * 
+	 *
 	 * @param readLimit int
 	 */
 	public synchronized void mark(int readLimit) {
@@ -202,7 +202,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Determine if mark is supported
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean markSupported() {
@@ -211,7 +211,7 @@ public class SMBInputStream extends java.io.InputStream {
 
 	/**
 	 * Reset the file pointer to the previous marked position
-	 * 
+	 *
 	 * @exception IOException
 	 */
 	public synchronized void reset()

@@ -34,7 +34,7 @@ public class DBException extends Exception {
   public DBException() {
     super();
   }
-  
+
   /**
    * Class constructor
    *

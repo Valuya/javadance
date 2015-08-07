@@ -33,12 +33,12 @@ import org.alfresco.jlan.util.HexDump;
 
 /**
  *  SMB packet type class
- *  
+ *
  *  <p>Contains the details of an SMB/CIFS request or response. The SMB packet class has methods for packing
  *  and unpacking the various fields of the SMB header and requests.
- *  
+ *
  *  <p>Contains SMB/CIFS constants for SMB packet field offsets and header flag values.
- * 
+ *
  * @author gkspencer
  */
 public class SMBPacket {
@@ -115,14 +115,14 @@ public class SMBPacket {
   private int m_pkttype;
 
 	//	Current byte area pack/unpack position
-	
+
 	protected int m_pos;
 	protected int m_endpos;
 
 	//	Time of last packet send
-	
+
 	protected long m_lastTxTime;
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -133,7 +133,7 @@ public class SMBPacket {
 
 	/**
 	 * Construct an SMB packet using the specified packet buffer.
-	 * 
+	 *
 	 * @param buf SMB packet buffer.
 	 */
 	public SMBPacket(byte[] buf) {
@@ -142,7 +142,7 @@ public class SMBPacket {
 
 	/**
 	 * Construct an SMB packet of the specified size.
-	 * 
+	 *
 	 * @param siz Size of SMB packet buffer to allocate.
 	 */
 	public SMBPacket(int siz) {
@@ -152,7 +152,7 @@ public class SMBPacket {
 
 	/**
 	 * Check if a received SMB is valid, if not then throw an exception
-	 * 
+	 *
 	 * @exception SMBException
 	 */
 	public final void checkForError()
@@ -283,7 +283,7 @@ public class SMBPacket {
 
 	/**
 	 * Check if the error class/code match the specified error/class
-	 * 
+	 *
 	 * @param errClass int
 	 * @param errCode int
 	 * @return boolean
@@ -296,7 +296,7 @@ public class SMBPacket {
 
 	/**
 	 * Send the SMB packet and receive the response packet
-	 * 
+	 *
 	 * @param sess Network session to send/receive the packet over.
 	 * @param rxPkt SMB packet to receive the response into.
 	 * @param throwerr If true then throw an I/O error if an invalid response is received.
@@ -351,7 +351,7 @@ public class SMBPacket {
 
 	/**
 	 * Send/receive an SMB protocol packet to the remote server.
-	 * 
+	 *
 	 * @param sess SMB session to send/receive data on.
 	 * @param rxPkt SMB packet to receive the response into.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -367,7 +367,7 @@ public class SMBPacket {
 
 	/**
 	 * Send the SMB packet and receive the response packet
-	 * 
+	 *
 	 * @param sess SMB session to send/receive the packet over.
 	 * @param rxPkt SMB packet to receive the response into.
 	 * @param throwerr If true then throw an I/O error if an invalid response is received.
@@ -453,7 +453,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the secondary command code
-	 * 
+	 *
 	 * @return Secondary command code
 	 */
 	public final int getAndXCommand() {
@@ -462,7 +462,7 @@ public class SMBPacket {
 
 	/**
 	 * Return the byte array used for the SMB packet
-	 * 
+	 *
 	 * @return Byte array used for the SMB packet.
 	 */
 	public final byte[] getBuffer() {
@@ -471,7 +471,7 @@ public class SMBPacket {
 
 	/**
 	 * Return the total buffer size available to the SMB request
-	 * 
+	 *
 	 * @return Total SMB buffer length available.
 	 */
 	public final int getBufferLength() {
@@ -480,7 +480,7 @@ public class SMBPacket {
 
 	/**
 	 * Return the available buffer space for data bytes
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAvailableLength() {
@@ -489,7 +489,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the data byte count for the SMB packet
-	 * 
+	 *
 	 * @return Data byte count
 	 */
 	public final int getByteCount() {
@@ -502,7 +502,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the data byte area offset within the SMB packet
-	 * 
+	 *
 	 * @return Data byte offset within the SMB packet.
 	 */
 	public final int getByteOffset() {
@@ -516,7 +516,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the SMB command
-	 * 
+	 *
 	 * @return SMB command code.
 	 */
 	public final int getCommand() {
@@ -525,7 +525,7 @@ public class SMBPacket {
 
 	/**
 	 * Determine if normal or long error codes have been returned
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasLongErrorCode() {
@@ -536,7 +536,7 @@ public class SMBPacket {
 
 	/**
 	 * Determine if security signatures are being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasSecuritySignature() {
@@ -547,7 +547,7 @@ public class SMBPacket {
 
 	/**
 	 * Determine if extended session setup is being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasExtendedSetup() {
@@ -558,7 +558,7 @@ public class SMBPacket {
 
 	/**
 	 * Return the saved packet type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int isType() {
@@ -567,7 +567,7 @@ public class SMBPacket {
 
 	/**
 	 * Check if the packet contains ASCII or Unicode strings
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isUnicode() {
@@ -576,7 +576,7 @@ public class SMBPacket {
 
 	/**
 	 * Check if the packet is using caseless filenames
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isCaseless() {
@@ -585,7 +585,7 @@ public class SMBPacket {
 
 	/**
 	 * Check if long file names are being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLongFileNames() {
@@ -594,7 +594,7 @@ public class SMBPacket {
 
 	/**
 	 * Check if long error codes are being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLongErrorCode() {
@@ -603,7 +603,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the SMB error class
-	 * 
+	 *
 	 * @return SMB error class.
 	 */
 	public final int getErrorClass() {
@@ -612,7 +612,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the SMB error code
-	 * 
+	 *
 	 * @return SMB error code.
 	 */
 	public final int getErrorCode() {
@@ -621,7 +621,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the SMB flags value.
-	 * 
+	 *
 	 * @return SMB flags value.
 	 */
 	public final int getFlags() {
@@ -630,7 +630,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the SMB flags2 value.
-	 * 
+	 *
 	 * @return SMB flags2 value.
 	 */
 	public final int getFlags2() {
@@ -639,7 +639,7 @@ public class SMBPacket {
 
 	/**
 	 * Calculate the total used packet length.
-	 * 
+	 *
 	 * @return Total used packet length.
 	 */
 	public final int getLength() {
@@ -648,7 +648,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the long SMB error code
-	 * 
+	 *
 	 * @return Long SMB error code.
 	 */
 	public final int getLongErrorCode() {
@@ -657,7 +657,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the multiplex identifier.
-	 * 
+	 *
 	 * @return Multiplex identifier.
 	 */
 	public final int getMultiplexId() {
@@ -666,7 +666,7 @@ public class SMBPacket {
 
 	/**
 	 * Get a parameter word from the SMB packet.
-	 * 
+	 *
 	 * @param idx Parameter index (zero based).
 	 * @return Parameter word value.
 	 * @exception java.lang.IndexOutOfBoundsException If the parameter index is out of range.
@@ -687,7 +687,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the specified parameter words, as an int value.
-	 * 
+	 *
 	 * @param idx Parameter index (zero based).
 	 * @return int
 	 */
@@ -698,7 +698,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the parameter count
-	 * 
+	 *
 	 * @return Parameter word count.
 	 */
 	public final int getParameterCount() {
@@ -707,7 +707,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the process indentifier (PID)
-	 * 
+	 *
 	 * @return Process identifier value.
 	 */
 	public final int getProcessId() {
@@ -716,7 +716,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the SMB signing value, as a long value
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getSignature() {
@@ -725,7 +725,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the tree identifier (TID)
-	 * 
+	 *
 	 * @return Tree identifier (TID)
 	 */
 	public final int getTreeId() {
@@ -734,7 +734,7 @@ public class SMBPacket {
 
 	/**
 	 * Get the user identifier (UID)
-	 * 
+	 *
 	 * @return User identifier (UID)
 	 */
 	public final int getUserId() {
@@ -743,7 +743,7 @@ public class SMBPacket {
 
 	/**
 	 * Return the last sent packet time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getLastPacketSendTime() {
@@ -765,7 +765,7 @@ public class SMBPacket {
 
 	/**
 	 * Determine if this packet is an SMB response, or command packet
-	 * 
+	 *
 	 * @return true if this SMB packet is a response, else false
 	 */
 	public final boolean isResponse() {
@@ -777,16 +777,16 @@ public class SMBPacket {
 
 	/**
 	 * Check if this is an SMB request packet
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isRequest() {
 		return ( getFlags() & FLG_RESPONSE) == 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the response packet is valid, ie. type and flags
-	 * 
+	 *
 	 * @return true if the SMB packet is a response packet and the response is valid, else false.
 	 */
 	public final boolean isValidResponse() {
@@ -809,7 +809,7 @@ public class SMBPacket {
 
 	/**
 	 * Pack a byte (8 bit) value into the byte area
-	 * 
+	 *
 	 * @param val byte
 	 */
 	public final void packByte(byte val) {
@@ -818,7 +818,7 @@ public class SMBPacket {
 
 	/**
 	 * Pack a byte (8 bit) value into the byte area
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packByte(int val) {
@@ -827,7 +827,7 @@ public class SMBPacket {
 
 	/**
 	 * Pack the specified bytes into the byte area
-	 * 
+	 *
 	 * @param byts byte[]
 	 * @param len int
 	 */
@@ -838,7 +838,7 @@ public class SMBPacket {
 
 	/**
 	 * Pack a string using either ASCII or Unicode into the byte area
-	 * 
+	 *
 	 * @param str String
 	 * @param uni boolean
 	 */
@@ -865,7 +865,7 @@ public class SMBPacket {
 
 	/**
 	 * Pack a word (16 bit) value into the byte area
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packWord(int val) {
@@ -875,7 +875,7 @@ public class SMBPacket {
 
 	/**
 	 * Pack a 32 bit integer value into the byte area
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packInt(int val) {
@@ -885,7 +885,7 @@ public class SMBPacket {
 
 	/**
 	 * Pack a long integer (64 bit) value into the byte area
-	 * 
+	 *
 	 * @param val long
 	 */
 	public final void packLong(long val) {
@@ -895,7 +895,7 @@ public class SMBPacket {
 
 	/**
 	 * Return the current byte area buffer position
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPosition() {
@@ -904,7 +904,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the byte area buffer position
-	 * 
+	 *
 	 * @param pos int
 	 */
 	public final void setPosition(int pos) {
@@ -913,7 +913,7 @@ public class SMBPacket {
 
 	/**
 	 * Unpack a byte value from the byte area
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackByte() {
@@ -922,7 +922,7 @@ public class SMBPacket {
 
 	/**
 	 * Unpack a block of bytes from the byte area
-	 * 
+	 *
 	 * @param len int
 	 * @return byte[]
 	 */
@@ -938,7 +938,7 @@ public class SMBPacket {
 
 	/**
 	 * Unpack a word (16 bit) value from the byte area
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackWord() {
@@ -949,7 +949,7 @@ public class SMBPacket {
 
 	/**
 	 * Unpack an integer (32 bit) value from the byte/parameter area
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackInt() {
@@ -960,7 +960,7 @@ public class SMBPacket {
 
 	/**
 	 * Unpack a long integer (64 bit) value from the byte area
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long unpackLong() {
@@ -971,7 +971,7 @@ public class SMBPacket {
 
 	/**
 	 * Unpack a string from the byte area
-	 * 
+	 *
 	 * @param uni boolean
 	 * @return String
 	 */
@@ -1006,7 +1006,7 @@ public class SMBPacket {
 
 	/**
 	 * Unpack a string from the byte area
-	 * 
+	 *
 	 * @param len int
 	 * @param uni boolean
 	 * @return String
@@ -1042,7 +1042,7 @@ public class SMBPacket {
 
 	/**
 	 * Check if there is more data in the byte area
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasMoreData() {
@@ -1053,7 +1053,7 @@ public class SMBPacket {
 
 	/**
 	 * Receive an SMB packet on the spceified SMB session.
-	 * 
+	 *
 	 * @param sess SMB session to receive the packet on.
 	 * @exception java.io.IOException If a network error occurs
 	 * @exception SMBException If an SMB level error occurs
@@ -1068,7 +1068,7 @@ public class SMBPacket {
 
 	/**
 	 * Receive an SMB packet on the spceified SMB session.
-	 * 
+	 *
 	 * @param sess SMB session to receive the packet on.
 	 * @param throwErr Flag to indicate if an error is thrown if an error response is received
 	 * @exception java.io.IOException If a network error occurs
@@ -1132,7 +1132,7 @@ public class SMBPacket {
 
 	/**
 	 * Receive an asynchronous SMB response from the server
-	 * 
+	 *
 	 * @param sess Session
 	 * @param waitTime Receive timeout in milliseconds, or zero for no timeout
 	 * @throws java.io.IOException
@@ -1164,7 +1164,7 @@ public class SMBPacket {
 
 	/**
 	 * Send the SMB packet on the specified SMB session.
-	 * 
+	 *
 	 * @param sess SMB session to send this packet over.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
@@ -1192,7 +1192,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the secondary SMB command
-	 * 
+	 *
 	 * @param cmd Secondary SMB command code.
 	 */
 	public final void setAndXCommand(int cmd) {
@@ -1210,7 +1210,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the data byte count for this SMB packet
-	 * 
+	 *
 	 * @param cnt Data byte count.
 	 */
 	public final void setByteCount(int cnt) {
@@ -1230,7 +1230,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the data byte area in the SMB packet
-	 * 
+	 *
 	 * @param byts Byte array containing the data to be copied to the SMB packet.
 	 */
 	public final void setBytes(byte[] byts) {
@@ -1245,7 +1245,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the SMB command
-	 * 
+	 *
 	 * @param cmd SMB command code
 	 */
 	public final void setCommand(int cmd) {
@@ -1255,7 +1255,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the SMB error class.
-	 * 
+	 *
 	 * @param cl SMB error class.
 	 */
 	public final void setErrorClass(int cl) {
@@ -1264,7 +1264,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the SMB error code
-	 * 
+	 *
 	 * @param sts SMB error code.
 	 */
 	public final void setErrorCode(int sts) {
@@ -1273,7 +1273,7 @@ public class SMBPacket {
 
 	/**
 	 * Set a long error code (NT status code)
-	 * 
+	 *
 	 * @param lsts int
 	 */
 	public final void setLongErrorCode(int lsts) {
@@ -1282,7 +1282,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the SMB flags value.
-	 * 
+	 *
 	 * @param flg SMB flags value.
 	 */
 	public final void setFlags(int flg) {
@@ -1291,7 +1291,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the SMB flags2 value.
-	 * 
+	 *
 	 * @param flg SMB flags2 value.
 	 */
 	public final void setFlags2(int flg) {
@@ -1300,7 +1300,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the multiplex identifier.
-	 * 
+	 *
 	 * @param mid Multiplex identifier
 	 */
 	public final void setMultiplexId(int mid) {
@@ -1309,7 +1309,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the specified parameter word.
-	 * 
+	 *
 	 * @param idx Parameter index (zero based).
 	 * @param val Parameter value.
 	 */
@@ -1320,7 +1320,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the specified parameter words.
-	 * 
+	 *
 	 * @param idx Parameter index (zero based).
 	 * @param val Parameter value.
 	 */
@@ -1332,7 +1332,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the parameter count
-	 * 
+	 *
 	 * @param cnt Parameter word count.
 	 */
 	public final void setParameterCount(int cnt) {
@@ -1341,7 +1341,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the process identifier value (PID).
-	 * 
+	 *
 	 * @param pid Process identifier value.
 	 */
 	public final void setProcessId(int pid) {
@@ -1350,7 +1350,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the packet sequence number, for connectionless commands.
-	 * 
+	 *
 	 * @param seq Sequence number.
 	 */
 	public final void setSeqNo(int seq) {
@@ -1359,7 +1359,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the session id.
-	 * 
+	 *
 	 * @param sid Session id.
 	 */
 	public final void setSID(int sid) {
@@ -1368,7 +1368,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the SMB signing signature
-	 * 
+	 *
 	 * @param ival int
 	 */
 	public final void setSignature(int ival) {
@@ -1378,7 +1378,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the SMB signing signature
-	 * 
+	 *
 	 * @param lval long
 	 */
 	public final void setSignature(long lval) {
@@ -1387,7 +1387,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the SMB signing signature
-	 * 
+	 *
 	 * @param byts byte[]
 	 * @param offset int
 	 */
@@ -1397,7 +1397,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the tree identifier (TID)
-	 * 
+	 *
 	 * @param tid Tree identifier value.
 	 */
 	public final void setTreeId(int tid) {
@@ -1406,7 +1406,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the user identifier (UID)
-	 * 
+	 *
 	 * @param uid User identifier value.
 	 */
 	public final void setUserId(int uid) {
@@ -1446,7 +1446,7 @@ public class SMBPacket {
 
 	/**
 	 * Set the unpack pointer to the specified offset, for AndX processing
-	 * 
+	 *
 	 * @param off int
 	 * @param len int
 	 */
@@ -1457,7 +1457,7 @@ public class SMBPacket {
 
 	/**
 	 * Skip a number of bytes in the parameter/byte area
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void skipBytes(int cnt) {
@@ -1466,7 +1466,7 @@ public class SMBPacket {
 
 	/**
 	 * Return the flags value as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getFlagsAsString() {
@@ -1503,7 +1503,7 @@ public class SMBPacket {
 
 	/**
 	 * Return the flags2 value as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getFlags2AsString() {

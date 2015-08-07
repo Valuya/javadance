@@ -45,7 +45,7 @@ public class NTCreateFileTest extends Test {
 	public NTCreateFileTest() {
 		super( "NTCreateFile");
 	}
-	
+
 	/**
 	 * Run the create file test
 	 *
@@ -56,44 +56,44 @@ public class NTCreateFileTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Create a test file name for this iteration
-			
+
 			String testFileName = getPerTestFileName( threadId, iteration);
-			
+
 			// DEBUG
-			
+
 			testLog( log, "NTCreateFile Test");
-			
+
 			// Check if the test file exists
 
 			CIFSDiskSession cifsSess = null;
-			
+
 			if ( sess instanceof CIFSDiskSession == false) {
-				
+
 				// Wrong session type/dialect negotiated
-				
+
 				result = new BooleanTestResult( false, "Not an NT dialect CIFS session");
 			}
 			if ( sess.FileExists( testFileName)) {
 				testLog( log, "File " + testFileName + " exists");
-				
+
 				// Set a failure status
-				
+
 				result = new BooleanTestResult( true, "File already exists, " + testFileName);
 			}
 			else {
-				
+
 				// Access the CIFS session
-				
+
 				cifsSess = (CIFSDiskSession) sess;
-				
+
 				// Create a new file
-				
+
 				try {
 					testLog( log, "Creating file " + testFileName + " via " + sess.getServer());
 					SMBFile testFile = cifsSess.NTCreate( testFileName, AccessMode.NTReadWrite, FileAttribute.NTNormal,
@@ -118,48 +118,48 @@ public class NTCreateFileTest extends Test {
 				catch ( SMBException ex) {
 
 					// Check for an access denied error code
-					
+
 					if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
-						
+
 						// DEBUG
-						
+
 						testLog ( log, "Create failed with access denied error (expected), " + testFileName);
 						result = new BooleanTestResult( true);
 					}
 					else if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
-						
+
 						// DEBUG
-						
+
 						testLog ( log, "Create failed with object name collision (expected), " + testFileName);
 						result = new BooleanTestResult( true);
 					}
 					else {
 						ex.printStackTrace();
-					
+
 						result = new ExceptionTestResult( ex);
 					}
 				}
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
-				
+
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult(ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -170,11 +170,11 @@ public class NTCreateFileTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		if ( threadId == 1) {
 			String fName = getPerTestFileName( threadId, iter);
 			testLog( log, "Cleanup test file " + fName);
-			
+
 			sess.DeleteFile( fName);
 		}
 	}

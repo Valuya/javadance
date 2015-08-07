@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys;
 
 /**
  * Search Context Adapter Class
- * 
+ *
  * @author gkspencer
  */
 public class SearchContextAdapter extends SearchContext {
@@ -34,7 +34,7 @@ public class SearchContextAdapter extends SearchContext {
     public boolean hasMoreFiles() {
         return false;
     }
-    
+
     /**
      * Return file information for the next file in the active search. Returns
      * false if the search is complete.
@@ -45,7 +45,7 @@ public class SearchContextAdapter extends SearchContext {
     public boolean nextFileInfo(FileInfo info) {
         return false;
     }
-    
+
     /**
      * Return the file name of the next file in the active search. Returns
      * null is the search is complete.
@@ -64,7 +64,7 @@ public class SearchContextAdapter extends SearchContext {
     public int getResumeId() {
         return -1;
     }
-    
+
     /**
      * Restart a search at the specified resume point.
      *
@@ -74,7 +74,7 @@ public class SearchContextAdapter extends SearchContext {
     public boolean restartAt(int resumeId) {
         return false;
     }
-    
+
     /**
      * Restart the current search at the specified file.
      *

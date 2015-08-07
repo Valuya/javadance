@@ -30,14 +30,14 @@ import org.alfresco.jlan.util.DataBuffer;
 
 /**
  * File Information Packer/Unpacker Class
- * 
+ *
  * @author gkspencer
  */
 class FileInfoPacker {
 
 	/**
 	 * Unpack the standard file information levels 1 and 2
-	 * 
+	 *
 	 * @param fname String
 	 * @param buf DataBuffer
 	 * @param ea boolean
@@ -100,7 +100,7 @@ class FileInfoPacker {
 
 	/**
 	 * Pack the standard file information
-	 * 
+	 *
 	 * @param finfo FileInfo
 	 * @param buf DataBuffer
 	 * @param ea boolean
@@ -173,7 +173,7 @@ class FileInfoPacker {
 
 	/**
 	 * Unpack the query standard information (FileInfoLevel.PathFileStandardInfo, 0x102)
-	 * 
+	 *
 	 * @param fname String
 	 * @param buf DataBuffer
 	 * @return FileInfo
@@ -203,7 +203,7 @@ class FileInfoPacker {
 
 	/**
 	 * Unpack the query extended attribute information (FileInfoLevel.PathFileEAInfo, 0x103)
-	 * 
+	 *
 	 * @param fname String
 	 * @param buf DataBuffer
 	 * @return FileInfo
@@ -227,7 +227,7 @@ class FileInfoPacker {
 	/**
 	 * Unpack the query name information and alternate name information
 	 * (FileInfoLevel.PathFileNameInfo and FileInfoLevel.PathFileAltNameInfo, 0x104 and 0x108)
-	 * 
+	 *
 	 * @param buf DataBuffer
 	 * @param uni boolean
 	 * @return FileInfo
@@ -250,7 +250,7 @@ class FileInfoPacker {
 
 	/**
 	 * Unpack the stream name information (FileInfoLevel.PathFileStreamInfo, 0x109)
-	 * 
+	 *
 	 * @param fname String
 	 * @param buf DataBuffer
 	 * @param uni boolean
@@ -304,7 +304,7 @@ class FileInfoPacker {
 
 	/**
 	 * Unpack the compression information (FileInfoLevel.PathFileCompressionInfo, 0x10B)
-	 * 
+	 *
 	 * @param fname String
 	 * @param buf DataBuffer
 	 * @return FileInfo
@@ -328,7 +328,7 @@ class FileInfoPacker {
 
 	/**
 	 * Unpack the full file information (FileInfoLevel.PathFileAllInfo, 0x107)
-	 * 
+	 *
 	 * @param buf DataBuffer
 	 * @param uni boolean
 	 * @return FileInfo
@@ -402,7 +402,7 @@ class FileInfoPacker {
 
 	/**
 	 * Unpack the basic file information (FileInfoLevel.PathFileBasicInfo, 0x101)
-	 * 
+	 *
 	 * @param fname String
 	 * @param buf DataBuffer
 	 * @return FileInfo
@@ -455,7 +455,7 @@ class FileInfoPacker {
 
 	/**
 	 * Pack the file basic information
-	 * 
+	 *
 	 * @param finfo FileInfo
 	 * @param buf DataBuffer
 	 * @exception SMBException If the file information does not match the required level
@@ -503,7 +503,7 @@ class FileInfoPacker {
 
 	/**
 	 * Unpack the quesy all EAs file information (FileInfoLevel.PathQueryAllEAs, 0x04)
-	 * 
+	 *
 	 * @param fname String
 	 * @param buf DataBuffer
 	 * @return FileInfo

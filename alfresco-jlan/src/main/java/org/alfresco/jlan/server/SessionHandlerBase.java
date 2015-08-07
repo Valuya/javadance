@@ -24,11 +24,11 @@ import java.net.InetAddress;
 
 /**
  * Session Handler Base Class
- * 
+ *
  * <p>
  * Implementation of a session handler that uses a Java socket to listen for incoming session
  * requests.
- * 
+ *
  * @author gkspencer
  */
 public abstract class SessionHandlerBase implements SessionHandlerInterface {
@@ -71,7 +71,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param protocol String
 	 * @param server NetworkServer
@@ -89,16 +89,16 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Return the server
-	 * 
+	 *
 	 * @return NetworkServer
 	 */
 	public final NetworkServer getServer() {
 		return m_server;
 	}
-	
+
 	/**
 	 * Return the session handler name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getHandlerName() {
@@ -107,7 +107,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Return the short protocol name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getProtocolName() {
@@ -116,7 +116,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Check if the server should bind to a specific network address
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasBindAddress() {
@@ -125,7 +125,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Return the network address that the server should bind to
-	 * 
+	 *
 	 * @return InetAddress
 	 */
 	public final InetAddress getBindAddress() {
@@ -134,7 +134,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Return the port that the server should bind to
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPort() {
@@ -143,7 +143,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Return the socket listen backlog limit
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getListenBacklog() {
@@ -152,7 +152,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Determine if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
@@ -168,7 +168,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Determine if the shutdown flag has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected final boolean hasShutdown() {
@@ -177,7 +177,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Get the next available session id
-	 * 
+	 *
 	 * @return int
 	 */
 	protected synchronized int getNextSessionId() {
@@ -186,7 +186,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Enable/disable debug output
-	 * 
+	 *
 	 * @param dbg boolean
 	 */
 	public final void setDebug(boolean dbg) {
@@ -195,7 +195,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Set the local port that the session handler is using
-	 * 
+	 *
 	 * @param port int
 	 */
 	protected final void setPort(int port) {
@@ -204,16 +204,16 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Set/clear the shutdown flag
-	 * 
+	 *
 	 * @param shut boolean
 	 */
 	protected final void setShutdown( boolean shut) {
 		m_shutdown = shut;
 	}
-	
+
 	/**
 	 * Initialize the session handler
-	 * 
+	 *
 	 * @param server NetworkServer
 	 */
 	public abstract void initializeSessionHandler(NetworkServer server)
@@ -221,14 +221,14 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 
 	/**
 	 * Close the session handler
-	 * 
+	 *
 	 * @param server NetworkServer
 	 */
 	public abstract void closeSessionHandler(NetworkServer server);
-	
+
 	/**
 	 * Return the session handler details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
@@ -246,7 +246,7 @@ public abstract class SessionHandlerBase implements SessionHandlerInterface {
 		str.append( ":");
 		str.append( getPort());
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

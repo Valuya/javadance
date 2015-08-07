@@ -35,14 +35,14 @@ public class PCShareList implements java.io.Serializable {
   //	Vector used to store the PCShare objects
 
   private Vector<PCShare> m_list;
-  
+
   /**
    * Class constructor
    */
   public PCShareList() {
     m_list = new Vector<PCShare>();
   }
-  
+
   /**
    * Add a PCShare to the list
    * @param shr PCShare object to be added to the list
@@ -50,14 +50,14 @@ public class PCShareList implements java.io.Serializable {
   public final void addPCShare(PCShare shr) {
     m_list.add(shr);
   }
-  
+
   /**
    * Clear the list of PCShare objects
    */
   public final void clearList() {
     m_list.removeAllElements();
   }
-  
+
   /**
    * Return the required PCShare object from the list.
    *
@@ -77,7 +77,7 @@ public class PCShareList implements java.io.Serializable {
 
     return m_list.get(idx);
   }
-  
+
   /**
    * Return the number of PCShare objects that are in this list.
    *

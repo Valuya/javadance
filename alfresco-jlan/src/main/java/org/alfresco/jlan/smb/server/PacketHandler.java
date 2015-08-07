@@ -26,7 +26,7 @@ import org.alfresco.jlan.debug.Debug;
 
 /**
  * Protocol Packet Handler Class
- * 
+ *
  * @author gkspencer
  */
 public abstract class PacketHandler {
@@ -47,12 +47,12 @@ public abstract class PacketHandler {
 	private CIFSPacketPool m_packetPool;
 
 	// Debug output enable
-	
+
 	private boolean m_debug;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param typ int
 	 * @param name String
 	 * @param shortName String
@@ -70,7 +70,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param typ int
 	 * @param name String
 	 * @param shortName String
@@ -87,7 +87,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Return the protocol type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int isProtocol() {
@@ -96,7 +96,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Return the protocol name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String isProtocolName() {
@@ -105,7 +105,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Return the short protocol name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getShortName() {
@@ -114,7 +114,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Check if there is a remote address available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasRemoteAddress() {
@@ -123,7 +123,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Return the remote address for the connection
-	 * 
+	 *
 	 * @return InetAddress
 	 */
 	public final InetAddress getRemoteAddress() {
@@ -132,7 +132,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Determine if the client name is available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasClientName() {
@@ -141,7 +141,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Return the client name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getClientName() {
@@ -150,7 +150,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Return the packet pool
-	 * 
+	 *
 	 * @return CIFSPacketPool
 	 */
 	public final CIFSPacketPool getPacketPool() {
@@ -159,25 +159,25 @@ public abstract class PacketHandler {
 
 	/**
 	 * Check if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
 		return m_debug;
 	}
-	
+
 	/**
 	 * Set/clear the debug enable flag
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	public final void setDebug( boolean ena) {
 		m_debug = ena;
 	}
-	
+
 	/**
 	 * Return the count of available bytes in the receive input stream
-	 * 
+	 *
 	 * @return int
 	 * @exception IOException If a network error occurs.
 	 */
@@ -186,7 +186,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Read a packet
-	 * 
+	 *
 	 * @return SMBSrvPacket
 	 * @exception IOException If a network error occurs.
 	 */
@@ -195,7 +195,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Send an SMB response packet
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 * @param len int
 	 * @param writeRaw boolean
@@ -206,7 +206,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Send an SMB response packet
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 * @exception IOException If a network error occurs.
 	 */
@@ -217,7 +217,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Send an SMB response packet
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 * @exception IOException If a network error occurs.
 	 */
@@ -228,7 +228,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Flush the output socket
-	 * 
+	 *
 	 * @exception IOException If a network error occurs
 	 */
 	public abstract void flushPacket()
@@ -242,7 +242,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Rethrow an exception, allow for logging
-	 * 
+	 *
 	 * @param t Throwable
 	 * @throws IOException
 	 */
@@ -250,28 +250,28 @@ public abstract class PacketHandler {
 	{
         if ( Debug.EnableDbg && hasDebug())
             Debug.println( t);
-	    
+
 	    // Most method signatures allow IOExceptions so let these pass straight through
-        
+
 	    if (t instanceof IOException)
 	        throw (IOException) t;
 
 	    // Allow unchecked exceptions straight through
-	    
+
 	    else if (t instanceof RuntimeException)
 	        throw (RuntimeException) t;
 	    else if (t instanceof Error)
 	        throw (Error) t;
-	    
+
 	    // We have to wrap any other exceptions as unchecked
-	    
+
 	    else
 	        throw new RuntimeException( t);
 	}
-	
+
 	/**
 	 * Set the client name
-	 * 
+	 *
 	 * @param name String
 	 */
 	protected final void setClientName(String name) {
@@ -280,7 +280,7 @@ public abstract class PacketHandler {
 
 	/**
 	 * Set the remote address
-	 * 
+	 *
 	 * @param addr InetAddress
 	 */
 	protected final void setRemoteAddress(InetAddress addr) {

@@ -21,9 +21,9 @@ package org.alfresco.jlan.util;
 
 /**
  * Platform Class
- * 
+ *
  * <p>Determine the platform type that we are runnng on.
- * 
+ *
  * @author gkspencer
  */
 public class Platform {
@@ -40,7 +40,7 @@ public class Platform {
 
   /**
    * Determine the platform type
-   * 
+   *
    * @return Type
    */
   public static final Type isPlatformType() {
@@ -48,7 +48,7 @@ public class Platform {
     // Check if the type has been set
 
     if (_platformType == Type.Unchecked) {
-      
+
       // Get the operating system type
 
       String osName = System.getProperty("os.name");

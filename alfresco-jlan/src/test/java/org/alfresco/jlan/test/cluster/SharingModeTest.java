@@ -40,17 +40,17 @@ import org.alfresco.jlan.smb.SharingMode;
 public class SharingModeTest extends Test {
 
 	// Constants
-	
+
 	private static final String TestFileName = "nosharingFile";
 	private static final String TestFileExt	 = ".txt";
-	
+
 	/**
 	 * Default constructor
 	 */
 	public SharingModeTest() {
 		super( "SharingMode");
 	}
-	
+
 	/**
 	 * Run the sharing mode test
 	 *
@@ -61,13 +61,13 @@ public class SharingModeTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Sleep for a while, depending on the thread id, to stagger/overlap the file creates
-/**			
+/**
 			if ( threadId > 1) {
 				try {
 					Thread.sleep( threadId * 100L);
@@ -76,21 +76,21 @@ public class SharingModeTest extends Test {
 				}
 			}
 **/
-			
+
 			// Create the test file with sharing mode none
-			
+
 			String testFileName = getPerTestFileName(threadId, iteration);
-			
+
 			testLog( log, "Creating file ...");
-			
+
 			CIFSDiskSession cifsSess = (CIFSDiskSession) sess;
 			CIFSFile noshareFile = cifsSess.NTCreate( "\\" + testFileName, AccessMode.NTReadWrite, FileAttribute.NTNormal,
 													  SharingMode.NOSHARING, FileAction.NTCreate, 0, 0);
 
 			testLog( log, "Created file with sharing mode NONE, file=" + noshareFile);
-			
+
 			// Sleep a while
-			
+
 			try {
 				Thread.sleep( 3000L);
 			}
@@ -98,47 +98,47 @@ public class SharingModeTest extends Test {
 			}
 
 			// Close the file
-			
+
 			noshareFile.Close();
 			testLog( log, "Closed file");
-			
+
 			// Successful test result
-			
+
 			result = new BooleanTestResult( true);
-			
+
 			// Test cleanup
-			
+
 			if ( hasTestCleanup() && threadId == 1)
 				sess.DeleteFile( testFileName);
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
 		}
 		catch ( SMBException ex) {
 			testLog( log, "Failed to create file - " + ex.getMessage());
-			
+
 			result = new ExceptionTestResult( ex);
 		}
 		catch ( IOException ex) {
 			testLog( log, "Failed to create file - " + ex.getMessage());
-			
+
 			result = new ExceptionTestResult( ex);
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult( ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -149,7 +149,7 @@ public class SharingModeTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		if ( threadId == 1)
 			sess.DeleteFile( getPerTestFileName( threadId, iter));
 	}

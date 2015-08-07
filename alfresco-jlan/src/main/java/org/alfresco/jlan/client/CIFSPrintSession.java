@@ -27,14 +27,14 @@ import org.alfresco.jlan.smb.SMBException;
 
 /**
  * SMB CIFS protocol print session class
- * 
+ *
  * @author gkspencer
  */
 final class CIFSPrintSession extends PrintSession {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param shr Remote server details.
 	 * @param dialect SMB dialect that this session is using
 	 */
@@ -44,7 +44,7 @@ final class CIFSPrintSession extends PrintSession {
 
 	/**
 	 * Open a spool file on the remote print server.
-	 * 
+	 *
 	 * @param id Identifier string for this print request.
 	 * @param mode Print mode, either TextMode or GraphicsMode.
 	 * @param setuplen Length of data in the start of the spool file that is printer setup code.

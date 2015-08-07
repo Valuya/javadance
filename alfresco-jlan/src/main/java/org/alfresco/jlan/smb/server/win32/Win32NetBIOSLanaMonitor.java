@@ -35,11 +35,11 @@ import org.alfresco.jlan.smb.server.SMBServer;
 
 /**
  * Win32 NetBIOS LANA Monitor Class
- * 
+ *
  * <p>
  * Monitors the available NetBIOS LANAs to check for new network interfaces coming online. A session
  * socket handler will be created for new LANAs as they appear.
- * 
+ *
  * @author gkspencer
  */
 public class Win32NetBIOSLanaMonitor extends Thread {
@@ -65,9 +65,9 @@ public class Win32NetBIOSLanaMonitor extends Thread {
 	private LanaListener[] m_listeners;
 
 	// List of host announcers
-    
+
     private List<HostAnnouncer> m_hostAnnouncers;
-    
+
 	// SMB/CIFS server to add new session handlers to
 
 	private SMBServer m_server;
@@ -82,7 +82,7 @@ public class Win32NetBIOSLanaMonitor extends Thread {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param server SMBServer
 	 * @param lanas int[]
 	 * @param wakeup long
@@ -101,7 +101,7 @@ public class Win32NetBIOSLanaMonitor extends Thread {
 		m_lanaSts = new BitSet();
 
 		m_hostAnnouncers = new ArrayList<HostAnnouncer>();
-	      
+
 		if ( lanas != null) {
 
 			// Set the currently available LANAs
@@ -132,7 +132,7 @@ public class Win32NetBIOSLanaMonitor extends Thread {
 
 	/**
 	 * Return the global LANA monitor
-	 * 
+	 *
 	 * @return Win32NetBIOSLanaMonitor
 	 */
 	public static Win32NetBIOSLanaMonitor getLanaMonitor() {
@@ -142,7 +142,7 @@ public class Win32NetBIOSLanaMonitor extends Thread {
 
 	/**
 	 * Add a LANA listener
-	 * 
+	 *
 	 * @param lana int
 	 * @param l LanaListener
 	 */
@@ -186,7 +186,7 @@ public class Win32NetBIOSLanaMonitor extends Thread {
 
 	/**
 	 * Remove a LANA listener
-	 * 
+	 *
 	 * @param lana int
 	 */
 	public synchronized final void removeLanaListener(int lana) {
@@ -409,7 +409,7 @@ public class Win32NetBIOSLanaMonitor extends Thread {
 
 	/**
 	 * Determine if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
@@ -425,22 +425,22 @@ public class Win32NetBIOSLanaMonitor extends Thread {
 	protected final void shutdownHostAnnouncers()
 	{
         if ( m_hostAnnouncers.size() > 0) {
-            
+
             for ( int idx = 0; idx < m_hostAnnouncers.size(); idx++) {
-    
+
                 // Get the current host announcer
-                
+
                 HostAnnouncer hostAnnouncer = (HostAnnouncer) m_hostAnnouncers.get( idx);
                 hostAnnouncer.shutdownAnnouncer();
-                
+
                 // DEBUG
-                
+
                 if ( Debug.EnableInfo && hasDebug())
                     Debug.println( "[NetBIOS] Shutting down host announcer " + hostAnnouncer.getName());
             }
         }
 	}
-    
+
 	/**
 	 * Request the LANA monitor thread to shutdown
 	 */

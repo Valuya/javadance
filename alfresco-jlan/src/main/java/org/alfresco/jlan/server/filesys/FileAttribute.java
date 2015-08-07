@@ -32,7 +32,7 @@ import org.alfresco.jlan.util.StringList;
  *
  * <p>The values are also used by the DiskInterface.StartSearch () method to determine
  *  the file/directory types that are returned.
- * 
+ *
  * @see DiskInterface
  * @see SearchContext
  *
@@ -49,7 +49,7 @@ public final class FileAttribute {
   	public static final int Volume    = 0x08;
   	public static final int Directory = 0x10;
   	public static final int Archive   = 0x20;
-  
+
   	//	NT file attribute flags
 
 	public static final int NTReadOnly			= 0x00000001;
@@ -77,13 +77,13 @@ public final class FileAttribute {
 	public static final int NTNoBuffering		= 0x20000000;
 	public static final int NTOverlapped		= 0x40000000;
 	public static final int NTWriteThrough		= 0x80000000;
-	
+
 	//	Standard attribute names
-	
+
 	private static String[] _stdNames = { "ReadOnly", "Hidden", "System", "Volume", "Directory", "Archive" };
-	
+
 	//	NT attribute names
-	
+
 	private static String[] _ntNames = { "ReadOnly",
 	    								 "Hidden",
 	    								 "System",
@@ -112,7 +112,7 @@ public final class FileAttribute {
 	    								 "Overlapped",
 	    								 "WriteThrough"
 	};
-	
+
 	/**
 	 * Determine if the specified file attribute mask has the specified file attribute
 	 * enabled.
@@ -129,10 +129,10 @@ public final class FileAttribute {
 	    return true;
 	  return false;
 	}
-	
+
 	/**
 	 * Check if the read-only attribute is set
-	 * 
+	 *
 	 * @param attr int
 	 * @return boolean
 	 */
@@ -142,7 +142,7 @@ public final class FileAttribute {
 
 	/**
 	 * Check if the directory attribute is set
-	 * 
+	 *
 	 * @param attr int
 	 * @return boolean
 	 */
@@ -152,7 +152,7 @@ public final class FileAttribute {
 
 	/**
 	 * Check if the hidden attribute is set
-	 * 
+	 *
 	 * @param attr int
 	 * @return boolean
 	 */
@@ -162,7 +162,7 @@ public final class FileAttribute {
 
 	/**
 	 * Check if the system attribute is set
-	 * 
+	 *
 	 * @param attr int
 	 * @return boolean
 	 */
@@ -172,14 +172,14 @@ public final class FileAttribute {
 
 	/**
 	 * Check if the archive attribute is set
-	 * 
+	 *
 	 * @param attr int
 	 * @return boolean
 	 */
 	public static final boolean isArchived( int attr) {
 	  return ( attr & Archive) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Return the specified file attributes as a comma seperated string
 	 *
@@ -187,35 +187,35 @@ public final class FileAttribute {
 	 * @return String
 	 */
 	public final static String getAttributesAsString(int attr) {
-	  
+
 	  //	Check if no bits are set
-	  
+
 	  if ( attr == 0)
 	    return "Normal";
-	  
+
 	  //	Get a list of the atttribute names, for attributes that are set
-	  
+
 	  StringList names = getAttributesAsList(attr);
-	  
+
 	  //	Build the attribute names string
-	  
+
 	  StringBuffer str = new StringBuffer(128);
-	  
+
 	  for ( int i = 0; i < names.numberOfStrings(); i++) {
 	    str.append(names.getStringAt(i));
 	    str.append(",");
 	  }
-	  
+
 	  //	Trim the last comma
-	  
+
 	  if ( str.length() > 0)
 	    str.setLength(str.length() - 1);
-	  
+
 	  //	Return the attribute string
-	  
+
 	  return str.toString();
 	}
-	
+
 	/**
 	 * Return the specified file attribute as a list of attribute names
 	 *
@@ -225,34 +225,34 @@ public final class FileAttribute {
 	public final static StringList getAttributesAsList(int attr) {
 
 	  //	Allocate the name vector
-	  
+
 	  StringList names = new StringList();
 	  if ( attr == 0)
 	    return names;
-	  
+
 	  //	Build the list of set attribute names
-	  
+
 	  int mask = 1;
 	  int idx  = 0;
-	  
+
 	  while ( idx < _stdNames.length) {
-	    
+
 	    //	Check if the current attribute is set
-	    
+
 	    if (( attr & mask) != 0)
 	      names.addString(_stdNames[idx]);
-	    
+
 	    //	Update the index and mask
-	    
+
 	    idx++;
 	    mask = mask << 1;
 	  }
-	  
+
 	  //	Return the names list
-	  
+
 	  return names;
 	}
-	
+
 	/**
 	 * Return the specified NT file attributes as a comma seperated string
 	 *
@@ -260,30 +260,30 @@ public final class FileAttribute {
 	 * @return String
 	 */
 	public final static String getNTAttributesAsString(int attr) {
-	  
+
 	  //	Get a list of the atttribute names, for attributes that are set
-	  
+
 	  StringList names = getNTAttributesAsList(attr);
-	  
+
 	  //	Build the attribute names string
-	  
+
 	  StringBuffer str = new StringBuffer(128);
-	  
+
 	  for ( int i = 0; i < names.numberOfStrings(); i++) {
 	    str.append(names.getStringAt(i));
 	    str.append(",");
 	  }
-	  
+
 	  //	Trim the last comma
-	  
+
 	  if ( str.length() > 0)
 	    str.setLength(str.length() - 1);
-	  
+
 	  //	Return the attribute string
-	  
+
 	  return str.toString();
 	}
-	
+
 	/**
 	 * Return the specified NT file attribute as a list of attribute names
 	 *
@@ -293,31 +293,31 @@ public final class FileAttribute {
 	public final static StringList getNTAttributesAsList(int attr) {
 
 	  //	Allocate the name vector
-	  
+
 	  StringList names = new StringList();
 	  if ( attr == 0)
 	    return names;
-	  
+
 	  //	Build the list of set attribute names
-	  
+
 	  int mask = 1;
 	  int idx  = 0;
-	  
+
 	  while ( idx < _ntNames.length) {
-	    
+
 	    //	Check if the current attribute is set
-	    
+
 	    if (( attr & mask) != 0)
 	      names.addString(_ntNames[idx]);
-	    
+
 	    //	Update the index and mask
-	    
+
 	    idx++;
 	    mask = mask << 1;
 	  }
-	  
+
 	  //	Return the names list
-	  
+
 	  return names;
-	}	
+	}
 }

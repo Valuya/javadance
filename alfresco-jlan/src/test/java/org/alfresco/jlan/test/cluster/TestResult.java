@@ -23,39 +23,39 @@ package org.alfresco.jlan.test.cluster;
  * Test Result Interface
  *
  * <p>Holds the result from the run of a test.
- * 
+ *
  * @author gkspencer
  */
 public abstract class TestResult {
 
 	// Test thread id
-	
+
 	private String m_id;
-	
+
 	// Additional result comment
-	
+
 	private String m_comment;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public TestResult() {
 		m_id = Thread.currentThread().getName();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param comment String
 	 */
 	public TestResult( String comment) {
 		m_id = Thread.currentThread().getName();
 		m_comment = comment;
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param id String
 	 * @param comment String
 	 */
@@ -63,10 +63,10 @@ public abstract class TestResult {
 		m_id = id;
 		m_comment = comment;
 	}
-	
+
 	/**
 	 * Return the test run/thread id
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getRunId() {
@@ -75,59 +75,59 @@ public abstract class TestResult {
 
 	/**
 	 * Check if there is additional result/comment information available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasComment() {
 		return m_comment != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the additional info/comment
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getComment() {
 		return m_comment;
 	}
-	
+
 	/**
 	 * Set the result comment
-	 * 
+	 *
 	 * @param comment String
 	 */
 	public final void setComment( String comment) {
 		m_comment = comment;
 	}
-	
+
 	/**
 	 * Return the test result
-	 * 
+	 *
 	 * @return Object
 	 */
 	public abstract Object getResult();
-	
+
 	/**
 	 * Determine if the result indicates a success
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isSuccess() {
 		return false;
 	}
-	
+
 	/**
 	 * Determine if the result indicates a failure
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isFailure() {
 		return true;
 	}
-	
+
 	/**
 	 * Determine if the result indicates a warning
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isWarning() {

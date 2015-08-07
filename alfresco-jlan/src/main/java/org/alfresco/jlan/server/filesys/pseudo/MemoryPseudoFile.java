@@ -24,20 +24,20 @@ import org.alfresco.jlan.server.filesys.NetworkFile;
 
 /**
  * In Memory Pseudo File Class
- * 
+ *
  * <p>Pseudo file class that uses an in memory buffer for the file data.
- * 
+ *
  * @author gkspencer
  */
 public class MemoryPseudoFile extends PseudoFile {
-  
+
   // File data buffer
 
   private byte[] m_data;
 
   /**
    * Class constructor
-   * 
+   *
    * @param name String
    * @param data byte[]
    */
@@ -49,7 +49,7 @@ public class MemoryPseudoFile extends PseudoFile {
 
   /**
    * Return the file information for the pseudo file
-   * 
+   *
    * @return FileInfo
    */
   public FileInfo getFileInfo() {
@@ -82,7 +82,7 @@ public class MemoryPseudoFile extends PseudoFile {
 
   /**
    * Return a network file for reading/writing the pseudo file
-   * 
+   *
    * @param netPath String
    * @return NetworkFile
    */

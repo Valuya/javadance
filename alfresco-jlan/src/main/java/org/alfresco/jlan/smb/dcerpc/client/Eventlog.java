@@ -21,32 +21,32 @@ package org.alfresco.jlan.smb.dcerpc.client;
 
 /**
  * Eventlog Operation Ids Class
- * 
+ *
  * <p>Contains constants for requests to the event log DCE/RPC service on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class Eventlog {
-  
+
 	//	Eventlog opcodes
-  
+
 	public static final int OpenEventLog			= 0x07;
 	public static final int GetNumberOfRecords		= 0x04;
 	public static final int GetOldestEventRecord	= 0x05;
 	public static final int ReadEventLog			= 0x0A;
 	public static final int CloseEventLog			= 0x02;
-  
+
 	//	Event log names
-  
+
 	public static final String EVTLOG_SYSTEM			= "System";
 	public static final String EVTLOG_SECURITY			= "Security";
 	public static final String EVTLOG_APPLICATION		= "Application";
 	public static final String EVTLOG_DIRECTORYSERVICE 	= "Directory Service";
 	public static final String EVTLOG_DNSSERVER			= "DNS Server";
 	public static final String EVTLOG_FILEREPLSERVICE	= "File Replication Service";
-  
+
 	//	Event log read flags
-  
+
 	public static final int SequentialRead				= 0x0001;
 	public static final int SeekRead					= 0x0002;
 	public static final int ForwardsRead				= 0x0004;

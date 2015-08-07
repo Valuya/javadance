@@ -33,7 +33,7 @@ import org.alfresco.jlan.util.X64;
 
 /**
  * Win32 NetBIOS Native Call Wrapper Class
- * 
+ *
  * @author gkspencer
  */
 public class Win32NetBIOS {
@@ -46,7 +46,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Add a NetBIOS name to the local name table
-	 * 
+	 *
 	 * @param lana int
 	 * @param name byte[]
 	 * @return int
@@ -55,7 +55,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Add a group NetBIOS name to the local name table
-	 * 
+	 *
 	 * @param lana int
 	 * @param name byte[]
 	 * @return int
@@ -64,7 +64,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Find a NetBIOS name, return the name buffer
-	 * 
+	 *
 	 * @param lana int
 	 * @param name byte[]
 	 * @param nameBuf byte[]
@@ -75,7 +75,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Find a NetBIOS name
-	 * 
+	 *
 	 * @param lana int
 	 * @param nbName NetBIOSName
 	 * @return int
@@ -99,10 +99,10 @@ public class Win32NetBIOS {
 
 		int nodeCount = buf.getShort();
 		buf.skipBytes(1);
-		
+
 		boolean isGroupName = buf.getByte() == 0 ? false : true;
 		nbName.setGroup( isGroupName);
-		
+
 		// Unpack the FIND_NAME_BUFFER structures
 
 		int curPos = buf.getPosition();
@@ -152,7 +152,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Delete a NetBIOS name from the local name table
-	 * 
+	 *
 	 * @param lana int
 	 * @param name byte[]
 	 * @return int
@@ -161,11 +161,11 @@ public class Win32NetBIOS {
 
 	/**
 	 * Enumerate the available LANAs
-	 * 
+	 *
 	 * @return int[]
 	 */
 	public static int[] LanaEnumerate() {
-		
+
 		// Make sure that there is an active network adapter as making calls to the LanaEnum native
 		// call causes problems when there are no active network adapters.
 
@@ -206,14 +206,14 @@ public class Win32NetBIOS {
 
 	/**
 	 * Enumerate the available LANAs
-	 * 
+	 *
 	 * @return int[]
 	 */
 	private static native int[] LanaEnum();
 
 	/**
 	 * Reset the NetBIOS environment
-	 * 
+	 *
 	 * @param lana int
 	 * @return int
 	 */
@@ -221,7 +221,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Listen for an incoming session request
-	 * 
+	 *
 	 * @param lana int
 	 * @param toName byte[]
 	 * @param fromName byte[]
@@ -232,7 +232,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Receive a data packet on a session
-	 * 
+	 *
 	 * @param lana int
 	 * @param lsn int
 	 * @param buf byte[]
@@ -244,7 +244,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Send a data packet on a session
-	 * 
+	 *
 	 * @param lana int
 	 * @param lsn int
 	 * @param buf byte[]
@@ -256,7 +256,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Send a datagram to a specified name
-	 * 
+	 *
 	 * @param lana int
 	 * @param srcNum int
 	 * @param destName byte[]
@@ -269,7 +269,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Send a broadcast datagram
-	 * 
+	 *
 	 * @param lana int
 	 * @param buf byte[]
 	 * @param off int
@@ -280,7 +280,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Receive a datagram on a specified name
-	 * 
+	 *
 	 * @param lana int
 	 * @param nameNum int
 	 * @param buf byte[]
@@ -292,7 +292,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Receive a broadcast datagram
-	 * 
+	 *
 	 * @param lana int
 	 * @param nameNum int
 	 * @param buf byte[]
@@ -304,7 +304,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Hangup a session
-	 * 
+	 *
 	 * @param lsn int
 	 * @return int
 	 */
@@ -312,14 +312,14 @@ public class Win32NetBIOS {
 
 	/**
 	 * Return the local computers NetBIOS name
-	 * 
+	 *
 	 * @return String
 	 */
 	public static native String GetLocalNetBIOSName();
 
 	/**
 	 * Return the local domain name
-	 * 
+	 *
 	 * @return String
 	 */
 	public static native String GetLocalDomainName();
@@ -327,14 +327,14 @@ public class Win32NetBIOS {
 	/**
 	 * Return a comma delimeted list of WINS server TCP/IP addresses, or null if no WINS servers are
 	 * configured.
-	 * 
+	 *
 	 * @return String
 	 */
 	public static native String getWINSServerList();
 
 	/**
 	 * Find the TCP/IP address for a LANA
-	 * 
+	 *
 	 * @param lana int
 	 * @return String
 	 */
@@ -380,7 +380,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Find the adapter name for a LANA
-	 * 
+	 *
 	 * @param lana int
 	 * @return String
 	 */
@@ -413,7 +413,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Find the LANA for a TCP/IP address
-	 * 
+	 *
 	 * @param addr String
 	 * @return int
 	 */
@@ -448,7 +448,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Find the LANA for a network adapter
-	 * 
+	 *
 	 * @param name String
 	 * @return int
 	 */
@@ -484,7 +484,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Return a hashtable of NetworkInterfaces indexed by TCP/IP address
-	 * 
+	 *
 	 * @return Hashtable
 	 */
 	private static final Hashtable<String, NetworkInterface> getNetworkAdapterList() {
@@ -528,7 +528,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Initialize the NetBIOS socket interface
-	 * 
+	 *
 	 * @exception WinsockNetBIOSException If a Winsock error occurs
 	 */
 	protected static native void InitializeSockets()
@@ -541,7 +541,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Create a NetBIOS socket
-	 * 
+	 *
 	 * @param lana int
 	 * @return int
 	 * @exception WinsockNetBIOSException If a Winsock error occurs
@@ -551,7 +551,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Bind a NetBIOS socket to a name to listen for incoming sessions
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param name byte[]
 	 * @exception WinsockNetBIOSException If a Winsock error occurs
@@ -564,7 +564,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Bind a NetBIOS socket to a name to listen for incoming sessions
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param name byte[]
 	 * @param fastAddName boolean
@@ -575,7 +575,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Listen for an incoming connection
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param callerName byte[]
 	 * @return int
@@ -586,24 +586,24 @@ public class Win32NetBIOS {
 
 	/**
 	 * Connect to a remote server
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param remoteName byte[]
 	 * @exception WinsockNetBIOSException If a Winsock error occurs
 	 */
 	protected static native void ConnectSocket(int sockPtr, byte[] remoteName)
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Close a NetBIOS socket
-	 * 
+	 *
 	 * @param sockPtr int
 	 */
 	protected static native void CloseSocket(int sockPtr);
 
 	/**
 	 * Send data on a session socket
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param buf byte[]
 	 * @param off int
@@ -616,7 +616,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Receive data on a session socket
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param buf byte[]
 	 * @param off int
@@ -629,17 +629,17 @@ public class Win32NetBIOS {
 
 	/**
 	 * Return the amount of receive data available on the socket
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @return int
 	 * @exception WinsockNetBIOSException If a Winsock error occurs
 	 */
 	protected static native int ReceiveLengthSocket(int sockPtr)
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Configure a socket to be non-blocking
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param nonBlocking boolean
 	 * @exception WinsockNetBIOSException If a Winsock error occurs
@@ -649,7 +649,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Wait for an event on one or more sockets
-	 * 
+	 *
 	 * @param sockCnt int
 	 * @param readSocksIn int[]
 	 * @param readSocksOut int[]
@@ -658,68 +658,68 @@ public class Win32NetBIOS {
 	 */
 	protected static native int SelectReceiveSockets( int sockCnt, int[] readSocksIn, int[] readSocksOut)
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Return the maximum number of sockets that can be configured per SelectSockets() call
-	 * 
+	 *
 	 * @return int
 	 */
 	protected static native int GetMaximumSocketsPerSelect();
 
 	/**
 	 * Create a Win32 event
-	 * 
+	 *
 	 * @return int
 	 * @throws Exception
 	 */
 	public static native int Win32CreateEvent()
 		throws Exception;
-	
+
 	/**
 	 * Close a Win32 event
-	 * 
+	 *
 	 * @param eventHandle int
 	 * @throws Exception
 	 */
 	public static native void Win32CloseEvent( int eventHandle)
 		throws Exception;
-	
+
 	/**
 	 * Set a Win32 event
-	 * 
+	 *
 	 * @param eventHandle int
 	 * @return boolean
 	 */
 	public static native boolean Win32SetEvent( int eventHandle);
-	
+
 	/**
 	 * Reset a Win32 event
-	 * 
+	 *
 	 *  @param eventHandle int
 	 *  @return boolean
 	 */
 	public static native boolean Win32ResetEvent( int eventHandle);
-	
+
 	/**
 	 * Create a Winsock event
-	 * 
+	 *
 	 * @return int
 	 * @throws WinsockNetBIOSException
 	 */
 	public static native int WinsockCreateEvent()
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Set a Winsock event
-	 * 
+	 *
 	 * @param eventHandle int
 	 * @return boolean
 	 */
 	public static native boolean WinsockSetEvent( int eventHandle);
-	
+
 	/**
 	 * Reset a Winsock event
-	 * 
+	 *
 	 * @param eventHandle int
 	 * @return boolean
 	 */
@@ -727,7 +727,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Close a Winsock event
-	 * 
+	 *
 	 *  @param eventHandle int
 	 *  @exception WinsockNetBIOSException
 	 */
@@ -736,7 +736,7 @@ public class Win32NetBIOS {
 
 	/**
 	 * Wait for Winsock events
-	 * 
+	 *
 	 * @param eventCnt int
 	 * @param events int[]
 	 * @param waitAll boolean
@@ -747,10 +747,10 @@ public class Win32NetBIOS {
 	 */
 	public static native int WinsockWaitForMultipleEvents( int eventCnt, int[] events, boolean waitAll, int timeout, boolean alertable)
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Set Winsock events for a socket
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param eventHandle int
 	 * @param eventMask int
@@ -758,10 +758,10 @@ public class Win32NetBIOS {
 	 */
 	public static native void WinsockEventSelect( int sockPtr, int eventHandle, int eventMask)
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Get the list of socket events that have triggered for a particular socket
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param eventHandle int
 	 * @return int
@@ -772,44 +772,44 @@ public class Win32NetBIOS {
 
 	/**
 	 * Get the current receive buffer size for the socket
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @return int
 	 * @throws WinsockNetBIOSException
 	 */
 	public static native int getSocketReceiveBufferSize( int sockPtr)
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Set the socket receive buffer size
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param bufSize int
 	 * @throws WinsockNetBIOSException
 	 */
 	public static native void setSocketReceiveBufferSize( int sockPtr, int bufSize)
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Get the current send buffer size for the socket
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @return int
 	 * @throws WinsockNetBIOSException
 	 */
 	public static native int getSocketSendBufferSize( int sockPtr)
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Set the socket send buffer size
-	 * 
+	 *
 	 * @param sockPtr int
 	 * @param bufSize int
 	 * @throws WinsockNetBIOSException
 	 */
 	public static native void setSocketSendBufferSize( int sockPtr, int bufSize)
 		throws WinsockNetBIOSException;
-	
+
 	/**
 	 * Wait for a network address change event, block until a change occurs or the Winsock NetBIOS
 	 * interface is shut down

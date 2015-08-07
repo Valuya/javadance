@@ -28,7 +28,7 @@ import com.hazelcast.core.IMap;
 
 /**
  * Rename File State Task Class
- * 
+ *
  * <p>
  *
  * @author gkspencer
@@ -36,26 +36,26 @@ import com.hazelcast.core.IMap;
 public class RenameStateTask extends RemoteStateTask<Boolean> {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
 
 	// New file state key/path
-	
+
 	private String m_newKey;
-	
+
 	// Flag to indicate path is to a folder
-	
+
 	private boolean m_folder;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public RenameStateTask() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mapName String
 	 * @param key String
 	 * @param newKey String
@@ -65,14 +65,14 @@ public class RenameStateTask extends RemoteStateTask<Boolean> {
 	 */
 	public RenameStateTask( String mapName, String key, String newKey, boolean isFolder, boolean debug, boolean timingDebug) {
 		super( mapName, key, true, true, debug, timingDebug);
-		
+
 		m_newKey = newKey;
 		m_folder = isFolder;
 	}
-	
+
 	/**
 	 * Run a remote task against a file state
-	 * 
+	 *
 	 * @param stateCache IMap<String, ClusterFileState>
 	 * @param fState ClusterFileState
 	 * @return Boolean
@@ -82,7 +82,7 @@ public class RenameStateTask extends RemoteStateTask<Boolean> {
 		throws Exception {
 
 		// DEBUG
-		
+
 		if ( hasDebug())
 			Debug.println( "RenameStateTask: Rename from " + getKey() + " to " + m_newKey);
 
@@ -91,25 +91,25 @@ public class RenameStateTask extends RemoteStateTask<Boolean> {
 		ClusterFileState state = stateCache.remove( getKey());
 
 		// Set the file status
-		
+
 		state.setFileStatusInternal( m_folder ? FileStatus.DirectoryExists : FileStatus.FileExists, FileState.ReasonNone);
-		
+
 		// Clear attributes from the renamed state
-		
+
 		state.removeAllAttributes();
-		
+
 		// Update the file state path and add it back to the cache using the new name
 
 		state.setPathInternal( m_newKey);
 		stateCache.put(state.getPath(), state);
 
 		// DEBUG
-		
+
 		if ( hasDebug())
 			Debug.println("Rename to " + m_newKey + " successful, state=" + state);
 
 		// Return the rename status
-		
+
 		return new Boolean( true);
 	}
 }

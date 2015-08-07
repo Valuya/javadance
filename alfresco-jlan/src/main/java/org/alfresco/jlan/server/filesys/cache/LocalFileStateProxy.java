@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys.cache;
 
 /**
  * Local File State Proxy Class
- * 
+ *
  * <p>The file state cache only stores file states locally so the actual file state can
  * be accessed directly.
  *
@@ -30,21 +30,21 @@ package org.alfresco.jlan.server.filesys.cache;
 public class LocalFileStateProxy implements FileStateProxy {
 
 	// Reference the file state
-	
+
 	private FileState m_state;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param fstate FileState
 	 */
 	public LocalFileStateProxy( FileState fstate) {
 		m_state = fstate;
 	}
-	
+
 	/**
 	 * Return the file state
-	 * 
+	 *
 	 * @return FileState
 	 */
 	public FileState getFileState() {

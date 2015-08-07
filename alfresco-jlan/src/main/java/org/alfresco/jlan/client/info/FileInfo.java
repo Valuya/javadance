@@ -24,19 +24,19 @@ import org.alfresco.jlan.smb.SMBDate;
 
 /**
  * SMB file information class.
- * 
+ *
  * <p>
  * The FileInfo class is returned by the DiskSession.getFileInformation () method and contains
  * details of the requested file.
- * 
+ *
  * <p>
  * FileInfo objects are also returned by a directory search that is started using the
  * DiskSession.StartSearch () method. The search request creates an SearchContext object which can
  * return either file names, via the nextFileName () method, or can return FileInfo objects for each
  * file found, via the nextFileInfo () method.
- * 
+ *
  * @see org.alfresco.jlan.client.DiskSession
- * 
+ *
  * @author gkspencer
  */
 public class FileInfo {
@@ -89,7 +89,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
 	 * @param fattr File attributes.
@@ -105,7 +105,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
 	 * @param fattr File attributes.
@@ -122,7 +122,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
 	 * @param fattr File attributes.
@@ -142,7 +142,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fpath File path string.
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
@@ -160,7 +160,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fpath File path string.
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
@@ -179,7 +179,7 @@ public class FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fpath File path string.
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
@@ -199,7 +199,7 @@ public class FileInfo {
 
 	/**
 	 * Return the files last access date/time.
-	 * 
+	 *
 	 * @return SMBDate
 	 */
 	public SMBDate getAccessDateTime() {
@@ -208,7 +208,7 @@ public class FileInfo {
 
 	/**
 	 * Get the files allocated size.
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getAllocationSize() {
@@ -217,7 +217,7 @@ public class FileInfo {
 
 	/**
 	 * Get the files allocated size, as a 32bit value
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getAllocationSizeInt() {
@@ -226,7 +226,7 @@ public class FileInfo {
 
 	/**
 	 * Return the creation date/time of the file.
-	 * 
+	 *
 	 * @return SMBDate
 	 */
 	public SMBDate getCreationDateTime() {
@@ -235,7 +235,7 @@ public class FileInfo {
 
 	/**
 	 * Return the file attributes value.
-	 * 
+	 *
 	 * @return File attributes value.
 	 */
 	public int getFileAttributes() {
@@ -244,7 +244,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file name string
-	 * 
+	 *
 	 * @return File name string.
 	 */
 	public final String getFileName() {
@@ -253,7 +253,7 @@ public class FileInfo {
 
 	/**
 	 * Check if the short (8.3) file name is available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasShortName() {
@@ -262,7 +262,7 @@ public class FileInfo {
 
 	/**
 	 * Get the short file name (8.3 format)
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getShortName() {
@@ -271,7 +271,7 @@ public class FileInfo {
 
 	/**
 	 * Get the files date/time of last write
-	 * 
+	 *
 	 * @return File write date/time.
 	 */
 	public final SMBDate getModifyDateTime() {
@@ -280,7 +280,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file path string.
-	 * 
+	 *
 	 * @return File path string, relative to the share.
 	 */
 	public final String getPath() {
@@ -289,7 +289,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file size, in bytes.
-	 * 
+	 *
 	 * @return File size in bytes.
 	 */
 	public final long getSize() {
@@ -298,7 +298,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file size in bytes, as a 32bit value
-	 * 
+	 *
 	 * @return File size in bytes, as an int
 	 */
 	public final int getSizeInt() {
@@ -307,7 +307,7 @@ public class FileInfo {
 
 	/**
 	 * Get the file identifier
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -316,7 +316,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the last access date/time is available.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasAccessDateTime() {
@@ -325,7 +325,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the creation date/time details are available.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasCreationDateTime() {
@@ -334,7 +334,7 @@ public class FileInfo {
 
 	/**
 	 * Determine if the modify date/time details are available.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasModifyDateTime() {
@@ -343,7 +343,7 @@ public class FileInfo {
 
 	/**
 	 * Return the specified attribute status
-	 * 
+	 *
 	 * @param attr int
 	 */
 	public final boolean hasAttribute(int attr) {
@@ -352,7 +352,7 @@ public class FileInfo {
 
 	/**
 	 * Return the directory file attribute status.
-	 * 
+	 *
 	 * @return true if the file is a directory, else false.
 	 */
 	public final boolean isDirectory() {
@@ -361,7 +361,7 @@ public class FileInfo {
 
 	/**
 	 * Return the hidden file attribute status.
-	 * 
+	 *
 	 * @return true if the file is hidden, else false.
 	 */
 	public final boolean isHidden() {
@@ -370,7 +370,7 @@ public class FileInfo {
 
 	/**
 	 * Return the read-only file attribute status.
-	 * 
+	 *
 	 * @return true if the file is read-only, else false.
 	 */
 	public final boolean isReadOnly() {
@@ -379,7 +379,7 @@ public class FileInfo {
 
 	/**
 	 * Return the system file attribute status.
-	 * 
+	 *
 	 * @return true if the file is a system file, else false.
 	 */
 	public final boolean isSystem() {
@@ -388,7 +388,7 @@ public class FileInfo {
 
 	/**
 	 * Return the archived attribute status
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isArchived() {
@@ -397,7 +397,7 @@ public class FileInfo {
 
 	/**
 	 * Return the compressed file status
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isCompressed() {
@@ -406,7 +406,7 @@ public class FileInfo {
 
 	/**
 	 * Return the offline file status
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isOffline() {
@@ -415,7 +415,7 @@ public class FileInfo {
 
 	/**
 	 * Return the encrypted file status
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isEncrypted() {
@@ -424,7 +424,7 @@ public class FileInfo {
 
 	/**
 	 * Return the temporary file status
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isTemporary() {
@@ -433,7 +433,7 @@ public class FileInfo {
 
 	/**
 	 * Return the indexed file status
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isIndexed() {
@@ -461,7 +461,7 @@ public class FileInfo {
 
 	/**
 	 * Set the files last access date/time.
-	 * 
+	 *
 	 * @param dat int
 	 * @param tim int
 	 */
@@ -474,7 +474,7 @@ public class FileInfo {
 
 	/**
 	 * Set the files last access date/time.
-	 * 
+	 *
 	 * @param dattim Last access date/time as an SMBDate value.
 	 */
 	public void setAccessDateTime(SMBDate dattim) {
@@ -486,7 +486,7 @@ public class FileInfo {
 
 	/**
 	 * Set the files allocation size.
-	 * 
+	 *
 	 * @param siz long
 	 */
 	public void setAllocationSize(long siz) {
@@ -495,7 +495,7 @@ public class FileInfo {
 
 	/**
 	 * Set the creation date/time for the file.
-	 * 
+	 *
 	 * @param dat int Creation date in SMB format.
 	 * @param tim int Creation time in SMB format.
 	 */
@@ -508,7 +508,7 @@ public class FileInfo {
 
 	/**
 	 * Set the creation date/time for the file.
-	 * 
+	 *
 	 * @param dattim Creation date as an SMBDate value.
 	 */
 	public void setCreationDateTime(SMBDate dattim) {
@@ -520,7 +520,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 */
 	public final void setFileName(String name) {
@@ -529,7 +529,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file size in bytes
-	 * 
+	 *
 	 * @param siz long
 	 */
 	public final void setFileSize(long siz) {
@@ -538,7 +538,7 @@ public class FileInfo {
 
 	/**
 	 * Set the date/time for the file.
-	 * 
+	 *
 	 * @param dat int Creation date in SMB format.
 	 * @param tim int Creation time in SMB format.
 	 */
@@ -551,7 +551,7 @@ public class FileInfo {
 
 	/**
 	 * Set the date/time file
-	 * 
+	 *
 	 * @param datetime SMBDate
 	 */
 	public final void setModifyDateTime(SMBDate datetime) {
@@ -560,7 +560,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file identifier
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setFileId(int id) {
@@ -569,7 +569,7 @@ public class FileInfo {
 
 	/**
 	 * Set the short (8.3 format) file name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setShortName(String name) {
@@ -578,7 +578,7 @@ public class FileInfo {
 
 	/**
 	 * Set the path
-	 * 
+	 *
 	 * @param path String
 	 */
 	public final void setPath(String path) {
@@ -587,7 +587,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file size.
-	 * 
+	 *
 	 * @param siz int
 	 */
 	public final void setSize(int siz) {
@@ -596,7 +596,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file size.
-	 * 
+	 *
 	 * @param siz long
 	 */
 	public final void setSize(long siz) {
@@ -605,11 +605,11 @@ public class FileInfo {
 
 	/**
 	 * Return the file attributes as a formatted string.
-	 * 
+	 *
 	 * <p>
 	 * The returned string is in the format 'RHSD' where 'R' indicates read-only, 'H' indicates
 	 * hidden, 'S' indicates system and 'D' indicates directory
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFormattedAttributes() {
@@ -642,7 +642,7 @@ public class FileInfo {
 
 	/**
 	 * Return the file information as a string.
-	 * 
+	 *
 	 * @return File information string.
 	 */
 	public String toString() {
@@ -716,7 +716,7 @@ public class FileInfo {
 
 	/**
 	 * Set the file attributes.
-	 * 
+	 *
 	 * @param attr int
 	 */
 	public final void setFileAttributes(int attr) {

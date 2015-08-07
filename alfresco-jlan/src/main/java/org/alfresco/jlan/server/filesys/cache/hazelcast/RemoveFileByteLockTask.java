@@ -29,7 +29,7 @@ import com.hazelcast.core.IMap;
 
 /**
  * Remove File Byte Range Lock Remote Task Class
- * 
+ *
  * <p>Used to synchronize removing a byte range lock on a file state by executing on the remote node
  * that owns the file state/key.
  *
@@ -38,22 +38,22 @@ import com.hazelcast.core.IMap;
 public class RemoveFileByteLockTask extends RemoteStateTask<ClusterFileState> {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
 
 	// Byte range lock details
-	
+
 	private ClusterFileLock m_lock;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public RemoveFileByteLockTask() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mapName String
 	 * @param key String
 	 * @param lock ClusterFileLock
@@ -62,13 +62,13 @@ public class RemoveFileByteLockTask extends RemoteStateTask<ClusterFileState> {
 	 */
 	public RemoveFileByteLockTask( String mapName, String key, ClusterFileLock lock, boolean debug, boolean timingDebug) {
 		super( mapName, key, true, false, debug, timingDebug);
-		
+
 		m_lock = lock;
 	}
-	
+
 	/**
 	 * Run a remote task against a file state
-	 * 
+	 *
 	 * @param stateCache IMap<String, ClusterFileState>
 	 * @param fState ClusterFileState
 	 * @return ClusterFileState
@@ -76,32 +76,32 @@ public class RemoveFileByteLockTask extends RemoteStateTask<ClusterFileState> {
 	 */
 	protected ClusterFileState runRemoteTaskAgainstState( IMap<String, ClusterFileState> stateCache, ClusterFileState fState)
 		throws Exception {
-		
+
 		// DEBUG
-		
+
 		if ( hasDebug())
 			Debug.println( "RemoveFileByteLockTask: Remove lock=" + m_lock + " from " + fState);
-		
+
 		// Find the matching lock, make sure the owner node matches
-		
+
 		FileLockList lockList = fState.getLockList();
 		ClusterFileLock clLock = (ClusterFileLock) lockList.findLock( m_lock);
-		
+
 		if ( clLock != null && clLock.getOwnerNode().equalsIgnoreCase( m_lock.getOwnerNode()) == true) {
-			
+
 			// Remove the lock
-			
+
 			lockList.removeLock( clLock);
 		}
 		else {
-			
+
 			// Return a not locked exception, node does not own the matching lock
-			
+
 			throw new NotLockedException();
 		}
-		
+
 		// Return the updated file state
-		
+
 		return fState;
 	}
 }

@@ -18,7 +18,7 @@
  */
 
 package org.alfresco.jlan.client.admin;
- 
+
 import java.util.*;
 import java.io.*;
 
@@ -80,9 +80,9 @@ import org.alfresco.jlan.util.StringList;
  * an admin session is always made to the IPC$ named pipe. User name and/or a password
  * may be required depending upon the requests being made, and whether the 'GUEST'
  * account is available on the remote server.
- * 
+ *
  * @see org.alfresco.jlan.client.SessionFactory
- * 
+ *
  * @author gkspencer
  */
 public final class AdminSession {
@@ -135,24 +135,24 @@ public final class AdminSession {
   	private int m_defBufSize = 8192;
 
   	//	DCE/RPC pipe cache
-  
+
   	private Hashtable m_pipeCache;
-  
+
 	//	SAMR policy handle
-	
+
 	private SamrPolicyHandle m_samrHandle;
-	
+
 	//	Local domain SID
-	
+
 	private SID m_localDomain;
 
 	//	Use DCE/RPC calls rather than RAP calls if the server supports them
-	
+
 	private boolean m_useDCERPC = true;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess IPCSession
 	 */
 	public AdminSession(IPCSession sess) {
@@ -173,7 +173,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the use DCE/RPC flag
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean useDceRpc() {
@@ -183,7 +183,7 @@ public final class AdminSession {
 	/**
 	 * Set the use DCE/RPC flag to enable/disable the use of the newer DCE/RPC calls if the server
 	 * supports them
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	public final void setUseDceRpc(boolean ena) {
@@ -192,7 +192,7 @@ public final class AdminSession {
 
 	/**
 	 * Close the session to the remote server
-	 * 
+	 *
 	 * @exception IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
@@ -210,7 +210,7 @@ public final class AdminSession {
 
 	/**
 	 * Continue, unpause, the specified print job
-	 * 
+	 *
 	 * @param job PrintJob containing the details of the print job to continue
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB exception occurs
@@ -226,7 +226,7 @@ public final class AdminSession {
 
 	/**
 	 * Start, unpause, the specified remote printer queue.
-	 * 
+	 *
 	 * @param qname Remote print queue to continue
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB error occurs
@@ -242,7 +242,7 @@ public final class AdminSession {
 
 	/**
 	 * Delete the specified print job
-	 * 
+	 *
 	 * @param job PrintJob containing the details of the print job to pause
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB exception occurs
@@ -258,7 +258,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the transaction buffer size.
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getBufferSize() {
@@ -267,7 +267,7 @@ public final class AdminSession {
 
 	/**
 	 * Return a list of the disk devices available on the remote server.
-	 * 
+	 *
 	 * @return Disk name strings.
 	 * @exception SMBException If an SMB error occurs.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -357,7 +357,7 @@ public final class AdminSession {
 
 	/**
 	 * Return a list of the groups on the remote server.
-	 * 
+	 *
 	 * @return List of groups on the remote server.
 	 * @exception SMBException If an SMB error occurs.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -399,7 +399,7 @@ public final class AdminSession {
 
 	/**
 	 * Get a list of users that are in the specified group.
-	 * 
+	 *
 	 * @param grpName java.lang.String Group name to return user list for.
 	 * @return List of user names.
 	 * @exception SMBException If an SMB error occurs.
@@ -415,7 +415,7 @@ public final class AdminSession {
 
 	/**
 	 * Get a list of groups for the specified user.
-	 * 
+	 *
 	 * @param userName java.lang.String USer name to return group list for.
 	 * @return List of group names.
 	 * @exception SMBException If an SMB error occurs.
@@ -431,7 +431,7 @@ public final class AdminSession {
 
 	/**
 	 * Return printer queue information for the specified printer queue.
-	 * 
+	 *
 	 * @param printerName Name of the remote printer to return information for.
 	 * @return PrintQueueInfo
 	 * @exception SMBException If an SMB error occurs
@@ -541,7 +541,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of printer queues available on this server.
-	 * 
+	 *
 	 * @return PrinterList containing the list of available printers
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB error occurs
@@ -651,7 +651,7 @@ public final class AdminSession {
 
 	/**
 	 * Return information for the specified print job.
-	 * 
+	 *
 	 * @param id Id of the print job to return information for
 	 * @return PrintJob
 	 * @exception SMBException The exception description.
@@ -755,7 +755,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of print jobs in the specified printer queue.
-	 * 
+	 *
 	 * @param qnam Name of the queue to return jobs for
 	 * @return PrintJobList containing the list of jobs in the queue
 	 * @exception java.io.IOException If an I/O error occurs
@@ -881,7 +881,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of print jobs in the specified print queue.
-	 * 
+	 *
 	 * @param qnam Name of the print queue
 	 * @return PrintJobList
 	 * @exception SMBException The exception description.
@@ -997,7 +997,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the server information for the server we are connected to
-	 * 
+	 *
 	 * @return ServerInfo containing the server information
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB error occurs
@@ -1012,7 +1012,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the server information for the specified server.
-	 * 
+	 *
 	 * @param node Node name of the server to return information for.
 	 * @return ServerInfo
 	 * @exception SMBException An SMB exception has occurred.
@@ -1028,7 +1028,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of available servers on the network
-	 * 
+	 *
 	 * @param flags Server enumerate flags.
 	 * @return List of available servers, as a ServerList, else null if there are no servers
 	 *         available.
@@ -1045,7 +1045,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of available servers on the network
-	 * 
+	 *
 	 * @param flags Server enumerate flags.
 	 * @return List of available servers, as a Vector of Strings, else null if there are no servers
 	 *         available.
@@ -1062,7 +1062,7 @@ public final class AdminSession {
 
 	/**
 	 * Return a list of services installed on the remote node.
-	 * 
+	 *
 	 * @return List of service name strings.
 	 * @exception SMBException SMB error occurred.
 	 * @exception java.io.IOException I/O exception.
@@ -1077,7 +1077,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the associated session.
-	 * 
+	 *
 	 * @return Session
 	 */
 	public Session getSession() {
@@ -1086,7 +1086,7 @@ public final class AdminSession {
 
 	/**
 	 * Return a list of open sessions on the remote server.
-	 * 
+	 *
 	 * @return SessionInfoList
 	 * @exception SMBException
 	 * @exception DCEException
@@ -1123,7 +1123,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the full share information for the specified share
-	 * 
+	 *
 	 * @param shr Remote share name to return information for.
 	 * @return ShareInfo containing the full share details
 	 * @exception java.io.IOException If an I/O error occurs
@@ -1162,7 +1162,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of available shares on the remote server
-	 * 
+	 *
 	 * @return List of available shares, as a ShareList, else null if there are no shares available.
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException
@@ -1199,7 +1199,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the user information for the specified user
-	 * 
+	 *
 	 * @param usr User name of the user to return information for.
 	 * @return UserInfo containing the user details
 	 * @exception java.io.IOException If an I/O error occurs
@@ -1215,7 +1215,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of users on the remote server.
-	 * 
+	 *
 	 * @return Vector of user name strings.
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB error occurs
@@ -1257,7 +1257,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the server type/information for the server we are connected to
-	 * 
+	 *
 	 * @return WorkStationInfo containing the information
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB error occurs
@@ -1294,7 +1294,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the account type for the specified user name
-	 * 
+	 *
 	 * @param userName String
 	 * @return int
 	 * @throws java.io.IOException
@@ -1450,7 +1450,7 @@ public final class AdminSession {
 
 	/**
 	 * Pause/continue or delete the specified print job
-	 * 
+	 *
 	 * @param job Print job to manage
 	 * @param func Print job function
 	 * @exception java.io.IOException If an I/O error occurs
@@ -1508,7 +1508,7 @@ public final class AdminSession {
 
 	/**
 	 * Pause, continue or delete the specified printer queue.
-	 * 
+	 *
 	 * @param qname Print queue to manage
 	 * @param func int Function to perform (pause/continue/delete)
 	 * @exception java.io.IOException If an I/O error occurs
@@ -1565,7 +1565,7 @@ public final class AdminSession {
 
 	/**
 	 * Pause the specified print job
-	 * 
+	 *
 	 * @param job PrintJob containing the details of the print job to pause
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB exception occurs
@@ -1580,7 +1580,7 @@ public final class AdminSession {
 
 	/**
 	 * Pause the specified print queue.
-	 * 
+	 *
 	 * @param qname Remote print queue to be paused
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB error occurs
@@ -1595,7 +1595,7 @@ public final class AdminSession {
 
 	/**
 	 * Open the Windows registry DCE/RPC pipe
-	 * 
+	 *
 	 * @return WinregPipeFile
 	 * @exception IOException
 	 * @exception SMBException
@@ -1611,7 +1611,7 @@ public final class AdminSession {
 
 	/**
 	 * Open the server DCE/RPC pipe
-	 * 
+	 *
 	 * @return SrvsvcPipeFile
 	 * @exception IOException
 	 * @exception SMBException
@@ -1627,7 +1627,7 @@ public final class AdminSession {
 
 	/**
 	 * Open the workstation DCE/RPC pipe
-	 * 
+	 *
 	 * @return WkssvcPipeFile
 	 * @exception IOException
 	 * @exception SMBException
@@ -1643,7 +1643,7 @@ public final class AdminSession {
 
 	/**
 	 * Open the event log DCE/RPC pipe
-	 * 
+	 *
 	 * @return EventlogPipeFile
 	 * @exception IOException
 	 * @exception SMBException
@@ -1659,7 +1659,7 @@ public final class AdminSession {
 
 	/**
 	 * Open the service manager DCE/RPC pipe
-	 * 
+	 *
 	 * @return SvcctlPipeFile
 	 * @exception IOException
 	 * @exception SMBException
@@ -1675,7 +1675,7 @@ public final class AdminSession {
 
 	/**
 	 * Open the security accounts manager DCE/RPC pipe (SAMR)
-	 * 
+	 *
 	 * @return SamrPipeFile
 	 */
 	public final SamrPipeFile openSecurityAccountsManagerPipe()
@@ -1688,7 +1688,7 @@ public final class AdminSession {
 
 	/**
 	 * Open the shutdown service DCE/RPC pipe
-	 * 
+	 *
 	 * @return InitShutPipeFile
 	 */
 	public final InitShutPipeFile openInitShutdownPipe()
@@ -1701,7 +1701,7 @@ public final class AdminSession {
 
 	/**
 	 * Set the buffer size to use for transactions. The minimum is 8K, and maximum is 64K.
-	 * 
+	 *
 	 * @param siz int
 	 */
 	public void setBufferSize(int siz) {
@@ -1714,7 +1714,7 @@ public final class AdminSession {
 
 	/**
 	 * Open the specifed named pipe file and setup the pipe.
-	 * 
+	 *
 	 * @param pipeId DCE/RPC pipe type
 	 * @return IPCPipeFile
 	 * @exception IOException
@@ -1893,7 +1893,7 @@ public final class AdminSession {
 
 	/**
 	 * Open a DCE/RPC pipe, or re-use a pipe file cached in the pipe cache.
-	 * 
+	 *
 	 * @param pipeType int
 	 * @return IPCPipeFile
 	 * @exception IOException
@@ -1996,7 +1996,7 @@ public final class AdminSession {
 
 	/**
 	 * Get a list of the available groups using the older RAP call.
-	 * 
+	 *
 	 * @return List of groups on the remote server.
 	 * @exception SMBException If an SMB error occurs.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -2084,7 +2084,7 @@ public final class AdminSession {
 
 	/**
 	 * Get a list of users that are in the specified group, using the older RAP call.
-	 * 
+	 *
 	 * @param grpName java.lang.String Group name to return user list for.
 	 * @return List of user names.
 	 * @exception SMBException If an SMB error occurs.
@@ -2170,7 +2170,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the server information for the server we are connected to, using the older RAP call.
-	 * 
+	 *
 	 * @return ServerInfo containing the server information
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB error occurs
@@ -2250,7 +2250,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the server information for the specified server, using the older RAP call.
-	 * 
+	 *
 	 * @param node Node name of the server to return information for.
 	 * @return ServerInfo
 	 * @exception SMBException An SMB exception has occurred.
@@ -2284,7 +2284,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of available servers on the network, using the older RAP call.
-	 * 
+	 *
 	 * @param flags Server enumerate flags.
 	 * @return List of available servers, as a ServerList, else null if there are no servers
 	 *         available.
@@ -2399,7 +2399,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of available servers on the network, using the older RAP call.
-	 * 
+	 *
 	 * @param flags Server enumerate flags.
 	 * @return List of available servers, as a Vector of Strings, else null if there are no servers
 	 *         available.
@@ -2516,7 +2516,7 @@ public final class AdminSession {
 
 	/**
 	 * Return a list of services installed on the remote node, using the older RAP call.
-	 * 
+	 *
 	 * @return List of service name strings.
 	 * @exception SMBException SMB error occurred.
 	 * @exception java.io.IOException I/O exception.
@@ -2609,7 +2609,7 @@ public final class AdminSession {
 
 	/**
 	 * Return a list of open sessions on the remote server, using the older RAP call.
-	 * 
+	 *
 	 * @return SessionInfoList
 	 * @exception SMBException If an SMB exception occurs
 	 * @exception java.io.IOException If an I/O error occurs
@@ -2702,7 +2702,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the full share information for the specified share, using the older RAP call.
-	 * 
+	 *
 	 * @param shr Remote share name to return information for.
 	 * @return ShareInfo containing the full share details
 	 * @exception java.io.IOException If an I/O error occurs
@@ -2780,7 +2780,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of available shares on the remote server, using the older RAP call.
-	 * 
+	 *
 	 * @return List of available shares, as a ShareList, else null if there are no shares available.
 	 * @exception java.io.IOException If an I/O error occurs
 	 */
@@ -2876,7 +2876,7 @@ public final class AdminSession {
 
 	/**
 	 * Get a list of groups for the specified user, using the RAP call.
-	 * 
+	 *
 	 * @param userName java.lang.String USer name to return group list for.
 	 * @return List of group names.
 	 * @exception SMBException If an SMB error occurs.
@@ -2962,7 +2962,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the user information for the specified user, using the older RAP call.
-	 * 
+	 *
 	 * @param usr User name of the user to return information for.
 	 * @return UserInfo containing the user details
 	 * @exception java.io.IOException If an I/O error occurs
@@ -3040,7 +3040,7 @@ public final class AdminSession {
 
 	/**
 	 * Return the list of users on the remote server, using the older RAP call.
-	 * 
+	 *
 	 * @return Vector of user name strings.
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB error occurs
@@ -3125,7 +3125,7 @@ public final class AdminSession {
 	/**
 	 * Return the server type/information for the server we are connected to, using the older RAP
 	 * call.
-	 * 
+	 *
 	 * @return WorkStationInfo containing the information
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB error occurs

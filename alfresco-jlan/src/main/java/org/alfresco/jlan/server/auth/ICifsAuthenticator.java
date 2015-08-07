@@ -26,11 +26,11 @@ import org.alfresco.jlan.smb.server.SMBSrvSession;
 
 /**
  * CIFS Authenticator Interface
- * 
+ *
  * <p>
  * An authenticator is used by the CIFS server to authenticate users when in user level access mode
  * and authenticate requests to connect to a share when in share level access.
- * 
+ *
  * @author gkspencer
  * @author dward
  */
@@ -57,7 +57,7 @@ public interface ICifsAuthenticator
 
     /**
      * Authenticate a connection to a share.
-     * 
+     *
      * @param client User/client details from the tree connect request.
      * @param share Shared device the client wants to connect to.
      * @param sharePwd Share password.
@@ -69,7 +69,7 @@ public interface ICifsAuthenticator
 
     /**
      * Authenticate a user. A user may be granted full access, guest access or no access.
-     * 
+     *
      * @param client User/client details from the session setup request.
      * @param sess Server session
      * @param alg Encryption algorithm
@@ -79,21 +79,21 @@ public interface ICifsAuthenticator
 
     /**
      * Return the access mode of the server, either SHARE_MODE or USER_MODE.
-     * 
+     *
      * @return int
      */
     public int getAccessMode();
 
     /**
      * Determine if extended security methods are available
-     * 
+     *
      * @return boolean
      */
     public boolean hasExtendedSecurity();
 
     /**
      * Return the security mode flags
-     * 
+     *
      * @return int
      */
     public int getSecurityMode();
@@ -101,7 +101,7 @@ public interface ICifsAuthenticator
     /**
      * Generate the CIFS negotiate response packet, the authenticator should add authentication
      * specific fields to the response.
-     * 
+     *
      * @param sess SMBSrvSession
      * @param respPkt SMBSrvPacket
      * @param extendedSecurity boolean
@@ -112,7 +112,7 @@ public interface ICifsAuthenticator
 
     /**
      * Process the CIFS session setup request packet and build the session setup response
-     * 
+     *
      * @param sess SMBSrvSession
      * @param reqPkt SMBSrvPacket
      * @exception SMBSrvException
@@ -121,14 +121,14 @@ public interface ICifsAuthenticator
 
     /**
      * Return the encryption key/challenge length
-     * 
+     *
      * @return int
      */
     public int getEncryptionKeyLength();
 
     /**
      * Return the server capability flags
-     * 
+     *
      * @return int
      */
     public int getServerCapabilities();
@@ -137,10 +137,10 @@ public interface ICifsAuthenticator
      * Close the authenticator, perform any cleanup
      */
     public void closeAuthenticator();
-    
+
     /**
      * Set the current authenticated user context for this thread
-     * 
+     *
      * @param client ClientInfo
      */
     public void setCurrentUser(ClientInfo client);

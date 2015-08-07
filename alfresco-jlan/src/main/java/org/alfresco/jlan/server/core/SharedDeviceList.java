@@ -32,7 +32,7 @@ public class SharedDeviceList {
   //	Shared device list
 
   private Hashtable<String, SharedDevice> m_shares;
-  
+
   /**
    * SharedDeviceList constructor.
    */
@@ -42,10 +42,10 @@ public class SharedDeviceList {
 
     m_shares = new Hashtable<String, SharedDevice>();
   }
-  
+
   /**
    * Copy constructor
-   * 
+   *
    * @param shrList SharedDeviceList
    */
   public SharedDeviceList(SharedDeviceList shrList) {
@@ -53,12 +53,12 @@ public class SharedDeviceList {
 		//  Allocate the shared device list
 
 		m_shares = new Hashtable<String, SharedDevice>();
-		
+
 		//	Copy the shares from the original list, shallow copy
 
 		addShares(shrList);
   }
-  
+
   /**
    * Add a shared device to the list.
    *
@@ -77,22 +77,22 @@ public class SharedDeviceList {
     m_shares.put(shr.getName(), shr);
     return true;
   }
-  
+
   /**
    * Add shares from the specified list to this list, using a shallow copy
-   * 
+   *
    * @param shrList SharedDeviceList
    */
   public final void addShares(SharedDeviceList shrList) {
-  	
+
   	//	Copy the shares to this list
-  	
+
 		Enumeration<SharedDevice> enm = shrList.enumerateShares();
-		
-		while ( enm.hasMoreElements())		
+
+		while ( enm.hasMoreElements())
 			addShare( enm.nextElement());
   }
-  
+
   /**
    * Delete the specified shared device from the list.
    *
@@ -105,7 +105,7 @@ public class SharedDeviceList {
 
     return m_shares.remove(name);
   }
-  
+
   /**
    * Return an enumeration to allow the shared devices to be listed.
    *
@@ -114,7 +114,7 @@ public class SharedDeviceList {
   public final Enumeration<SharedDevice> enumerateShares() {
     return m_shares.elements();
   }
-  
+
   /**
    * Find the shared device with the specified name.
    *
@@ -127,40 +127,40 @@ public class SharedDeviceList {
 
 	/**
 	 * Find the shared device with the specified name and type
-	 * 
+	 *
 	 * @param name 		Name of shared device to find
 	 * @param typ			Type of shared device (see ShareType)
 	 * @param nocase	Case sensitive search if false, else case insensitive search
 	 * @return SharedDevice with the specified name and type, else null
-	 */  
+	 */
 	public final SharedDevice findShare(String name, int typ, boolean nocase) {
-	
+
 		//	Enumerate the share list
-		
+
 		Enumeration<String> keys = m_shares.keys();
-		
+
 		while ( keys.hasMoreElements()) {
-			
+
 			//	Get the current share name
-			
+
 			String curName = keys.nextElement();
-			
+
 			if (( nocase == false && curName.equals(name)) ||
 					( nocase == true  && curName.equalsIgnoreCase(name))) {
-				
+
 				//	Get the shared device and check if the share is of the required type
-				
+
 				SharedDevice share = m_shares.get(curName);
 				if ( share.getType() == typ || typ == ShareType.UNKNOWN)
-					return share;	
+					return share;
 			}
 		}
-		
+
 		//	Required share not found
-		
+
 		return null;
 	}
-	
+
   /**
    * Return the number of shared devices in the list.
    *
@@ -172,69 +172,69 @@ public class SharedDeviceList {
 
   /**
    * Remove shares that have an unavailable status from the list
-   * 
+   *
    * @return int
    */
   public final int removeUnavailableShares() {
-    
+
 		//	Check if any shares are unavailable
-		
+
 		Enumeration<SharedDevice> shrEnum = enumerateShares();
 		int remCnt = 0;
-		
+
 		while ( shrEnum.hasMoreElements()) {
-		  
+
 		  //	Check if the current share is unavailable
-		  
+
 		  SharedDevice shr = shrEnum.nextElement();
 		  if ( shr.getContext() != null && shr.getContext().isAvailable() == false) {
 		    deleteShare(shr.getName());
 		    remCnt++;
 		  }
 		}
-		
+
 		//	Return the count of shares removed
-		
+
 		return remCnt;
-  }	
-  
+  }
+
   /**
    * Remove all shares from the list
    */
   public final void removeAllShares() {
     m_shares.clear();
   }
-  
+
   /**
    * Return the share list as a string
-   * 
+   *
    * @return String
    */
   public String toString() {
-  	
+
   	//	Create a buffer to build the string
-  	
+
   	StringBuffer str = new StringBuffer();
   	str.append("[");
 
 		//	Enumerate the shares
-		  	
+		
   	Enumeration<String> enm = m_shares.keys();
-  	
+
   	while ( enm.hasMoreElements()) {
   		String name = enm.nextElement();
   		str.append(name);
   		str.append(",");
   	}
-  	
+
   	//	Remove the trailing comma
-  	
+
   	if ( str.length() > 1)
   		str.setLength(str.length() - 1);
   	str.append("]");
-  	
+
   	//	Return the string
-  	
+
   	return str.toString();
   }
 }

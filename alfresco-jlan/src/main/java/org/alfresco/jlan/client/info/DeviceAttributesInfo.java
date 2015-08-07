@@ -21,13 +21,13 @@ package org.alfresco.jlan.client.info;
 
 /**
  * Device Attributes Information Class
- * 
+ *
  * @author gkspencer
  */
 public class DeviceAttributesInfo {
 
 	//	File system attributes
-	
+
 	public final static int CaseSensitiveSearch		= 0x0001;
 	public final static int CasePreservedNames		= 0x0002;
 	public final static int PersistentACLs			= 0x0004;
@@ -35,22 +35,22 @@ public class DeviceAttributesInfo {
 	public final static int VolumeQuotas			= 0x0010;
 	public final static int DeviceMounted			= 0x0020;
 	public final static int VolumeIsCompressed		= 0x8000;
-	
+
 	//	File system attributes
-	
+
 	private int m_attrib;
-	
+
 	//	Maximum file name component length
-	
+
 	private int m_maxNameLen;
-	
+
 	//	File system name
-	
+
 	private String m_fileSysName;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param attr int
 	 * @param nameLen int
 	 * @param name String
@@ -63,7 +63,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Return the file system name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFileSystemName() {
@@ -72,7 +72,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Return the maximum file name component length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumNameComponentLength() {
@@ -81,7 +81,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Return the file system attributes
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAttributes() {
@@ -90,7 +90,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Determine if the file system has case sensistive searches
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasCaseSensitiveSearches() {
@@ -99,7 +99,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Determine if the file system preserves file name case
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasPreserveNameCase() {
@@ -108,7 +108,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Determine if the file system has persistent ACLs
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasPersistentACLs() {
@@ -117,7 +117,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Determine if the file system has file compression
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasFileCompression() {
@@ -126,7 +126,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Determine if the file system has volume quotas
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasVolumeQuotas() {
@@ -135,7 +135,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Determine if the file system is mounted
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isMounted() {
@@ -144,7 +144,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Determine if the file system is compressed
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isCompressed() {
@@ -153,7 +153,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Test the specified attribute flag
-	 * 
+	 *
 	 * @param flg int
 	 * @return boolean
 	 */
@@ -163,7 +163,7 @@ public class DeviceAttributesInfo {
 
 	/**
 	 * Return the device attributes as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

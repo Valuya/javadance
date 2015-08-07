@@ -26,7 +26,7 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Registry Key Information Class
- * 
+ *
  * @author gkspencer
  */
 public class RegistryKeyInfo implements DCEReadable {
@@ -53,7 +53,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Determine if the key information has a class name
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasClassName() {
@@ -62,7 +62,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the class name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getClassName() {
@@ -71,7 +71,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the maximum number of subkeys
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNumberOfSubkeys() {
@@ -80,7 +80,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the maximum subkey name length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumSubkeyNameLength() {
@@ -89,7 +89,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the maximum subkey class name length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumSubkeyClassNameLength() {
@@ -98,7 +98,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the number of values associated with the key
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNumberOfValues() {
@@ -107,7 +107,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the maximum value name length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumValueNameLength() {
@@ -116,7 +116,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the maximum value data length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumValueLength() {
@@ -125,7 +125,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the security descriptor length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSecurityDescriptorLength() {
@@ -134,7 +134,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the key last modify date/time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getModifyDateTime() {
@@ -143,7 +143,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Read the registry key information
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -182,7 +182,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Read the strings for this object from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -194,7 +194,7 @@ public class RegistryKeyInfo implements DCEReadable {
 
 	/**
 	 * Return the registry key information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

@@ -44,7 +44,7 @@ import org.alfresco.jlan.util.win32.Win32Utils;
 
 /**
  * JLAN CIFS Server Application
- * 
+ *
  * @author gkspencer
  */
 public class JLANCifsServer implements ServerListener {
@@ -95,7 +95,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Start the JLAN Server
-	 * 
+	 *
 	 * @param args an array of command-line arguments
 	 */
 	public static void main(String[] args) {
@@ -129,7 +129,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Set/clear the allow shutdown via console flag
-	 * 
+	 *
 	 * @param consoleShut boolean
 	 */
 	public static final void setAllowConsoleShutdown(boolean consoleShut) {
@@ -138,7 +138,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Enable/disable exception stack dumps
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	protected final void enableExceptionStackDump(boolean ena) {
@@ -147,7 +147,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Start the JLAN Server
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	protected void start(String[] args) {
@@ -313,7 +313,7 @@ public class JLANCifsServer implements ServerListener {
 					else if ( inChar == 'r' || inChar == 'R')
 						m_restart = true;
 					else if ( inChar == -1) {
-						
+
 						// Sleep for a short while
 
 						try {
@@ -360,9 +360,9 @@ public class JLANCifsServer implements ServerListener {
 			}
 
 			// Close the configuration
-			
+
 			m_srvConfig.closeConfiguration();
-			
+
 			// Checkpoint - servers stopped
 
 			checkPoint(out, CheckPointServersStopped);
@@ -393,7 +393,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Shutdown the server when running as an NT service
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public final static void shutdownServer(String[] args) {
@@ -402,7 +402,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Create the SMB server
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
 	 * @exception Exception
@@ -427,7 +427,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Create the NetBIOS name server
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
 	 * @exception Exception
@@ -442,7 +442,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Create a network server using reflection
-	 * 
+	 *
 	 * @param className String
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
@@ -474,7 +474,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Load the server configuration, default is to load using an XML configuration file.
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param cmdLineArgs String[]
 	 * @return ServerConfiguration
@@ -510,7 +510,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Create the output stream for logging
-	 * 
+	 *
 	 * @return PrintStream
 	 */
 	protected PrintStream createOutputStream() {
@@ -519,7 +519,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Checkpoint method, called at various points of the server startup and shutdown
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param check int
 	 */
@@ -528,7 +528,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Checkpoint error method, called if an error occurs during server startup/shutdown
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param check int
 	 * @param ex Exception
@@ -569,7 +569,7 @@ public class JLANCifsServer implements ServerListener {
 
 	/**
 	 * Handle server startup/shutdown events
-	 * 
+	 *
 	 * @param server NetworkServer
 	 * @param event int
 	 */

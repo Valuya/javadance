@@ -34,10 +34,10 @@ public class BadHandleException extends Exception {
 	public BadHandleException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public BadHandleException(String msg) {

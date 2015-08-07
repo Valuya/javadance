@@ -29,28 +29,28 @@ import org.alfresco.jlan.server.filesys.cache.hazelcast.ClusterMessage;
 public class DebugClusterMessage extends ClusterMessage {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// Debug message
-	
+
 	private String m_debugStr;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param fromNode String
 	 * @param debugStr String
 	 */
 	public DebugClusterMessage( String fromNode, String debugStr) {
 		super( ClusterMessage.AllNodes, fromNode, 0);
-		
+
 		m_debugStr = debugStr;
 	}
-	
+
 	/**
 	 * Return the debug string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getDebugString() {

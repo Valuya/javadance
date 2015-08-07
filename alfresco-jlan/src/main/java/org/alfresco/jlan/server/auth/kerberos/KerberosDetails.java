@@ -23,7 +23,7 @@ import org.ietf.jgss.GSSName;
 
 /**
  * Kerberos Details Class
- * 
+ *
  * <p>Holds the Kerberos response token and session details about the user.
  *
  * @author gkspencer
@@ -42,7 +42,7 @@ public class KerberosDetails {
 
   /**
    * Class constructor
-   * 
+   *
    * @param source GSSName
    * @param target GSSName
    * @param response byte[]
@@ -57,7 +57,7 @@ public class KerberosDetails {
 
   /**
    * Return the context initiator for the Kerberos authentication
-   * 
+   *
    * @return String
    */
   public final String getSourceName() {
@@ -67,7 +67,7 @@ public class KerberosDetails {
 
   /**
    * Return the context acceptor for the Kerberos authentication
-   * 
+   *
    * @return String
    */
   public final String getTargetName() {
@@ -77,7 +77,7 @@ public class KerberosDetails {
 
   /**
    * Return the Kerberos response token
-   * 
+   *
    * @return byte[]
    */
   public final byte[] getResponseToken() {
@@ -87,16 +87,16 @@ public class KerberosDetails {
 
   /**
    * Set the response token
-   * 
+   *
    * @param tok byte[]
    */
   public final void setResponseToken(byte[] tok) {
 	  m_krbResponse = tok;
   }
-  
+
   /**
    * Parse the source name to return the user name part only
-   * 
+   *
    * @return String
    */
   public final String getUserName() {
@@ -115,7 +115,7 @@ public class KerberosDetails {
 
   /**
    * Return the response token length
-   * 
+   *
    * @return int
    */
   public final int getResponseLength() {
@@ -125,7 +125,7 @@ public class KerberosDetails {
 
   /**
    * Return the Kerberos authentication details as a string
-   * 
+   *
    * @return String
    */
   public String toString() {

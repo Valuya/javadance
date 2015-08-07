@@ -35,7 +35,7 @@ public class TestFileProcessor implements FileProcessor {
 
 	/**
 	 * Process a cached file just before it is to be stored.
-	 * 
+	 *
 	 * @param context DiskDeviceContext
 	 * @param state FileState
 	 * @param segment FileSegment

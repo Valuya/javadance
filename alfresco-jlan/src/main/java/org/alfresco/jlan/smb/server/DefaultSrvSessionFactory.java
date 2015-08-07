@@ -21,18 +21,18 @@ package org.alfresco.jlan.smb.server;
 
 /**
  * Default Server Session Factory Class
- * 
+ *
  * @author gkspencer
  */
 public class DefaultSrvSessionFactory implements SrvSessionFactory {
 
 	// Maximum number of virtual circuits per session
-	
+
 	private int m_maxVirtualCircuit = VirtualCircuitList.DefMaxCircuits;
-	
+
 	/**
 	 * Create a server session object
-	 * 
+	 *
 	 * @param handler PacketHandler
 	 * @param server SMBServer
 	 * @param sessId int
@@ -56,10 +56,10 @@ public class DefaultSrvSessionFactory implements SrvSessionFactory {
 
 		return sess;
 	}
-	
+
 	/**
 	 * Set the maximum virtual circuits per session
-	 * 
+	 *
 	 * @param maxVC int
 	 */
 	public void setMaximumVirtualCircuits( int maxVC) {

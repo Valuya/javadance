@@ -49,7 +49,7 @@ public class SrvDiskInfo extends DiskInfo {
   public SrvDiskInfo(int totunits, int blkunit, int blksiz, int freeunit) {
   	super(null,(long) totunits,blkunit, blksiz, (long) freeunit);
   }
-  
+
   /**
    * Construct a disk information object.
    *
@@ -61,7 +61,7 @@ public class SrvDiskInfo extends DiskInfo {
   public SrvDiskInfo(long totunits, long blkunit, long blksiz, long freeunit) {
   	super(null,totunits,(int)blkunit, (int) blksiz, freeunit);
   }
-  
+
   /**
    * Class constructor
 
@@ -74,7 +74,7 @@ public class SrvDiskInfo extends DiskInfo {
   protected SrvDiskInfo(PCShare shr, int totunits, int blkunit, int blksiz, int freeunit) {
     super(shr, totunits, blkunit, blksiz, freeunit);
   }
-  
+
   /**
    * Set the block size, in bytes.
    *
@@ -83,7 +83,7 @@ public class SrvDiskInfo extends DiskInfo {
   public final void setBlockSize(int siz) {
     m_blocksize = siz;
   }
-  
+
   /**
    * Set the number of blocks per filesystem allocation unit.
    *
@@ -92,7 +92,7 @@ public class SrvDiskInfo extends DiskInfo {
   public final void setBlocksPerAllocationUnit(int blks) {
     m_blockperunit = blks;
   }
-  
+
   /**
    * Set the number of free units on this shared disk device.
    *
@@ -101,7 +101,7 @@ public class SrvDiskInfo extends DiskInfo {
   public final void setFreeUnits(int units) {
     m_freeunits = units;
   }
-  
+
   /**
    * Set the total number of units on this shared disk device.
    *
@@ -110,7 +110,7 @@ public class SrvDiskInfo extends DiskInfo {
   public final void setTotalUnits(int units) {
     m_totalunits = units;
   }
-  
+
   /**
    * Set the block size, in bytes.
    *
@@ -119,7 +119,7 @@ public class SrvDiskInfo extends DiskInfo {
   public final void setBlockSize(long siz) {
     m_blocksize = siz;
   }
-  
+
   /**
    * Set the number of blocks per filesystem allocation unit.
    *
@@ -128,7 +128,7 @@ public class SrvDiskInfo extends DiskInfo {
   public final void setBlocksPerAllocationUnit(long blks) {
     m_blockperunit = blks;
   }
-  
+
   /**
    * Set the number of free units on this shared disk device.
    *
@@ -137,7 +137,7 @@ public class SrvDiskInfo extends DiskInfo {
   public final void setFreeUnits(long units) {
     m_freeunits = units;
   }
-  
+
   /**
    * Set the total number of units on this shared disk device.
    *
@@ -146,7 +146,7 @@ public class SrvDiskInfo extends DiskInfo {
   public final void setTotalUnits(long units) {
     m_totalunits = units;
   }
-  
+
   /**
    * Set the node name.
    *
@@ -155,7 +155,7 @@ public class SrvDiskInfo extends DiskInfo {
   protected final void setNodeName(String name) {
     m_nodename = name;
   }
-  
+
   /**
    * Set the shared device name.
    *
@@ -164,19 +164,19 @@ public class SrvDiskInfo extends DiskInfo {
   protected final void setShareName(String name) {
     m_share = name;
   }
-  
+
   /**
    * Copy the disk information details
-   * 
+   *
    * @param disk SrvDiskInfo
    */
   public final void copyFrom(SrvDiskInfo disk) {
-  	
+
   	//	Copy the details to this object
-  	
+
   	setBlockSize(disk.getBlockSize());
   	setBlocksPerAllocationUnit(disk.getBlocksPerAllocationUnit());
-  	
+
   	setFreeUnits(disk.getFreeUnits());
   	setTotalUnits(disk.getTotalUnits());
   }

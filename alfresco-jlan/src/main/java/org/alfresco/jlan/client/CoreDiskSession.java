@@ -33,7 +33,7 @@ import org.alfresco.jlan.smb.SMBStatus;
 
 /**
  * SMB core disk session class
- * 
+ *
  * @author gkspencer
  */
 public class CoreDiskSession extends DiskSession {
@@ -44,7 +44,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param shr Remote server details.
 	 * @param dialect SMB dialect that this session is using
 	 */
@@ -54,7 +54,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Close this connection with the remote server share.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
 	 */
@@ -87,7 +87,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Create a new directory on the remote file server.
-	 * 
+	 *
 	 * @param dir Directory name string. If the directory name does not have a leading '\' the
 	 *            current working directory for this session will be prepended to the string.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -134,7 +134,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Create and open a file on the remote file server.
-	 * 
+	 *
 	 * @param fname Remote file name string.
 	 * @return SMBFile for the opened file, else null.
 	 * @exception java.io.IOException If an I/O error occurs
@@ -150,7 +150,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Delete the specified directory on the remote file server.
-	 * 
+	 *
 	 * @param dir Directory name string. If the directory name does not have a leading '\' the
 	 *            current working directory for this session will be preprended to the string.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -197,7 +197,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Delete the specified file on the remote server.
-	 * 
+	 *
 	 * @param fname File to delete on the remote server.
 	 * @param attr Attributes of the file to be deleted. @see
 	 *            org.alfresco.jlan.server.filesys.FileAttribute
@@ -210,7 +210,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Get disk information for this remote disk.
-	 * 
+	 *
 	 * @return Disk information object, or null.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -253,7 +253,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Get file information for the specified file.
-	 * 
+	 *
 	 * @param fname File name of the file to return information for.
 	 * @param level Information level required. @see org.alfresco.jlan.smb.FileInfoLevel
 	 * @return FileInfo if the request was successful, else null.
@@ -310,7 +310,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Get the disk volume information
-	 * 
+	 *
 	 * @return VolumeInfo, or null
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
@@ -322,7 +322,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Check if the specified file name is a directory.
-	 * 
+	 *
 	 * @param dir Directory name string. If the directory name does not have a leading '\' the
 	 *            current working directory for this session will be preprended to the string.
 	 * @return true if the specified file name is a directory, else false.
@@ -376,7 +376,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Open a file on the remote file server.
-	 * 
+	 *
 	 * @param fname Remote file name string.
 	 * @param flags File open option flags.
 	 * @return SMBFile for the opened file, else null.
@@ -512,7 +512,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Rename a file, or set of files, on the remote file server.
-	 * 
+	 *
 	 * @param curnam Current file name string, may contain wildcards. If the path does not start
 	 *            with a '\' the current working directory string will be preprended.
 	 * @param newnam New file name.
@@ -587,7 +587,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Set file information for the specified file.
-	 * 
+	 *
 	 * @param fname File name of the file to set information for.
 	 * @param finfo File information containing the new values.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -599,7 +599,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Set file information for the specified file, using the file id
-	 * 
+	 *
 	 * @param file File to set information for.
 	 * @param finfo File information containing the new values.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -611,7 +611,7 @@ public class CoreDiskSession extends DiskSession {
 
 	/**
 	 * Set file attributes for the specified file, using the file name
-	 * 
+	 *
 	 * @param fname File name of the file to set information for.
 	 * @param attrib File attributes mask. @see org.alfresco.jlan.server.filesys.FileAttribute
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -624,7 +624,7 @@ public class CoreDiskSession extends DiskSession {
 	/**
 	 * Start a search of the specified directory returning information for each file/directory
 	 * found.
-	 * 
+	 *
 	 * @param dir Directory to start searching. If the directory string does not start with a '\'
 	 *            then the directory name is prepended with the current working directory.
 	 * @param attr Search attributes, to determine the types of files/directories returned. @see

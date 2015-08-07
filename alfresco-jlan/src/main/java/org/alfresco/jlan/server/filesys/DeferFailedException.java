@@ -21,10 +21,10 @@ package org.alfresco.jlan.server.filesys;
 
 /**
  * Defer Failed Exception Class
- * 
+ *
  * <p>Indicates that a request could not be deferred for later processing, and and appropriate error
  * should be returned.
- * 
+ *
  * @author gkspencer
  */
 public class DeferFailedException extends Exception {
@@ -37,10 +37,10 @@ public class DeferFailedException extends Exception {
 	  public DeferFailedException() {
 	    super();
 	  }
-	  
+
 	  /**
 	   * Class constructor.
-	   * 
+	   *
 	   * @param s String
 	   */
 	  public DeferFailedException(String s) {

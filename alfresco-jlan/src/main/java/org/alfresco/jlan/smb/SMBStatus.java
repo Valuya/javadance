@@ -21,13 +21,13 @@ package org.alfresco.jlan.smb;
 
 /**
  * SMB status code class.
- * 
+ *
  * <p>
  * The SMBStatus class contains the error class and error code values that a remote server may return.
- * 
+ *
  * <p>
  * The available error classes are defined below :-
- * 
+ *
  * <p>
  * <table border="1" cellpadding="0" cellspacing="0" width="80%">
  * <tr>
@@ -67,7 +67,7 @@ package org.alfresco.jlan.smb;
  * <td width="75%">JLAN error codes</td>
  * </tr>
  * </table>
- * 
+ *
  * @author gkspencer
  */
 public final class SMBStatus {
@@ -267,7 +267,7 @@ public final class SMBStatus {
 	public static final int NTFileOffline 			= 0xC0000267;
 
 	public static final int SMBInvalidSMB				= 0x00010002;
-	
+
 	public static final int Win32FileNotFound 			= 2;
 	public static final int Win32PathNotFound 			= 3;
 	public static final int Win32AccessDenied 			= 5;
@@ -289,7 +289,7 @@ public final class SMBStatus {
 	public static final int Win32ExtendedError 			= 1208;
 	public static final int Win32NoNetwork 				= 1222;
 
-	
+
 	public static final int NTBufferOverflow 	= 0x80000005;
 	public static final int NTNoMoreFiles 		= 0x80000006;
 	public static final int NTNotifyEnumDir 	= 0x0000010C;

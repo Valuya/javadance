@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb.dcerpc;
 
 /**
  * Srvsvc Operation Ids Class
- * 
+ *
  * <p>Contains constants for the DCE/RPC server service requests.
  *
  * @author gkspencer
@@ -29,7 +29,7 @@ package org.alfresco.jlan.smb.dcerpc;
 public class Srvsvc {
 
 	//	Srvsvc opcodes
-	
+
 	public static final int NetrServerGetInfo		= 0x15;
 	public static final int NetrServerSetInfo		= 0x16;
 	public static final int NetrShareEnum				= 0x0F;
@@ -43,15 +43,15 @@ public class Srvsvc {
 	public static final int NetrConnectionEnum	= 0x08;
 	public static final int NetrFileEnum				= 0x09;
 	public static final int NetrRemoteTOD				= 0x1C;
-	
+
 	/**
 	 * Convert an opcode to a function name
-	 * 
+	 *
 	 * @param opCode int
 	 * @return String
 	 */
 	public final static String getOpcodeName(int opCode) {
-	  
+
 	  String ret = "";
 	  switch ( opCode) {
 	    case NetrServerGetInfo:

@@ -30,7 +30,7 @@ import org.alfresco.jlan.server.filesys.TreeConnection;
 
 /**
  * Quota Manager Interface
- * 
+ *
  * <p>Provides the basic interface for filesystem disk quota management.
  *
  * @author gkspencer
@@ -39,7 +39,7 @@ public interface QuotaManager {
 
 	/**
 	 * Start the quota manager.
-	 * 
+	 *
 	 * @param disk DiskInterface
 	 * @param ctx DiskDeviceContext
 	 * @exception QuotaManagerException
@@ -49,14 +49,14 @@ public interface QuotaManager {
 
 	/**
 	 * Stop the quota manager
-	 * 
+	 *
 	 * @param disk DiskInterface
 	 * @param ctx DiskDeviceContext
 	 * @exception QuotaManagerException
 	 */
 	public void stopManager(DiskInterface disk, DiskDeviceContext ctx)
 		throws QuotaManagerException;
-		
+
 	/**
 	 * Allocate space on the filesystem.
 	 *
@@ -69,7 +69,7 @@ public interface QuotaManager {
 	 */
 	public long allocateSpace(SrvSession sess, TreeConnection tree, NetworkFile file, long alloc)
 		throws IOException;
-		
+
 	/**
 	 * Release space to the free space for the filesystem.
 	 *
@@ -82,14 +82,14 @@ public interface QuotaManager {
 	 */
 	public void releaseSpace(SrvSession sess, TreeConnection tree, int fid, String path, long alloc)
 		throws IOException;
-		
+
 	/**
 	 * Return the free space available in bytes
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getAvailableFreeSpace();
-	
+
 	/**
 	 * Return the free space available to the specified user/session
 	 *
@@ -98,7 +98,7 @@ public interface QuotaManager {
 	 * @return long
 	 */
 	public long getUserFreeSpace(SrvSession sess, TreeConnection tree);
-	
+
 	/**
 	 * Return total space available to the specified user/session
 	 *

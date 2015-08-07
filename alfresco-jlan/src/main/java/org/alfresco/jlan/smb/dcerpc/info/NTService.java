@@ -27,13 +27,13 @@ package org.alfresco.jlan.smb.dcerpc.info;
 public class NTService {
 
 	//	Service states to enumerate
-	
+
 	public static final int EnumActive					= 0x01;
 	public static final int EnumInactive				= 0x02;
 	public static final int EnumAll						= 0x03;
-	
+
 	//	Service states
-	
+
 	public static final int StateStopped				= 1;
 	public static final int StateStartPending			= 2;
 	public static final int StateStopPending			= 3;
@@ -57,42 +57,42 @@ public class NTService {
 	public static final int TypeAdapter				= 0x0004;
 	public static final int TypeRecognizer			= 0x0008;
 	public static final int TypeDriver				= TypeKernelDriver + TypeFileSystem + TypeAdapter + TypeRecognizer;
-	
+
 	public static final int TypeOwnProcess			= 0x0010;
 	public static final int TypeSharedProcess		= 0x0020;
 	public static final int TypeWin32				= TypeOwnProcess + TypeSharedProcess;
-	
+
 	public static final int TypeInteractive			= 0x0100;
-	
+
 	public static final int TypeAll					= TypeDriver + TypeWin32;
 
 	//  For setServiceConfiguration()
-	  
+
 	public static final int TypeNoChange        = 0xFFFFFFFF;
-	
+
 	//	Service start type
 
 	public static final int StartBoot				= 0;
 	public static final int StartSystem				= 1;
 	public static final int StartAuto				= 2;
 	public static final int StartDemand				= 3;
-	public static final int StartDisabled			= 4;	
+	public static final int StartDisabled			= 4;
 
 	//	Service error control
-	
+
 	public static final int ErrorIgnore				= 0;
 	public static final int ErrorNormal				= 1;
 	public static final int ErrorSevere				= 2;
 	public static final int ErrorCritical			= 3;
-	
+
 	//  Control service sub-codes
-	  
+
 	public static final int ServiceCtrlStop     	= 1;
 	public static final int ServiceCtrlPause    	= 2;
 	public static final int ServiceCtrlResume   	= 3;
 
 	//	Service state strings
-	
+
 	private static final String[] _srvState = { "Stopped",
 	  											"StartPending",
 	  											"StopPending",
@@ -101,35 +101,35 @@ public class NTService {
 	  											"PausePending",
 	  											"Paused"
 	};
-	
+
 	//	Service start type strings
-	
+
 	private static final String[] _srvStart = { "Boot",
 	  											"System",
 	  											"Auto",
 	  											"Demand",
 	  											"Disabled"
 	};
-	
+
 	//	Service error control strings
-	
+
 	private static final String[] _srvError = { "Ignore",
 	  											"Normal",
 	  											"Severe",
 	  											"Critical"
 	};
-	
+
 	//	Service controls accepted strings
-	
+
 	private static final String[] _srvCtrls = { "Stop",
 	  											"PauseContinue",
 	  											"Shutdown",
 	  											"ParamChange",
 	  											"NetBindChange"
 	};
-	
+
 	//	Service type strings
-	
+
 	private static final String[] _srvType = { "KernelDriver",
 	  										   "FileSystem",
 	  										   "Adapter",
@@ -137,10 +137,10 @@ public class NTService {
 	  										   "OwnProcess",
 	  										   "ShareProcess"
 	};
-	
+
 	/**
 	 * Return the service state as a string
-	 * 
+	 *
 	 * @param state int
 	 * @return String
 	 */
@@ -150,10 +150,10 @@ public class NTService {
 	  	return null;
 	  return _srvState[idx];
 	}
-	
+
 	/**
 	 * Return the service start type as a string
-	 * 
+	 *
 	 * @param start int
 	 * @return String
 	 */
@@ -162,10 +162,10 @@ public class NTService {
 	  	return null;
 	  return _srvStart[start];
 	}
-	
+
 	/**
 	 * Return the service error control as a string
-	 * 
+	 *
 	 * @param err int
 	 * @return String
 	 */
@@ -174,16 +174,16 @@ public class NTService {
 	  	return null;
 	  return _srvError[err];
 	}
-	
+
 	/**
 	 * Return the service controls accepted as a string
-	 * 
+	 *
 	 * @param ctrls int
 	 * @return String
 	 */
 	public static final String getControlsAcceptedAsString(int ctrls) {
 	  StringBuffer str = new StringBuffer();
-	  
+
 	  for ( int i = 0; i < _srvCtrls.length; i++) {
 	    if (( ctrls & (1 << i)) != 0) {
 	      if (str.length() > 0)
@@ -191,19 +191,19 @@ public class NTService {
 	      str.append(_srvCtrls[i]);
 	    }
 	  }
-	  
+
 	  return str.toString();
 	}
 
 	/**
 	 * Return the service type as a string
-	 * 
+	 *
 	 * @param typ int
 	 * @return String
 	 */
 	public static final String getTypeAsString(int typ) {
 	  StringBuffer str = new StringBuffer();
-	  
+
 	  for ( int i = 0; i < _srvType.length; i++) {
 	    if (( typ & (1 << i)) != 0) {
 	      if (str.length() > 0)
@@ -211,7 +211,7 @@ public class NTService {
 	      str.append(_srvType[i]);
 	    }
 	  }
-	  
+
 	  return str.toString();
 	}
 }

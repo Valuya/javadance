@@ -51,9 +51,9 @@ import org.alfresco.jlan.util.IPAddress;
 public final class AuthSessionFactory {
 
 	//	Constants
-	
+
 	private static final int BROADCAST_LOOKUP_TIMEOUT		= 4000;	// ms
-	
+
   //	Default SMB dialect list
 
   private static DialectSelector m_defDialects;
@@ -75,13 +75,13 @@ public final class AuthSessionFactory {
   private static int m_defPktSize = 4096 + RFCNetBIOSProtocol.HEADER_LEN;
 
   //	List of local TCP/IP addresses
-  
+
   private static InetAddress[] m_localAddrList;
-  
+
   //	Password encryptor
-  
+
   private static PasswordEncryptor m_encryptor = new PasswordEncryptor();
-  
+
   //  If this is an evaluation version then only 5 sessions may be opened before an exception is
   //  thrown.
   //
@@ -113,10 +113,10 @@ public final class AuthSessionFactory {
   private static String m_defDomain = "?";
 
 	//	Primary and secondary protocols to connect with
-	
+
 	private static int m_primaryProto		= Protocol.TCPNetBIOS;
 	private static int m_secondaryProto	= Protocol.NativeSMB;
-	
+
   //	Session factory debug flag
 
   private static boolean m_debug = false;
@@ -126,9 +126,9 @@ public final class AuthSessionFactory {
   private static int m_netbiosPort = RFCNetBIOSProtocol.PORT;
 
 	//	NetBIOS name scope
-	
+
 	private static String m_netBIOSScopeId = null;
-	
+
   /**
    * Build an SMB negotiate dialect packet.
    *
@@ -145,10 +145,10 @@ public final class AuthSessionFactory {
     pkt.setProcessId(pid);
 
 		//	If the NT dialect is enabled set the Unicode flag in the request flags
-		
+
 		if ( dlct.hasDialect(Dialect.NT))
 			pkt.setFlags2(SMBPacket.FLG2_UNICODE);
-			
+
     //  Build the SMB dialect list
 
     StringBuffer dia = new StringBuffer();
@@ -220,11 +220,11 @@ public final class AuthSessionFactory {
         throw new SMBException(SMBStatus.JLANErr, SMBStatus.JLANNoMoreSessions);
       m_evalCount--;
     }
-    
+
     //	Check if the evaluation has expired
     //
     //	30th July 2005
-    
+
     if ( m_evalCount != -1 && System.currentTimeMillis() > 1122678055578L)
       throw new SMBException(SMBStatus.JLANErr, SMBStatus.JLANEvalExpired);
   }
@@ -291,13 +291,13 @@ public final class AuthSessionFactory {
 
 	/**
 	 * Return the NetBIOS scope id, or null if not set
-	 * 
+	 *
 	 * @return String
 	 */
 	public static String getNetBIOSNameScope() {
 		return m_netBIOSScopeId;
 	}
-	
+
   /**
    * Return the NetBIOS socket number that new sessions are connected to.
    *
@@ -309,41 +309,41 @@ public final class AuthSessionFactory {
 
 	/**
 	 * Return the primary connection protocol (either Protocol.TCPNetBIOS or Protocol.NativeSMB)
-	 * 
+	 *
 	 * @return int
 	 */
 	public static final int getPrimaryProtocol() {
 		return m_primaryProto;
 	}
-	
+
 	/**
 	 * Return the secondary connection protocol (Protocol.TCPNetBIOS, Protocol.NativeSMB or Protocol.None)
-	 * 
+	 *
 	 * @return int
 	 */
 	public static final int getSecondaryProtocol() {
 		return m_secondaryProto;
 	}
-	
+
 	/**
 	 * Return the next session id
-	 * 
+	 *
 	 * @return int
 	 */
 	private static synchronized int getSessionId() {
 		int sessId = m_sessIdx++ + ( NetBIOSSession.getJVMIndex() * 100);
 		return sessId;
 	}
-	
+
 	/**
 	 * Get the list of local TCP/IP addresses
-	 * 
+	 *
 	 * @return InetAddress[]
 	 */
 	private static synchronized InetAddress[] getLocalTcpipAddresses() {
 
 	  //	Get the list of local TCP/IP addresses
-	  
+
 	  if ( m_localAddrList == null) {
 		  try {
 		    m_localAddrList = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
@@ -351,12 +351,12 @@ public final class AuthSessionFactory {
 		  catch (UnknownHostException ex) {
 		  }
 	  }
-	  
+
 	  //	Return the address list
-	  
+
 	  return m_localAddrList;
 	}
-	
+
   /**
    * Determine if session factory debugging is enabled.
    *
@@ -368,13 +368,13 @@ public final class AuthSessionFactory {
 
 	/**
 	 * Determine if the NetBIOS name scope is set
-	 * 
+	 *
 	 * @return boolean
-	 */	
+	 */
 	public final static boolean hasNetBIOSNameScope() {
 		return m_netBIOSScopeId != null ? true : false;
 	}
-	
+
   /**
    * Determine if SMB session debugging is enabled.
    *
@@ -397,9 +397,9 @@ public final class AuthSessionFactory {
 	 */
 	public static AuthenticateSession OpenAuthenticateSession(PCShare shr, int tmo)
 		throws java.io.IOException, java.net.UnknownHostException, SMBException {
-			
+
 		//	Open an authentication session
-		
+
 		return OpenAuthenticateSession(shr, tmo, null);
 	}
 
@@ -421,7 +421,7 @@ public final class AuthSessionFactory {
 		//	Build a unique caller name
 
 		int pid = getSessionId();
-		
+
 		StringBuffer nameBuf = new StringBuffer(InetAddress.getLocalHost().getHostName() + "_" + pid);
 		String localName = nameBuf.toString();
 
@@ -438,38 +438,38 @@ public final class AuthSessionFactory {
 		//	Connect to the requested server
 
 		NetworkSession netSession = null;
-		
+
 		switch ( getPrimaryProtocol()) {
-			
+
 			//	NetBIOS connection
-			
+
 			case Protocol.TCPNetBIOS:
 				netSession = connectNetBIOSSession(shr.getNodeName(), localName, tmo);
 				break;
-				
+
 			//	Native SMB connection
-			
+
 			case Protocol.NativeSMB:
 				netSession = connectNativeSMBSession(shr.getNodeName(), localName, tmo);
 				break;
 		}
-		
+
 		//	If the connection was not made using the primary protocol try the secondary protocol, if configured
-		
+
 		if ( netSession == null) {
 
 			//	Try the secondary protocol
-						
+
 			switch ( getSecondaryProtocol()) {
-				
+
 				//	NetBIOS connection
-				
+
 				case Protocol.TCPNetBIOS:
 					netSession = connectNetBIOSSession(shr.getNodeName(), localName, tmo);
 					break;
-					
+
 				//	Native SMB connection
-				
+
 				case Protocol.NativeSMB:
 					netSession = connectNativeSMBSession(shr.getNodeName(), localName, tmo);
 					break;
@@ -477,15 +477,15 @@ public final class AuthSessionFactory {
 		}
 
 		//	Check if we connected to the remote host
-		
+
 		if ( netSession == null)
 			throw new IOException("Failed to connect to host, " + shr.getNodeName());
-					
+
 		//  Debug
 
 		if (Debug.EnableInfo && AuthenticateSession.hasDebug())
 			Debug.println("** Connected session, protocol : " + netSession.getProtocolName());
-      
+
 		//	Build a protocol negotiation SMB packet, and send it to the remote
 		//	file server.
 
@@ -519,11 +519,11 @@ public final class AuthSessionFactory {
 			throw new java.io.IOException("Unknown SMB dialect");
 
 		//	Create the authenticate session
-		
+
 		AuthenticateSession authSess = new AuthenticateSession(shr, netSession, dialectId, pkt);
 		return authSess;
 	}
-		
+
   /**
    * Set the default domain.
    *
@@ -562,7 +562,7 @@ public final class AuthSessionFactory {
 
 	/**
 	 * Set the NetBIOS scope id
-	 * 
+	 *
 	 * @param scope String
 	 */
 	public static void setNetBIOSNameScope(String scope) {
@@ -571,34 +571,34 @@ public final class AuthSessionFactory {
 		else
 			m_netBIOSScopeId = scope;
 	}
-	
+
 	/**
 	 * Set the protocol connection order
-	 * 
+	 *
 	 * @param pri 	Primary connection protocol
 	 * @param sec		Secondary connection protocol, or none
 	 * @return boolean
 	 */
 	public static final boolean setProtocolOrder(int pri, int sec) {
-		
+
 		//	Primary protocol must be specified
-		
+
 		if ( pri != Protocol.TCPNetBIOS && pri != Protocol.NativeSMB)
 			return false;
-			
+
 		//	Primary and secondary must be different
-		
+
 		if ( pri == sec)
 			return false;
-			
+
 		//	Save the settings
-		
+
 		m_primaryProto 	 = pri;
 		m_secondaryProto = sec;
-		
+
 		return true;
 	}
-	
+
   /**
    * Enable/disable SMB session debugging.
    *
@@ -649,7 +649,7 @@ public final class AuthSessionFactory {
 
 	/**
 	 * Connect a NetBIOS network session
-	 * 
+	 *
 	 * @param toName		Host name/address to connect to
 	 * @param fromName	Local host name/address
 	 * @param tmo				Timeout in seconds
@@ -658,33 +658,33 @@ public final class AuthSessionFactory {
 	 */
 	private static final NetworkSession connectNetBIOSSession(String toName, String fromName, int tmo)
 		throws IOException {
-	
+
 	  //	Connect to the requested server
-	
+
 	  NetBIOSSession nbSession = new NetBIOSSession(tmo, getNetBIOSPort(), RFCNetBIOSProtocol.NAME_PORT);
-	  
+
 	  //	Check if the remote host is specified as a TCP/IP address
-	  
+
 	  String toAddr = null;
 	  NetBIOSName nbName = null;
-	  
+
 	  if ( IPAddress.isNumericAddress(toName)) {
-	  	
+	
 	  	try {
 
 		  	//	Get a list of NetBIOS names from the remote host
-		  	
+		
 		  	toAddr = toName;
 		  	NetBIOSNameList nameList = NetBIOSSession.FindNamesForAddress(toAddr);
-		  	
+		
 		  	//	Find the server service
-		  	
+		
 		  	nbName = nameList.findName(NetBIOSName.FileServer, false);
 		  	if ( nbName == null)
 		  		throw new IOException("Server service not running");
 
 		  	//	Set the remote name
-		  	
+		
 		  	toName = nbName.getName();
 			}
 			catch (UnknownHostException ex) {
@@ -692,55 +692,55 @@ public final class AuthSessionFactory {
 			}
 	  }
 	  else {
-	    
+
 	    //	Find the remote host and get a list of the network addresses it is using
-	    
+
 	    nbName = NetBIOSSession.FindName( toName, NetBIOSName.FileServer, 500);
 	  }
-	  
+
 	  //	Check if the NetBIOS name scope has been set, if so then update the names to add the scope id
-	  
+
 	  if ( hasNetBIOSNameScope()) {
-	  	
+	
 	  	//	Add the NetBIOS scope id to the to/from NetBIOS names
-	  	
+	
 	  	toName   = toName + "." + getNetBIOSNameScope();
 	  	fromName = fromName + "." + getNetBIOSNameScope();
 	  }
-	  
+
 	  //	If the NetBIOS name has more than one TCP/IP address then find the best match for the client and
 	  //	try to connect on that address first, if that fails then we will have to try each address in turn.
-	  
+
 	  if ( nbName.numberOfAddresses() > 1) {
-	  
+
 	    // Get the local TCP/IP address list and search for a best match address to connect to the server on
-	    
+
 	    InetAddress[] addrList = getLocalTcpipAddresses();
 	    int addrIdx = nbName.findBestMatchAddress( addrList);
-	    
+
 	    if ( addrIdx != -1) {
-	      
+
 		    try {
 
 		      //	Get the server IP address
-		      
+
 		      String ipAddr = nbName.getIPAddressString( addrIdx);
-		      
+
 		      //  DEBUG
 
 		      if (Debug.EnableInfo && hasSessionDebug())
 		        Debug.println("** Server is multi-homed, trying to connect to " + ipAddr);
-		      
+
 				  //	Open the session to the remote host
-				  
+
 				  nbSession.Open(toName, fromName, ipAddr);
-				  
+
 				  //	Check if the session is connected
-				  
+
 				  if ( nbSession.isConnected() == false) {
-				  	
+				
 				  	//	Close the session
-				  	
+				
 				  	try {
 				  		nbSession.Close();
 				  	}
@@ -754,41 +754,41 @@ public final class AuthSessionFactory {
 		    }
 	    }
 	  }
-	  
+
     //  DEBUG
 
     if (Debug.EnableInfo && hasSessionDebug() && nbSession.isConnected() == false && nbName.numberOfAddresses() > 1)
       Debug.println("** Server is multi-homed, trying all addresses");
-    
+
 	  //	Loop through the available addresses for the remote file server until we get a successful
 	  //	connection, or all addresses have been used
-	  
+
 	  IOException lastException = null;
 	  int addrIdx = 0;
-	  
+
 	  while ( nbSession.isConnected() == false && addrIdx < nbName.numberOfAddresses()) {
 
 	    try {
-	      
+
 	      //	Get the server IP address
-	      
+
 	      String ipAddr = nbName.getIPAddressString( addrIdx++);
-	      
+
 	      //  DEBUG
 
 	      if (Debug.EnableInfo && hasSessionDebug())
 	        Debug.println("** Trying address " + ipAddr);
-	      
+
 			  //	Open the session to the remote host
-			  
+
 			  nbSession.Open(toName, fromName, ipAddr);
-			  
+
 			  //	Check if the session is connected
-			  
+
 			  if ( nbSession.isConnected() == false) {
-			  	
+			
 			  	//	Close the session
-			  	
+			
 			  	try {
 			  		nbSession.Close();
 			  	}
@@ -799,35 +799,35 @@ public final class AuthSessionFactory {
 	        Debug.println("** Connected to address " + ipAddr);
 	    }
 	    catch ( IOException ex) {
-	      
+
 	      //	Save the last exception
-	      
+
 	      lastException = ex;
 	    }
 	  }
 
 	  //	Check if the session is connected
-	  
+
 	  if ( nbSession.isConnected() == false) {
-	    
+
 	    //	If there is a saved exception rethrow it
-	    
+
 	    if ( lastException != null)
 	      throw lastException;
-	    
+
 	    //	Indicate that the session was not connected
-	    
+
 	    return null;
 	  }
 
 	  //	Return the network session
-	  
-		return nbSession;	
+
+		return nbSession;
 	}
-  
+
   /**
    * Connect a native SMB network session
-   * 
+   *
    * @param toName		Host name/address to connect to
    * @param fromName	Local host name/address
    * @param tmo				Timeout in seconds
@@ -840,27 +840,27 @@ public final class AuthSessionFactory {
     //	Connect to the requested server
 
     TcpipSMBNetworkSession tcpSession = new TcpipSMBNetworkSession(tmo);
-    
+
     try {
-    	
+
     	//	Open the session
-    	
+
 	    tcpSession.Open(toName, fromName, null);
-	    
+
 	    //	Check if the session is connected
-	    
+
 	    if ( tcpSession.isConnected() == false) {
-	    	
+	
 	    	//	Close the session
-	    	
+	
 	    	try {
 	    		tcpSession.Close();
 	    	}
 	    	catch (Exception ex) {
 	    	}
-	    	
+	
 	    	//	Return a null session
-	    	
+	
 	    	return null;
 	    }
     }
@@ -872,9 +872,9 @@ public final class AuthSessionFactory {
     	}
     	tcpSession = null;
     }
-        
+
     //	Return the network session
-    
-  	return tcpSession;	
+
+  	return tcpSession;
   }
 }

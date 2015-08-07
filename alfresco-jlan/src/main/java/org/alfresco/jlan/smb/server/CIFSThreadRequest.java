@@ -23,21 +23,21 @@ import org.alfresco.jlan.server.thread.ThreadRequest;
 
 /**
  * CIFS Thread Request Class
- * 
+ *
  * <p>Holds the details of a CIFS request for processing by a thread pool.
- * 
+ *
  * @author gkspencer
  */
 public class CIFSThreadRequest implements ThreadRequest {
 
 	// CIFS session and request packet
-	
+
 	private SMBSrvSession m_sess;
 	private SMBSrvPacket m_smbPkt;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 */
@@ -45,51 +45,51 @@ public class CIFSThreadRequest implements ThreadRequest {
 		m_sess   = sess;
 		m_smbPkt = smbPkt;
 	}
-	
+
 	/**
 	 * Run the CIFS request
 	 */
 	public void runRequest() {
-		
+
 		// Check if the session is still alive
-		
+
 		if ( m_sess.isShutdown() == false) {
-			
+
 			// Process the CIFS request
-			
+
 			m_sess.processPacket( m_smbPkt);
 
 			// Process any asynchronous packets (oplock breaks and change notifications)
-			
+
 			int asyncCnt = m_sess.sendQueuedAsyncResponses();
-			
+
 			// DEBUG
-			
+
 			if ( asyncCnt > 0 && Debug.EnableInfo && m_sess.hasDebug( SMBSrvSession.DBG_SOCKET))
 				Debug.println("Sent queued async packets (JNI) count=" + asyncCnt + ", sess=" + m_sess.getUniqueId());
 		}
 		else {
-			
+
 			// Release the request back to the pool
-			
+
 			m_sess.getPacketPool().releasePacket( m_smbPkt);
 		}
 	}
-	
+
 	/**
 	 * Return the CIFS request details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[CIFS Sess=");
 		str.append( m_sess.getUniqueId());
 		str.append(", pkt=");
 		str.append( m_smbPkt.toString());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

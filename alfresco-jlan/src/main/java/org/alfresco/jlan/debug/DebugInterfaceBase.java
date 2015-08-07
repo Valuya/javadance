@@ -28,19 +28,19 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * Debug Interface Base Class
- * 
+ *
  * @author gkspencer
  */
 public abstract class DebugInterfaceBase implements DebugInterface {
 
 	//	Line seperator used for exception stack traces
-	
+
 	private static final String LineSeperator	= System.getProperty("line.separator");
 
 	// Log output level
-	
+
 	private int m_logLevel = Debug.Debug;
-	
+
 	/**
 	 * Class constructor
  	 */
@@ -63,12 +63,12 @@ public abstract class DebugInterfaceBase implements DebugInterface {
 
 	/**
 	 * Output a debug string with a specific logging level
-	 * 
+	 *
 	 * @param str String
 	 * @param level int
 	 */
 	public abstract void debugPrint(String str, int level);
-	
+
 	/**
 	 * Output a debug string, and a newline.
 	 *
@@ -87,28 +87,28 @@ public abstract class DebugInterfaceBase implements DebugInterface {
 
 	/**
 	 * Output an exception
-	 * 
+	 *
 	 * @param ex Exception
 	 * @param level int
 	 */
 	public void debugPrintln( Exception ex, int level) {
-		
+
 		//	Write the exception stack trace records to an in-memory stream
-		
+
 		StringWriter strWrt = new StringWriter();
 		ex.printStackTrace(new PrintWriter(strWrt, true));
-				
+
 		//	Split the resulting string into seperate records and output to the debug device
-				
+
 		StringTokenizer strTok = new StringTokenizer(strWrt.toString(), LineSeperator);
-				
+
 		while ( strTok.hasMoreTokens())
 			debugPrintln(strTok.nextToken(), level);
 	}
-	
+
 	/**
 	 * Return the debug interface logging level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLogLevel() {
@@ -117,13 +117,13 @@ public abstract class DebugInterfaceBase implements DebugInterface {
 
 	/**
 	 * Set the logging level
-	 * 
+	 *
 	 * @param logLevel int
 	 */
 	public final void setLogLevel(int logLevel) {
 	  m_logLevel = logLevel;
 	}
-	
+
 	/**
 	 * Initialize the debug interface using the specified parameters.
 	 *
@@ -132,17 +132,17 @@ public abstract class DebugInterfaceBase implements DebugInterface {
 	 */
 	public void initialize(ConfigElement params, ServerConfiguration config)
 		throws Exception {
-		
+
 		// Check for a logging level
-		
+
 		ConfigElement logLevelElem = params.getChild( "logLevel");
-		
+
 		if ( logLevelElem != null) {
-			
+
 			// Validate the logging level
-			
+
 			String logLevelStr = logLevelElem.getValue();
-			
+
 			if ( logLevelStr != null) {
 				if ( logLevelStr.equalsIgnoreCase("Debug"))
 				  m_logLevel = Debug.Debug;

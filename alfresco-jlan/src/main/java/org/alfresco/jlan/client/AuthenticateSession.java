@@ -35,17 +35,17 @@ import org.alfresco.jlan.util.HexDump;
 
 /**
  * Authenticate Session Class
- * 
+ *
  * <p>
  * Used for passthru authentication mechanisms.
- * 
+ *
  * @author gkspencer
  */
 public class AuthenticateSession extends Session {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param shr PCShare
 	 * @param sess NetworkSession
 	 * @param dialect int
@@ -65,7 +65,7 @@ public class AuthenticateSession extends Session {
 
 	/**
 	 * Perform a session setup to create a session on the remote server validating the user.
-	 * 
+	 *
 	 * @param userName String
 	 * @param ascPwd ASCII password hash
 	 * @param uniPwd Unicode password hash
@@ -267,7 +267,7 @@ public class AuthenticateSession extends Session {
 
 	/**
 	 * Process the negotiate response SMB packet
-	 * 
+	 *
 	 */
 	private void processNegotiateResponse() {
 

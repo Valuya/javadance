@@ -43,7 +43,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Class constructor
-   * 
+   *
    * @param buf byte[]
    */
   public Type1NTLMMessage(byte[] buf) {
@@ -52,7 +52,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Class constructor
-   * 
+   *
    * @param buf byte[]
    * @param offset int
    * @param len int
@@ -63,7 +63,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Return the flags value
-   * 
+   *
    * @return int
    */
   public int getFlags() {
@@ -72,7 +72,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Check if the domain security buffer is included
-   * 
+   *
    * @return boolean
    */
   public final boolean hasDomain() {
@@ -83,7 +83,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Return the domain name
-   * 
+   *
    * @return String
    */
   public final String getDomain() {
@@ -95,7 +95,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Check if the workstation security buffer is included
-   * 
+   *
    * @return boolean
    */
   public final boolean hasWorkstation() {
@@ -106,7 +106,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Return the workstation name
-   * 
+   *
    * @return String
    */
   public final String getWorkstation() {
@@ -122,7 +122,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Build a type 1 message
-   * 
+   *
    * @param flags int
    * @param domain String
    * @param workstation String
@@ -163,7 +163,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Set the message flags
-   * 
+   *
    * @param flags int
    */
   protected void setFlags(int flags) {
@@ -172,7 +172,7 @@ public class Type1NTLMMessage extends NTLMMessage {
 
   /**
    * Return the type 1 message as a string
-   * 
+   *
    * @return String
    */
   public String toString() {

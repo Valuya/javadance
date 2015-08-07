@@ -28,14 +28,14 @@ import org.alfresco.jlan.util.IPAddress;
 
 /**
  * NetBIOS Name Class
- * 
+ *
  * <p>
  * Contains the details of a NetBIOS name, which is a 16 byte value containing the name in the first
  * 15 bytes with a 16th byte indicating the name type.
- * 
+ *
  * <p>
  * Contains NetBIOS name type constants.
- * 
+ *
  * @author gkspencer
  */
 public class NetBIOSName {
@@ -133,12 +133,12 @@ public class NetBIOSName {
 	private int m_ttl; // seconds
 
 	// Name number/id, for Win32NetBIOS registered names
-	
+
 	private int m_nameNum = -1;
-	
+
 	/**
 	 * Create a unique NetBIOS name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 * @param typ char
 	 * @param group boolean
@@ -151,7 +151,7 @@ public class NetBIOSName {
 
 	/**
 	 * Copy constructor
-	 * 
+	 *
 	 * @param nbName NetBIOSName
 	 */
 	public NetBIOSName( NetBIOSName nbName) {
@@ -159,10 +159,10 @@ public class NetBIOSName {
 		setType( nbName.getType());
 		setGroup( nbName.isGroupName());
 	}
-	
+
 	/**
 	 * Create a unique NetBIOS name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 * @param typ char
 	 * @param group boolean
@@ -177,7 +177,7 @@ public class NetBIOSName {
 
 	/**
 	 * Create a unique NetBIOS name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 * @param typ char
 	 * @param group boolean
@@ -192,7 +192,7 @@ public class NetBIOSName {
 
 	/**
 	 * Create a unique NetBIOS name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 * @param typ char
 	 * @param group boolean
@@ -209,7 +209,7 @@ public class NetBIOSName {
 
 	/**
 	 * Create a unique NetBIOS name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 * @param typ char
 	 * @param group boolean
@@ -226,7 +226,7 @@ public class NetBIOSName {
 
 	/**
 	 * Create a NetBIOS name from a byte array
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param off int
 	 */
@@ -237,7 +237,7 @@ public class NetBIOSName {
 
 	/**
 	 * Create a NetBIOS name from an encoded name string
-	 * 
+	 *
 	 * @param name String
 	 */
 	public NetBIOSName(String name) {
@@ -247,7 +247,7 @@ public class NetBIOSName {
 
 	/**
 	 * Create a NetBIOS name from the specified name and scope
-	 * 
+	 *
 	 * @param name String
 	 * @param scope String
 	 */
@@ -261,7 +261,7 @@ public class NetBIOSName {
 
 	/**
 	 * Compare objects for equality.
-	 * 
+	 *
 	 * @return boolean
 	 * @param obj java.lang.Object
 	 */
@@ -285,7 +285,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the system time that the NetBIOS name expires.
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getExpiryTime() {
@@ -294,7 +294,7 @@ public class NetBIOSName {
 
 	/**
 	 * Get the names time to live value, in seconds
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getTimeToLive() {
@@ -303,16 +303,16 @@ public class NetBIOSName {
 
 	/**
 	 * Get the name number/id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNameNumber() {
 		return m_nameNum;
 	}
-	
+
 	/**
 	 * Return the number of addresses for this NetBIOS name
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfAddresses() {
@@ -321,7 +321,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the specified IP address that owns the NetBIOS name.
-	 * 
+	 *
 	 * @param idx int
 	 * @return byte[]
 	 */
@@ -333,7 +333,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the specified IP address that owns the NetBIOS name, as a string.
-	 * 
+	 *
 	 * @param idx int
 	 * @return String
 	 */
@@ -348,7 +348,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the NetBIOS name.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public final String getName() {
@@ -357,7 +357,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the full name including any name scope
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFullName() {
@@ -368,7 +368,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the NetBIOS name as a 16 character string with the name and type
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getNetBIOSName() {
@@ -401,7 +401,7 @@ public class NetBIOSName {
 
 	/**
 	 * Determine if the name has a name scope
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasNameScope() {
@@ -410,7 +410,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the name scope
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getNameScope() {
@@ -419,7 +419,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the NetBIOS name type.
-	 * 
+	 *
 	 * @return char
 	 */
 	public final char getType() {
@@ -428,7 +428,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return a hash code for this object.
-	 * 
+	 *
 	 * @return int
 	 */
 	public int hashCode() {
@@ -437,7 +437,7 @@ public class NetBIOSName {
 
 	/**
 	 * Returns true if this is a group type NetBIOS name.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isGroupName() {
@@ -446,7 +446,7 @@ public class NetBIOSName {
 
 	/**
 	 * Determine if this is a local or remote NetBIOS name.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLocalName() {
@@ -455,7 +455,7 @@ public class NetBIOSName {
 
 	/**
 	 * Returns true if the NetBIOS name is a unique type name.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isUniqueName() {
@@ -471,7 +471,7 @@ public class NetBIOSName {
 
 	/**
 	 * Set the system time that this NetBIOS name expires at.
-	 * 
+	 *
 	 * @param expires long
 	 */
 	public final void setExpiryTime(long expires) {
@@ -480,7 +480,7 @@ public class NetBIOSName {
 
 	/**
 	 * Set the names time to live, in seconds
-	 * 
+	 *
 	 * @param ttl int
 	 */
 	public final void setTimeToLive(int ttl) {
@@ -489,7 +489,7 @@ public class NetBIOSName {
 
 	/**
 	 * Set/clear the group name flag.
-	 * 
+	 *
 	 * @param flag boolean
 	 */
 	public final void setGroup(boolean flag) {
@@ -498,7 +498,7 @@ public class NetBIOSName {
 
 	/**
 	 * Set the name scope
-	 * 
+	 *
 	 * @param scope String
 	 */
 	public final void setNameScope(String scope) {
@@ -512,7 +512,7 @@ public class NetBIOSName {
 
 	/**
 	 * Add an IP address to the list of addresses for this NetBIOS name
-	 * 
+	 *
 	 * @param ipaddr byte[]
 	 */
 	public final void addIPAddress(byte[] ipaddr) {
@@ -523,7 +523,7 @@ public class NetBIOSName {
 
 	/**
 	 * Add a list of IP addresses to the list of addresses for this NetBIOS name
-	 * 
+	 *
 	 * @param addrList Vector (of byte[])
 	 */
 	public final void addIPAddresses(Vector<byte[]> addrList) {
@@ -540,7 +540,7 @@ public class NetBIOSName {
 
 	/**
 	 * Set the local/remote NetBIOS name flag.
-	 * 
+	 *
 	 * @param local boolean
 	 */
 	public final void setLocalName(boolean local) {
@@ -549,7 +549,7 @@ public class NetBIOSName {
 
 	/**
 	 * Set the NetBIOS name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 */
 	public final void setName(String name) {
@@ -574,7 +574,7 @@ public class NetBIOSName {
 
 	/**
 	 * Set the NetBIOS name type.
-	 * 
+	 *
 	 * @param typ char
 	 */
 	public final void setType(char typ) {
@@ -583,16 +583,16 @@ public class NetBIOSName {
 
 	/**
 	 * Set the name number
-	 * 
+	 *
 	 * @param nameNum int
 	 */
 	public final void setNameNumber(int nameNum) {
 		m_nameNum = nameNum;
 	}
-	
+
 	/**
 	 * Convert a name to uppercase
-	 * 
+	 *
 	 * @return String
 	 */
 	public static String toUpperCaseName(String name) {
@@ -627,7 +627,7 @@ public class NetBIOSName {
 
 	/**
 	 * Determine if the name conversion character set has been configured
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final static boolean hasNameConversionCharacterSet() {
@@ -636,7 +636,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the name conversion character set name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final static String getNameConversionCharacterSet() {
@@ -645,7 +645,7 @@ public class NetBIOSName {
 
 	/**
 	 * Set the name conversion character set
-	 * 
+	 *
 	 * @param charSet String
 	 */
 	public final static void setNameConversionCharacterSet(String charSet) {
@@ -654,7 +654,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the NetBIOS name as a string.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
@@ -674,7 +674,7 @@ public class NetBIOSName {
 			str.append("Group,");
 		else
 			str.append("Unique,");
-		
+
 		if ( getNameNumber() != -1) {
 			str.append( ",Num=");
 			str.append( getNameNumber());
@@ -693,7 +693,7 @@ public class NetBIOSName {
 
 	/**
 	 * Convert a the NetBIOS name into RFC NetBIOS format.
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public byte[] encodeName() {
@@ -784,7 +784,7 @@ public class NetBIOSName {
 	/**
 	 * Find the best match address that the NetBIOS name is registered on that matches one of the
 	 * local TCP/IP addresses
-	 * 
+	 *
 	 * @param addrList InetAddress[]
 	 * @return int
 	 */
@@ -842,7 +842,7 @@ public class NetBIOSName {
 
 	/**
 	 * Decode a NetBIOS name string and create a new NetBIOSName object
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param off int
 	 * @return NetBIOSName
@@ -917,7 +917,7 @@ public class NetBIOSName {
 
 	/**
 	 * Decode a NetBIOS name string length
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param off int
 	 * @return int
@@ -949,7 +949,7 @@ public class NetBIOSName {
 
 	/**
 	 * Return the NetBIOS name type as a string.
-	 * 
+	 *
 	 * @param typ char
 	 * @return String
 	 */

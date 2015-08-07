@@ -23,7 +23,7 @@ import java.util.Vector;
 
 /**
  * Session Handler List Class
- * 
+ *
  * @author gkspencer
  */
 public class SessionHandlerList {
@@ -41,7 +41,7 @@ public class SessionHandlerList {
 
 	/**
 	 * Add a handler to the list
-	 * 
+	 *
 	 * @param handler SessionHandlerInterface
 	 */
 	public final void addHandler(SessionHandlerInterface handler) {
@@ -50,7 +50,7 @@ public class SessionHandlerList {
 
 	/**
 	 * Return the number of handlers in the list
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfHandlers() {
@@ -59,7 +59,7 @@ public class SessionHandlerList {
 
 	/**
 	 * Return the specified handler
-	 * 
+	 *
 	 * @param idx int
 	 * @return SessionHandlerInterface
 	 */
@@ -74,7 +74,7 @@ public class SessionHandlerList {
 
 	/**
 	 * Find the required handler by name
-	 * 
+	 *
 	 * @param name String
 	 * @return SessionHandlerInterface
 	 */
@@ -99,7 +99,7 @@ public class SessionHandlerList {
 
 	/**
 	 * Remove a handler from the list
-	 * 
+	 *
 	 * @param idx int
 	 * @return SessionHandlerInterface
 	 */
@@ -117,7 +117,7 @@ public class SessionHandlerList {
 
 	/**
 	 * Remove a handler from the list
-	 * 
+	 *
 	 * @param name String
 	 * @return SessionHandlerInterface
 	 */
@@ -151,10 +151,10 @@ public class SessionHandlerList {
 	public final void removeAllHandlers() {
 		m_handlers.removeAllElements();
 	}
-	
+
 	/**
 	 * Wait for a session handler to be added to the list
-	 * 
+	 *
 	 * @exception InterruptedException
 	 */
 	public final synchronized void waitWhileEmpty()

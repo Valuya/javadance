@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * Winsock NetBIOS Exception Class
- * 
+ *
  * <p>
  * Contains the Winsock error code from the failed Winsock call.
  *
@@ -32,9 +32,9 @@ import java.io.IOException;
 public class WinsockNetBIOSException extends IOException {
 
   // Object version
-  
+
   private static final long serialVersionUID = -5776000315712407725L;
-  
+
   // Winsock error code
 
   private int m_errCode;
@@ -48,7 +48,7 @@ public class WinsockNetBIOSException extends IOException {
 
   /**
    * Class constructor
-   * 
+   *
    * @param msg
    *          String
    */
@@ -66,7 +66,7 @@ public class WinsockNetBIOSException extends IOException {
 
   /**
    * Class constructor
-   * 
+   *
    * @param sts
    *          int
    */
@@ -78,7 +78,7 @@ public class WinsockNetBIOSException extends IOException {
 
   /**
    * Return the Winsock error code
-   * 
+   *
    * @return int
    */
   public final int getErrorCode() {
@@ -87,7 +87,7 @@ public class WinsockNetBIOSException extends IOException {
 
   /**
    * Set the error code
-   * 
+   *
    * @param sts
    *          int
    */
@@ -97,7 +97,7 @@ public class WinsockNetBIOSException extends IOException {
 
   /**
    * Return the error message string
-   * 
+   *
    * @return String
    */
   public String getMessage() {

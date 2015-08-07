@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb.dcerpc.client;
 
 /**
  * LSA RPC Operation Ids
- * 
+ *
  * <p>Contains constants for requests to the LSA DCE/RPC service on a remote server.
  *
  * @author gkspencer
@@ -29,7 +29,7 @@ package org.alfresco.jlan.smb.dcerpc.client;
 public class Lsarpc {
 
 	//	Lsarpc opcodes
-	
+
 	public static final int CloseRequest		= 0x00;
 	public static final int QueryInfoPolicy		= 0x07;
 	public static final int OpenPolicy2			= 0x2C;
@@ -38,7 +38,7 @@ public class Lsarpc {
 
 	/**
 	 * Convert an opcode to a function name
-	 * 
+	 *
 	 * @param opCode int
 	 * @return String
 	 */

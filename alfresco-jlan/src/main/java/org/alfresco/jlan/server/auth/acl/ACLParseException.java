@@ -37,7 +37,7 @@ public class ACLParseException extends Exception {
 
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s java.lang.String
 	 */
 	public ACLParseException(String s) {

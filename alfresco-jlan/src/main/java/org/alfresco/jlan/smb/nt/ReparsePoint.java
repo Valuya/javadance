@@ -21,15 +21,15 @@ package org.alfresco.jlan.smb.nt;
 
 /**
  * Reparse Point Class
- * 
+ *
  * <p>Contains reparse point constants.
- * 
+ *
  * @author gkspencer
  */
 public class ReparsePoint {
 
   // Reparse point types
-  
+
   public static final int TypeDFS       = 0x8000000A;
   public static final int TypeDFSR      = 0x80000012;
   public static final int TypeHSM       = 0xC0000004;
@@ -37,17 +37,17 @@ public class ReparsePoint {
   public static final int TypeMountPoint= 0xA0000003;
   public static final int TypeSIS       = 0x80000007;
   public static final int TypeSymLink   = 0xA000000C;
-  
+
   /**
    * Return a reparse point type as a string
-   * 
+   *
    * @param typ int
    * @return String
    */
   public static final String getTypeAsString(int typ) {
-    
+
     String typStr = "Unknown";
-    
+
     switch ( typ) {
       case TypeDFS:
         typStr = "DFS";
@@ -71,7 +71,7 @@ public class ReparsePoint {
         typStr = "SymLink";
         break;
     }
-    
+
     return typStr;
   }
 }

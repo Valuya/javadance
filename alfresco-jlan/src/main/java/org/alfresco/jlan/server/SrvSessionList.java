@@ -32,57 +32,57 @@ import java.util.LinkedList;
 public class SrvSessionList {
 
 	//	Session list
-	
+
 	private Hashtable<Integer, SrvSession> m_sessions;
-	
+
 	/**
 	 * Class constructor
 	 */
 	public SrvSessionList() {
 	  m_sessions = new Hashtable<Integer, SrvSession>();
 	}
-	
+
 	/**
 	 * Return the number of sessions in the list
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfSessions() {
 	  return m_sessions.size();
 	}
-	
+
 	/**
 	 * Add a session to the list
-	 * 
+	 *
 	 * @param sess SrvSession
 	 */
 	public final void addSession(SrvSession sess) {
 	  m_sessions.put(sess.getSessionId(), sess);
 	}
-	
+
 	/**
 	 * Find the session using the unique session id
-	 * 
+	 *
 	 * @param id int
 	 * @return SrvSession
 	 */
 	public final SrvSession findSession(int id) {
 	  return m_sessions.get(id);
 	}
-	
+
 	/**
 	 * Remove a session from the list
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @return SrvSession
 	 */
 	public final SrvSession removeSession(SrvSession sess) {
 	  return removeSession(sess.getSessionId());
 	}
-	
+
 	/**
 	 * Remove a session from the list
-	 * 
+	 *
 	 * @param id Integer
 	 * @return SrvSession
 	 */
@@ -90,10 +90,10 @@ public class SrvSessionList {
 	  //	Remove the session and return the removed session
 	  return m_sessions.remove(id);
 	}
-	
+
 	/**
     * Enumerate the session objects
-	 * 
+	 *
      * @return Enumeration<SrvSession>
 	 */
     public final Enumeration<SrvSession> enumerateSessions() {

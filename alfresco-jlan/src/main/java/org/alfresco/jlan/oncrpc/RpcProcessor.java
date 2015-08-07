@@ -30,7 +30,7 @@ public interface RpcProcessor {
 
   /**
    * Process an RPC request
-   * 
+   *
    * @param rpc RpcPacket
    * @return RpcPacket
    * @throws IOException

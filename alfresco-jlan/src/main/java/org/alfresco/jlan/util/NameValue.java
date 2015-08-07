@@ -27,16 +27,16 @@ package org.alfresco.jlan.util;
 public class NameValue {
 
 	//	Item name
-	
+
 	private String m_name;
-	
+
 	//	Item value
-	
+
 	private Object m_value;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param val  Object
 	 */
@@ -44,19 +44,19 @@ public class NameValue {
 		m_name  = name;
 		m_value = val;
 	}
-	
+
 	/**
 	 * Return the item name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
 		return m_name;
 	}
-	
+
 	/**
 	 * Return the item value
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getValue() {
@@ -67,11 +67,11 @@ public class NameValue {
 
 	/**
 	 * Return the object value
-	 * 
+	 *
 	 * @return Object
 	 */
 	public final Object getObject() {
-		return m_value;	
+		return m_value;
 	}
 
 	/**
@@ -84,26 +84,26 @@ public class NameValue {
 	 */
 	public final int getInteger(int low, int high)
 		throws NumberFormatException {
-		
+
 		//	Check if the value is valid
-		
+
 		if ( m_value == null)
 			throw new NumberFormatException("No value");
-			
+
 		//	Convert the value to an integer
 
 		int ival = Integer.parseInt(getValue());
-		
+
 		//	Check if the value is within the valid range
-		
+
 		if ( ival < low || ival > high)
 			throw new NumberFormatException("Out of valid range");
-		
+
 		//	Return the integer value
-		
-		return ival; 
+
+		return ival;
 	}
-	
+
 	/**
 	 * Check if the value is a valid long within the specified range
 	 *
@@ -114,40 +114,40 @@ public class NameValue {
 	 */
 	public final long getLong(long low, long high)
 		throws NumberFormatException {
-		
+
 		//	Check if the value is valid
-		
+
 		if ( m_value == null)
 			throw new NumberFormatException("No value");
-			
+
 		//	Convert the value to a long
 
 		long lval = Long.parseLong(getValue());
-		
+
 		//	Check if the value is within the valid range
-		
+
 		if ( lval < low || lval > high)
 			throw new NumberFormatException("Out of valid range");
-		
+
 		//	Return the long value
-		
-		return lval; 
+
+		return lval;
 	}
-	
+
 	/**
 	 * Return the name/value pair as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		
+
 		str.append("[");
 		str.append(getName());
 		str.append(",");
 		str.append(getValue());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

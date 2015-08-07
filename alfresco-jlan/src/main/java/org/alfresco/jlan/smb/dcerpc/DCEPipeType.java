@@ -27,7 +27,7 @@ package org.alfresco.jlan.smb.dcerpc;
 public class DCEPipeType {
 
 	//	IPC$ client pipe names
-	
+
 	private static final String[] _pipeNames = { "\\PIPE\\srvsvc",
       	  										 "\\PIPE\\samr",
       	  										 "\\PIPE\\winreg",
@@ -43,7 +43,7 @@ public class DCEPipeType {
 	};
 
 	//	IPC$ server pipe names
-	
+
 	private static final String[] _srvNames = { "\\PIPE\\ntsvcs",
 	  											"\\PIPE\\lsass",
 	  											"\\PIPE\\winreg",
@@ -56,9 +56,9 @@ public class DCEPipeType {
 	  											"\\PIPE\\EVENTLOG",
 												"\\PIPE\\InitShutdown"
 	};
-	
+
 	//	IPC$ pipe ids
-	
+
 	public static final int PIPE_SRVSVC		= 0;
 	public static final int PIPE_SAMR		= 1;
 	public static final int PIPE_WINREG		= 2;
@@ -71,9 +71,9 @@ public class DCEPipeType {
 	public static final int PIPE_EVENTLOG	= 9;
 	public static final int PIPE_NETLOGON1	= 10;
 	public static final int PIPE_INITSHUT 	= 11;
-	
+
 	//	IPC$ pipe UUIDs
-	
+
 	private static UUID _uuidNetLogon = new UUID("8a885d04-1ceb-11c9-9fe8-08002b104860", 2);
 	private static UUID _uuidWinReg   = new UUID("338cd001-2244-31f1-aaaa-900038001003", 1);
 	private static UUID _uuidSvcCtl   = new UUID("367abb81-9844-35f1-ad32-98f038001003", 2);
@@ -91,7 +91,7 @@ public class DCEPipeType {
 
 	/**
 	 * Convert a pipe name to a type
-	 * 
+	 *
 	 * @param name String
 	 * @return int
 	 */
@@ -102,10 +102,10 @@ public class DCEPipeType {
 	  }
 	  return -1;
 	}
-	
+
 	/**
 	 * Convert a pipe type to a name
-	 * 
+	 *
 	 * @param typ int
 	 * @return String
 	 */
@@ -114,10 +114,10 @@ public class DCEPipeType {
 	  	return _pipeNames[typ];
 	  return null;
 	}
-	
+
 	/**
 	 * Convert a pipe type to a short name
-	 * 
+	 *
 	 * @param typ int
 	 * @return String
 	 */
@@ -128,16 +128,16 @@ public class DCEPipeType {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Return the UUID for the pipe type
-	 * 
+	 *
 	 * @param typ int
 	 * @return UUID
 	 */
 	public final static UUID getUUIDForType(int typ) {
 	  UUID ret = null;
-	  
+
 	  switch ( typ) {
 	    case PIPE_NETLOGON:
 	    	ret = _uuidNetLogon;
@@ -175,10 +175,10 @@ public class DCEPipeType {
 	  }
 	  return ret;
 	}
-	
+
 	/**
 	 * Get the server-side pipe name for the specified pipe
-	 * 
+	 *
 	 * @param typ int
 	 * @return String
 	 */

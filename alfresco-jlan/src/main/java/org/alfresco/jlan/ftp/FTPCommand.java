@@ -27,7 +27,7 @@ package org.alfresco.jlan.ftp;
 public class FTPCommand {
 
 	//	Command ids
-	
+
 	public final static int User		= 0;
 	public final static int Pass		= 1;
 	public final static int Acct		= 2;
@@ -70,26 +70,26 @@ public class FTPCommand {
 	public final static int XRmd		= 39;
 	public final static int XCup		= 40;
 	public final static int XCwd		= 41;
-  
+
 	public final static int MLst        = 42;
 	public final static int MLsd        = 43;
 
 	public final static int EPrt        = 44;
 	public final static int EPsv        = 45;
-  
+
 	public final static int Auth        = 46;
 	public final static int Pbsz        = 47;
 	public final static int Prot        = 48;
 	public final static int Ccc         = 49;
-	
+
 	public final static int Mfmt		= 50;
-  
+
 	public final static int MaxId		= 50;
-	
+
 	public final static int InvalidCmd	= -1;
-	
+
 	//	Command name strings
-	
+
 	private static final String[] _cmds = {	"USER",	"PASS",	"ACCT",	"CWD",
 											"CDUP",	"SMNT",	"REIN",	"QUIT",
 											"PORT",	"PASV",	"TYPE",	"STRU",
@@ -104,34 +104,34 @@ public class FTPCommand {
 											"EPRT", "EPSV", "AUTH", "PBSZ",
 											"PROT", "CCC",  "MFMT"
 	};
-	
+
 	/**
 	 * Convert an FTP command to an id
-	 * 
+	 *
 	 * @param cmd String
 	 * @return int
 	 */
 	public final static int getCommandId(String cmd) {
-		
+
 		//	Check if the command is valid
-		
+
 		if ( cmd == null)
 			return InvalidCmd;
-			
+
 		//	Convert to a command id
-		
+
 		for ( int i = 0; i <= MaxId; i++)
 			if ( _cmds[i].equalsIgnoreCase(cmd))
 				return i;
-				
+
 		//	Command not found
-		
+
 		return InvalidCmd;
 	}
-	
+
 	/**
 	 * Return the FTP command name for the specified id
-	 * 
+	 *
 	 * @param id int
 	 * @return String
 	 */

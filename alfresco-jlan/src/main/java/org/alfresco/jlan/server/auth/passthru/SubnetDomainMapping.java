@@ -29,13 +29,13 @@ import org.alfresco.jlan.util.IPAddress;
 public class SubnetDomainMapping extends DomainMapping {
 
 	// Subnet and mask for the domain
-	
+
 	private int m_subnet;
 	private int m_mask;
-	
+
 	/**
 	 * class constructor
-	 * 
+	 *
 	 * @param domain String
 	 * @param subnet int
 	 * @param mask int
@@ -43,34 +43,34 @@ public class SubnetDomainMapping extends DomainMapping {
 	public SubnetDomainMapping( String domain, int subnet, int mask)
 	{
 		super( domain);
-		
+
 		m_subnet = subnet;
 		m_mask   = mask;
 	}
-	
+
 	/**
 	 * Return the subnet
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSubnet()
 	{
 		return m_subnet;
 	}
-	
+
 	/**
 	 * Return the subnet mask
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSubnetMask()
 	{
 		return m_mask;
 	}
-	
+
 	/**
 	 * Check if the client address is a member of this domain
-	 * 
+	 *
 	 * @param clientIP int
 	 * @return boolean
 	 */
@@ -80,16 +80,16 @@ public class SubnetDomainMapping extends DomainMapping {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Return the domain mapping as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString()
 	{
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[");
 		str.append(getDomain());
 		str.append(",");
@@ -97,7 +97,7 @@ public class SubnetDomainMapping extends DomainMapping {
 		str.append(":");
 		str.append(IPAddress.asString( getSubnetMask()));
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

@@ -24,7 +24,7 @@ import java.util.Hashtable;
 
 /**
  * Tree Connection Hash Class
- * 
+ *
  * <p>Hashtable of TreeConnections for the available disk shared devices. TreeConnections are indexed using the
  * hash of the share name to allow mounts to be persistent across server restarts.
  *
@@ -33,9 +33,9 @@ import java.util.Hashtable;
 public class TreeConnectionHash {
 
 	//	Share name hash to tree connection
-	
+
 	private Hashtable<Integer, TreeConnection> m_connections;
-	
+
 	/**
 	 * Class constructor
 	 */
@@ -45,69 +45,69 @@ public class TreeConnectionHash {
 
 	/**
 	 * Return the number of tree connections in the hash table
-	 * 
+	 *
 	 * @return int
-	 */	
+	 */
 	public final int numberOfEntries() {
 		return m_connections.size();
 	}
-	
+
 	/**
 	 * Add a connection to the list of available connections
-	 * 
-	 * @param tree TreeConnection 
+	 *
+	 * @param tree TreeConnection
 	 */
 	public final void addConnection(TreeConnection tree) {
 		m_connections.put(new Integer(tree.getSharedDevice().getName().hashCode()), tree);
 	}
-	
+
 	/**
 	 * Delete a connection from the list
 	 *
 	 * @param shareName String
-	 * @return TreeConnection 
+	 * @return TreeConnection
 	 */
 	public final TreeConnection deleteConnection(String shareName) {
 		return m_connections.get(new Integer(shareName.hashCode()));
 	}
-	
+
 	/**
 	 * Find a connection for the specified share name
-	 * 
+	 *
 	 * @param shareName String
 	 * @return TreeConnection
 	 */
 	public final TreeConnection findConnection(String shareName) {
-		
+
 		//	Get the tree connection for the associated share name
-		
+
 		TreeConnection tree = m_connections.get(new Integer(shareName.hashCode()));
-			
+
 		//	Return the tree connection
-		 
-		return tree; 
+
+		return tree;
 	}
-	
+
 	/**
 	 * Find a connection for the specified share name hash code
 	 *
 	 * @param hashCode int
-	 * @return TreeConnection 
+	 * @return TreeConnection
 	 */
 	public final TreeConnection findConnection(int hashCode) {
-		
+
 		//	Get the tree connection for the associated share name
-		
+
 		TreeConnection tree = (TreeConnection) m_connections.get(new Integer(hashCode));
-			
+
 		//	Return the tree connection
-		 
-		return tree; 
+
+		return tree;
 	}
-	
+
 	/**
 	 * Enumerate the connections
-	 * 
+	 *
 	 * @return Enumeration<TreeConnection>
 	 */
 	public final Enumeration<TreeConnection> enumerateConnections() {

@@ -21,7 +21,7 @@ package org.alfresco.jlan.test.cluster;
 
 /**
  * Boolean Test Result Class
- * 
+ *
  * <p>Test result implementation for simple true/false status returns.
  *
  * @author gkspencer
@@ -29,33 +29,33 @@ package org.alfresco.jlan.test.cluster;
 public class BooleanTestResult extends TestResult {
 
 	// Test result
-	
+
 	private boolean m_result;
-	
+
 	/**
 	 * Class contstructor
-	 * 
+	 *
 	 * @param result boolean
 	 */
 	public BooleanTestResult( boolean result) {
 		m_result = result;
 	}
-	
+
 	/**
 	 * Class contstructor
-	 * 
+	 *
 	 * @param result boolean
 	 * @param comment String
 	 */
 	public BooleanTestResult( boolean result, String comment) {
 		super ( comment);
-		
+
 		m_result = result;
 	}
-	
+
 	/**
 	 * Return the test result
-	 * 
+	 *
 	 * @return Object
 	 */
 	public Object getResult() {
@@ -64,7 +64,7 @@ public class BooleanTestResult extends TestResult {
 
 	/**
 	 * Determine if the result indicates a success
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isSuccess() {
@@ -73,7 +73,7 @@ public class BooleanTestResult extends TestResult {
 
 	/**
 	 * Determine if the result indicates a failure
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isFailure() {
@@ -82,32 +82,32 @@ public class BooleanTestResult extends TestResult {
 
 	/**
 	 * Determine if the result indicates a warning
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isWarning() {
 		return false;
 	}
-	
+
 	/**
 	 * Return the test result as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[Boolean id=");
 		str.append( getRunId());
 		str.append( ",result=");
 		str.append( m_result);
-		
+
 		if ( hasComment()) {
 			str.append( ",comment=");
 			str.append( getComment());
 		}
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

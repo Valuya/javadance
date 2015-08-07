@@ -22,21 +22,21 @@ import org.alfresco.jlan.server.config.InvalidConfigurationException;
 
 /**
  * CIFS Connections Handler Interface
- * 
+ *
  * @author gkspencer
  */
 public interface CifsConnectionsHandler {
 
 	/**
 	 * Initialize the connections handler
-	 * 
+	 *
 	 * @param srv SMBServer
 	 * @param config CIFSConfigSection
 	 * @exception InvalidConfigurationException
 	 */
 	public void initializeHandler( SMBServer srv, CIFSConfigSection config)
 		throws InvalidConfigurationException;
-	
+
 	/**
 	 * Start the connection handler thread
 	 */
@@ -46,10 +46,10 @@ public interface CifsConnectionsHandler {
 	 * Stop the connections handler
 	 */
 	public void stopHandler();
-	
+
 	/**
 	 *  Return the count of active session handlers
-	 *  
+	 *
 	 *  @return int
 	 */
 	public int numberOfSessionHandlers();

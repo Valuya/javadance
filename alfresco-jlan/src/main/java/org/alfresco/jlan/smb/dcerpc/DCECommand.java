@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb.dcerpc;
 
 /**
  * DCE/RPC Command Codes
- * 
+ *
  * <p>Contains the DCE/RPC packet type constants, and a static method to convert a packet type to a string.
  *
  * @author gkspencer
@@ -29,7 +29,7 @@ package org.alfresco.jlan.smb.dcerpc;
 public class DCECommand {
 
   //	DCE/RPC Packet Types
-  
+
   public final static byte REQUEST    = 0x00;
   public final static byte RESPONSE   = 0x02;
   public final static byte FAULT      = 0x03;
@@ -38,17 +38,17 @@ public class DCECommand {
   public final static byte ALTCONT    = 0x0E;
   public final static byte AUTH3      = 0x0F;
   public final static byte BINDCONT   = 0x10;
-  
+
   /**
    * Convert the command type to a string
-   * 
+   *
    * @param cmd int
    * @return String
    */
   public final static String getCommandString(int cmd) {
-    
+
     //	Determine the PDU command type
-    
+
     String ret = "";
     switch ( cmd) {
       case REQUEST:

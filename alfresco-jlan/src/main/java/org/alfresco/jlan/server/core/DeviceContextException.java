@@ -22,7 +22,7 @@ package org.alfresco.jlan.server.core;
  * Device Context Exception Class
  * <p>
  * Thrown when a device context parameter string is invalid.
- * 
+ *
  * @author gkspencer
  */
 public class DeviceContextException extends Exception
@@ -39,7 +39,7 @@ public class DeviceContextException extends Exception
 
     /**
      * Class constructor
-     * 
+     *
      * @param s java.lang.String
      */
     public DeviceContextException(String s)

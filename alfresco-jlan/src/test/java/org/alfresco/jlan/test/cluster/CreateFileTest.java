@@ -40,7 +40,7 @@ public class CreateFileTest extends Test {
 	public CreateFileTest() {
 		super( "CreateFile");
 	}
-	
+
 	/**
 	 * Run the create file test
 	 *
@@ -51,32 +51,32 @@ public class CreateFileTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Create a test file name for this iteration
-			
+
 			String testFileName = getPerTestFileName( threadId, iteration);
-			
+
 			// DEBUG
-			
+
 			testLog( log, "CreateFile Test");
-			
+
 			// Check if the test file exists
-			
+
 			if ( sess.FileExists( testFileName)) {
 				testLog( log, "File " + testFileName + " exists");
-				
+
 				// Set a failure status
-				
+
 				result = new BooleanTestResult( true, "File already exists, " + testFileName);
 			}
 			else {
-				
+
 				// Create a new file
-				
+
 				try {
 					testLog( log, "Creating file " + testFileName + " via " + sess.getServer());
 					SMBFile testFile = sess.CreateFile( testFileName);
@@ -99,48 +99,48 @@ public class CreateFileTest extends Test {
 				catch ( SMBException ex) {
 
 					// Check for an access denied error code
-					
+
 					if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
-						
+
 						// DEBUG
-						
+
 						testLog ( log, "Create failed with access denied error (expected), " + testFileName);
 						result = new BooleanTestResult( true);
 					}
 					else if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
-						
+
 						// DEBUG
-						
+
 						testLog ( log, "Create failed with object name collision (expected), " + testFileName);
 						result = new BooleanTestResult( true);
 					}
 					else {
 						ex.printStackTrace();
-					
+
 						result = new ExceptionTestResult( ex);
 					}
 				}
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
-				
+
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult(ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -151,11 +151,11 @@ public class CreateFileTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		if ( threadId == 1) {
 			String fName = getPerTestFileName( threadId, iter);
 			testLog( log, "Cleanup test file " + fName);
-			
+
 			if ( sess.FileExists( fName))
 				sess.DeleteFile( fName);
 		}

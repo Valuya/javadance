@@ -28,7 +28,7 @@ public class DefaultClientInfoFactory implements ClientInfoFactory {
 
 	/**
 	 * Create a client information object
-	 * 
+	 *
 	 * @param user String
 	 * @param password byte[]
 	 * @return ClientInfo

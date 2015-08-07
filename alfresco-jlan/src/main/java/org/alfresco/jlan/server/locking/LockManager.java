@@ -30,7 +30,7 @@ import org.alfresco.jlan.server.filesys.TreeConnection;
 
 /**
  * Lock Manager Interface
- * 
+ *
  * <p>A lock manager implementation provides file locking support for a virtual filesystem.
  *
  * @author gkspencer
@@ -38,7 +38,7 @@ import org.alfresco.jlan.server.filesys.TreeConnection;
 public interface LockManager {
 
 	/**
-	 * Lock a byte range within a file, or the whole file. 
+	 * Lock a byte range within a file, or the whole file.
 	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
@@ -49,7 +49,7 @@ public interface LockManager {
 	 */
 	public void lockFile(SrvSession sess, TreeConnection tree, NetworkFile file, FileLock lock)
 		throws LockConflictException, IOException;
-		
+
 	/**
 	 * Unlock a byte range within a file, or the whole file
 	 *
@@ -62,10 +62,10 @@ public interface LockManager {
 	 */
 	public void unlockFile(SrvSession sess, TreeConnection tree, NetworkFile file, FileLock lock)
 		throws NotLockedException, IOException;
-		
+
 	/**
 	 * Create a lock object, allows the FileLock object to be extended
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 * @param file NetworkFile
@@ -76,7 +76,7 @@ public interface LockManager {
 	 */
 	public FileLock createLockObject(SrvSession sess, TreeConnection tree, NetworkFile file,
 																	 long offset, long len, int pid);
-																	 
+
 	/**
 	 * Release all locks that a session has on a file. This method is called to perform cleanup if a file
 	 * is closed that has active locks or if a session abnormally terminates.

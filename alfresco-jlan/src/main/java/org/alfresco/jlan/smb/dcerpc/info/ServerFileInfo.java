@@ -25,7 +25,7 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Server Open File Information Class
- * 
+ *
  * @author gkspencer
  */
 public class ServerFileInfo implements DCEReadable {
@@ -51,7 +51,7 @@ public class ServerFileInfo implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 */
 	public ServerFileInfo(int infoLevel) {
@@ -60,7 +60,7 @@ public class ServerFileInfo implements DCEReadable {
 
 	/**
 	 * Get the information level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getInformationLevel() {
@@ -69,7 +69,7 @@ public class ServerFileInfo implements DCEReadable {
 
 	/**
 	 * Get the file id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -78,7 +78,7 @@ public class ServerFileInfo implements DCEReadable {
 
 	/**
 	 * Return the file permissions
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFilePermissions() {
@@ -87,7 +87,7 @@ public class ServerFileInfo implements DCEReadable {
 
 	/**
 	 * Return the number of file locks
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNumberOfLocks() {
@@ -96,7 +96,7 @@ public class ServerFileInfo implements DCEReadable {
 
 	/**
 	 * Return the file path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFilePath() {
@@ -105,7 +105,7 @@ public class ServerFileInfo implements DCEReadable {
 
 	/**
 	 * Return the user
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getUserName() {
@@ -146,7 +146,7 @@ public class ServerFileInfo implements DCEReadable {
 
 	/**
 	 * Read the strings for this file information from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -170,7 +170,7 @@ public class ServerFileInfo implements DCEReadable {
 
 	/**
 	 * Return the file information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

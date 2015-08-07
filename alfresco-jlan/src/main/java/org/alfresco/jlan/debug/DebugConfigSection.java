@@ -34,9 +34,9 @@ import org.springframework.extensions.config.ConfigElement;
 public class DebugConfigSection extends ConfigSection {
 
   // Debug configuration section name
-  
+
   public static final String SectionName = "Debug";
-  
+
   //  Debugging interface to use
 
   private DebugInterface m_debugDev;
@@ -44,7 +44,7 @@ public class DebugConfigSection extends ConfigSection {
 
   /**
    * Class constructor
-   * 
+   *
    * @param config ServerConfiguration
    */
   public DebugConfigSection(ServerConfiguration config) {
@@ -62,13 +62,13 @@ public class DebugConfigSection extends ConfigSection {
 
   /**
    * Return the debug device initialization parameters
-   * 
+   *
    * @return ConfigElement
    */
   public final ConfigElement getDebugParameters() {
     return m_debugParams;
   }
-  
+
   /**
    * Detemrine if the configuration has a valid debug interface.
    *
@@ -90,51 +90,51 @@ public class DebugConfigSection extends ConfigSection {
     throws InvalidConfigurationException {
 
     int sts = ConfigurationListener.StsIgnored;
-    
+
     try {
 
       //  Check if the debug device is being set
-      
-      if ( dbgClass != null) {    
+
+      if ( dbgClass != null) {
 
         //  Validate the debug output class
-    
+
         Object obj = Class.forName(dbgClass).newInstance();
-      
+
         //  Check if the debug class implements the Debug interface
-      
+
         if ( obj instanceof DebugInterface) {
-        
+
           //  Initialize the debug output class
-        
+
           DebugInterface dbg = (DebugInterface) obj;
           dbg.initialize(params, getServerConfiguration());
-        
+
           //  Inform listeners of the configuration change
-          
+
           sts = fireConfigurationChange(ConfigId.DebugDevice, dbg);
-          
+
           //  Set the debug class and initialization parameters
-        
+
           m_debugDev    = dbg;
           m_debugParams = params;
-          
+
           //  Update the global debug interface
-          
+
           Debug.setDebugInterface(dbg);
         }
         else
           throw new InvalidConfigurationException("Debugclass does not implement the Debug interface");
       }
       else {
-        
+
         //  Clear the debug device and parameters
-        
+
         m_debugDev    = null;
         m_debugParams = null;
 
         //  Inform listeners of the configuration change
-          
+
         sts = fireConfigurationChange(ConfigId.DebugDevice, null);
       }
     }
@@ -150,19 +150,19 @@ public class DebugConfigSection extends ConfigSection {
     catch (Exception ex) {
       throw new InvalidConfigurationException("Failed to initialize debug class, " + ex.toString());
     }
-    
+
     //  Return the change status
-    
+
     return sts;
   }
-  
+
   /**
    * Close the configuration section, perform any cleanup
    */
   public void closeConfig() {
-	  
+
 	  // Close the debug interface
-	  
+
 	  if ( m_debugDev != null) {
 		  m_debugDev.close();
 		  m_debugDev = null;

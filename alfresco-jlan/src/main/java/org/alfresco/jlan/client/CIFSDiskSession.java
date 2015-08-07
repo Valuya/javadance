@@ -54,21 +54,21 @@ import org.alfresco.jlan.smb.nt.NTIOCtl;
 
 /**
  * SMB CIFS disk session class
- * 
+ *
  * <p>
  * The CIFSDiskSession class extends the DiskSession class and provides CIFS protocol specific
  * implementations for the DiskSession methods.
- * 
+ *
  * <p>
  * An CIFSDiskSession object will be created by the SessionFactory static class when the negotiated
  * SMB dialect indicates that the remote server supports an SMB dialect greater than Core or
  * CorePlus.
- * 
+ *
  * <p>
  * The SessionFactory.OpenDisk() method is used to create a session to a remote disk share. A
  * PCShare object specifies the remote server and share to connect to, along with any required
  * access control.
- * 
+ *
  * @author gkspencer
  */
 public final class CIFSDiskSession extends DiskSession {
@@ -84,12 +84,12 @@ public final class CIFSDiskSession extends DiskSession {
 	private List<AsynchRequest> m_asynchRequests;
 
 	// List of open files with an oplock
-	
+
 	private HashMap<Integer, CIFSFile> m_oplockFiles;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param shr Remote server details.
 	 * @param dialect SMB dialect that this session is using
 	 */
@@ -99,7 +99,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Close this connection with the remote server share.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
 	 */
@@ -130,7 +130,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Create a new directory on the remote file server.
-	 * 
+	 *
 	 * @param dir Directory name string. If the directory name does not have a leading '\' the
 	 *            current working directory for this session will be prepended to the string.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -187,7 +187,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Create and open a file on the remote file server.
-	 * 
+	 *
 	 * @param fname Remote file name string.
 	 * @return SMBFile for the opened file, else null.
 	 * @exception java.io.IOException If an I/O error occurs
@@ -203,7 +203,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Delete the specified directory on the remote file server.
-	 * 
+	 *
 	 * @param dir Directory name string. If the directory name does not have a leading '\' the
 	 *            current working directory for this session will be preprended to the string.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -245,7 +245,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Delete the specified file on the remote file server.
-	 * 
+	 *
 	 * @param fname File name of the remote file to delete. If the file name does not have a leading
 	 *            '\' the current working directory for this session will be prepended to the
 	 *            string.
@@ -289,7 +289,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Get disk information for this remote disk.
-	 * 
+	 *
 	 * @return Disk information object, or null.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -373,7 +373,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Get file information for the specified file.
-	 * 
+	 *
 	 * @param fname File name of the file to return information for.
 	 * @see org.alfresco.jlan.smb.FileInfoLevel
 	 * @param level Information level required
@@ -462,7 +462,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Get the disk volume information
-	 * 
+	 *
 	 * @return VolumeInfo, or null
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
@@ -569,7 +569,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Check if the specified file name is a directory.
-	 * 
+	 *
 	 * @param dir Directory name string. If the directory name does not have a leading '\' the
 	 *            current working directory for this session will be preprended to the string.
 	 * @return true if the specified file name is a directory, else false.
@@ -614,7 +614,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Open a file on the remote file server.
-	 * 
+	 *
 	 * @param fname Remote file name string.
 	 * @param flags File open option flags.
 	 * @return SMBFile for the opened file, else null.
@@ -740,7 +740,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Rename a file, or set of files, on the remote file server.
-	 * 
+	 *
 	 * @param curnam Current file name string, may contain wildcards. If the path does not start
 	 *            with a '\' the current working directory string will be preprended.
 	 * @param newnam New file name.
@@ -803,7 +803,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Set file information for the specified file.
-	 * 
+	 *
 	 * @param fname File name of the file to set information for.
 	 * @param finfo File information containing the new values.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -853,7 +853,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Set file information for the specified file, using the file id
-	 * 
+	 *
 	 * @param file File to set information for.
 	 * @param finfo File information containing the new values.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -921,7 +921,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Set file attributes for the specified file, using the file name
-	 * 
+	 *
 	 * @param fname File name of the file to set information for.
 	 * @param attrib File attributes mask
 	 * @see org.alfresco.jlan.server.filesys.FileAttribute
@@ -973,7 +973,7 @@ public final class CIFSDiskSession extends DiskSession {
 	/**
 	 * Start a search of the specified directory returning information for each file/directory
 	 * found.
-	 * 
+	 *
 	 * @param dir Directory to start searching. If the directory string does not start with a '\'
 	 *            then the directory name is prepended with the current working directory.
 	 * @param attr Search attributes, to determine the types of files/directories returned. @see
@@ -1000,7 +1000,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Perform an NTCreateAndX SMB to create/open a file or directory
-	 * 
+	 *
 	 * @param name File/directory name
 	 * @param access Desired access mode.
 	 * @see org.alfresco.jlan.server.filesys.AccessMode
@@ -1025,7 +1025,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Perform an NTCreateAndX SMB to create/open a file with an oplock
-	 * 
+	 *
 	 * @param name File/directory name
 	 * @param oplockFlags int
 	 * @param access Desired access mode.
@@ -1049,27 +1049,27 @@ public final class CIFSDiskSession extends DiskSession {
 
 		CIFSFile cifsFile = NTCreateInternal(name, oplockFlags, access, attrib, sharing, exists, initSize, createOpt, true);
 		if ( cifsFile != null && cifsFile.getOplockType() != OpLock.TypeNone) {
-			
+
 			// Set the oplock interface
-			
+
 			cifsFile.setOplockInterface( oplockIface);
-			
+
 			// Add the file to the list of oplocked files, need to access the file to call
 			// the oplock interface if an oplock break is received asynchronously from the server
-			
+
 			if ( m_oplockFiles == null)
 				m_oplockFiles = new HashMap<Integer, CIFSFile>();
 			m_oplockFiles.put( new Integer( cifsFile.getFileId()), cifsFile);
 		}
-		
+
 		// Return the file
-		
+
 		return cifsFile;
 	}
 
 	/**
 	 * Perform an NT query security descriptor transaction for the specified file or directory
-	 * 
+	 *
 	 * @param fid File identifier, via SMBFile.getFileId() of an open file.
 	 * @param flags Security descriptor elements to return (Owner, Group, SACL, DACL).
 	 * @see org.alfresco.jlan.smb.nt.SecurityDescriptor
@@ -1128,7 +1128,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Set the security descriptor for the specified file/directory
-	 * 
+	 *
 	 * @param fid File identifier, via SMBFile.getFileId() of an open file.
 	 * @param secdesc Security descriptor
 	 * @param flags Fields to set (Owner, Group, SACL, DACL).
@@ -1171,7 +1171,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Add a change notification filter for the specified directory
-	 * 
+	 *
 	 * @param fid File id, from SMBFile.getFileId() of an open directory. The directory should be
 	 *            opened using the NTCreate() method.
 	 * @param filter Directory watch filter flags. @see org.alfresco.jlan.client.nt.NotifyChange.
@@ -1199,7 +1199,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Add a change notification filter for the specified directory
-	 * 
+	 *
 	 * @param areq AsynchRequest
 	 * @return AsynchRequest
 	 * @exception IOException
@@ -1268,7 +1268,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Cancel an outstanding request. Used to cancel change notifications.
-	 * 
+	 *
 	 * @param areq AsynchRequest
 	 * @exception IOException
 	 * @exception SMBException If an SMB level error occurs
@@ -1345,7 +1345,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * NT I/O control
-	 * 
+	 *
 	 * @param ctrlCode int
 	 * @param fid int
 	 * @param fsctl boolean
@@ -1392,7 +1392,7 @@ public final class CIFSDiskSession extends DiskSession {
 	/**
 	 * Get file information for the specified open file/directory, returning the requested
 	 * information level
-	 * 
+	 *
 	 * @param fid File id for the file or directory, from SMBFile.getFileId().
 	 * @param level Information level. @see org.alfresco.jlan.smb.FileInfoLevel
 	 * @return FileInfo
@@ -1478,7 +1478,7 @@ public final class CIFSDiskSession extends DiskSession {
 	/**
 	 * Get file information for the specified open file/directory, returning the requested
 	 * information level
-	 * 
+	 *
 	 * @param fid File id for the file or directory, from SMBFile.getFileId().
 	 * @param level Information level. @see org.alfresco.jlan.smb.FileInfoLevel
 	 * @return TransactBuffer
@@ -1507,7 +1507,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Set file information that allows setting different information levels
-	 * 
+	 *
 	 * @param finfo FileInfo
 	 * @param level Information level. @see org.alfresco.jlan.smb.FileInfoLevel
 	 * @exception IOException
@@ -1559,7 +1559,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Set the delete on close flag for an open file
-	 * 
+	 *
 	 * @param fid File id for the file or directory, from SMBFile.getFileId().
 	 * @param delFlag true to delete the file on close, or false to clear a previous delete on close
 	 *            request
@@ -1581,7 +1581,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Set the end of file position for the open file
-	 * 
+	 *
 	 * @param fid File id for the file or directory, from SMBFile.getFileId().
 	 * @param pos New end of file position
 	 * @exception IOException
@@ -1602,7 +1602,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Set the file allocation size for the open file
-	 * 
+	 *
 	 * @param fid File id for the file or directory, from SMBFile.getFileId().
 	 * @param alloc New file allocation size
 	 * @exception IOException
@@ -1623,7 +1623,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Set file information that allows setting different information levels
-	 * 
+	 *
 	 * @param fid File id for the file or directory, from SMBFile.getFileId().
 	 * @param data Raw file information data block.
 	 * @param dlen Raw data block length.
@@ -1654,7 +1654,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Get the device information
-	 * 
+	 *
 	 * @return DeviceInfo @see org.alfresco.jlan.client.info.DeviceInfo
 	 * @exception IOException
 	 * @exception SMBException
@@ -1702,7 +1702,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Get the device attributes information
-	 * 
+	 *
 	 * @return DeviceAttributesInfo
 	 * @exception IOException
 	 * @exception SMBException
@@ -1756,7 +1756,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Get file information for the specified file.
-	 * 
+	 *
 	 * @param fname File name of the file to return information for.
 	 * @param level Information level required. @see org.alfresco.jlan.smb.FileInfoLevel
 	 * @return TransactBuffer
@@ -1793,7 +1793,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Return the details for a symlink file/folder
-	 * 
+	 *
 	 * @param linkPath String
 	 * @return SymLink
 	 * @exception Exception
@@ -1862,7 +1862,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Process incoming data checking for asynchronous response packets from the server
-	 * 
+	 *
 	 * @param waitTime Receive timeout in milliseconds, zero for no timeout or -1 to not wait for
 	 *            data
 	 * @exception IOException
@@ -1896,139 +1896,139 @@ public final class CIFSDiskSession extends DiskSession {
 			pingServer();
 	}
 
-	
+
 	/**
 	 * Refresh the file information for an open file
-	 * 
+	 *
 	 * @param smbFile SMBFile
 	 */
 	public void refreshFileInformation( SMBFile smbFile)
 		throws IOException, SMBException {
-		
+
 	}
-	
+
 	/**
 	 * Process an asynchronous response packet
-	 * 
+	 *
 	 * @param pkt SMBPacket
 	 */
 	protected void processAsynchResponse(SMBPacket pkt) {
 
 		// Check for a locking request from the server, an oplock break
-		
+
 		if ( pkt.isRequest() == true && pkt.getCommand() == PacketType.LockingAndX) {
-			
+
 			// Unpack the file id and flags
-			
+
 			int fileId = pkt.getParameter( 2);
 			int flags  = pkt.getParameter( 3);
-			
+
 			// Check for an oplock break
-			
+
 			if ( m_oplockFiles != null && ( flags & LockingAndX.OplockBreak) != 0) {
 
 				try {
-					
+
 					// Find the oplocked file
-					
+
 					CIFSFile cifsFile = m_oplockFiles.get( new Integer( fileId));
 					int breakToOpLock = OpLock.TypeNone;
-					
+
 					if ( cifsFile != null) {
-						
+
 						// Check if the file has an oplock callback interface
-						
+
 						if ( cifsFile.getOplockInterface() != null) {
 
 							// Call the oplock interface
-							
+
 							breakToOpLock = cifsFile.getOplockInterface().oplockBreak( cifsFile);
 						}
 						else {
-							
-							// Flush any pending data on the file 
-							
+
+							// Flush any pending data on the file
+
 							cifsFile.Flush();
 						}
 					}
-					
+
 					// Check if an oplock break response should be sent
-					
+
 					if ( cifsFile.getOplockInterface().sendAutomaticBreakResponse() == true) {
 
 						// Build an oplock break response
-						
+
 						SMBPacket respPkt = new SMBPacket( 128);
-						
+
 						respPkt.setCommand(PacketType.LockingAndX);
 						respPkt.setUserId(this.getUserId());
 						respPkt.setTreeId(this.getTreeId());
-		
+
 						respPkt.setFlags(getDefaultFlags() + SMBPacket.FLG_RESPONSE);
 						respPkt.setFlags2(getDefaultFlags2());
-		
+
 						respPkt.setParameterCount(8);
 						respPkt.setAndXCommand( PacketType.NoChainedCommand);
 						respPkt.setParameter(1, 0);							// AndX offset
 						respPkt.setParameter(2, fileId);
-						
+
 						// Break the oplock, or break to a level II shared oplock
-						
+
 						if ( breakToOpLock == OpLock.TypeLevelII)
 							respPkt.setParameter(3, LockingAndX.OplockBreak + LockingAndX.Level2OpLock);
 						else
 							respPkt.setParameter(3, LockingAndX.OplockBreak);
-							
+
 						respPkt.setParameterLong(4, 0);						// timeout
 						respPkt.setParameter(6, 0);							// number of unlocks
 						respPkt.setParameter(7, 0);							// number of locks
-						
+
 						respPkt.setByteCount( 0);
-						
+
 						// Send the oplock break to the server
 						//
 						// Note: The response flag must be set, and we do not expect a response from the server
-						
+
 						respPkt.SendSMB( this);
-						
+
 						// Set the new oplock type on the file
-						
+
 						cifsFile.setOplockType( breakToOpLock);
 						cifsFile.setOplockInterface( null);
 					}
 				}
 				catch (Exception ex) {
-						
+
 				}
 			}
 		}
 		else {
-			
+
 			// Check if there are any pending asynchronous requests queued
-	
+
 			if ( m_asynchRequests == null || m_asynchRequests.size() == 0)
 				return;
-	
+
 			// Find the matching asynchronous request and remove from the pending list
-	
+
 			AsynchRequest areq = removeAsynchronousRequest(pkt.getMultiplexId());
 			if ( areq == null)
 				return;
-	
+
 			// Mark the asynchronous request as completed
-	
+
 			areq.setCompleted(true);
-	
+
 			// Pass the packet to the asynchronous request for processing
-	
+
 			areq.processResponse(this, pkt);
-	
+
 			// Check if the request should be automatically resubmitted
-	
+
 			if ( areq.hasAutoReset()) {
-	
+
 				// Resubmit the request
-	
+
 				if ( areq.resubmitRequest(this, null) == true)
 					addAsynchronousRequest(areq);
 			}
@@ -2037,7 +2037,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Add an asynchronous request to the list of pending requests
-	 * 
+	 *
 	 * @param req AsynchRequest
 	 */
 	protected final void addAsynchronousRequest(AsynchRequest req) {
@@ -2054,7 +2054,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Remove an asynchronous request from the pending list
-	 * 
+	 *
 	 * @param id int
 	 * @return AsynchRequest
 	 */
@@ -2093,7 +2093,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Remove an asynchronous request from the pending list
-	 * 
+	 *
 	 * @param req AsynchRequest
 	 * @return AsynchRequest
 	 */
@@ -2112,7 +2112,7 @@ public final class CIFSDiskSession extends DiskSession {
 
 	/**
 	 * Perform an NTCreateAndX SMB to create/open a file or directory
-	 * 
+	 *
 	 * @param name File/directory name
 	 * @param createFlags int
 	 * @param access Desired access mode.
@@ -2203,7 +2203,7 @@ public final class CIFSDiskSession extends DiskSession {
 		finfo.setFileId(fid);
 
 		// Convert the granted oplock type to internal type
-		
+
 		if ( oplockTyp == WinNT.GrantedOplockBatch)
 			oplockTyp = OpLock.TypeBatch;
 		else if ( oplockTyp == WinNT.GrantedOplockExclusive)
@@ -2212,26 +2212,26 @@ public final class CIFSDiskSession extends DiskSession {
 			oplockTyp = OpLock.TypeLevelII;
 		else
 			oplockTyp = OpLock.TypeNone;
-		
+
 		// Create the file object
 
 		return new CIFSFile(this, finfo, fid, oplockTyp);
 	}
-	
+
 	/**
 	 * File closed, remove from the oplocked file list
-	 * 
+	 *
 	 * @param cifsFile CIFSFile
 	 */
 	protected final void fileClosed( CIFSFile cifsFile) {
-		
+
 		// Check if there are any oplocked files
-		
+
 		if ( m_oplockFiles == null || m_oplockFiles.size() == 0)
 			return;
-		
+
 		// Remove the file from the oplocked list
-		
+
 		m_oplockFiles.remove( new Integer( cifsFile.getFileId()));
 	}
 }

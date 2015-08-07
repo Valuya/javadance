@@ -25,7 +25,7 @@ import java.io.IOException;
  * <p>
  * Thrown when a file/folder rename is not allowed as the user does not have permission to rename
  * the file/folder.
- * 
+ *
  * @author gkspencer
  */
 public class PermissionDeniedException extends IOException {
@@ -41,7 +41,7 @@ public class PermissionDeniedException extends IOException {
 
 	/**
 	 * PermissionDeniedException constructor.
-	 * 
+	 *
 	 * @param s String
 	 */
 	public PermissionDeniedException(String s) {
@@ -50,7 +50,7 @@ public class PermissionDeniedException extends IOException {
 
 	/**
 	 * PermissionDeniedException constructor.
-	 * 
+	 *
 	 * @param s String
 	 * @param ex Throwable
 	 */

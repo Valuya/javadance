@@ -23,7 +23,7 @@ import java.util.Vector;
 
 /**
  * Mount Entry List Class
- * 
+ *
  * <p>Contains a list of active mount entries.
  *
  * @author gkspencer
@@ -31,25 +31,25 @@ import java.util.Vector;
 public class MountEntryList {
 
 	//	Mount entry list
-	
+
 	private Vector<MountEntry> m_mounts;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public MountEntryList() {
 		m_mounts = new Vector<MountEntry>();
 	}
-	
+
 	/**
 	 * Ad an entry to the list
-	 * 
+	 *
 	 * @param entry MountEntry
 	 */
 	public synchronized final void addEntry(MountEntry entry) {
 		m_mounts.add(entry);
 	}
-	
+
 	/**
 	 * Return the number of entries in the list
 	 *
@@ -58,10 +58,10 @@ public class MountEntryList {
 	public synchronized final int numberOfEntries() {
 		return m_mounts.size();
 	}
-	
+
 	/**
 	 * Return the specified entry
-	 * 
+	 *
 	 * @param idx int
 	 * @return MountEntry
 	 */
@@ -70,10 +70,10 @@ public class MountEntryList {
 			return null;
 		return m_mounts.get(idx);
 	}
-		
+
 	/**
 	 * Find an entry in the list
-	 * 
+	 *
 	 * @param path String
 	 * @param host String
 	 * @return MountEntry
@@ -90,7 +90,7 @@ public class MountEntryList {
 
 	/**
 	 * Remove an entry from the list
-	 * 
+	 *
 	 * @param path String
 	 * @param host String
 	 * @return MountEntry
@@ -109,7 +109,7 @@ public class MountEntryList {
 
 	/**
 	 * Remove all entries from the list for the specified host
-	 * 
+	 *
 	 * @param host String
 	 */
 	public synchronized final void removeHostEntries(String host) {
@@ -123,31 +123,31 @@ public class MountEntryList {
 
 	/**
 	 * Find all items for the specified host and return as a new list
-	 * 
+	 *
 	 * @param host String
 	 * @return MountEntryList
 	 */
 	public synchronized final MountEntryList findSessionEntries(String host) {
-		
+
 		//	Allocate the list to hold the matching entries
-		
+
 		MountEntryList list = new MountEntryList();
-		
+
 		//	Find the matching entries
-		
+
 		for ( int i = 0; i < m_mounts.size(); i++) {
 			MountEntry entry = m_mounts.get(i);
 			if ( host.compareTo(entry.getHost()) == 0)
 				list.addEntry(entry);
 		}
-		
+
 		//	Check if the list is empty, return the list
-		
+
 		if ( list.numberOfEntries() == 0)
 			list = null;
 		return list;
 	}
-	
+
 	/**
 	 * Remote all entries from the list
 	 */

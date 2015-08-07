@@ -33,54 +33,54 @@ import org.alfresco.jlan.smb.server.win32.WinsockNetBIOSPacketHandler;
 
 /**
  * Asynchronous Winsock NetBIOS Session Handler Class
- * 
+ *
  * <p>
  * @author gkspencer
  */
 public class AsyncWinsockNetBIOSSessionHandler extends SessionHandlerBase {
 
 	// LANA to listen on
-	
+
 	private int m_lana;
 
 	// NetBIOS name to listen for incoming requests on
-	
+
 	private NetBIOSName m_nbName;
-	
+
 	// Listener socket, for incoming connections
-	
+
 	private NetBIOSSocket m_socket;
-	
+
 	// Associated CIFS server
-	
+
 	private SMBServer m_smbServer;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param lana int
 	 * @param nbName NetBIOSName
 	 * @param server NetworkServer
 	 */
 	public AsyncWinsockNetBIOSSessionHandler( int lana, NetBIOSName nbName, NetworkServer server) {
 		super( "Winsock NetBIOS", "SMB", server, null, RFCNetBIOSProtocol.PORT);
-		
+
 		m_lana   = lana;
 		m_nbName = nbName;
 	}
 
 	/**
 	 * Return the LANA that this listener is using
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLANA() {
 		return m_lana;
 	}
-	
+
 	/**
 	 * Return the listener NetBIOS socket
-	 * 
+	 *
 	 * @return NetBIOSSocket
 	 */
 	public final NetBIOSSocket getSocket() {
@@ -89,34 +89,34 @@ public class AsyncWinsockNetBIOSSessionHandler extends SessionHandlerBase {
 
 	/**
 	 * Return the associated CIFS server
-	 * 
+	 *
 	 * @return SMBServer
 	 */
 	public final SMBServer getSMBServer() {
 		return m_smbServer;
 	}
-	
+
 	/**
 	 * Return the name this handler is listening on
-	 * 
+	 *
 	 * @return NetBIOSName
 	 */
 	public final NetBIOSName getNetBIOSName() {
 		return m_nbName;
 	}
-	
+
 	/**
 	 * Initialize the session handler
-	 * 
+	 *
 	 * @param server NetworkServer
 	 */
 	public void initializeSessionHandler(NetworkServer server)
 		throws IOException {
 
 		// Save the CIFS server
-		
+
 		m_smbServer = (SMBServer) server;
-		
+
 		// Enumerate the LAN adapters, use the first available if the LANA has not been specified in
 		// the configuration
 
@@ -158,28 +158,28 @@ public class AsyncWinsockNetBIOSSessionHandler extends SessionHandlerBase {
 		}
 
 		// Initialize the listener socket
-		
+
 		m_socket = NetBIOSSocket.createListenerSocket( getLANA(), m_nbName);
 	}
-	
+
 	/**
 	 * Create a packet handler for the new client socket connection
-	 * 
+	 *
 	 * @param clientSock NetBIOSSocket
 	 * @return PacketHandler
 	 * @exception IOException
 	 */
 	public PacketHandler createPacketHandler( NetBIOSSocket clientSock)
 		throws IOException {
-		
+
 		// Create a Winsock NetBIOS packet handler, async mode enabled
-		
+
 		return new WinsockNetBIOSPacketHandler( m_lana, clientSock, getSMBServer().getPacketPool(), true);
 	}
-	
+
 	/**
 	 * Check if the specified LANA is online
-	 * 
+	 *
 	 * @param lana int
 	 * @return boolean
 	 */
@@ -206,13 +206,13 @@ public class AsyncWinsockNetBIOSSessionHandler extends SessionHandlerBase {
 
 	/**
 	 * Close the session handler
-	 * 
+	 *
 	 * @param server NetworkServer
 	 */
 	public void closeSessionHandler(NetworkServer server) {
-		
+
 		// Close the socket, this will deregister with the selector
-		
+
 		if ( m_socket != null) {
 			m_socket.closeSocket();
 			m_socket = null;

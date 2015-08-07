@@ -34,10 +34,10 @@ public class StaleHandleException extends Exception {
 	public StaleHandleException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public StaleHandleException(String msg) {

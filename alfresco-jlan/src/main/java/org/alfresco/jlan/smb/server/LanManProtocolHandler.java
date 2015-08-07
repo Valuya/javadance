@@ -67,11 +67,11 @@ import org.alfresco.jlan.util.WildCard;
 
 /**
  * LanMan SMB Protocol Handler Class.
- * 
+ *
  * <p>
  * The LanMan protocol handler processes the additional SMBs that were added to the protocol in the
  * LanMan1 and LanMan2 SMB dialects.
- * 
+ *
  * @author gkspencer
  */
 class LanManProtocolHandler extends CoreProtocolHandler {
@@ -97,7 +97,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * LanManProtocolHandler constructor.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 */
 	protected LanManProtocolHandler(SMBSrvSession sess) {
@@ -106,7 +106,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Return the protocol name
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getName() {
@@ -115,7 +115,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the chained SMB commands (AndX).
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @param file Current file , or null if no file context in chain
 	 * @return New offset to the end of the reply packet
@@ -123,11 +123,11 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 	protected final int procAndXCommands(SMBSrvPacket smbPkt, NetworkFile file) {
 
 		// Get the response packet
-		
+
 		SMBSrvPacket respPkt = smbPkt.getAssociatedPacket();
 		if ( respPkt == null)
 			throw new RuntimeException("No response packet allocated for AndX request");
-		
+
 		// Get the chained command and command block offset
 
 		int andxCmd = smbPkt.getAndXCommand();
@@ -201,7 +201,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a chained tree connect request.
-	 * 
+	 *
 	 * @param cmdOff int Offset to the chained command within the request packet
 	 * @param smbPkt Request packet
 	 * @param respPkt SMBSrvPacket Reply packet
@@ -395,7 +395,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a chained read file request
-	 * 
+	 *
 	 * @param cmdOff Offset to the chained command within the request packet
 	 * @param smbPkt Request packet
 	 * @param respPkt Reply packet.
@@ -502,7 +502,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a chained close file request
-	 * 
+	 *
 	 * @param cmdOff int Offset to the chained command within the request packet
 	 * @param smbPkt Request packet
 	 * @param respPkt Response packet
@@ -583,7 +583,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Close a search started via the transact2 find first/next command.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception java.io.IOException The exception description.
 	 * @exception SMBSrvException The exception description.
@@ -658,7 +658,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file lock/unlock request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -736,7 +736,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the logoff request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -777,7 +777,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file open request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -993,21 +993,21 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 		}
 
 		// Check if there is a chain command to process
-		
+
 		SMBSrvPacket respPkt = smbPkt;
 		boolean andX = false;
-		
+
 		if ( smbPkt.hasAndXCommand()) {
 
 			// Allocate a new packet for the response
-			
+
 			respPkt = m_sess.getPacketPool().allocatePacket( smbPkt.getLength(), smbPkt);
-			
+
 			// Indicate that there is an AndX chained command to process
-			
+
 			andX = true;
 		}
-		
+
 		// Build the open file response
 
 		respPkt.setParameterCount(15);
@@ -1060,7 +1060,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file read request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1142,23 +1142,23 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 		smbPkt.setParameterCount(12);
 		int dataPos = smbPkt.getByteOffset();
-		
+
 		try {
 
 			// Check if the requested data will fit into the current packet
-			
+
 			if ( maxCount > ( buf.length - dataPos)) {
 
 				// Allocate a larger packet for the response
-				
+
 				respPkt = m_sess.getPacketPool().allocatePacket( maxCount + dataPos, smbPkt);
-				
+
 				// Switch to the response buffer
-				
+
 				buf = respPkt.getBuffer();
 				respPkt.setParameterCount( 12);
 			}
-			
+
 			// Access the disk interface that is associated with the shared device
 
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
@@ -1183,7 +1183,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 		catch (AccessDeniedException ex) {
 
 			// No access to file, or file is a directory
-			//    	
+			//
 			// Debug
 
 			if ( Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_FILEIO))
@@ -1234,7 +1234,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file read MPX request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1317,18 +1317,18 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
 
 			// Check if the read data will fit into the current packet
-			
+
 			if ( smbPkt.getBufferLength() < clientMaxSize) {
-				
+
 				// Allocate a new packet for the responses
-				
+
 				respPkt = m_sess.getPacketPool().allocatePacket( clientMaxSize, smbPkt);
-			
+
 				// Switch to the new buffer
-				
+
 				buf = respPkt.getBuffer();
 			}
-			
+
 			// Set the returned parameter count so that the byte offset can be calculated
 
 			respPkt.setParameterCount(8);
@@ -1396,7 +1396,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 		catch (AccessDeniedException ex) {
 
 			// No access to file, or file is a directory
-			//      
+			//
 			// Debug
 
 			if ( Debug.EnableDbg && m_sess.hasDebug(SMBSrvSession.DBG_FILEIO))
@@ -1423,7 +1423,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Rename a file.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1548,7 +1548,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the SMB session setup request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1733,21 +1733,21 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 		}
 
 		// Check if there is a chained commmand with the session setup request (usually a TreeConnect)
-		
+
 		SMBSrvPacket respPkt = smbPkt;
 		boolean andX = false;
-		
+
 		if ( smbPkt.hasAndXCommand() && dataPos < smbPkt.getReceivedLength()) {
 
 			// Allocate a new packet for the response
-			
+
 			respPkt = m_sess.getPacketPool().allocatePacket( smbPkt.getLength(), smbPkt);
-			
+
 			// Indicate that there is an AndX chained command to process
-			
+
 			andX = true;
 		}
-		
+
 		// Build the session setup response SMB
 
 		respPkt.setParameterCount(3);
@@ -1801,9 +1801,9 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 		m_sess.setState(SMBSrvSessionState.SMBSESSION);
 
 		// Find the virtual circuit allocated, this will set the per-thread ClientInfo on the session
-		
+
 		m_sess.findVirtualCircuit( respPkt.getUserId());
-		
+
 		// Notify listeners that a user has logged onto the session
 
 		m_sess.getSMBServer().sessionLoggedOn(m_sess);
@@ -1811,7 +1811,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 request. The transact2 can contain many different sub-requests.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -1931,7 +1931,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 secondary request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -2071,7 +2071,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transaction buffer
-	 * 
+	 *
 	 * @param tbuf TransactBuffer
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException If a network error occurs
@@ -2129,7 +2129,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 file search request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -2436,7 +2436,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 file search continue request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -2665,7 +2665,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 query file information (via handle) request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException If an I/O error occurs
@@ -2864,7 +2864,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 file system query request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -3037,7 +3037,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process a transact2 query path information request.
-	 * 
+	 *
 	 * @param tbuf Transaction request details
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -3168,7 +3168,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the SMB tree connect request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -3356,7 +3356,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file write request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -3484,7 +3484,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Process the file write MPX request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
 	 * @exception SMBSrvException
@@ -3588,20 +3588,20 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 			while (totLen > 0) {
 
 				// Release the associated packet
-				
+
 				if ( smbPkt.hasAssociatedPacket()) {
-					
+
 					// Release the current associated packet back to the pool, and clear
-					
+
 					m_sess.getPacketPool().releasePacket( smbPkt.getAssociatedPacket());
 					smbPkt.setAssociatedPacket( null);
 				}
-				
+
 				// Receive the next write packet
 
 				curPkt = m_sess.getPacketHandler().readPacket();
 				smbPkt.setAssociatedPacket( curPkt);
-				
+
 				// Make sure it is a secondary WriteMPX type packet
 
 				if ( smbPkt.getCommand() != PacketType.WriteMpxSecondary)
@@ -3650,7 +3650,7 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 
 	/**
 	 * Run the LanMan protocol handler
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @return boolean true if the packet was processed, else false
 	 * @exception IOException
@@ -3682,130 +3682,130 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 		switch (smbPkt.getCommand()) {
 
 			// Session setup
-	
+
 			case PacketType.SessionSetupAndX:
 				procSessionSetup(smbPkt);
 				break;
-	
+
 			// Tree connect
-	
+
 			case PacketType.TreeConnectAndX:
 				procTreeConnectAndX(smbPkt);
 				break;
-	
+
 			// Transaction2
-	
+
 			case PacketType.Transaction2:
 			case PacketType.Transaction:
 				procTransact2(smbPkt);
 				break;
-	
+
 			// Transaction/transaction2 secondary
-	
+
 			case PacketType.TransactionSecond:
 			case PacketType.Transaction2Second:
 				procTransact2Secondary(smbPkt);
 				break;
-	
+
 			// Close a search started via the FindFirst transaction2 command
-	
+
 			case PacketType.FindClose2:
 				procFindClose(smbPkt);
 				break;
-	
+
 			// Open a file
-	
+
 			case PacketType.OpenAndX:
 				procOpenAndX(smbPkt);
 				break;
-	
+
 			// Read a file
-	
+
 			case PacketType.ReadAndX:
 				procReadAndX(smbPkt);
 				break;
-	
+
 			// Read MPX
-	
+
 			case PacketType.ReadMpx:
 				procReadMPX(smbPkt);
 				break;
-	
+
 			// Write to a file
-	
+
 			case PacketType.WriteAndX:
 				procWriteAndX(smbPkt);
 				break;
-	
+
 			// Write MPX
-	
+
 			case PacketType.WriteMpx:
 				procWriteMPX(smbPkt);
 				break;
-	
+
 			// Tree disconnect
-	
+
 			case PacketType.TreeDisconnect:
 				procTreeDisconnect(smbPkt);
 				break;
-	
+
 			// Lock/unlock regions of a file
-	
+
 			case PacketType.LockingAndX:
 				procLockingAndX(smbPkt);
 				break;
-	
+
 			// Logoff a user
-	
+
 			case PacketType.LogoffAndX:
 				procLogoffAndX(smbPkt);
 				break;
-	
+
 			// Tree connection (without AndX batching)
-	
+
 			case PacketType.TreeConnect:
 				super.runProtocol( smbPkt);
 				break;
-	
+
 			// Rename file
-	
+
 			case PacketType.RenameFile:
 				procRenameFile(smbPkt);
 				break;
-	
+
 			// Echo request
-	
+
 			case PacketType.Echo:
 				super.procEcho(smbPkt);
 				break;
-	
+
 			// Default
-	
+
 			default:
-	
+
 				// Get the tree connection details, if it is a disk or printer type connection then pass
 				// the request to the core protocol handler
-	
+
 				int treeId = smbPkt.getTreeId();
 				TreeConnection conn = null;
 				if ( treeId != -1)
 					conn = m_sess.findTreeConnection(smbPkt);
-	
+
 				if ( conn != null) {
-	
+
 					// Check if this is a disk or print connection, if so then send the request to the
 					// core protocol handler
-	
+
 					if ( conn.getSharedDevice().getType() == ShareType.DISK || conn.getSharedDevice().getType() == ShareType.PRINTER) {
-	
+
 						// Chain to the core protocol handler
-	
+
 						handledOK = super.runProtocol( smbPkt);
 					}
 					else if ( conn.getSharedDevice().getType() == ShareType.ADMINPIPE) {
-	
+
 						// Send the request to IPC$ remote admin handler
-	
+
 						IPCHandler.processIPCRequest(m_sess, smbPkt);
 						handledOK = true;
 					}
@@ -3814,9 +3814,9 @@ class LanManProtocolHandler extends CoreProtocolHandler {
 		}
 
 		// Run any request post processors
-		
+
 		runRequestPostProcessors( m_sess);
-		
+
 		// Return the handled status
 
 		return handledOK;

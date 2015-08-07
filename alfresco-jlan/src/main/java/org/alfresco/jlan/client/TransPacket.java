@@ -31,7 +31,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * SMB transact packet class
- * 
+ *
  * @author gkspencer
  */
 public class TransPacket extends SMBPacket {
@@ -55,7 +55,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf Buffer that contains the SMB transaction packet.
 	 */
 	public TransPacket(byte[] buf) {
@@ -64,7 +64,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param siz Size of packet to allocate.
 	 */
 	public TransPacket(int siz) {
@@ -73,7 +73,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Return the data block size
-	 * 
+	 *
 	 * @return Data block size in bytes
 	 */
 	public final int getDataLength() {
@@ -82,7 +82,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Return the data block offset
-	 * 
+	 *
 	 * @return Data block offset within the SMB packet.
 	 */
 	public final int getDataOffset() {
@@ -91,7 +91,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Unpack the parameter block into the supplied array.
-	 * 
+	 *
 	 * @param prmblk Array to unpack the parameter block words into.
 	 */
 	public final void getParameterBlock(short[] prmblk)
@@ -132,7 +132,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Perform a transaction request and receive the response data
-	 * 
+	 *
 	 * @param sess Session
 	 * @param tbuf TransactBuffer
 	 * @return TransactBuffer
@@ -567,7 +567,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Return the total parameter block length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getTotalParameterCount() {
@@ -576,7 +576,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Return the total data block length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getTotalDataCount() {
@@ -585,7 +585,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Return the parameter block length for the current packet
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getParameterBlockCount() {
@@ -599,7 +599,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Return the parameter block offset for the current packet
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getParameterBlockOffset() {
@@ -615,7 +615,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Return the data block length for the current packet
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockCount() {
@@ -629,7 +629,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Return the data block offset for the current packet
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockOffset() {
@@ -645,7 +645,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the specific setup parameter within the SMB packet.
-	 * 
+	 *
 	 * @param idx Setup parameter index.
 	 * @param val Setup parameter value.
 	 */
@@ -655,7 +655,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the transaction name for normal transactions
-	 * 
+	 *
 	 * @param tname Transaction name string
 	 */
 	public final void setTransactionName(String tname) {
@@ -664,7 +664,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the total parameter block length parameter
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setTotalParameterCount(int len) {
@@ -673,7 +673,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the total data block length parameter
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setTotalDataCount(int len) {
@@ -682,7 +682,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the maximum return parameter block length parameter
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setMaximumParameterReturn(int len) {
@@ -691,7 +691,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the maximum return data block length parameter
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setMaximumDataReturn(int len) {
@@ -700,7 +700,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the parameter block section length parameter
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setParameterBlockCount(int len) {
@@ -709,7 +709,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the parameter block section offset parameter
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setParameterBlockOffset(int off) {
@@ -718,7 +718,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the data block section length parameter
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setDataBlockCount(int len) {
@@ -727,7 +727,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the data block section offset parameter
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setDataBlockOffset(int off) {
@@ -736,7 +736,7 @@ public class TransPacket extends SMBPacket {
 
 	/**
 	 * Set the setup paramater count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setSetupCount(int cnt) {

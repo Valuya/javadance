@@ -24,18 +24,18 @@ import org.alfresco.jlan.smb.SMBException;
 
 /**
  * SMB CIFS pipe session class
- * 
+ *
  * <p>
  * Used when connecting to the special IPC$ named pipe on a remote server, that is used to access
  * DCE/RPC services on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public final class CIFSPipeSession extends IPCSession {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param shr Remote server details.
 	 * @param dialect SMB dialect that this session is using
 	 */
@@ -46,7 +46,7 @@ public final class CIFSPipeSession extends IPCSession {
 
 	/**
 	 * Close this connection with the remote server.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
 
@@ -60,7 +60,7 @@ public final class CIFSPipeSession extends IPCSession {
 
 	/**
 	 * Send/receive an SMB transaction packet on this pipe session
-	 * 
+	 *
 	 * @param tpkt SMBTransPacket to send
 	 * @param rxpkt Packet to receive the reply into
 	 * @exception java.io.IOException If an I/O error occurs

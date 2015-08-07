@@ -42,10 +42,10 @@ public class WriteSequentialTest extends Test {
 	// Constants
 	//
 	// Default file size and write buffer size
-	
+
 	private static final long DefaultFileSize	= 10 * MemorySize.MEGABYTE;
 	private static final int DefaultWriteSize	= (int) (8 * MemorySize.KILOBYTE);
-	
+
 	// Maximum/minimum allowed file size and write size
 
 	private static final long MinimumFileSize	= 100 * MemorySize.KILOBYTE;
@@ -53,41 +53,41 @@ public class WriteSequentialTest extends Test {
 
 	private static final int MinimumWriteSize	= 128;
 	private static final int MaximumWriteSize	= (int) (64 * MemorySize.KILOBYTE);
-	
+
 	// File size and write buffer size
-	
+
 	private long m_fileSize  = DefaultFileSize;
 	private int m_writeSize = DefaultWriteSize;
-	
+
 	// Characters to use in the write buffer patterns
-	
+
 	private static final String _writePattern = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZ0123456789";
-	
+
 	/**
 	 * Default constructor
 	 */
 	public WriteSequentialTest() {
 		super( "SequentialWrite");
 	}
-	
+
 	/**
 	 * Test specific configuration
-	 * 
+	 *
 	 * @param config ConfigElement
 	 */
 	public void configTest( ConfigElement config)
 		throws InvalidConfigurationException {
-		
+
 		// Check for a custom file size
-		
+
 		String valueStr = config.getAttribute( "fileSize");
 		if ( valueStr != null) {
-			
+
 			// Parse and validate the file size value
-			
+
 			try {
 				m_fileSize = MemorySize.getByteValue( valueStr);
-				
+
 				if ( m_fileSize < MinimumFileSize || m_fileSize > MaximumFileSize)
 					throw new InvalidConfigurationException( "Invalid file size (" + MinimumFileSize + " - " + MaximumFileSize + ")");
 			}
@@ -95,18 +95,18 @@ public class WriteSequentialTest extends Test {
 				throw new InvalidConfigurationException( "Invalid file size, " + valueStr);
 			}
 		}
-		
+
 		// Check for a custom write buffer size
 
 		valueStr = config.getAttribute( "writeSize");
-		
+
 		if ( valueStr != null) {
-			
+
 			// Parse and validate the write buffer size value
-			
+
 			try {
 				m_writeSize = MemorySize.getByteValueInt( valueStr);
-				
+
 				if ( m_writeSize < MinimumWriteSize || m_writeSize > MaximumWriteSize)
 					throw new InvalidConfigurationException( "Invalid write buffer size (" + MinimumWriteSize + " - " + MaximumWriteSize + ")");
 			}
@@ -115,8 +115,8 @@ public class WriteSequentialTest extends Test {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Run the sequential read/write test
 	 *
@@ -127,135 +127,135 @@ public class WriteSequentialTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Create a test file name for this iteration
-			
+
 			String testFileName = getUniqueFileName(threadId, iteration, sess);
-			
+
 			// DEBUG
-			
+
 			testLog( log, "SequentialWrite Test");
-			
+
 			// Check if the test file exists
-			
+
 			SMBFile testFile = null;
-			
+
 			if ( sess.FileExists( testFileName)) {
-				
+
 				// Open the existing file
-				
+
 				testLog( log, "Opening existing file " + testFileName + " via " + sess.getServer());
 				testFile = sess.OpenFile( testFileName, AccessMode.ReadWrite);
 			}
 			else {
-				
+
 				// Create a new file
-				
+
 				testLog( log, "Creating file " + testFileName + " via " + sess.getServer());
 				testFile = sess.CreateFile( testFileName);
-				
+
 				// Check the file exists
-				
+
 				if ( sess.FileExists( testFileName) == false) {
 					testLog( log, "** File does not exist after create");
 					result = new BooleanTestResult( false, "File not created, " + testFileName);
 				}
 			}
-			
+
 			// Allocate the read/write buffer
-			
+
 			byte[] ioBuf = new byte[ m_writeSize];
-			
+
 			// Write to the file until we hit the required file size
-			
+
 			long fileSize = 0L;
 			int patIdx = 0;
-			
+
 			while ( fileSize < m_fileSize) {
-				
+
 				// Fill each buffer with a different test pattern
-				
+
 				if ( patIdx == _writePattern.length())
 					patIdx = 0;
 				byte fillByte = (byte) _writePattern.charAt( patIdx++);
 				Arrays.fill( ioBuf, fillByte);
-				
+
 				// Write to the file
-				
+
 				testFile.Write( ioBuf, ioBuf.length, 0);
-				
+
 				// Update the file size
-				
+
 				fileSize += ioBuf.length;
 			}
 
 			// Make sure all data has been written to the file
-			
+
 			testFile.Flush();
-			
+
 			// Refresh the file information to get the latest file size
 
 			testFile.refreshFileInformation();
-			
+
 			// Check the file is the expected size
-			
+
 			if ( testFile.getFileSize() != m_fileSize) {
 				result = new BooleanTestResult( false, "File writes to " + MemorySize.asScaledString( m_fileSize) + " bytes failed");
 				return result;
 			}
-			
+
 			// Read the file back and check the test patterns
-			
+
 			long readPos = 0L;
 			patIdx = 0;
 			boolean chkFail = false;
-			
+
 			while ( readPos < fileSize && chkFail == false) {
-				
+
 				// Read a buffer of data from the file
-				
+
 				int rdlen = testFile.Read( ioBuf);
 				if ( rdlen != ioBuf.length)
 					throw new IOException( "Read did not match buffer length, rdlen=" + rdlen + ", bufferLen=" + ioBuf.length);
-				
+
 				// Check that the buffer contains the expected pattern
-				
+
 				if ( patIdx == _writePattern.length())
 					patIdx = 0;
 				byte chkByte = (byte) _writePattern.charAt( patIdx++);
-				
+
 				int chkIdx = 0;
-				
+
 				while ( chkIdx < ioBuf.length && chkFail == false) {
 					if ( ioBuf[ chkIdx] != chkByte) {
 						chkFail = true;
 						result = new BooleanTestResult( false, "Pattern check failed at position " + readPos + chkIdx);
 					}
-					
+
 					chkIdx++;
 				}
 
 				// Update the read position
-				
+
 				readPos += ioBuf.length;
 			}
-			
+
 			// Close the file
-			
+
 			testFile.Close();
-			
+
 			// Check the test file size
-			
+
 			if ( result == null) {
 				FileInfo fInfo = sess.getFileInformation( testFileName);
 				if ( fInfo != null) {
-					
+
 					// Check if the file size matches what was written
-					
+
 					if ( fInfo.getSize() == fileSize)
 						result = new BooleanTestResult( true);
 					else
@@ -264,26 +264,26 @@ public class WriteSequentialTest extends Test {
 				else
 					result = new BooleanTestResult( false, "Failed to get file information for file " + testFileName);
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
-				
+
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult(ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -294,7 +294,7 @@ public class WriteSequentialTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		sess.DeleteFile( getUniqueFileName( threadId, iter, sess));
 	}
 }

@@ -25,7 +25,7 @@ import org.alfresco.jlan.util.DataBuffer;
 
 /**
  * IO Control Interface
- * 
+ *
  * <p>Optional interface that a DiskInterface driver can implement to enable NT I/O control function processing.
  *
  * @author gkspencer
@@ -34,7 +34,7 @@ public interface IOCtlInterface {
 
   /**
    * Process a filesystem I/O control request
-   * 
+   *
    * @param sess			Server session
    * @param tree     	Tree connection.
    * @param ctrlCode	I/O control code
@@ -46,7 +46,7 @@ public interface IOCtlInterface {
    * @exception IOControlNotImplementedException
    * @exception SMBException
    */
-  public DataBuffer processIOControl(SrvSession sess, TreeConnection tree, int ctrlCode, int fid, DataBuffer dataBuf, 
+  public DataBuffer processIOControl(SrvSession sess, TreeConnection tree, int ctrlCode, int fid, DataBuffer dataBuf,
       															 boolean isFSCtrl, int filter)
   	throws IOControlNotImplementedException, SMBException;
 }

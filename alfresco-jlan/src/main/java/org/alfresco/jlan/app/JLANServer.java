@@ -46,7 +46,7 @@ import org.alfresco.jlan.util.win32.Win32Utils;
 
 /**
  * JLAN File Server Application
- * 
+ *
  * @author gkspencer
  */
 public class JLANServer implements ServerListener {
@@ -99,7 +99,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Start the JLAN Server
-	 * 
+	 *
 	 * @param args an array of command-line arguments
 	 */
 	public static void main(String[] args) {
@@ -133,7 +133,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Set/clear the allow shutdown via console flag
-	 * 
+	 *
 	 * @param consoleShut boolean
 	 */
 	public static final void setAllowConsoleShutdown(boolean consoleShut) {
@@ -142,7 +142,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Enable/disable exception stack dumps
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	protected final void enableExceptionStackDump(boolean ena) {
@@ -151,7 +151,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Start the JLAN Server
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	protected void start(String[] args) {
@@ -360,7 +360,7 @@ public class JLANServer implements ServerListener {
 						System.gc();
 					}
 					else if ( inChar == -1) {
-						
+
 						// Sleep for a short while
 
 						try {
@@ -407,9 +407,9 @@ public class JLANServer implements ServerListener {
 			}
 
 			// Close the configuration
-			
+
 			m_srvConfig.closeConfiguration();
-			
+
 			// Checkpoint - servers stopped
 
 			checkPoint(out, CheckPointServersStopped);
@@ -440,7 +440,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Shutdown the server when running as an NT service
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public final static void shutdownServer(String[] args) {
@@ -449,7 +449,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Create the SMB server
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
 	 * @exception Exception
@@ -474,7 +474,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Create the NetBIOS name server
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
 	 * @exception Exception
@@ -489,7 +489,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Create the FTP server
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
 	 * @exception Exception
@@ -504,7 +504,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Create the NFS server
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
 	 * @exception Exception
@@ -519,7 +519,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Create the NFS mount server
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
 	 * @exception Exception
@@ -534,7 +534,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Create the NFS port mapper server
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
 	 */
@@ -548,7 +548,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Create a network server using reflection
-	 * 
+	 *
 	 * @param className String
 	 * @param config ServerConfiguration
 	 * @return NetworkServer
@@ -580,7 +580,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Load the server configuration, default is to load using an XML configuration file.
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param cmdLineArgs String[]
 	 * @return ServerConfiguration
@@ -616,7 +616,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Create the output stream for logging
-	 * 
+	 *
 	 * @return PrintStream
 	 */
 	protected PrintStream createOutputStream() {
@@ -625,7 +625,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Checkpoint method, called at various points of the server startup and shutdown
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param check int
 	 */
@@ -634,7 +634,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Checkpoint error method, called if an error occurs during server startup/shutdown
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param check int
 	 * @param ex Exception
@@ -675,7 +675,7 @@ public class JLANServer implements ServerListener {
 
 	/**
 	 * Handle server startup/shutdown events
-	 * 
+	 *
 	 * @param server NetworkServer
 	 * @param event int
 	 */

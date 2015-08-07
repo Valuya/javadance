@@ -27,7 +27,7 @@ package org.alfresco.jlan.smb.server;
 public class NamedPipeTransaction {
 
 	//	Transaction sub-commands
-	
+
 	public static final int CallNamedPipe	= 0x54;
 	public static final int WaitNamedPipe	= 0x53;
 	public static final int PeekNmPipe		= 0x23;
@@ -37,19 +37,19 @@ public class NamedPipeTransaction {
 	public static final int TransactNmPipe	= 0x26;
 	public static final int RawReadNmPipe	= 0x11;
 	public static final int RawWriteNmPipe	= 0x31;
-	
+
 	/**
 	 * Return the named pipe transaction sub-command as a string
-	 * 
+	 *
 	 * @param subCmd int
 	 * @return String
 	 */
 	public final static String getSubCommand(int subCmd) {
-	  
+
 	  //	Determine the sub-command code
-	  
+
 	  String ret = "";
-	  
+
 	  switch(subCmd) {
 	    case CallNamedPipe:
 	    	ret = "CallNamedPipe";

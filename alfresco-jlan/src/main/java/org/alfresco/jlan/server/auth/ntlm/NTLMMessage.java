@@ -63,7 +63,7 @@ public abstract class NTLMMessage {
 
   /**
    * Class constructor
-   * 
+   *
    * @param buf byte[]
    * @param offset int
    * @param len int
@@ -77,7 +77,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return the message type
-   * 
+   *
    * @return int
    */
   public final int isMessageType() {
@@ -86,14 +86,14 @@ public abstract class NTLMMessage {
 
   /**
    * Return the message flags
-   * 
+   *
    * @return int
    */
   public abstract int getFlags();
 
   /**
    * Return the state of the specified flag
-   * 
+   *
    * @param flag int
    * @return boolean
    */
@@ -103,7 +103,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return the message length
-   * 
+   *
    * @return int
    */
   public int getLength() {
@@ -112,7 +112,7 @@ public abstract class NTLMMessage {
 
   /**
    * Set the message type
-   * 
+   *
    * @param typ int
    */
   public final void setMessageType(int typ) {
@@ -121,7 +121,7 @@ public abstract class NTLMMessage {
 
   /**
    * Copy the NTLM blob data from the specified buffer
-   * 
+   *
    * @param buf byte[]
    * @param offset int
    * @param len int
@@ -140,7 +140,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return the NTLM message as a byte array
-   * 
+   *
    * @return byte[]
    */
   public final byte[] getBytes() {
@@ -151,14 +151,14 @@ public abstract class NTLMMessage {
 
   /**
    * Set the message flags
-   * 
+   *
    * @param flags int
    */
   protected abstract void setFlags(int flags);
 
   /**
    * Initialize the blob
-   * 
+   *
    * @param typ int
    * @param flags int
    */
@@ -174,7 +174,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return a short/16bit value
-   * 
+   *
    * @param offset int
    * @return int
    */
@@ -184,7 +184,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return an int/32bit value
-   * 
+   *
    * @param offset int
    * @return int
    */
@@ -194,7 +194,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return the offset for a byte value
-   * 
+   *
    * @param offset int
    * @return int
    */
@@ -204,7 +204,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return a byte value that has a header
-   * 
+   *
    * @param offset int
    * @return byte[]
    */
@@ -222,7 +222,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return a block of byte data
-   * 
+   *
    * @param offset int
    * @param len int
    * @return byte[]
@@ -237,7 +237,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return the length of a string
-   * 
+   *
    * @param offset int
    * @return int
    */
@@ -252,7 +252,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return the allocated length of a string
-   * 
+   *
    * @param offset int
    * @return int
    */
@@ -267,7 +267,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return the string data offset
-   * 
+   *
    * @param offset int
    * @return int
    */
@@ -282,7 +282,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return a string value
-   * 
+   *
    * @param offset int
    * @param isuni boolean
    * @return String
@@ -319,7 +319,7 @@ public abstract class NTLMMessage {
 
   /**
    * Return a raw string
-   * 
+   *
    * @param offset int
    * @param len int
    * @param isuni boolean
@@ -331,7 +331,7 @@ public abstract class NTLMMessage {
 
   /**
    * Set a short/16bit value
-   * 
+   *
    * @param offset int
    * @param sval int
    */
@@ -341,7 +341,7 @@ public abstract class NTLMMessage {
 
   /**
    * Set an int/32bit value
-   * 
+   *
    * @param offset int
    * @param val int
    */
@@ -351,7 +351,7 @@ public abstract class NTLMMessage {
 
   /**
    * Set a raw byte value
-   * 
+   *
    * @param offset int
    * @param byts byte[]
    */
@@ -361,7 +361,7 @@ public abstract class NTLMMessage {
 
   /**
    * Set raw int values
-   * 
+   *
    * @param offset int
    * @param ints int[]
    */
@@ -376,7 +376,7 @@ public abstract class NTLMMessage {
 
   /**
    * Pack a raw string
-   * 
+   *
    * @param offset int
    * @param str String
    * @param isuni boolean
@@ -388,7 +388,7 @@ public abstract class NTLMMessage {
 
   /**
    * Zero out an area of bytes
-   * 
+   *
    * @param offset int
    * @param len int
    */
@@ -400,7 +400,7 @@ public abstract class NTLMMessage {
 
   /**
    * Set a byte array value
-   * 
+   *
    * @param offset int
    * @param byts byte[]
    * @param dataOffset int
@@ -431,7 +431,7 @@ public abstract class NTLMMessage {
 
   /**
    * Set a string value
-   * 
+   *
    * @param offset int
    * @param val String
    * @param strOffset int
@@ -462,7 +462,7 @@ public abstract class NTLMMessage {
 
   /**
    * Set the message length
-   * 
+   *
    * @param len int
    */
   protected final void setLength(int len) {
@@ -471,7 +471,7 @@ public abstract class NTLMMessage {
 
   /**
    * Validate and determine the NTLM message type
-   * 
+   *
    * @param buf byte[]
    * @return int
    */
@@ -481,7 +481,7 @@ public abstract class NTLMMessage {
 
   /**
    * Validate and determine the NTLM message type
-   * 
+   *
    * @param buf byte[]
    * @param offset int
    * @return int

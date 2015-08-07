@@ -30,7 +30,7 @@ import java.util.Date;
  *  <p>A list of print jobs is returned by the AdminSession.getPrintJobs () method.
  *  The returned print jobs can then be used to pause/continue or delete print jobs using
  *  the AdminSession PausePrintJob(), ContinuePrintJob() and DeletePrintJob() methods.
- *  
+ *
  *  @author gkspencer
  */
 public final class PrintJob implements Serializable {
@@ -98,10 +98,10 @@ public final class PrintJob implements Serializable {
 	//	Name of the document being printed
 
 	private String m_document;
-  
+
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param id Job id
 	 */
 	public PrintJob(int id) {
@@ -110,7 +110,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the print job comment
-	 * 
+	 *
 	 * @return Print job comment string
 	 */
 	public final String getComment() {
@@ -119,7 +119,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the print server assigned file number.
-	 * 
+	 *
 	 * @return Print server assigned file number.
 	 */
 	public final int getJobNumber() {
@@ -128,7 +128,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the print jobs queue position
-	 * 
+	 *
 	 * @return Print job queue position
 	 */
 	public final int getPrintPosition() {
@@ -137,7 +137,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the extra status bits that are set when a job is in a printing state
-	 * 
+	 *
 	 * @return Extra status bits if the job is in a printing state, else zero
 	 */
 	public final int getPrintStatus() {
@@ -146,7 +146,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return theprint job priority, where 1 is the lowest priority and 99 is the highest priority.
-	 * 
+	 *
 	 * @return Print job priority
 	 */
 	public final int getPriority() {
@@ -155,7 +155,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the date/time that the print job was submitted
-	 * 
+	 *
 	 * @return Date/time that the print job was submitted
 	 */
 	public final Date getQueuedDateTime() {
@@ -164,7 +164,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the spool document name.
-	 * 
+	 *
 	 * @return Spool document name string.
 	 */
 	public final String getSpoolDocument() {
@@ -173,7 +173,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the spool file size, in bytes.
-	 * 
+	 *
 	 * @return Spool file size in bytes.
 	 */
 	public final int getSpoolFileSize() {
@@ -182,7 +182,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the print job status string
-	 * 
+	 *
 	 * @return Print job status string
 	 */
 	public final String getStatusString() {
@@ -231,7 +231,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the name of the user who submitted the print request.
-	 * 
+	 *
 	 * @return User name string
 	 */
 	public final String getUserName() {
@@ -240,7 +240,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Determine if the print job is in a paused state
-	 * 
+	 *
 	 * @return true if the print job is in a paused state, else false
 	 */
 	public final boolean isPaused() {
@@ -249,7 +249,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Determine if the print job is in a printing state
-	 * 
+	 *
 	 * @return true is the print job is in a printing state, else false
 	 */
 	public final boolean isPrinting() {
@@ -258,7 +258,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Determine if the print job is in a queued state
-	 * 
+	 *
 	 * @return true if the print job is in a queued state, else false
 	 */
 	public final boolean isQueued() {
@@ -267,7 +267,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Determine if the print job is in a spooling state
-	 * 
+	 *
 	 * @return true is the print job is in a spooling state, else false
 	 */
 	public final boolean isSpooling() {
@@ -276,7 +276,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Set the print jobs comment
-	 * 
+	 *
 	 * @param comm Print job comment string
 	 */
 	public final void setComment(String comm) {
@@ -285,7 +285,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Set the print job document name
-	 * 
+	 *
 	 * @param doc Document name
 	 */
 	public final void setDocument(String doc) {
@@ -294,7 +294,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Set the print job id
-	 * 
+	 *
 	 * @param id Print job id
 	 */
 	public final void setJobNumber(int id) {
@@ -303,7 +303,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Set the jobs print position
-	 * 
+	 *
 	 * @param pos Print position
 	 */
 	public final void setPrintPosition(int pos) {
@@ -312,7 +312,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Set the print job priority
-	 * 
+	 *
 	 * @param pri Print job priority
 	 */
 	public final void setPriority(int pri) {
@@ -321,7 +321,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Set the submitted print job date/time
-	 * 
+	 *
 	 * @param dattim Date/time that the job was submitted
 	 */
 	public final void setQueuedDateTime(Date dattim) {
@@ -330,7 +330,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Set the print job file size
-	 * 
+	 *
 	 * @param siz Spool file size
 	 */
 	public final void setSpoolFileSize(int siz) {
@@ -339,7 +339,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Set the print job status bits
-	 * 
+	 *
 	 * @param sts Print job status bits
 	 */
 	public final void setStatus(int sts) {
@@ -348,7 +348,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Set the job user name
-	 * 
+	 *
 	 * @param usr Job owner user name
 	 */
 	public final void setUserName(String usr) {
@@ -357,7 +357,7 @@ public final class PrintJob implements Serializable {
 
 	/**
 	 * Return the print job information as a string
-	 * 
+	 *
 	 * @return Print job information string
 	 */
 	public final String toString() {

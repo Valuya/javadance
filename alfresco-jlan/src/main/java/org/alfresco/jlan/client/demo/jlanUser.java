@@ -33,13 +33,13 @@ import org.alfresco.jlan.util.*;
 
 /**
  * jlanUser Application
- * 
+ *
  * @author gkspencer
  */
 public class jlanUser extends jlanApp {
 
 	//	Account flag names
-  
+
 	private static String[] _accFlagStr = { "Account Disabled",
       									  "Home Directory Required",
       									  "Password Not Required",
@@ -54,14 +54,14 @@ public class jlanUser extends jlanApp {
 	};
 
 	//	Domain and user name
-  
+
 	private String m_domain;
 	private String m_userName;
-  
+
 	//	Date/time formatter
-  
+
 	private SimpleDateFormat m_formatter;
-  
+
 	/**
 	 * Class constructor
 	 */
@@ -71,7 +71,7 @@ public class jlanUser extends jlanApp {
 
 	/**
 	 * Output the command help
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
@@ -88,7 +88,7 @@ public class jlanUser extends jlanApp {
 
 	/**
 	 * Perform the main command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @exception Exception
 	 */
@@ -225,7 +225,7 @@ public class jlanUser extends jlanApp {
 
 	/**
 	 * Validate the command line arguments
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -296,7 +296,7 @@ public class jlanUser extends jlanApp {
 
 	/**
 	 * Format a date/time string
-	 * 
+	 *
 	 * @param date long
 	 * @return String
 	 */
@@ -321,7 +321,7 @@ public class jlanUser extends jlanApp {
 
 	/**
 	 * Format a string for output
-	 * 
+	 *
 	 * @param str String
 	 * @return String
 	 */
@@ -333,7 +333,7 @@ public class jlanUser extends jlanApp {
 
 	/**
 	 * Build a list of the enabled account control flag names
-	 * 
+	 *
 	 * @param flags int
 	 * @return StringList
 	 */
@@ -373,7 +373,7 @@ public class jlanUser extends jlanApp {
 
 	/**
 	 * Run the jlanUser command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public static void main(String[] args) {

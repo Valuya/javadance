@@ -30,9 +30,9 @@ import org.alfresco.jlan.smb.server.PacketHandler;
 
 /**
  * Channel Session Handler Class
- * 
+ *
  * <p>Base class for channel based session handler implementations.
- * 
+ *
  * @author gkspencer
  */
 public abstract class ChannelSessionHandler extends SessionHandlerBase {
@@ -43,7 +43,7 @@ public abstract class ChannelSessionHandler extends SessionHandlerBase {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param protocol String
 	 * @param server NetworkServer
@@ -56,38 +56,38 @@ public abstract class ChannelSessionHandler extends SessionHandlerBase {
 
 	/**
 	 * Return the server socket channel
-	 * 
+	 *
 	 * @return ServerSocketChannel
 	 */
 	public final ServerSocketChannel getSocketChannel() {
 		return m_srvSockChannel;
 	}
-	
+
 	/**
 	 * Initialize the session handler
-	 * 
+	 *
 	 * @param server NetworkServer
 	 */
 	public void initializeSessionHandler(NetworkServer server)
 		throws IOException {
 
 		// Create the server socket channel
-		
+
 		m_srvSockChannel = ServerSocketChannel.open();
-		
+
 		// Open the server socket
 
 		InetSocketAddress sockAddr = null;
-		
+
 		if ( hasBindAddress())
 			sockAddr = new InetSocketAddress( getBindAddress(), getPort());
 		else
 			sockAddr = new InetSocketAddress( getPort());
 
 		// Bind the socket
-		
+
 		m_srvSockChannel.socket().bind( sockAddr, getListenBacklog());
-		
+
 		// Set the allocated port
 
 		if ( getPort() == 0)
@@ -106,7 +106,7 @@ public abstract class ChannelSessionHandler extends SessionHandlerBase {
 
 	/**
 	 * Close the session handler
-	 * 
+	 *
 	 * @param server NetworkServer
 	 */
 	public void closeSessionHandler(NetworkServer server) {
@@ -130,7 +130,7 @@ public abstract class ChannelSessionHandler extends SessionHandlerBase {
 
 	/**
 	 * Create a packet handler for the new client socket connection
-	 * 
+	 *
 	 * @param sockChannel SocketChannel
 	 * @return PacketHandler
 	 * @exception IOException

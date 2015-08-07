@@ -33,17 +33,17 @@ import org.alfresco.jlan.debug.Debug;
 public class ConcurrentCreateFileTest extends Test {
 
 	// Constants
-	
+
 	private static final String TestFileName = "createFile";
 	private static final String TestFileExt	 = ".txt";
-	
+
 	/**
 	 * Default constructor
 	 */
 	public ConcurrentCreateFileTest() {
 		super( "CreateFile");
 	}
-	
+
 	/**
 	 * Run the create file test
 	 *
@@ -54,34 +54,34 @@ public class ConcurrentCreateFileTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Create a test file name for this iteration
-			
+
 			String testFileName = TestFileName + "_" + iteration + TestFileExt;
-			
+
 			// DEBUG
-			
+
 			testLog( log, "CreateFile Test");
-			
+
 			// Check if the test file exists
-			
+
 			if ( sess.FileExists( testFileName))
 				testLog( log, "File " + testFileName + " exists");
 			else {
-				
+
 				// Create a new file
-				
+
 				testLog( log, "Creating file " + testFileName + " via " + sess.getServer());
 				SMBFile testFile = sess.CreateFile( testFileName);
 				if ( testFile != null)
 					testFile.Close();
-				
+
 				// Check the file exists
-				
+
 				if ( sess.FileExists( testFileName)) {
 					testLog( log, "Re-check, file now exists");
 					result = new BooleanTestResult( true);
@@ -90,26 +90,26 @@ public class ConcurrentCreateFileTest extends Test {
 					testLog( log, "** File does not exist after create");
 					result = new BooleanTestResult( false);
 				}
-				
+
 				// Delete the test file
-				
+
 				if ( hasTestCleanup() && threadId == 1)
 					sess.DeleteFile( testFileName);
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
-				
+
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult(ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
 }

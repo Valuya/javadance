@@ -78,11 +78,11 @@ public class LocalAuthenticator extends CifsAuthenticator {
     UserAccount user = null;
     if ( client != null)
     	user = getUserDetails(client.getUserName());
-    	
+
     if ( user == null) {
-    	
+
     	//	Check if the guest account is enabled
-    	
+
     	return allowGuest() ? Writeable : NoAccess;
     }
     else if ( user.hasShare(share.getName()) == false)
@@ -110,32 +110,32 @@ public class LocalAuthenticator extends CifsAuthenticator {
       //	Validate the password
 
 			boolean authSts = false;
-			
+
 			if ( client.getPassword() != null) {
-				
+
 				//	Validate using the Unicode password
-				
+
         authSts = validatePassword( userAcc, client, sess.getAuthenticationContext(), alg);
 			}
 			else if ( client.hasANSIPassword()) {
-				
+
 				//	Validate using the ANSI password with the LanMan encryption
-				
+
 				authSts = validatePassword( userAcc, client, sess.getAuthenticationContext(), LANMAN);
 			}
 
 			//	Return the authentication status
-			
+
 			return authSts == true ? AUTH_ALLOW : AUTH_BADPASSWORD;
     }
 
     //	Check if this is an SMB/CIFS null session logon.
     //
     //	The null session will only be allowed to connect to the IPC$ named pipe share.
-    
+
     if ( client.isNullSession() && sess instanceof SMBSrvSession)
       return AUTH_ALLOW;
-    
+
     //	Unknown user
 
     return allowGuest() ? AUTH_GUEST : AUTH_DISALLOW;

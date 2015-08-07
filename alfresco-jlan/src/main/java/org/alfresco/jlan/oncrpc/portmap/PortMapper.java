@@ -27,28 +27,28 @@ package org.alfresco.jlan.oncrpc.portmap;
 public class PortMapper {
 
   //	Default port mapper port
-  
+
   public static final int DefaultPort			= 111;
-  
+
   //	Program and version id
-  
+
   public static final int ProgramId				= 100000;
-  public static final int VersionId				= 2; 
-    
+  public static final int VersionId				= 2;
+
   //	RPC procedure ids
-  
+
   public static final int ProcNull				= 0;
   public static final int ProcSet					= 1;
   public static final int ProcUnSet				= 2;
   public static final int ProcGetPort			= 3;
   public static final int ProcDump				= 4;
-  
+
   public static final int ProcMax					= 4;
-  
+
   //	RPC procedure names
-  
+
   private static final String[] _procNames = { "Null", "Set", "UnSet", "GetPort", "Dump" };
-  
+
   /**
    * Return a procedure id as a name
    *

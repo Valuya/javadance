@@ -23,7 +23,7 @@ import java.util.Date;
 
 /**
  * Disk Volume Information Class
- * 
+ *
  * @author gkspencer
  */
 public class VolumeInfo {
@@ -48,7 +48,7 @@ public class VolumeInfo {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param label String
 	 */
 	public VolumeInfo(String label) {
@@ -57,7 +57,7 @@ public class VolumeInfo {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param label String
 	 * @param serno int
 	 * @param created Date
@@ -70,7 +70,7 @@ public class VolumeInfo {
 
 	/**
 	 * Return the volume label
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getVolumeLabel() {
@@ -79,7 +79,7 @@ public class VolumeInfo {
 
 	/**
 	 * Determine if the serial number is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasSerialNumber() {
@@ -88,7 +88,7 @@ public class VolumeInfo {
 
 	/**
 	 * Return the serial number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSerialNumber() {
@@ -97,7 +97,7 @@ public class VolumeInfo {
 
 	/**
 	 * Determine if the creation date/time is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasCreationDateTime() {
@@ -106,7 +106,7 @@ public class VolumeInfo {
 
 	/**
 	 * Return the volume creation date/time
-	 * 
+	 *
 	 * @return Date
 	 */
 	public final Date getCreationDateTime() {
@@ -115,7 +115,7 @@ public class VolumeInfo {
 
 	/**
 	 * Set the volume label
-	 * 
+	 *
 	 * @param label String
 	 */
 	public final void setVolumeLabel(String label) {
@@ -124,7 +124,7 @@ public class VolumeInfo {
 
 	/**
 	 * Set the serial number
-	 * 
+	 *
 	 * @param serno int
 	 */
 	public final void setSerialNumber(int serno) {
@@ -133,7 +133,7 @@ public class VolumeInfo {
 
 	/**
 	 * Set the volume creation date/time
-	 * 
+	 *
 	 * @param created Date
 	 */
 	public final void setCreationDateTime(Date created) {
@@ -142,7 +142,7 @@ public class VolumeInfo {
 
 	/**
 	 * Return the volume information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

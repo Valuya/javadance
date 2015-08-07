@@ -21,15 +21,15 @@ package org.alfresco.jlan.smb.dcerpc.client;
 
 /**
  * Registry Data Types Class
- * 
+ *
  * <p>Defines constants for the different data types that may be read/written to/from a remote registry.
- * 
+ *
  * @author gkspencer
  */
 public class RegistryType {
 
 	//	Registry data types
-	
+
 	public final static int REG_SZ					= 1;
 	public final static int REG_EXPAND_SZ			= 2;
 	public final static int REG_BINARY				= 3;
@@ -42,7 +42,7 @@ public class RegistryType {
 	public final static int REG_RSCREQLIST			= 10;
 
 	//	Type names
-	
+
 	private static final String[] _typeNames = {	"",
 													"REG_SZ",
 													"REG_EXPAND_SZ",
@@ -55,22 +55,22 @@ public class RegistryType {
 													"REG_FULL_RSCDESC",
 													"REG_RSCREQLIST"
 	};
-	
+
 	/**
 	 * Return a registry value type as a string
-	 * 
+	 *
 	 * @param typ int
 	 * @return String
 	 */
 	public final static String getTypeAsString(int typ) {
-		
+
 		//	Range check the value
-		
+
 		if ( typ < 0 || typ >= _typeNames.length)
 			return "<Unknown>";
-			
+
 		//	Return the registry value type
-		
+
 		return _typeNames[typ];
 	}
 }

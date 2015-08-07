@@ -31,15 +31,15 @@ public interface ShareListener {
 
 	/**
 	 * Called when a session connects to a share
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 */
 	public void shareConnect(SrvSession sess, TreeConnection tree);
-	
+
 	/**
 	 * Called when a session disconnects from a share
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 */

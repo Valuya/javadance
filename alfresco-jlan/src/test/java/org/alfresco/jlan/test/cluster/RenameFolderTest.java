@@ -32,17 +32,17 @@ import org.alfresco.jlan.debug.Debug;
 public class RenameFolderTest extends Test {
 
 	// Constants
-	
+
 	private static final String TestFolderName 	= "fromFolder";
 	private static final String TestFolderNew	= "toFolder";
-	
+
 	/**
 	 * Default constructor
 	 */
 	public RenameFolderTest() {
 		super( "RenameFolder");
 	}
-	
+
 	/**
 	 * Run the rename folder test
 	 *
@@ -53,48 +53,48 @@ public class RenameFolderTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Create a test folder name for this iteration
-			
+
 			String testFolderName = TestFolderName + "_" + threadId + "_" + iteration;
 			String newFolderName  = TestFolderNew  + "_" + threadId + "_" + iteration;
-			
+
 			// DEBUG
-			
+
 			testLog( log, "RenameFolder Test");
-			
+
 			// Check if the test folder exists
-			
+
 			if ( sess.FileExists( testFolderName)) {
 				testLog( log, "File " + testFolderName + " exists");
-				
+
 				// Set a failure status
-				
+
 				result = new BooleanTestResult( false, "Folder already exists, " + testFolderName);
 			}
 			else {
-				
+
 				// Create a new folder
-				
+
 				testLog( log, "Creating folder " + testFolderName + " via " + sess.getServer());
 				sess.CreateDirectory( testFolderName);
-				
+
 				// Check the folder exists
-				
+
 				if ( sess.FileExists( testFolderName)) {
-					
+
 					// Rename the folder
-					
+
 					sess.RenameFile( testFolderName, newFolderName);
-					
+
 					// Check that the new folder exists
-					
+
 					if ( sess.FileExists( newFolderName)) {
-						
+
 						// Check that the old folder name does not exist
 
 						if ( sess.FileExists( testFolderName) == false)
@@ -110,26 +110,26 @@ public class RenameFolderTest extends Test {
 					result = new BooleanTestResult( false, "Folder does not exist, " + testFolderName);
 				}
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
-				
+
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult(ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -140,7 +140,7 @@ public class RenameFolderTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		sess.DeleteDirectory( TestFolderNew  + "_" + threadId + "_" + iter);
 	}
 }

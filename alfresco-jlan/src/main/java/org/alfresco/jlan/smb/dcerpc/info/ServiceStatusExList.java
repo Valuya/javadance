@@ -28,10 +28,10 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadableList;
 
 /**
  * Service Status Ex List Class
- * 
+ *
  * <p>
  * Contains a list of service status extended information objects.
- * 
+ *
  * @see ServiceStatusInfo
  * @author gkspencer
  */
@@ -54,7 +54,7 @@ public class ServiceStatusExList implements DCEReadableList {
 
 	/**
 	 * Return the service status list
-	 * 
+	 *
 	 * @return List<ServiceStatusExInfo>
 	 */
 	public final List<ServiceStatusExInfo> getList() {
@@ -63,7 +63,7 @@ public class ServiceStatusExList implements DCEReadableList {
 
 	/**
 	 * Return the specified service status info
-	 * 
+	 *
 	 * @param idx int
 	 * @return ServiceStatusExInfo
 	 */
@@ -75,7 +75,7 @@ public class ServiceStatusExList implements DCEReadableList {
 
 	/**
 	 * Return the service status list size
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfServices() {
@@ -84,7 +84,7 @@ public class ServiceStatusExList implements DCEReadableList {
 
 	/**
 	 * Add a service status to the list
-	 * 
+	 *
 	 * @param stsInfo ServiceStatusExInfo
 	 */
 	public final void addServiceStatus(ServiceStatusExInfo stsInfo) {
@@ -93,7 +93,7 @@ public class ServiceStatusExList implements DCEReadableList {
 
 	/**
 	 * Read the service status info list from the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 * @see org.alfresco.jlan.smb.dcerpc.DCEReadable#readObject(DCEBuffer)
@@ -151,7 +151,7 @@ public class ServiceStatusExList implements DCEReadableList {
 
 	/**
 	 * Return the continuation handle for multi part requests
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMultiPartHandle() {

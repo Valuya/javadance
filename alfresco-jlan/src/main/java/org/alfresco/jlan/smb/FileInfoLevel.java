@@ -21,10 +21,10 @@ package org.alfresco.jlan.smb;
 
 /**
  * File Information Levels class.
- * 
+ *
  * This class contains the file information levels that may be requested in the
  * various Transact2 requests.
- * 
+ *
  * @author gkspencer
  */
 public class FileInfoLevel {

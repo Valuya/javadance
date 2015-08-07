@@ -36,7 +36,7 @@ import org.alfresco.jlan.util.StringList;
 /**
  * The network discovery thread attempts to locate a browse master, determine the local domain name
  * and find nodes on the local network.
- * 
+ *
  * @author gkspencer
  */
 class NetworkDiscovery extends Thread {
@@ -79,7 +79,7 @@ class NetworkDiscovery extends Thread {
 
 	/**
 	 * Return the browse master node name, if known.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	String getBrowseMaster() {
@@ -88,7 +88,7 @@ class NetworkDiscovery extends Thread {
 
 	/**
 	 * Return the local domain name string, if known.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	String getDomainName() {
@@ -97,7 +97,7 @@ class NetworkDiscovery extends Thread {
 
 	/**
 	 * Return the list of known nodes.
-	 * 
+	 *
 	 * @return java.util.Vector
 	 */
 	Vector getNodeList() {
@@ -106,7 +106,7 @@ class NetworkDiscovery extends Thread {
 
 	/**
 	 * Return the subnet mask string.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	String getSubnetMask() {
@@ -115,7 +115,7 @@ class NetworkDiscovery extends Thread {
 
 	/**
 	 * Return the debug flag state.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	boolean hasDebug() {
@@ -124,7 +124,7 @@ class NetworkDiscovery extends Thread {
 
 	/**
 	 * Network discovery class test code.
-	 * 
+	 *
 	 * @param args java.lang.String[]
 	 */
 	public static void main(String[] args) {
@@ -381,7 +381,7 @@ class NetworkDiscovery extends Thread {
 
 	/**
 	 * Enable/disable debug messages.
-	 * 
+	 *
 	 * @param dbg boolean
 	 */
 	void setDebug(boolean dbg) {
@@ -390,7 +390,7 @@ class NetworkDiscovery extends Thread {
 
 	/**
 	 * Set the subnet mask string.
-	 * 
+	 *
 	 * @param subnet java.lang.String
 	 */
 	void setSubnetMask(String subnet) {

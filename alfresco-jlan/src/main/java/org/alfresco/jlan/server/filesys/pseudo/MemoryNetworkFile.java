@@ -30,10 +30,10 @@ import org.alfresco.jlan.smb.SeekType;
 
 /**
  * In Memory Network File Class
- * 
+ *
  * <p>
  * In memory network file implementation that uses a memory buffer for the file data.
- * 
+ *
  * @author gkspencer
  */
 public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateInterface {
@@ -47,12 +47,12 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
   private byte[] m_data;
 
   // Dummy file state, required to implement byte range locking
-  
+
   private FileState m_state;
-  
+
   /**
    * Class constructor.
-   * 
+   *
    * @param name String
    * @param data byte[]
    * @param finfo FileInfo
@@ -90,13 +90,13 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
   public void closeFile() throws java.io.IOException {
 
     // Clear the file state
-      
+
     m_state = null;
   }
 
   /**
    * Return the current file position.
-   * 
+   *
    * @return long
    */
   public long currentPosition() {
@@ -106,7 +106,7 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Flush the file.
-   * 
+   *
    * @exception IOException
    */
   public void flushFile()
@@ -117,7 +117,7 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Determine if the end of file has been reached.
-   * 
+   *
    * @return boolean
    */
   public boolean isEndOfFile()
@@ -132,7 +132,7 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Open the file.
-   * 
+   *
    * @param createFlag boolean
    * @exception IOException
    */
@@ -146,7 +146,7 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Read from the file.
-   * 
+   *
    * @param buf byte[]
    * @param len int
    * @param pos int
@@ -184,7 +184,7 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Seek to the specified file position.
-   * 
+   *
    * @param pos long
    * @param typ int
    * @return long
@@ -225,7 +225,7 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Truncate the file
-   * 
+   *
    * @param siz long
    * @exception IOException
    */
@@ -237,7 +237,7 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Write a block of data to the file.
-   * 
+   *
    * @param buf byte[]
    * @param len int
    * @exception IOException
@@ -250,7 +250,7 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Write a block of data to the file.
-   * 
+   *
    * @param buf byte[]
    * @param len int
    * @param pos int
@@ -265,13 +265,13 @@ public class MemoryNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Return a dummy file state for this file
-   * 
+   *
    * @return FileState
    */
   public FileState getFileState() {
-        
+
     // Create a dummy file state
-        
+
     if ( m_state == null)
       m_state = new LocalFileState(getFullName(), false);
     return m_state;

@@ -22,7 +22,7 @@ import java.util.LinkedList;
 
 /**
  * Server Session Queue Class
- * 
+ *
  * @author gkspencer
  */
 public class SrvSessionQueue {
@@ -40,7 +40,7 @@ public class SrvSessionQueue {
 
 	/**
 	 * Return the number of sessions in the queue
-	 * 
+	 *
 	 * @return int
 	 */
 	public final synchronized int numberOfSessions() {
@@ -49,7 +49,7 @@ public class SrvSessionQueue {
 
 	/**
 	 * Add a session to the queue
-	 * 
+	 *
 	 * @param sess SrvSession
 	 */
 	public final synchronized void addSession(SrvSession sess) {
@@ -65,7 +65,7 @@ public class SrvSessionQueue {
 
 	/**
 	 * Remove a session from the head of the queue
-	 * 
+	 *
 	 * @return SrvSession
 	 * @exception InterruptedException
 	 */
@@ -83,22 +83,22 @@ public class SrvSessionQueue {
 
 	/**
 	 * Remove a session from the queue, without waiting if there are no sessions in the queue
-	 * 
+	 *
 	 * @return SrvSession
 	 */
 	public final synchronized SrvSession removeSessionNoWait() {
-		
+
 		SrvSession sess = null;
-		
+
 		if ( m_queue.size() > 0)
 			sess = m_queue.removeFirst();
-			
+
 		return sess;
 	}
-	
+
 	/**
 	 * Wait for a session to be added to the queue
-	 * 
+	 *
 	 * @exception InterruptedException
 	 */
 	public final synchronized void waitWhileEmpty()
@@ -112,7 +112,7 @@ public class SrvSessionQueue {
 
 	/**
 	 * Wait for the session queue to be emptied
-	 * 
+	 *
 	 * @exception InterruptedException
 	 */
 	public final synchronized void waitUntilEmpty()

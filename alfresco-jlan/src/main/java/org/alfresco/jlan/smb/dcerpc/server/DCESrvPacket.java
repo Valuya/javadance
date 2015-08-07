@@ -28,7 +28,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * DCE/RPC Server Packet Class
- * 
+ *
  * @author gkspencer
  */
 public class DCESrvPacket extends SMBTransPacket {
@@ -70,7 +70,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Construct a DCE/RPC transaction packet
-	 * 
+	 *
 	 * @param buf Buffer that contains the SMB transaction packet.
 	 */
 	public DCESrvPacket(byte[] buf) {
@@ -80,7 +80,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Construct a DCE/RPC transaction packet
-	 * 
+	 *
 	 * @param siz Size of packet to allocate.
 	 */
 	public DCESrvPacket(int siz) {
@@ -93,7 +93,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Return the major version number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMajorVersion() {
@@ -102,7 +102,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Return the minor version number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMinorVersion() {
@@ -111,7 +111,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Return the PDU packet type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPDUType() {
@@ -120,7 +120,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Return the header flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDCEHeaderFlags() {
@@ -129,7 +129,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Return the packed data representation
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPackedDataRepresentation() {
@@ -138,7 +138,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Return the fragment length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFragmentLength() {
@@ -147,7 +147,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Set the fragment length
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setFragmentLength(int len) {
@@ -159,7 +159,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Return the authentication length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAuthenticationLength() {
@@ -168,7 +168,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Return the call id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCallId() {
@@ -177,7 +177,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Determine if this is the first fragment
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isFirstFragment() {
@@ -188,7 +188,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Determine if this is the last fragment
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLastFragment() {
@@ -199,7 +199,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Determine if this is the only fragment in the request
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isOnlyFragment() {
@@ -210,7 +210,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Get the offset to the DCE/RPC data within the SMB packet
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDCEDataOffset() {
@@ -242,7 +242,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Get the request allocation hint
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAllocationHint() {
@@ -251,7 +251,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Set the allocation hint
-	 * 
+	 *
 	 * @param alloc int
 	 */
 	public final void setAllocationHint(int alloc) {
@@ -260,7 +260,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Get the request presentation identifier
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPresentationIdentifier() {
@@ -269,7 +269,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Set the presentation identifier
-	 * 
+	 *
 	 * @param ident int
 	 */
 	public final void setPresentationIdentifier(int ident) {
@@ -278,7 +278,7 @@ public class DCESrvPacket extends SMBTransPacket {
 
 	/**
 	 * Get the request operation id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getOperationId() {
@@ -288,7 +288,7 @@ public class DCESrvPacket extends SMBTransPacket {
 	/**
 	 * Initialize the DCE/RPC request. Set the SMB transaction parameter count so that the data
 	 * offset can be calculated.
-	 * 
+	 *
 	 * @param handle int
 	 * @param typ byte
 	 * @param flags int

@@ -37,7 +37,7 @@ public class InvalidACLTypeException extends Exception {
 
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s java.lang.String
 	 */
 	public InvalidACLTypeException(String s) {

@@ -35,24 +35,24 @@ import org.alfresco.jlan.server.filesys.loader.FileLoader;
 public abstract class DBNetworkFile extends NetworkFile implements NetworkFileStateInterface {
 
 	//	File state attributes used/set by the database network file
-	
+
 	public final static String DBCacheFile		= "DBCacheFile";
-	
+
 	//	File state proxy
-	
+
 	private FileStateProxy m_stateProxy;
-	
+
 	//	Associated file loader
-	
+
 	private FileLoader m_loader;
-	
+
 	//	Owner session id
-	
+
 	private String m_ownerSess;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fid int
 	 * @param stid int
@@ -61,15 +61,15 @@ public abstract class DBNetworkFile extends NetworkFile implements NetworkFileSt
 	public DBNetworkFile(String name, int fid, int stid, int did) {
 		super(fid,stid,did);
 		setName(name);
-		
+
 		//	Set the unique file id using the file and directory ids
 
-		setUniqueId(fid,did);		
+		setUniqueId(fid,did);
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fullName String
 	 * @param fid int
@@ -80,15 +80,15 @@ public abstract class DBNetworkFile extends NetworkFile implements NetworkFileSt
 	  super(fid,stid,did);
 	  setName(name);
 	  setFullName(fullName);
-		
+
 		//	Set the unique file id using the file and directory ids
 
-		setUniqueId(fid,did);		
+		setUniqueId(fid,did);
 	}
 
 	/**
 	 * Get the file status
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getStatus() {
@@ -99,34 +99,34 @@ public abstract class DBNetworkFile extends NetworkFile implements NetworkFileSt
 
 	/**
 	 * Determine if the network file has an associated cached file state
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasFileState() {
 		return m_stateProxy != null ? true : false;
 	}
-		
+
 	/**
 	 * Return the associated caching file state
-	 * 
+	 *
 	 * @return FileState
 	 */
 	public final FileState getFileState() {
 		return m_stateProxy.getFileState();
 	}
-	
+
 	/**
 	 * Determine if the network file has an associated file loader
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasLoader() {
 		return m_loader != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the associated file loader
-	 * 
+	 *
 	 * @return FileLoader
 	 */
 	public final FileLoader getLoader() {
@@ -135,7 +135,7 @@ public abstract class DBNetworkFile extends NetworkFile implements NetworkFileSt
 
 	/**
 	 * Determine if the owner session id has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasOwnerSessionId() {
@@ -144,7 +144,7 @@ public abstract class DBNetworkFile extends NetworkFile implements NetworkFileSt
 
 	/**
 	 * Return the owner session unique id
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getOwnerSessionId() {
@@ -153,68 +153,68 @@ public abstract class DBNetworkFile extends NetworkFile implements NetworkFileSt
 
 	/**
 	 * Set the file details from the file information
-	 * 
+	 *
 	 * @param info DBFileInfo
 	 */
 	public final void setFileDetails(DBFileInfo info) {
 		setFileId(info.getFileId());
 		setName(info.getFileName());
-		
+
 		if ( info.getFullName() != null && info.getFullName().length() > 0)
 			setFullName(info.getFullName());
 		setDirectoryId(info.getDirectoryId());
-		
+
 		setFileSize(info.getSize());
 		setAttributes(info.getFileAttributes());
-		
+
 		if ( info.getCreationDateTime() > 0L)
 			setCreationDate( info.getCreationDateTime());
-		
+
 		if ( info.getModifyDateTime() > 0L)
 			setModifyDate(info.getModifyDateTime());
 		else
 			setModifyDate( getCreationDate());
-		
+
 		if ( info.getAccessDateTime() > 0L)
 			setAccessDate(info.getAccessDateTime());
 		else
 			setAccessDate( getModifyDate());
 	}
-		
+
 	/**
 	 * Set the file data status
-	 * 
+	 *
 	 * @param state int
 	 */
 	public final void setStatus(int state) {
-		
+
 		//	Set the file state
-		
+
 		if ( m_stateProxy != null)
 			m_stateProxy.getFileState().setDataStatus(state);
 	}
-	
+
 	/**
 	 * Set the owner session unique id
-	 * 
+	 *
 	 * @param id String
 	 */
 	public final void setOwnerSessionId(String id) {
 		m_ownerSess = id;
 	}
-	
+
 	/**
 	 * Set the associated file state, via a proxy object
-	 * 
+	 *
 	 * @param stateProxy FileStateProxy
 	 */
 	public final void setFileState(FileStateProxy stateProxy) {
 		m_stateProxy = stateProxy;
 	}
-	
+
 	/**
 	 * Set the associated file loader
-	 * 
+	 *
 	 * @param loader FileLoader
 	 */
 	public final void setLoader(FileLoader loader) {
@@ -222,15 +222,15 @@ public abstract class DBNetworkFile extends NetworkFile implements NetworkFileSt
 	}
 	/**
 	 * Open the file
-	 * 
+	 *
 	 * @param createFlag boolean
 	 * @exception IOException
 	 */
 	public void openFile(boolean createFlag)
 		throws IOException {
-		
-		
+
+
 		setClosed( false);
 	}
-	
+
 }

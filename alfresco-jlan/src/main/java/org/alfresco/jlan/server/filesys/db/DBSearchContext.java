@@ -36,32 +36,32 @@ import org.alfresco.jlan.util.WildCard;
 public abstract class DBSearchContext extends SearchContext {
 
 	//	Search resultset and statement
-	
+
 	protected ResultSet m_rs;
 	protected Statement m_stmt;
 
 	//	Complex wildcard filter
-	
+
 	protected WildCard m_filter;
-		
+
   // Mark files as offline, optional file size of files to be marked as offline
-  
+
   protected boolean m_offlineFiles;
   protected long m_offlineFileSize;
-  
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param rs ResultSet
 	 */
 	public DBSearchContext(ResultSet rs) {
 	  super();
 	  m_rs = rs;
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param rs ResultSet
 	 * @param filter WildCard
 	 */
@@ -70,10 +70,10 @@ public abstract class DBSearchContext extends SearchContext {
 	  m_rs     = rs;
 	  m_filter = filter;
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param rs ResultSet
 	 * @param stmt Statement
 	 * @param filter WildCard
@@ -84,7 +84,7 @@ public abstract class DBSearchContext extends SearchContext {
 	  m_stmt   = stmt;
 	  m_filter = filter;
 	}
-	
+
   /**
    * Return the resume id for the current file/directory in the search.
    *
@@ -98,7 +98,7 @@ public abstract class DBSearchContext extends SearchContext {
   	catch (SQLException ex) {
   	  Debug.println(ex);
   	}
-  	
+
   	return resumeId;
   }
 
@@ -108,15 +108,15 @@ public abstract class DBSearchContext extends SearchContext {
    * @return boolean
    */
   public boolean hasMoreFiles() {
-  	
+
   	//	Check if the resultset is valid
-  	
+
   	if ( m_rs == null)
   		return false;
   	boolean moreFiles = true;
-  	
+
   	//	Check if we have reached the end of the resultset
-  	
+
   	try {
 			moreFiles = m_rs.isAfterLast() ? false : true;
   	}
@@ -127,7 +127,7 @@ public abstract class DBSearchContext extends SearchContext {
 
   /**
    * Return the next file from the search, or return false if there are no more files
-   * 
+   *
    * @param info FileInfo
    * @return boolean
    */
@@ -152,7 +152,7 @@ public abstract class DBSearchContext extends SearchContext {
 		boolean result = true;
 
 		//	Skip to the required record, relative to the start of the resultset
-		
+
 		try {
 			 m_rs.beforeFirst();
 			 m_rs.absolute( resumeId);
@@ -162,7 +162,7 @@ public abstract class DBSearchContext extends SearchContext {
 		}
 
 		//	Return status
-		      
+
 		return result;
   }
 
@@ -173,9 +173,9 @@ public abstract class DBSearchContext extends SearchContext {
    * @return       true if the search can be restarted, else false.
    */
   public boolean restartAt(FileInfo info) {
-  	
+
   	//	Skip to the previous record
-  	
+
   	try {
   		m_rs.previous();
   	}
@@ -183,39 +183,39 @@ public abstract class DBSearchContext extends SearchContext {
   	}
     return true;
   }
-  
+
 	/**
 	 * Return the total number of file entries for this search if known, else return -1
-	 * 
+	 *
 	 * @return int
 	 */
 	public int numberOfEntries() {
-		
+
 		//	Get the number of entries in the resultset
-		
+
 		int rows = -1;
-		
+
 		try {
 			 m_rs.last();
 			 rows = m_rs.getRow();
 			 m_rs.beforeFirst();
-         
+
 		}
 		catch ( SQLException ex) {
 		}
-		
+
 		//	Return the entry count for this search
-		
+
 		return rows;
 	}
-	
+
   /**
-   * Close the search 
+   * Close the search
    */
   public void closeSearch() {
-  	
+
   	//	Check if the resultset is valid, if so then close it
-  	
+
   	if ( m_rs != null) {
   		try {
   			m_rs.close();
@@ -228,15 +228,15 @@ public abstract class DBSearchContext extends SearchContext {
   		m_rs   = null;
   		m_stmt = null;
   	}
-  	
+
   	//	Call the base class
-  	
+
     super.closeSearch();
   }
-  
+
   /**
    * Determine if files should be marked as offline
-   * 
+   *
    * @return boolean
    */
   public final boolean hasMarkAsOffline() {
@@ -245,25 +245,25 @@ public abstract class DBSearchContext extends SearchContext {
 
   /**
    * Return the offline file size limit
-   * 
+   *
    * @return  long
    */
   public final long getOfflineFileSize() {
     return m_offlineFileSize;
   }
-  
+
   /**
    * Set/clear the mark files as offline setting
-   * 
+   *
    * @param offline boolean
    */
   public final void setMarkAsOffline(boolean offline) {
     m_offlineFiles = offline;
   }
-  
+
   /**
    * Set the file size for offline files
-   * 
+   *
    * @param fsize long
    */
   public final void setOfflineFileSize( long fsize) {

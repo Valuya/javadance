@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys.cache.hazelcast;
 
 /**
  * Cluster Message Types Class
- * 
+ *
  * <p>Contains the cluster message type ids.
  *
  * @author gkspencer
@@ -37,16 +37,16 @@ public class ClusterMessageType {
 	public final static int RenameState			= 4;
 	public final static int DataUpdate			= 5;
 	public final static int OplockTypeChange	= 6;
-	
+
 	/**
 	 * Return a message type as a string
-	 * 
+	 *
 	 * @param typ int
 	 * @return String
 	 */
 	public static String getTypeAsString( int typ) {
 		String typStr = "";
-		
+
 		switch ( typ) {
 			case EchoString:
 				typStr = "EchoTest";
@@ -70,7 +70,7 @@ public class ClusterMessageType {
 				typStr = "OplockTypeChange";
 				break;
 		}
-		
+
 		return typStr;
 	}
 }

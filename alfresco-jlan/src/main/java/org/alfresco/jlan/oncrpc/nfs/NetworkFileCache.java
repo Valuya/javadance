@@ -34,10 +34,10 @@ import org.alfresco.jlan.server.filesys.TreeConnection;
 
 /**
  * Network File Cache Class
- * 
+ *
  * <p>
  * Caches the network files that are currently being accessed by the NFS server.
- * 
+ *
  * @author gkspencer
  */
 public class NetworkFileCache {
@@ -61,9 +61,9 @@ public class NetworkFileCache {
 	private long m_fileCloseTmo = ClosedFileTimeout;
 
 	// NFS authenticator
-	
+
 	private RpcAuthenticator m_authenticator;
-	
+
 	// Debug enable flag
 
 	private boolean m_debug = false;
@@ -92,7 +92,7 @@ public class NetworkFileCache {
 
 		/**
 		 * Class constructor
-		 * 
+		 *
 		 * @param file NetworkFile
 		 * @param conn TreeConnection
 		 * @param sess NFSSrvSession
@@ -107,7 +107,7 @@ public class NetworkFileCache {
 
 		/**
 		 * Return the file timeout
-		 * 
+		 *
 		 * @return long
 		 */
 		public final long getTimeout() {
@@ -116,7 +116,7 @@ public class NetworkFileCache {
 
 		/**
 		 * Return the network file
-		 * 
+		 *
 		 * @return NetworkFile
 		 */
 		public final NetworkFile getFile() {
@@ -125,7 +125,7 @@ public class NetworkFileCache {
 
 		/**
 		 * Return the disk share connection
-		 * 
+		 *
 		 * @return TreeConnection
 		 */
 		public final TreeConnection getConnection() {
@@ -134,7 +134,7 @@ public class NetworkFileCache {
 
 		/**
 		 * Get the session that last accessed the file
-		 * 
+		 *
 		 * @return NFSSrvSession
 		 */
 		public final NFSSrvSession getSession() {
@@ -150,7 +150,7 @@ public class NetworkFileCache {
 
 		/**
 		 * Update the file timeout
-		 * 
+		 *
 		 * @param tmo
 		 *            long
 		 */
@@ -160,7 +160,7 @@ public class NetworkFileCache {
 
 		/**
 		 * Set the session that last accessed the file
-		 * 
+		 *
 		 * @param sess NFSSrvSession
 		 */
 		public final void setSession(NFSSrvSession sess) {
@@ -199,7 +199,7 @@ public class NetworkFileCache {
 				}
 			}
 		}
-		
+
 		/**
 		 * Mark the file entry as closed
 		 */
@@ -224,7 +224,7 @@ public class NetworkFileCache {
 
 		/**
 		 * Class Constructor
-		 * 
+		 *
 		 * @param name
 		 *            String
 		 */
@@ -295,73 +295,73 @@ public class NetworkFileCache {
 
 								if (Debug.EnableInfo && hasDebug())
 									Debug.println("NFSFileExpiry: I/O pending file="	+ fentry.getFile().getFullName() + ", fid=" + fileId);
-							} 
+							}
 							else {
 
 								// Make sure there is no active transaction
-								
+
 								if ( fentry.getSession().hasTransaction())
 									fentry.getSession().endTransaction();
-								
+
 								// Check if the network file is closed, if not  then close the file to release the file
 								// handle but keep the file entry in the file cache for a while as the file may be re-opened
 
 								if (fentry.isClosed() == false && netFile != null) {
 
 									// We need to do the close in the context of the user that opened the file
-									
+
 									try {
-										
+
 										// Set the the current user context
-										
+
 										m_authenticator.setCurrentUser( fentry.getSession(), fentry.getSession().getNFSClientInformation());
-									
+
 										// Check if the filesystem is transactional, in this case only mark the file as closed
-										
+
 										if ( netFile.allowsOpenCloseViaNetworkFile() == false) {
-										    
+
 										    // Mark the file as closed, wait for second stage expiry to actually close the file
-										    
+
 										    fentry.markAsClosed();
 
 										    // DEBUG
-									        
+
                                             if (Debug.EnableInfo && hasDebug())
                                                 Debug.println("NFSFileExpiry: Marked as closed file=" + fentry.getFile().getFullName() + ", fid=" + fileId + " (cached)");
 										}
 										else {
-										    
+
     										// Close the network file
-    	
+
     										fentry.closeFile();
-    	
+
     										// Update the file entry timeout to keep the file in the cache for a while
-    	
+
     										fentry.updateTimeout(System.currentTimeMillis() + m_fileCloseTmo);
-    	
+
     										// DEBUG
-    	
+
     										if (Debug.EnableInfo && hasDebug())
     											Debug.println("NFSFileExpiry: Closed file="	+ fentry.getFile().getFullName() + ", fid="	+ fileId + " (cached)");
 										}
-										
+
 										// Clear the user context, flush any active transaction
-										
+
 										if ( fentry.getSession().hasTransaction())
 											fentry.getSession().endTransaction();
-										
+
 										m_authenticator.setCurrentUser( fentry.getSession(), null);
 									}
 									catch (Exception ex) {
-								
+
 										// DEBUG
-										
+
 										if ( Debug.EnableInfo && hasDebug()) {
 											Debug.println("Error closing file, fentry=" + fentry + ", ex=" + ex.getMessage());
 											Debug.println(ex);
 										}
 									}
-								} 
+								}
 								else {
 
 									// File entry has expired, remove it from the cache
@@ -373,9 +373,9 @@ public class NetworkFileCache {
 									try {
 
 										// Set the the current user context
-										
+
 										m_authenticator.setCurrentUser( fentry.getSession(), fentry.getSession().getNFSClientInformation());
-									
+
 										// Get the disk interface
 
 										DiskInterface disk = (DiskInterface) fentry.getConnection().getInterface();
@@ -383,17 +383,17 @@ public class NetworkFileCache {
 										// Close the file
 
 										if ( disk.fileExists( fentry.getSession(), fentry.getConnection(), netFile.getFullName()) != FileStatus.NotExist) {
-											
+
 										    // Check if the file has already been closed
-										    
+
 										    if ( netFile.isClosed() == false) {
-										    
+
 										        // Close the file
-										        
+
     											disk.closeFile(fentry.getSession(),	fentry.getConnection(),	netFile);
-    
+
     											// DEBUG
-    	
+
     											if (Debug.EnableInfo && hasDebug())
     												Debug.println("NFSFileExpiry: Closed file="	+ fentry.getFile().getFullName() + ", fid="	+ fileId + " (removed)");
 										    }
@@ -404,16 +404,16 @@ public class NetworkFileCache {
 											Debug.println("NFSFileExpiry: File deleted before close, " + netFile.getFullName());
 
 										// Clear the user context, flush any active transaction
-										
+
 										if ( fentry.getSession().hasTransaction())
 											fentry.getSession().endTransaction();
-										
+
 										m_authenticator.setCurrentUser( fentry.getSession(), null);
-									} 
+									}
 									catch (Exception ex) {
 
 										// DEBUG
-										
+
 										if ( Debug.EnableInfo && hasDebug()) {
 											Debug.println("Error closing file, fentry=" + fentry + ", ex=" + ex.getMessage());
 											Debug.println(ex);
@@ -454,7 +454,7 @@ public class NetworkFileCache {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name
 	 *            String
 	 */
@@ -471,7 +471,7 @@ public class NetworkFileCache {
 
 	/**
 	 * Determine if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
@@ -480,7 +480,7 @@ public class NetworkFileCache {
 
 	/**
 	 * Add a file to the cache
-	 * 
+	 *
 	 * @param file NetworkFile
 	 * @param conn TreeConnection
 	 * @param sess NFSSrvSession
@@ -494,7 +494,7 @@ public class NetworkFileCache {
 
 	/**
 	 * Remove a file from the cache
-	 * 
+	 *
 	 * @param id int
 	 */
 	public synchronized final void removeFile(int id) {
@@ -510,7 +510,7 @@ public class NetworkFileCache {
 
 	/**
 	 * Find a file via the file id
-	 * 
+	 *
 	 * @param id
 	 *            int
 	 * @param sess
@@ -553,7 +553,7 @@ public class NetworkFileCache {
 
 	/**
 	 * Return the count of entries in the cache
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfEntries() {
@@ -589,7 +589,7 @@ public class NetworkFileCache {
 
 	/**
 	 * Enable/disable debug output
-	 * 
+	 *
 	 * @param ena
 	 *            boolean
 	 */
@@ -599,7 +599,7 @@ public class NetworkFileCache {
 
 	/**
 	 * Set the I/O cache timer value
-	 * 
+	 *
 	 * @param ioTimer
 	 *            long
 	 */
@@ -609,7 +609,7 @@ public class NetworkFileCache {
 
 	/**
 	 * Set the close file cache timer value
-	 * 
+	 *
 	 * @param closeTimer
 	 *            long
 	 */
@@ -619,13 +619,13 @@ public class NetworkFileCache {
 
 	/**
 	 * Set the RPC authenticator
-	 * 
+	 *
 	 * @param auth RpcAuthenticator
 	 */
 	public final void setRpcAuthenticator(RpcAuthenticator auth) {
 		m_authenticator = auth;
 	}
-	
+
 	/**
 	 * Dump the cache entries to the debug device
 	 */

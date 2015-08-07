@@ -26,7 +26,7 @@ import org.alfresco.jlan.smb.dcerpc.DCEBufferException;
 
 /**
  * Eventlog Record List Class
- * 
+ *
  * @author gkspencer
  */
 public class EventlogRecordList {
@@ -44,7 +44,7 @@ public class EventlogRecordList {
 
 	/**
 	 * Return the eventlog record list
-	 * 
+	 *
 	 * @return List<EventlogRecord>
 	 */
 	public final List<EventlogRecord> getRecordList() {
@@ -53,7 +53,7 @@ public class EventlogRecordList {
 
 	/**
 	 * Return the specified eventlog record from the list
-	 * 
+	 *
 	 * @param idx int
 	 * @return EventlogRecord
 	 */
@@ -65,7 +65,7 @@ public class EventlogRecordList {
 
 	/**
 	 * Return the count of eventlog records in the list
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfRecords() {
@@ -74,7 +74,7 @@ public class EventlogRecordList {
 
 	/**
 	 * Add an eventlog record to the list
-	 * 
+	 *
 	 * @param rec EventlogRecord
 	 */
 	public final void addRecord(EventlogRecord rec) {
@@ -83,7 +83,7 @@ public class EventlogRecordList {
 
 	/**
 	 * Read the eventlog records from the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @param cnt int
 	 * @exception DCEBufferException
@@ -116,7 +116,7 @@ public class EventlogRecordList {
 
 	/**
 	 * Write the eventlog records to the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 */
 	public void writeObject(DCEBuffer buf) {

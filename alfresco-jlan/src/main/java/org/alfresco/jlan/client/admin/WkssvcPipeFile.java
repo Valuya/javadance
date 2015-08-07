@@ -31,18 +31,18 @@ import org.alfresco.jlan.smb.dcerpc.info.WorkstationInfo;
 
 /**
  * Workstation Service Pipe File Class
- * 
+ *
  * <p>
  * Pipe file connected to a remote workstation DCE/RPC service that can be used to receive
  * information about the remote workstation.
- * 
+ *
  * @author gkspencer
  */
 public class WkssvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param pkt DCEPacket
 	 * @param handle int
@@ -56,7 +56,7 @@ public class WkssvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the workstation information
-	 * 
+	 *
 	 * @return WorkstationInfo
 	 * @exception IOException
 	 * @exception SMBException

@@ -25,41 +25,41 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Server Session Information Class
- * 
+ *
  * @author gkspencer
  */
 public class SessionInfo implements DCEReadable {
 
 	//	Information levels supported
-  
+
 	public static final int InfoLevel0		= 0;
 	public static final int InfoLevel1		= 1;
 	public static final int InfoLevel2		= 2;
 	public static final int InfoLevel10		= 10;
 	public static final int InfoLevel502	= 502;
-  
+
 	//	Session flags
-  
+
 	public final static int Guest				= 0x0001;
 	public final static int EncryptedPassword	= 0x0002;
-  
+
 	//	Information level
-	
+
 	private int m_infoLevel;
 
 	//	Session details
-	
+
 	private String m_client;
 	private String m_user;
-	
+
 	private int m_openFiles;
 	private int m_sessTime;
 	private int m_idleTime;
 	private int m_userFlags;
-	
+
 	private String m_clientType;
-	private String m_transport; 
-	
+	private String m_transport;
+
 	/**
 	 * Default constructor
 	 */
@@ -68,7 +68,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 */
 	public SessionInfo(int infoLevel) {
@@ -77,7 +77,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Get the information level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getInformationLevel() {
@@ -86,7 +86,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Return the client name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getClientName() {
@@ -95,7 +95,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Return the user name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getUserName() {
@@ -104,7 +104,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Return the number of open files on this session
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNumberOfOpenFiles() {
@@ -113,7 +113,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Return the session time in seconds
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSessionTime() {
@@ -122,7 +122,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Return the session idle time in seconds
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getIdleTime() {
@@ -131,7 +131,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Return the user flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getUserFlags() {
@@ -140,7 +140,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Check if the session is using the guest account
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isGuest() {
@@ -149,7 +149,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Check if the session used an encrypted password
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean usedEncryptedPassword() {
@@ -158,7 +158,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Return the client type
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getClientType() {
@@ -167,7 +167,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Return the transport
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTransport() {
@@ -189,7 +189,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Read the session information from the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @throws DCEBufferException
 	 */
@@ -265,7 +265,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Read the strings for this session information from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -289,7 +289,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Set the client name
-	 * 
+	 *
 	 * @param client String
 	 */
 	public final void setClientName(String client) {
@@ -298,7 +298,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Set the user name
-	 * 
+	 *
 	 * @param userName String
 	 */
 	public final void setUserName(String userName) {
@@ -307,7 +307,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Set the number of open files on this session
-	 * 
+	 *
 	 * @param files int
 	 */
 	public final void setNumberOfOpenFiles(int files) {
@@ -316,7 +316,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Set the session time in seconds
-	 * 
+	 *
 	 * @param sessTime int
 	 */
 	public final void setSessionTime(int sessTime) {
@@ -325,7 +325,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Set the session idle time in seconds
-	 * 
+	 *
 	 * @param idleTime int
 	 */
 	public final void setIdleTime(int idleTime) {
@@ -334,7 +334,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Set the user flags
-	 * 
+	 *
 	 * @param flags int
 	 */
 	public final void setUserFlags(int flags) {
@@ -343,7 +343,7 @@ public class SessionInfo implements DCEReadable {
 
 	/**
 	 * Return the session information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

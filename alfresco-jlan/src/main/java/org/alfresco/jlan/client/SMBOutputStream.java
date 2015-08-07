@@ -25,23 +25,23 @@ import org.alfresco.jlan.smb.SMBException;
 
 /**
  * SMB output stream class.
- * 
+ *
  * <p>
  * The SMBOutputStream class provides a standard OutputStream interface to an existing remote file,
  * or can be used to create a new remote file.
- * 
+ *
  * <p>
  * The class may be used with other I/O stream classes such as PrintWriter, DataOutputStream etc.
- * 
+ *
  * <p>
  * <strong>Note:</strong> It is not necessary to use a BufferedOutputStream or BufferedWriter class
  * with the SMBOutputStream as the underlying network connection will usually buffer 4Kb of data, up
  * to a maximum of 64Kb.
- * 
- * 
+ *
+ *
  * <p>
  * Example use of the SMBOutputStream class
- * 
+ *
  * <p>
  * <code>PCShare shr = new PCShare ( "\\\\TEST\\C\\");<br>
  *      DiskSession sess = SessionFactory.OpenDisk ( shr);<br>
@@ -51,7 +51,7 @@ import org.alfresco.jlan.smb.SMBException;
  *      &nbsp;&nbsp;pWrt.println ( "Record " + i);<br>
  *      pWrt.flush ();<br>
  *      out.close ();</code>
- * 
+ *
  * @author gkspencer
  */
 public class SMBOutputStream extends java.io.OutputStream {
@@ -62,7 +62,7 @@ public class SMBOutputStream extends java.io.OutputStream {
 
 	/**
 	 * Construct an SMB output stream attached to the specified SMB file
-	 * 
+	 *
 	 * @param sfile SMBFile that this output stream is attached to.
 	 */
 	protected SMBOutputStream(SMBFile sfile) {
@@ -71,7 +71,7 @@ public class SMBOutputStream extends java.io.OutputStream {
 
 	/**
 	 * Close this output stream and release any system resources associated with the stream.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
 	public void close()
@@ -89,7 +89,7 @@ public class SMBOutputStream extends java.io.OutputStream {
 
 	/**
 	 * Return a reference to the associated SMBFile object.
-	 * 
+	 *
 	 * @return SMBFile associated with this output stream.
 	 */
 	public final SMBFile File() {
@@ -98,7 +98,7 @@ public class SMBOutputStream extends java.io.OutputStream {
 
 	/**
 	 * Flush this output stream, force any buffered data to be written out.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
 	public void flush()
@@ -117,7 +117,7 @@ public class SMBOutputStream extends java.io.OutputStream {
 	/**
 	 * Write the specified byte array to the output stream, starting at the specified offset within
 	 * the byte array.
-	 * 
+	 *
 	 * @param buf Byte array containing the data to be output.
 	 * @param off Offset within the buffer that the data starts.
 	 * @param len Length of the data to be output.
@@ -138,7 +138,7 @@ public class SMBOutputStream extends java.io.OutputStream {
 
 	/**
 	 * Write the specified byte to this output stream.
-	 * 
+	 *
 	 * @param byt Byte to be output to this stream.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */

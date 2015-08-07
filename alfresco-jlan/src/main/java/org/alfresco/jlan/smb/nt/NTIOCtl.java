@@ -27,7 +27,7 @@ package org.alfresco.jlan.smb.nt;
 public class NTIOCtl {
 
   //	Device type codes
-  
+
   public static final int DeviceBeep							=	0x0001;
   public static final int DeviceCDRom							= 0x0002;
   public static final int DeviceCDRomFileSystem		= 0x0003;
@@ -82,22 +82,22 @@ public class NTIOCtl {
   public static final int DeviceFullScreenVideo		= 0x0034;
   public static final int DeviceDFSFileSystem			= 0x0035;
   public static final int DeviceDFSVolume					= 0x0036;
-  
+
   //	Method types for I/O and filesystem controls
-  
+
   public static final int MethodBuffered					= 0;
   public static final int MethodInDirect					= 1;
   public static final int MethodOutDirect					= 2;
   public static final int MethodNeither						= 3;
-  
+
   //	Access check types
-  
+
   public static final int AccessAny								= 0;
   public static final int AccessRead							= 0x0001;
   public static final int AccessWrite							= 0x0002;
-  
+
   //	Filesystem function codes
-  
+
   public static final int FsCtlRequestOplockLevel1	= 0;
   public static final int FsCtlRequestOplockLevel2	= 1;
   public static final int FsCtlRequestBatchOplock 	= 2;
@@ -154,51 +154,51 @@ public class NTIOCtl {
   public static final int FsCtlReadFileUsnData    	= 58;
   public static final int FsCtlWriteUsnCloseRecord	= 59;
   public static final int FsCtlExtendVolume       	= 60;
-  
+
   // Base value for custom control codes
-  
+
   public static final int FsCtlCustom                 = 0x800;
-  
+
   /**
    * Extract the device type from an I/O control code
-   * 
+   *
    * @param ioctl int
    * @return int
    */
   public final static int getDeviceType(int ioctl) {
     return ( ioctl >> 16) & 0x0000FFFF;
   }
-  
+
   /**
    * Extract the access type from an I/O control code
-   * 
+   *
    * @param ioctl int
    * @return int
    */
   public final static int getAccessType(int ioctl) {
     return ( ioctl >> 14) & 0x00000003;
   }
-  
+
   /**
    * Extract the function code from the I/O control code
-   * 
+   *
    * @param ioctl int
    * @return int
    */
   public final static int getFunctionCode(int ioctl) {
     return ( ioctl >> 2) & 0x00000FFF;
   }
-  
+
   /**
    * Extract the method code from the I/O control code
-   * 
+   *
    * @param ioctl int
    * @return int
    */
   public final static int getMethod(int ioctl) {
     return ioctl & 0x00000003;
   }
-  
+
   /**
    * Make a control code
    *
@@ -211,30 +211,30 @@ public class NTIOCtl {
   public final static int makeControlCode(int devType, int func, int method, int access) {
     return (devType << 16) + (access << 14) + (func << 2) + (method);
   }
-  
+
   /**
    * Return an I/O control code as a string
-   * 
+   *
    * @param ioctl int
    * @return String
    */
   public final static String asString(int ioctl) {
     StringBuffer str = new StringBuffer();
-    
+
     str.append("[Func:");
     str.append(getFunctionCode(ioctl));
-    
+
     str.append(",DevType:");
     str.append(getDeviceType(ioctl));
-    
+
     str.append(",Access:");
     str.append(getAccessType(ioctl));
-    
+
     str.append(",Method:");
     str.append(getMethod(ioctl));
-    
+
     str.append("]");
-    
+
     return str.toString();
   }
 }

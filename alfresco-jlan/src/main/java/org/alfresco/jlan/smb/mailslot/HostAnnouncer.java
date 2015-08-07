@@ -29,7 +29,7 @@ import org.alfresco.jlan.util.StringList;
  * <p>
  * The host announcer class periodically broadcasts a host announcement datagram to inform other
  * Windows networking hosts of the local hosts existence and capabilities.
- * 
+ *
  * @author gkspencer
  */
 public abstract class HostAnnouncer extends Thread {
@@ -91,7 +91,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Create a host announcer.
-	 * 
+	 *
 	 * @param name Host name to announce
 	 * @param domain Domain name to announce to
 	 * @param intval Announcement interval, in minutes
@@ -121,7 +121,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Return the server comment string.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public final String getComment() {
@@ -130,7 +130,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Return the domain name that the host announcement is directed to.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public final String getDomain() {
@@ -139,7 +139,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Return the number of names being announced
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfNames() {
@@ -148,7 +148,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Return the specified host name being announced.
-	 * 
+	 *
 	 * @param idx int
 	 * @return java.lang.String
 	 */
@@ -158,7 +158,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Return the announcement interval, in minutes.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getInterval() {
@@ -167,7 +167,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Return the server type flags.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getServerType() {
@@ -176,7 +176,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Determine if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
@@ -185,7 +185,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Enable/disable debug output
-	 * 
+	 *
 	 * @param dbg true or false
 	 */
 	public final void setDebug(boolean dbg) {
@@ -194,7 +194,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Initialize the host announcement SMB.
-	 * 
+	 *
 	 * @param name String
 	 */
 	protected final void initHostAnnounceSMB(String name) {
@@ -359,7 +359,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Initialize the host announcer.
-	 * 
+	 *
 	 * @exception Exception
 	 */
 	protected abstract void initialize()
@@ -367,14 +367,14 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Determine if the network connection used for the host announcement is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public abstract boolean isNetworkEnabled();
 
 	/**
 	 * Send an announcement broadcast.
-	 * 
+	 *
 	 * @param hostName Host name being announced
 	 * @param buf Buffer containing the host announcement mailslot message.
 	 * @param offset Offset to the start of the host announcement message.
@@ -385,7 +385,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Set the server comment string.
-	 * 
+	 *
 	 * @param comment java.lang.String
 	 */
 	public final void setComment(String comment) {
@@ -396,7 +396,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Set the domain name that the host announcement are directed to.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 */
 	public final void setDomain(String name) {
@@ -405,7 +405,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Add a host name to the list of names to announce
-	 * 
+	 *
 	 * @param name java.lang.String
 	 */
 	public final void addHostName(String name) {
@@ -414,7 +414,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Add a list of names to the announcement list
-	 * 
+	 *
 	 * @param names StringList
 	 */
 	public final void addHostNames(StringList names) {
@@ -436,7 +436,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Set the announcement interval, in minutes.
-	 * 
+	 *
 	 * @param intval int
 	 */
 	public final void setInterval(int intval) {
@@ -445,7 +445,7 @@ public abstract class HostAnnouncer extends Thread {
 
 	/**
 	 * Set the server type flags.
-	 * 
+	 *
 	 * @param typ int
 	 */
 	public final void setServerType(int typ) {

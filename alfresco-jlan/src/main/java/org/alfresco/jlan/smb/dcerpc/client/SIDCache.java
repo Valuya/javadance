@@ -25,11 +25,11 @@ import org.alfresco.jlan.smb.nt.SID;
 
 /**
  * SID Cache Class
- * 
+ *
  * <p>
  * Cache used to hold SIDs from lookups on a remote server to prevent multiple lookups for the same
  * name/id.
- * 
+ *
  * @author gkspencer
  */
 public class SIDCache {
@@ -47,7 +47,7 @@ public class SIDCache {
 
 	/**
 	 * Return the number of SIDs in the cache
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfSIDs() {
@@ -56,7 +56,7 @@ public class SIDCache {
 
 	/**
 	 * Add a SID to the cache
-	 * 
+	 *
 	 * @param name String
 	 * @param sid SID
 	 */
@@ -66,7 +66,7 @@ public class SIDCache {
 
 	/**
 	 * Return the SID for the specified name
-	 * 
+	 *
 	 * @param name String
 	 * @return SID
 	 */
@@ -76,7 +76,7 @@ public class SIDCache {
 
 	/**
 	 * Find the name of the matching SID
-	 * 
+	 *
 	 * @param sid SID
 	 * @return String
 	 */
@@ -109,7 +109,7 @@ public class SIDCache {
 
 	/**
 	 * Delete a SID from the cache
-	 * 
+	 *
 	 * @param index String
 	 * @return SID
 	 */
@@ -119,7 +119,7 @@ public class SIDCache {
 
 	/**
 	 * Enumerate the names in the cache
-	 * 
+	 *
 	 * @return Enumeration<String>
 	 */
 	public final Enumeration<String> enumerateNames() {
@@ -128,7 +128,7 @@ public class SIDCache {
 
 	/**
 	 * Enumerate the SIDs in the cache
-	 * 
+	 *
 	 * @return Enumeration<SID>
 	 */
 	public final Enumeration<SID> enumerateSIDs() {

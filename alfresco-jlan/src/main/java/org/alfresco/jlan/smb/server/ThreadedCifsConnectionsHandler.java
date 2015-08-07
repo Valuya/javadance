@@ -38,9 +38,9 @@ import org.alfresco.jlan.smb.server.win32.Win32NetBIOSSessionSocketHandler;
 
 /**
  * Threaded CIFS Connectins Handler Class
- * 
+ *
  * <p>Create a seperate thread for each enabled CIFS session handler.
- * 
+ *
  * @author gkspencer
  */
 public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
@@ -50,23 +50,23 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 	// Default LANA offline polling interval
 
 	public static final long LANAPollingInterval = 5000; // 5 seconds
-	
+
 	// List of session handlers that are waiting for incoming requests
-	
+
 	private SessionHandlerList m_handlerList;
-	
+
 	// List of host announcers
-	
+
 	private Vector<HostAnnouncer> m_hostAnnouncers;
-	
+
 	// SMB server
-	
+
 	private SMBServer m_server;
-	
+
 	// Debug output
-	
+
 	private boolean m_debug;
-	
+
 	/**
 	 * Class constructor
 	 */
@@ -74,19 +74,19 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 		m_handlerList    = new SessionHandlerList();
 		m_hostAnnouncers = new Vector<HostAnnouncer>();
 	}
-	
+
 	/**
 	 * Check if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
 		return m_debug;
 	}
-	
+
 	/**
 	 * Initialize the connections handler
-	 * 
+	 *
 	 * @param srv SMBServer
 	 * @param config CIFSConfigSection
 	 * @exception InvalidConfigurationException
@@ -95,9 +95,9 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 		throws InvalidConfigurationException {
 
 		// Save the server
-		
+
 		m_server = srv;
-		
+
 		// Check if the socket connection debug flag is enabled
 
 		if ( (config.getSessionDebugFlags() & SMBSrvSession.DBG_SOCKET) != 0)
@@ -111,11 +111,11 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 
 			SocketSessionHandler sessHandler = new NetBIOSSessionSocketHandler( srv, config.getSessionPort(), config.getSMBBindAddress(), hasDebug());
 			sessHandler.setSocketTimeout( config.getSocketTimeout());
-			
+
 			try {
-				
+
 				// Initialize the NetBIOS session handler
-				
+
 				sessHandler.initializeSessionHandler( srv);
 				m_handlerList.addHandler( sessHandler);
 
@@ -167,7 +167,7 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 						announcer.setDebug(true);
 
 					// Add the announcer to the list
-					
+
 					m_hostAnnouncers.add( announcer);
 
 					// DEBUG
@@ -177,7 +177,7 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 				}
 			}
 			catch (IOException ex) {
-				
+
 			}
 		}
 
@@ -191,9 +191,9 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 			sessHandler.setSocketTimeout( config.getSocketTimeout());
 
 			try {
-				
+
 				// Initialize the native SMB handler
-				
+
 				sessHandler.initializeSessionHandler( srv);
 				m_handlerList.addHandler( sessHandler);
 
@@ -243,9 +243,9 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 					sessHandler = new Win32NetBIOSSessionSocketHandler(srv, config.getWin32LANA(), hasDebug());
 
 					try {
-						
+
 						// Initialize the Win32 JNI session handler
-						
+
 						sessHandler.initializeSessionHandler( srv);
 						m_handlerList.addHandler( sessHandler);
 
@@ -310,9 +310,9 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 							sessHandler = new Win32NetBIOSSessionSocketHandler( srv, lana, hasDebug());
 
 							try {
-								
+
 								// Initialize the Win32 JNI session handler
-								
+
 								sessHandler.initializeSessionHandler( srv);
 								m_handlerList.addHandler( sessHandler);
 
@@ -381,55 +381,55 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 			}
 		}
 	}
-	
+
 	/**
 	 *  Return the count of active session handlers
-	 *  
+	 *
 	 *  @return int
 	 */
 	public int numberOfSessionHandlers() {
 		return m_handlerList.numberOfHandlers();
 	}
-	
+
 	/**
 	 * Start the connection handler thread
 	 */
 	public void startHandler() {
-		
+
 		// Start each session handler in a seperate thread
-		
+
 		for ( int idx = 0; idx < m_handlerList.numberOfHandlers(); idx++) {
-			
+
 			SessionHandlerInterface sessHandler = m_handlerList.getHandlerAt( idx);
-			
+
 			if ( sessHandler instanceof Runnable) {
-				
+
 				// Start the session handler in a seperate thread
-				
+
 				Thread handlerThread = new Thread(( Runnable) sessHandler);
 				handlerThread.setName( "CIFSSessHandler_" + sessHandler.getHandlerName());
 				handlerThread.start();
-				
+
 				// DEBUG
-				
+
 				if ( Debug.EnableInfo && hasDebug())
 					Debug.println("[SMB] Created session handler thread " + handlerThread.getName());
 			}
 		}
-		
+
 		// Start the host announcer(s)
-		
+
 		if ( m_hostAnnouncers.size() > 0) {
-			
+
 			for ( int idx = 0; idx < m_hostAnnouncers.size(); idx++) {
 
 				// Get the current host announcer
-				
+
 				HostAnnouncer hostAnnouncer = (HostAnnouncer) m_hostAnnouncers.get( idx);
 				hostAnnouncer.startAnnouncer();
-				
+
 				// DEBUG
-				
+
 				if ( Debug.EnableInfo && hasDebug())
 					Debug.println( "[SMB] Started host announcer " + hostAnnouncer.getName());
 			}
@@ -440,42 +440,42 @@ public class ThreadedCifsConnectionsHandler implements CifsConnectionsHandler {
 	 * Stop the connections handler
 	 */
 	public void stopHandler() {
-		
+
 		// Stop each session handler
-		
+
 		for ( int idx = 0; idx < m_handlerList.numberOfHandlers(); idx++) {
-			
+
 			SessionHandlerInterface sessHandler = m_handlerList.getHandlerAt( idx);
 			sessHandler.closeSessionHandler( m_server);
-				
+
 			// DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebug())
 				Debug.println("[SMB] Shutting down session handler thread " + sessHandler.getHandlerName());
 		}
-		
+
 		// Stop the host announcer(s)
-		
+
 		if ( m_hostAnnouncers.size() > 0) {
-			
+
 			for ( int idx = 0; idx < m_hostAnnouncers.size(); idx++) {
 
 				// Get the current host announcer
-				
+
 				HostAnnouncer hostAnnouncer = (HostAnnouncer) m_hostAnnouncers.get( idx);
 				hostAnnouncer.shutdownAnnouncer();
-				
+
 				// DEBUG
-				
+
 				if ( Debug.EnableInfo && hasDebug())
 					Debug.println( "[SMB] Shutting down host announcer " + hostAnnouncer.getName());
 			}
 		}
 	}
-	
+
 	/**
 	 * Determine if we are running under Windows NT onwards
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private final boolean isWindowsNTOnwards() {

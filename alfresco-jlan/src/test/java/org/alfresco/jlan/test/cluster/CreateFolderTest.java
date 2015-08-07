@@ -39,7 +39,7 @@ public class CreateFolderTest extends Test {
 	public CreateFolderTest() {
 		super( "CreateFolder");
 	}
-	
+
 	/**
 	 * Run the create folder test
 	 *
@@ -50,40 +50,40 @@ public class CreateFolderTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Create a test folder name for this iteration
-			
+
 			String testFolderName = getPerTestFolderName( threadId, iteration);
-			
+
 			// DEBUG
-			
+
 			testLog( log, "CreateFolder Test");
-			
+
 			// Check if the test folder exists
-			
+
 			if ( sess.FileExists( testFolderName)) {
 				testLog( log, "Folder " + testFolderName + " exists");
-				
+
 				result = new BooleanTestResult( true);
 			}
 			else {
-				
+
 				// Create a new folder
-				
+
 				testLog( log, "Creating folder " + testFolderName + " via " + sess.getServer());
-				
+
 				try {
 
 					// Create the folder
-					
+
 					sess.CreateDirectory( testFolderName);
-					
+
 					// Check the folder exists
-					
+
 					if ( sess.FileExists( testFolderName)) {
 						testLog( log, "Re-check, folder now exists, " + testFolderName);
 						result = new BooleanTestResult( true);
@@ -96,11 +96,11 @@ public class CreateFolderTest extends Test {
 				catch ( SMBException ex) {
 
 					// Check for an access denied error code
-					
+
 					if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
-						
+
 						// DEBUG
-						
+
 						testLog ( log, "Create failed with object name collision (expected), " + testFolderName);
 						result = new BooleanTestResult( true);
 					}
@@ -108,26 +108,26 @@ public class CreateFolderTest extends Test {
 						result = new ExceptionTestResult( ex);
 				}
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
-				
+
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult(ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -138,11 +138,11 @@ public class CreateFolderTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		if ( threadId == 1) {
 			String fName = getPerTestFolderName( threadId, iter);
 			testLog( log, "Cleanup test folder " + fName);
-			
+
 			sess.DeleteDirectory( fName);
 		}
 	}

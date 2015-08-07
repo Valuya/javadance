@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * Packet Handler Interface
- * 
+ *
  * <p>Implemented by classes that read/write request packets to a network connection.
  *
  * @author gkspencer
@@ -36,19 +36,19 @@ public interface PacketHandlerInterface {
    * @return String
    */
   public String getProtocolName();
-  
+
   /**
    * Return the number of bytes available for reading without blocking
-   * 
+   *
    * @return int
    * @exception IOException
    */
   public int availableBytes()
   	throws IOException;
-  
+
   /**
    * Read a packet of data
-   * 
+   *
    * @param pkt byte[]
    * @param offset int
    * @param maxLen int
@@ -57,10 +57,10 @@ public interface PacketHandlerInterface {
    */
   public int readPacket(byte[] pkt, int offset, int maxLen)
   	throws IOException;
-  
+
   /**
    * Write a packet of data
-   * 
+   *
    * @param pkt byte[]
    * @param offset int
    * @param len int
@@ -68,7 +68,7 @@ public interface PacketHandlerInterface {
    */
   public void writePacket(byte[] pkt, int offset, int len)
   	throws IOException;
-  
+
   /**
    * Close the packet handler
    */

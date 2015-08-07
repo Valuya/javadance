@@ -23,9 +23,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * No Pooled Memory Exception Class
- * 
+ *
  * <p>Indicates that no buffers are available in the global memory pool or per protocol pool.
- * 
+ *
  * @author gkspencer
  */
 public class NoPooledMemoryException extends IOException {
@@ -33,17 +33,17 @@ public class NoPooledMemoryException extends IOException {
 	private static final long serialVersionUID = 6852939454477894406L;
 
 	// Keep a global count of how many times this error is used
-	
+
 	private static AtomicLong _exceptionCount = new AtomicLong();
-	
+
 	/**
 	   * Default constructor
 	   */
 	  public NoPooledMemoryException() {
 	    super();
-	    
+
 	    // Increment the global count
-	    
+
 	    _exceptionCount.incrementAndGet();
 	  }
 
@@ -54,15 +54,15 @@ public class NoPooledMemoryException extends IOException {
 	   */
 	  public NoPooledMemoryException(String s) {
 	    super(s);
-	    
+
 	    // Increment the global count
-	    
+
 	    _exceptionCount.incrementAndGet();
 	  }
-	  
+
 	  /**
 	   * Return the exception counter
-	   * 
+	   *
 	   * @return long
 	   */
 	  public static long getExceptionCounter() {

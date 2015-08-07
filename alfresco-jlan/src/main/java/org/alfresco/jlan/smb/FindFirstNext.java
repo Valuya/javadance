@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb;
 
 /**
  * Find First/Next Flags
- * 
+ *
  * <p>Contains constants used by the Find First/Find Next SMB/CIFS requests.
  *
  * @author gkspencer

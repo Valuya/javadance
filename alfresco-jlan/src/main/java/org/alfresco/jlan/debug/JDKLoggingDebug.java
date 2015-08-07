@@ -29,7 +29,7 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * JDK Logging Debug Class
- * 
+ *
  * <p>Output debug messages using the JDK logging APIs.
  *
  * @author gkspencer
@@ -37,9 +37,9 @@ import org.springframework.extensions.config.ConfigElement;
 public class JDKLoggingDebug extends DebugInterfaceBase {
 
   // Buffer for debugPrint() strings
-  
+
   private StringBuilder m_printBuf;
-  
+
   /**
    * Class constructor
    */
@@ -55,20 +55,20 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
   public final void debugPrint(String str, int level) {
 
 	// Check if the logging level is enabled
-	  
+
 	if ( level <= getLogLevel()) {
-		
+
 	  // Allocate a holding buffer
-	    
+
 	  if ( m_printBuf == null) {
 	    synchronized ( this) {
 	      if ( m_printBuf == null)
 	        m_printBuf = new StringBuilder();
 	    }
 	  }
-	
+
 	  // Append the string to the holding buffer
-	    
+
 	  synchronized ( m_printBuf) {
 	    m_printBuf.append( str);
 	  }
@@ -81,17 +81,17 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
    * @param str String
    */
   public final void debugPrintln(String str, int level) {
-    
+
 	// Check if the logging level is enabled
-	  
+
 	if ( level <= getLogLevel()) {
-			
+
 	  // Check if there is a holding buffer
-	    
+
 	  if ( m_printBuf != null) {
-	      
+
 	    // Append the new string
-	      
+
 	    m_printBuf.append( str);
 	    logOutput( m_printBuf.toString(), level);
 	    m_printBuf = null;
@@ -103,20 +103,20 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
 
 	/**
 	 * Output an exception
-	 * 
+	 *
 	 * @param ex Exception
 	 * @param level int
 	 */
 	public void debugPrintln( Exception ex, int level) {
-		
+
 		// Check if the logging level is enabled
-		  
+
 		if ( level <= getLogLevel()) {
 
 			// Convert the logging level to a JDK logging level
-			
+
 			Level logLevel = Level.OFF;
-			
+
 			switch ( level) {
 				case Debug.Debug:
 				  logLevel = Level.FINEST;
@@ -136,20 +136,20 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
 			  }
 
 			// Output the exception
-			
+
 			  Logger.global.log(logLevel, "", ex);
 		}
 	}
-	
+
   /**
    * Output to the logger at the appropriate log level
-   * 
+   *
    * @param str String
    * @param level int
    */
   protected void logOutput(String str, int level) {
 	  Level logLevel = Level.OFF;
-	  
+
 	  switch ( level) {
 		case Debug.Debug:
 		  logLevel = Level.FINEST;
@@ -167,10 +167,10 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
 		  logLevel = Level.FINEST;
 		  break;
 	  }
-	  
+
 	  Logger.global.log(logLevel, str);
   }
-  
+
   /**
    * Initialize the debug interface using the specified parameters.
    *
@@ -182,32 +182,32 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
     //  Get the logging properities file name
 
     ConfigElement logProps = params.getChild( "Properties");
-    
+
     //  Check if the log file has been specified
-    
+
     if ( logProps.getValue() != null) {
-      
+
       // Open the logging properties file
-      
+
       FileInputStream logPropsFile = null;
-      
+
       try {
-        
+
         // Open the logging properties file
-        
+
         logPropsFile = new FileInputStream( logProps.getValue());
-      
+
         // Load the logging properties
-        
+
         LogManager.getLogManager().readConfiguration( logPropsFile);
       }
       catch ( Exception ex) {
-        
+
       }
       finally {
-        
+
         // Close the properties file
-        
+
         if ( logPropsFile != null) {
           try {
             logPropsFile.close();

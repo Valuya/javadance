@@ -27,88 +27,88 @@ import org.alfresco.jlan.server.filesys.DeferFailedException;
 
 /**
  * OpLock Details Interface
- * 
+ *
  * <p>Contains the main oplock details and type, and is also used to store a deferred file open
  * request from another session during an oplock break.
- * 
+ *
  * @author gkspencer
  */
 public interface OpLockDetails {
 
 	/**
 	 * Return the oplock type
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getLockType();
-	
+
 	/**
 	 * Return the share relative path of the locked file
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getPath();
-	
+
 	/**
 	 * Check if the oplock is on a file or folder
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isFolder();
-	
+
 	/**
 	 * Check if there is a deferred session attached to the oplock, this indicates an oplock break is
 	 * in progress for this oplock.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasDeferredSessions();
-	
+
 	/**
 	 * Return the count of deferred requests
-	 * 
+	 *
 	 * @return int
 	 */
 	public int numberOfDeferredSessions();
-	
+
 	/**
 	 * Requeue deferred requests to the thread pool for processing, oplock has been released
-	 * 
+	 *
 	 * @return int Number of deferred requests requeued
 	 */
 	public int requeueDeferredRequests();
-	
+
 	/**
 	 * Fail any deferred requests that are attached to this oplock, and clear the deferred list
-	 * 
+	 *
 	 * @return int Number of deferred requests that were failed
 	 */
 	public int failDeferredRequests();
-	
+
 	/**
 	 * Return the time that the oplock break was sent to the client
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getOplockBreakTime();
-	
+
 	/**
 	 * Check if this oplock is still valid, or an oplock break has failed
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasOplockBreakFailed();
-	
+
 	/**
 	 * Check if this is a remote oplock
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isRemoteLock();
-	
+
 	/**
 	 * Add a deferred session/packet, whilst an oplock break is in progress
-	 * 
+	 *
 	 * @param deferredSess SMBSrvSession
 	 * @param deferredPkt SMBSrvPacket
 	 * @exception DeferFailedException	If the session/packet cannot be deferred
@@ -120,38 +120,38 @@ public interface OpLockDetails {
 	 * Update the deferred packet lease time(s) as we wait for an oplock break or timeout
 	 */
 	public void updateDeferredPacketLease();
-	
+
 	/**
 	 * Set the failed oplock break flag, to indicate the client did not respond to the oplock break
 	 * request within a reasonable time.
 	 */
 	public void setOplockBreakFailed();
-	
+
 	/**
 	 * Set the owner file id
-	 * 
+	 *
 	 * @param fileId int
 	 */
 	public void setOwnerFileId(int fileId);
-	
+
 	/**
 	 * Request an oplock break
-	 * 
+	 *
 	 * @exception IOException
 	 */
 	public void requestOpLockBreak()
 		throws IOException;
-	
+
 	/**
 	 * Set the lock type
-	 * 
+	 *
 	 * @param lockTyp int
 	 */
 	public void setLockType( int lockTyp);
-	
+
 	/**
 	 * Check if there is an oplock break in progress for this oplock
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasBreakInProgress();

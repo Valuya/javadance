@@ -30,7 +30,7 @@ public class DCEException extends Exception {
 
   /**
 	 * Class constructor
-	 * 
+	 *
 	 * @param str String
 	 */
 	public DCEException(String str) {

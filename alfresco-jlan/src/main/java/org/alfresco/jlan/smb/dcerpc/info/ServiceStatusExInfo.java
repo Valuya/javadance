@@ -24,7 +24,7 @@ import org.alfresco.jlan.smb.dcerpc.DCEBufferException;
 
 /**
  * Service Status Ex Information Class
- * 
+ *
  * <p>
  * Contains additional fields that are returned by the EnumServiceStatusEx() call.
  */
@@ -46,7 +46,7 @@ public class ServiceStatusExInfo extends ServiceStatusInfo {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param dispname String
 	 */
@@ -56,7 +56,7 @@ public class ServiceStatusExInfo extends ServiceStatusInfo {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param dispname String
 	 * @param typ int
@@ -79,7 +79,7 @@ public class ServiceStatusExInfo extends ServiceStatusInfo {
 
 	/**
 	 * Return the process id of the service
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getProcessId() {
@@ -88,7 +88,7 @@ public class ServiceStatusExInfo extends ServiceStatusInfo {
 
 	/**
 	 * Return the service flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getServiceFlags() {
@@ -97,7 +97,7 @@ public class ServiceStatusExInfo extends ServiceStatusInfo {
 
 	/**
 	 * Read the service status information from the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 * @see org.alfresco.jlan.smb.dcerpc.DCEReadable#readObject(DCEBuffer)
@@ -117,7 +117,7 @@ public class ServiceStatusExInfo extends ServiceStatusInfo {
 
 	/**
 	 * Return the service status information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

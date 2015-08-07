@@ -25,7 +25,7 @@ import org.alfresco.jlan.smb.server.SMBSrvException;
 
 /**
  * Security Descriptor Interface
- * 
+ *
  * <p>Optional interface that a DiskInterface driver can implement loading and saving of per file security descriptors.
  *
  * @author gkspencer
@@ -34,7 +34,7 @@ public interface SecurityDescriptorInterface {
 
   /**
    * Return the security descriptor length for the specified file
-   * 
+   *
    * @param sess      Server session
    * @param tree      Tree connection
    * @param netFile   Network file
@@ -46,7 +46,7 @@ public interface SecurityDescriptorInterface {
 
   /**
    * Load a security descriptor for the specified file
-   * 
+   *
    * @param sess      Server session
    * @param tree      Tree connection
    * @param netFile   Network file
@@ -58,7 +58,7 @@ public interface SecurityDescriptorInterface {
 
   /**
    * Save the security descriptor for the specified file
-   * 
+   *
    * @param sess      Server session
    * @param tree      Tree connection
    * @param netFile   Network file

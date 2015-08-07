@@ -37,10 +37,10 @@ public class DiskOfflineException extends IOException {
   public DiskOfflineException() {
     super();
   }
-  
+
   /**
    * Class constructor.
-   * 
+   *
    * @param s java.lang.String
    */
   public DiskOfflineException(String s) {

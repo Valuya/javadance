@@ -39,32 +39,32 @@ public abstract class jlanApp {
   //	Constants
   //
   //	Command line argument names
-    
+
   public final static String CmdLineArg	= "Arg";
-  
+
   public final static String CmdLineArg1	= CmdLineArg + "1";
   public final static String CmdLineArg2	= CmdLineArg + "2";
   public final static String CmdLineArg3	= CmdLineArg + "3";
   public final static String CmdLineArg4	= CmdLineArg + "4";
   public final static String CmdLineArg5	= CmdLineArg + "5";
   public final static String CmdLineArg6	= CmdLineArg + "6";
-  
+
   //	User name and password command line switches
-  
+
   public final static String SwitchUserName	= "username";
   public final static String SwitchPassword = "password";
   public final static String SwitchDomain	= "domain";
-  
+
   //	Flag to indciate field should be right aligned
-  
+
   protected final static int RightAlign		= 0x8000;
 
   //	Properties file name
-  
+
   protected final static String PropertiesFileName	= "jlan.properties";
-  
+
   //	JLAN application property names
-  
+
   protected final static String PropertyUserName		= "UserName";
   protected final static String PropertyPassword  		= "Password";
   protected final static String PropertyDomain			= "Domain";
@@ -76,40 +76,40 @@ public abstract class jlanApp {
   protected final static String PropertyNameScope		= "NameScope";
   protected final static String PropertyWildcardName	= "WildcardServerName";
   protected final static String PropertyJCEProvider		= "JCEProvider";
-  
+
   //	Command name and short description
-  
+
   private String m_cmdName;
   private String m_cmdDesc;
-  
+
   //	Details of the remote share to connect to
-    
+
   private PCShare m_share;
 
   //	Session to the remote server
-  
+
   private Session m_session;
-  
+
   // 	Command line switches and parameters
-  
+
   private NameValueList m_cmdLine;
 
   //	Flag to indicate if the command uses command line switches, if not then switch processing will
   //	be turned off in the command line parsing method
-  
+
   private boolean m_cmdSwitches = true;
-  
+
   //	Buffer for formatting output strings
-  
+
   private StringBuffer m_fmtBuf;
 
   //	JLAN properties
-  
+
   private Properties m_properties;
-  
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param desc String
 	 */
@@ -120,7 +120,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param desc String
 	 * @param switches boolean
@@ -134,7 +134,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Return the command name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getCommandName() {
@@ -143,7 +143,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Return the command short description
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getCommandDescription() {
@@ -152,14 +152,14 @@ public abstract class jlanApp {
 
 	/**
 	 * Output the command help
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected abstract void outputCommandHelp(PrintStream out);
 
 	/**
 	 * Perform the specific command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @throws Exception
 	 */
@@ -168,7 +168,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Validate the command line parameters
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -177,7 +177,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Get a user name from the command line or properties file
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getUserName() {
@@ -208,7 +208,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Get a domain name from the command line or properties file
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getDomain() {
@@ -239,7 +239,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Get a password from the command line or properties file
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getPassword() {
@@ -270,7 +270,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Load the properties file, if available
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @exception IOException
 	 */
@@ -555,7 +555,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Parse the command line
-	 * 
+	 *
 	 * @param args String[]
 	 * @return int
 	 */
@@ -623,7 +623,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Run the command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public final void runCommand(String[] args) {
@@ -702,7 +702,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Prompt for a password, do not echo to the console
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String promptForPassword() {
@@ -711,7 +711,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Get the share details
-	 * 
+	 *
 	 * @return PCShare
 	 */
 	protected final PCShare getShare() {
@@ -720,7 +720,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Check if there is an active session
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected final boolean hasSession() {
@@ -729,7 +729,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Return the session
-	 * 
+	 *
 	 * @return Session
 	 */
 	protected final Session getSession() {
@@ -738,7 +738,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Check if the command uses command line switches
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected final boolean hasCommandSwitches() {
@@ -747,7 +747,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Set the share details
-	 * 
+	 *
 	 * @param shr PCShare
 	 */
 	protected final void setShare(PCShare shr) {
@@ -776,7 +776,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Set the active session
-	 * 
+	 *
 	 * @param sess Session
 	 */
 	protected final void setSession(Session sess) {
@@ -785,7 +785,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Format an output string and output to the specified stream
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param col1 String
 	 * @param width1 int
@@ -830,7 +830,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Format an output string and output to the specified stream
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param col1 String
 	 * @param width1 int
@@ -851,7 +851,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Format an output string and output to the specified stream
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param col1 String
 	 * @param width1 int
@@ -869,7 +869,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Format an output string and output to the specified stream
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param col1 String
 	 * @param width1 int
@@ -885,7 +885,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Format an output string and output to the specified stream
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @param col1 String
 	 */
@@ -898,7 +898,7 @@ public abstract class jlanApp {
 
 	/**
 	 * Format a column of output
-	 * 
+	 *
 	 * @param buf StringBuffer
 	 * @param str String
 	 * @param width int

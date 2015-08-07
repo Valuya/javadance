@@ -31,9 +31,9 @@ public final class PCShare {
 
   // Flag to control whether the user name is parsed into domain and user name values when
   // specified as 'user@domain' or 'domain\\user'
-  
+
   private static boolean _parseUserName = false;
-  
+
   //	Domain name
 
   private String m_domain = null;
@@ -63,24 +63,24 @@ public final class PCShare {
   private String m_fname = null;
 
 	//	Primary and secondary protocols to try connection on
-	
+
 	private int m_primaryProto		= Protocol.UseDefault;
 	private int m_secondaryProto	= Protocol.UseDefault;
 
   // Flag to indicate if this is a null logon
-  
+
   private boolean m_nullLogon;
-  
+
   // Extended security negotiation flags
-  
+
   private int m_extendedSecFlags;
-  
+
   /**
    * Construct an empty PCShare object.
    */
   public PCShare() {
   }
-  
+
   /**
    * Construct a PCShare using the supplied UNC path.
    *
@@ -96,7 +96,7 @@ public final class PCShare {
     if (m_username == null)
       setUserName("GUEST");
   }
-  
+
   /**
     * Construct a PCShare using the specified remote server and access control
     * details.
@@ -112,7 +112,7 @@ public final class PCShare {
     setUserName(uname);
     setPassword(pwd);
   }
-  
+
   /**
    * Build a share relative path using the supplied working directory and
    * file name.
@@ -146,7 +146,7 @@ public final class PCShare {
 
     return pathStr.toString();
   }
-  
+
   /**
    * Return the domain for the share.
    *
@@ -155,7 +155,7 @@ public final class PCShare {
   public final String getDomain() {
     return m_domain;
   }
-  
+
   /**
    * Get the remote file name string.
    *
@@ -164,7 +164,7 @@ public final class PCShare {
   public final String getFileName() {
     return m_fname;
   }
-  
+
   /**
    * Return the full UNC path for this PC share object.
    *
@@ -206,7 +206,7 @@ public final class PCShare {
 
     return strBuf.toString();
   }
-  
+
   /**
    * Get the remote node name string.
    *
@@ -215,7 +215,7 @@ public final class PCShare {
   public final String getNodeName() {
     return m_nodename;
   }
-  
+
   /**
    * Get the remote password required to access the remote share.
    *
@@ -224,7 +224,7 @@ public final class PCShare {
   public final String getPassword() {
     return m_password;
   }
-  
+
   /**
    * Get the share relative path string.
    *
@@ -233,7 +233,7 @@ public final class PCShare {
   public final String getPath() {
     return m_path != null ? m_path : "\\";
   }
-  
+
   /**
    * Return the share relative path for this PC share object.
    *
@@ -268,7 +268,7 @@ public final class PCShare {
 
     return strBuf.toString();
   }
-  
+
   /**
    * Get the remote share name string.
    *
@@ -278,7 +278,7 @@ public final class PCShare {
   public final String getShareName() {
     return m_shrname;
   }
-  
+
   /**
    * Get the remote user name string.
    *
@@ -288,25 +288,25 @@ public final class PCShare {
   public final String getUserName() {
     return m_username != null ? m_username : "";
   }
-  
+
   /**
    * Get the primary protocol to connect with
-   * 
+   *
    * @return int
    */
   public final int getPrimaryProtocol() {
   	return m_primaryProto;
   }
-  
+
   /**
    * Get the secondary protocol to connect with
-   * 
+   *
    * @return int
    */
   public final int getSecondaryProtocol() {
   	return m_secondaryProto;
   }
-  
+
   /**
    * Determine if the share has a domain specified.
    *
@@ -318,31 +318,31 @@ public final class PCShare {
 
   /**
    * Check if this a null logon should be used
-   * 
+   *
    * @return boolean
    */
   public final boolean isNullLogon() {
     return m_nullLogon;
   }
-  
+
   /**
    * Determine if extended security flags have been set
-   * 
+   *
    * @return boolean
    */
   public final boolean hasExtendedSecurityFlags() {
     return m_extendedSecFlags != 0 ? true : false;
   }
-  
+
   /**
    * Return the extended security flags
-   * 
+   *
    * @return int
    */
   public final int getExtendedSecurityFlags() {
     return m_extendedSecFlags;
   }
-  
+
   /**
    * Set the domain to be used during the session setup.
    *
@@ -353,16 +353,16 @@ public final class PCShare {
     if (m_domain != null)
       m_domain = m_domain.toUpperCase();
   }
-  
+
   /**
    * Set the extended security negotiation flags
-   * 
+   *
    * @param extFlags int
    */
   public final void setExtendedSecurityFlags(int extFlags) {
     m_extendedSecFlags = extFlags;
   }
-  
+
   /**
    * Set the remote file name string.
    *
@@ -372,7 +372,7 @@ public final class PCShare {
   public final void setFileName(String fn) {
     m_fname = fn;
   }
-  
+
   /**
    * Set the PC share from the supplied UNC path string.
    *
@@ -491,7 +491,7 @@ public final class PCShare {
     if (m_path == null || m_path.length() == 0)
       m_path = "\\";
   }
-  
+
   /**
    * Set the remote node name string.
    *
@@ -504,13 +504,13 @@ public final class PCShare {
 
   /**
    * Set the null logon flag
-   * 
+   *
    * @param nullLogon boolean
    */
   public final void setNullLogon(boolean nullLogon) {
     m_nullLogon = nullLogon;
   }
-  
+
   /**
    * Set the remote password string.
    *
@@ -520,7 +520,7 @@ public final class PCShare {
   public final void setPassword(String pwd) {
     m_password = pwd;
   }
-  
+
 	/**
    * Set the share relative path string.
    *
@@ -530,7 +530,7 @@ public final class PCShare {
   public final void setPath(String pth) {
     m_path = pth;
   }
-  
+
   /**
    * Set the remote share name string.
    *
@@ -540,7 +540,7 @@ public final class PCShare {
   public final void setShareName(String shr) {
     m_shrname = shr;
   }
-  
+
   /**
    * Set the remote user name string. The name may be in the format 'user', 'user@domain' or 'domain\\user'.
    *
@@ -550,34 +550,34 @@ public final class PCShare {
   public final void setUserName(String uname) {
 
     // Check if user name parsing is enabled
-    
+
     if ( _parseUserName == false)
       m_username = uname;
     else {
-      
+
       // Check if the username contains a domain
-      
+
       int pos = uname.indexOf( '\\');
-      
+
       if ( pos != -1) {
-        
+
         // Set the user name and domain, 'domain\\username' format
-          
+
         m_username = uname.substring(pos + 1);
         setDomain( uname.substring(0, pos));
       }
       else if ( uname.indexOf( '@') != -1) {
-  
+
         // Set the user name and domain, 'username@domain' format
-  
+
         pos = uname.indexOf( '@');
         m_username = uname.substring(0, pos);
         setDomain( uname.substring(pos + 1));
       }
       else {
-        
+
         // Set the user name
-        
+
         m_username = uname;
       }
     }
@@ -586,7 +586,7 @@ public final class PCShare {
 	/**
 	 * Set the primary and secondary protocol order that is used to connect to the remote
 	 * host.
-	 * 
+	 *
 	 * @param pri int
 	 * @param sec int
 	 */
@@ -594,7 +594,7 @@ public final class PCShare {
 		m_primaryProto   = pri;
 		m_secondaryProto = sec;
 	}
-	  
+
   /**
    * Return the PCShare object as a string
    *
@@ -604,10 +604,10 @@ public final class PCShare {
   public final String toString() {
     return getNetworkPath();
   }
-  
+
   /**
    * Enable/disbale parsing of the user name value
-   * 
+   *
    * @param ena boolean
    */
   public static final void setUserNameParsing( boolean ena) {

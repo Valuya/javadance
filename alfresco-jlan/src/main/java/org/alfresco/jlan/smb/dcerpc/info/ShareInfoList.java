@@ -29,10 +29,10 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Server Share Information List Class
- * 
+ *
  * <p>
  * Holds the details for a DCE/RPC share enumeration request or response.
- * 
+ *
  * @author gkspencer
  */
 public class ShareInfoList extends DCEList {
@@ -46,7 +46,7 @@ public class ShareInfoList extends DCEList {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -56,7 +56,7 @@ public class ShareInfoList extends DCEList {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 */
 	public ShareInfoList(int infoLevel) {
@@ -65,7 +65,7 @@ public class ShareInfoList extends DCEList {
 
 	/**
 	 * Return share information object from the list
-	 * 
+	 *
 	 * @param idx int
 	 * @return ShareInfo
 	 */
@@ -75,7 +75,7 @@ public class ShareInfoList extends DCEList {
 
 	/**
 	 * Create a new share information object
-	 * 
+	 *
 	 * @return DCEReadable
 	 */
 	protected DCEReadable getNewObject() {
@@ -84,7 +84,7 @@ public class ShareInfoList extends DCEList {
 
 	/**
 	 * Add a share to the list
-	 * 
+	 *
 	 * @param share ShareInfo
 	 */
 	public final void addShare(ShareInfo share) {
@@ -101,7 +101,7 @@ public class ShareInfoList extends DCEList {
 
 	/**
 	 * Set the share information list
-	 * 
+	 *
 	 * @param list List<Object>
 	 */
 	public final void setShareList(List<Object> list) {

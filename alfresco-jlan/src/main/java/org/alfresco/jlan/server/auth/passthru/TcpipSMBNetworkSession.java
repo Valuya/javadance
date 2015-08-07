@@ -41,9 +41,9 @@ import org.alfresco.jlan.util.DataPacker;
 public class TcpipSMBNetworkSession extends NetworkSession {
 
   //  Define the protocol name
-  
+
   private static final String ProtocolName = "Native SMB (port 445)";
-  
+
   //  Socket used to connect and read/write to remote host
 
   private Socket m_socket;
@@ -54,9 +54,9 @@ public class TcpipSMBNetworkSession extends NetworkSession {
   private DataOutputStream m_out;
 
   //  Session port
-  
+
   private int m_sessPort = TcpipSMB.PORT;
-  
+
   //  Debug enable flag and debug output stream
 
   private static boolean m_debug = false;
@@ -68,20 +68,20 @@ public class TcpipSMBNetworkSession extends NetworkSession {
   public TcpipSMBNetworkSession() {
     super(ProtocolName);
   }
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param tmo   Socket timeout, in milliseconds
    */
   public TcpipSMBNetworkSession(int tmo) {
     super(ProtocolName);
     setTimeout( tmo);
   }
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param tmo   Socket timeout, in milliseconds
    * @param port  Session port to connect to on the server
    */
@@ -90,10 +90,10 @@ public class TcpipSMBNetworkSession extends NetworkSession {
     setTimeout( tmo);
     m_sessPort = port;
   }
-  
+
 	/**
 	 * Open a connection to a remote host
-	 * 
+	 *
 	 * @param toName		Host name/address being called
 	 * @param fromName	Local host name/address
 	 * @param toAddr		Optional address
@@ -111,7 +111,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 	  m_socket.setSoTimeout ( getTimeout());
 
       // Connect to the server
-      
+
       InetSocketAddress sockAddr = new InetSocketAddress( toName, m_sessPort);
       m_socket.connect(sockAddr, getTimeout());
 
@@ -123,7 +123,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Determine if the session is connected to a remote host
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isConnected() {
@@ -132,23 +132,23 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Check if there is data available on this network session
-	 * 
+	 *
 	 * @return boolean
 	 * @exception IOException
 	 */
 	public final boolean hasData()
 		throws IOException {
-	
+
 		//	Check if the connection is active
-		
+
 		if ( m_socket == null || m_in == null)
 			return false;
-			
+
 		//	Check if there is data available
-		
+
 		return m_in.available() > 0 ? true : false;
 	}
-		
+
 	/**
 	 * Receive a data packet from the remote host.
 	 *
@@ -169,7 +169,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
       throw new java.io.IOException ( "TCP/IP SMB Short Read");
 
     //  Get the packet data length
-    
+
     int pktlen = DataPacker.getInt(buf, 0);
 
     //  Debug mode
@@ -216,13 +216,13 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 	 */
 	public boolean Send(byte[] data, int siz)
 		throws IOException {
-			
+
 		//	Pack the data length as the first four bytes of the packet
-		
+
 		DataPacker.putInt(siz,data,0);
-		
+
 		//	Send the packet to the remote host
-		
+
 		int len = siz + RFCNetBIOSProtocol.HEADER_LEN;
 		m_out.write(data,0,len);
 		return true;
@@ -230,26 +230,26 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Close the network session
-	 * 
+	 *
 	 * @exception 		java.io.IOException		I/O error occurred
 	 */
 	public void Close()
 		throws IOException {
-			
+
 		//	Close the input/output streams
-		
+
 		if ( m_in != null) {
 			m_in.close();
 			m_in = null;
 		}
-		
+
 		if ( m_out != null) {
 			m_out.close();
 			m_out = null;
 		}
-		
+
 		//	Close the socket
-		
+
 		if ( m_socket != null) {
 			m_socket.close();
 			m_socket = null;
@@ -258,17 +258,17 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
   /**
    * Set the socket timeout
-   * 
+   *
    * @param tmo int
    */
   public void setTimeout(int tmo) {
-    
+
     // Call the base class to store the timeout
-    
+
     super.setTimeout(tmo);
-    
+
     // Set the socket timeout, if the socket is valid
-    
+
     if ( m_socket != null) {
       try {
         m_socket.setSoTimeout( getTimeout());

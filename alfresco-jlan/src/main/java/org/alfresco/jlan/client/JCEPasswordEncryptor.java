@@ -27,24 +27,24 @@ import javax.crypto.spec.*;
 
 /**
  * JCE Password Encryptor Class
- * 
+ *
  * <p>Provides password encryption for CIFS using the JCE framework.
- * 
+ *
  * @author gkspencer
  */
 public class JCEPasswordEncryptor extends PasswordEncryptor {
 
 	//	Encryption algorithm types
-	
+
 	public static final int LANMAN		= 0;
 	public static final int NTLM1		= 1;
 	public static final int NTLM2		= 2;
 	public static final int MD4			= 3;
 
 	//	Encrpytion algorithm names
-	
+
 	private final static String[] _algNames = {"LanMan", "NTLMv1", "NTLMv2", "MD4" };
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -53,7 +53,7 @@ public class JCEPasswordEncryptor extends PasswordEncryptor {
 
 	/**
 	 * Check if the required algorithms are available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean checkEncryptionAlgorithms() {
@@ -83,7 +83,7 @@ public class JCEPasswordEncryptor extends PasswordEncryptor {
 	/**
 	 * Encrypt the plain text password with the specified encryption key using the specified
 	 * encryption algorithm.
-	 * 
+	 *
 	 * @param plainPwd Plaintext password string
 	 * @param encryptKey byte[] Encryption key
 	 * @param alg int Encryption algorithm
@@ -171,7 +171,7 @@ public class JCEPasswordEncryptor extends PasswordEncryptor {
 
 	/**
 	 * Generate a session key using the specified password and key.
-	 * 
+	 *
 	 * @param plainPwd Plaintext password string
 	 * @param encryptKey byte[] Encryption key
 	 * @param alg int Encryption algorithm
@@ -228,7 +228,7 @@ public class JCEPasswordEncryptor extends PasswordEncryptor {
 
 	/**
 	 * P16 encryption
-	 * 
+	 *
 	 * @param pwd java.lang.String
 	 * @param s8 byte[]
 	 * @return byte[]
@@ -298,7 +298,7 @@ public class JCEPasswordEncryptor extends PasswordEncryptor {
 
 	/**
 	 * P24 DES encryption
-	 * 
+	 *
 	 * @param pwd java.lang.String
 	 * @param c8 byte[]
 	 * @return byte[]
@@ -320,7 +320,7 @@ public class JCEPasswordEncryptor extends PasswordEncryptor {
 
 	/**
 	 * P24 DES encryption
-	 * 
+	 *
 	 * @param p21 Plain password or hashed password bytes
 	 * @param ch Challenge bytes
 	 * @return Encrypted password
@@ -392,7 +392,7 @@ public class JCEPasswordEncryptor extends PasswordEncryptor {
 
 	/**
 	 * Return the encryption algorithm as a string
-	 * 
+	 *
 	 * @param alg int
 	 * @return String
 	 */
@@ -404,7 +404,7 @@ public class JCEPasswordEncryptor extends PasswordEncryptor {
 
 	/**
 	 * Make a 7-byte string into a 64 bit/8 byte/longword key.
-	 * 
+	 *
 	 * @param byt byte[]
 	 * @param off int
 	 * @return byte[]

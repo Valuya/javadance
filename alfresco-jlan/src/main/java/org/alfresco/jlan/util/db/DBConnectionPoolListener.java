@@ -21,7 +21,7 @@ package org.alfresco.jlan.util.db;
 
 /**
  * Connection Pool Listener Interface
- * 
+ *
  * <p>Used to communicate database connection events such as the database server online/offline status.
  *
  * @author gkspencer
@@ -30,7 +30,7 @@ public interface DBConnectionPoolListener {
 
   /**
    * Database online/offline status event
-   * 
+   *
    * @param dbonline boolean
    */
   public void databaseOnlineStatus( boolean dbonline);

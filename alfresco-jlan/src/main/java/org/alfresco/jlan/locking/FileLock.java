@@ -23,10 +23,10 @@ import java.io.Serializable;
 
 /**
  * File Lock Class
- * 
+ *
  * <p>
  * Contains the details of a single file lock.
- * 
+ *
  * @author gkspencer
  */
 public class FileLock implements Serializable {
@@ -56,7 +56,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param offset long
 	 * @param len long
 	 * @param pid int
@@ -69,7 +69,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Get the starting lock offset
-	 * 
+	 *
 	 * @return long Starting lock offset.
 	 */
 	public final long getOffset() {
@@ -78,7 +78,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Set the starting lock offset.
-	 * 
+	 *
 	 * @param offset Starting lock offset
 	 */
 	public final void setOffset(long offset) {
@@ -87,7 +87,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Get the locked section length
-	 * 
+	 *
 	 * @return long Locked section length
 	 */
 	public final long getLength() {
@@ -96,7 +96,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Set the locked section length
-	 * 
+	 *
 	 * @param len Locked section length
 	 */
 	public final void setLength(long len) {
@@ -108,7 +108,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Get the owner process id for the lock
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getProcessId() {
@@ -117,7 +117,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Deterine if the lock is locking the whole file
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isWholeFile() {
@@ -126,7 +126,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Set the process id of the owner of this lock
-	 * 
+	 *
 	 * @param pid int
 	 */
 	public final void setProcessId(int pid) {
@@ -135,7 +135,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Check if the specified locks byte range overlaps this locks byte range.
-	 * 
+	 *
 	 * @param lock FileLock
 	 */
 	public final boolean hasOverlap(FileLock lock) {
@@ -144,7 +144,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Check if the specified locks byte range overlaps this locks byte range.
-	 * 
+	 *
 	 * @param offset long
 	 * @param len long
 	 */
@@ -174,7 +174,7 @@ public class FileLock implements Serializable {
 
 	/**
 	 * Return the lock details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

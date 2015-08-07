@@ -48,38 +48,38 @@ public class AttributesOnlyOplockGrantTest extends Test {
 	 * Oplock Break Callback Class
 	 */
 	public class OplockBreakHandler extends OplockAdapter {
-	
+
 		// Run log
-		
+
 		private StringWriter m_log;
-		
+
 		// Oplock break received
-		
+
 		private boolean m_breakReceived;
-		
+
 		/**
 		 * Class constructor
-		 * 
+		 *
 		 * @param log StringWriter
 		 */
 		public OplockBreakHandler( StringWriter log) {
 			m_log = log;
 		}
-		
+
 		/**
 		 * Oplock break callback
-		 * 
+		 *
 		 * @param cifsFile CIFSFile
 		 * @return int
 		 */
 		public int oplockBreak( CIFSFile cifsFile) {
-			
+
 			// DEBUG
-			
+
 			testLog( m_log, "Oplock break on file " + cifsFile.getFileName());
-			
+
 			// Flush the file
-			
+
 			try {
 				cifsFile.Flush();
 			}
@@ -87,66 +87,66 @@ public class AttributesOnlyOplockGrantTest extends Test {
 			}
 
 			// Indicate an oplock break was received
-			
+
 			m_breakReceived = true;
-			
+
 			// Return the oplock break response
-			
+
 			return OpLock.TypeNone;
 		}
-		
+
 		/**
 		 * Check if an oplock break was received
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public final boolean breakReceived() {
 			return m_breakReceived;
 		}
 	}
-	
+
 	/**
 	 * Default constructor
 	 */
 	public AttributesOnlyOplockGrantTest() {
 		super( "AttributesOnlyOplockGrant");
 	}
-	
+
 	/**
 	 * Initialize the test setup
-	 * 
+	 *
 	 * @param threadId int
 	 * @param curIter int
 	 * @param sess DiskSession
 	 * @return boolean
 	 */
 	public boolean runInit( int threadId, int curIter, DiskSession sess) {
-		
+
 		// Create the test file, if this is the first test thread
-		
+
 		boolean initOK = false;
-		
+
 		try {
-			
+
 			// Check if the test file exists
-			
+
 			String testFileName = getPerThreadFileName(threadId, curIter);
-			
+
 			if ( sess.FileExists( testFileName)) {
 				if ( isVerbose())
 					Debug.println( "File " + testFileName + " exists");
 				initOK = true;
 			}
 			else {
-				
+
 				// Create a new file
-				
+
 				if ( isVerbose())
 					Debug.println( "Creating file " + testFileName + " via " + sess.getServer());
 				SMBFile testFile = sess.CreateFile( testFileName);
 				if ( testFile != null)
 					testFile.Close();
-				
+
 				// Check the file exists
 
 				if ( sess.FileExists( testFileName))
@@ -156,15 +156,15 @@ public class AttributesOnlyOplockGrantTest extends Test {
 		catch ( Exception ex) {
 			Debug.println( ex);
 		}
-		
+
 		// Return the initialization status
-		
+
 		return initOK;
 	}
-	
+
 	/**
 	 * Run the oplock grant test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iteration int
 	 * @param sess DiskSession
@@ -172,15 +172,15 @@ public class AttributesOnlyOplockGrantTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Open the test file for attributes only access
-			
+
 			String testFileName = getPerThreadFileName(threadId, iteration);
-			
+
 			CIFSDiskSession cifsSess = (CIFSDiskSession) sess;
 			CIFSFile attribFile = cifsSess.NTCreate( testFileName, AccessMode.NTReadAttributesOnly, FileAttribute.NTNormal,
 														       SharingMode.READWRITEDELETE, FileAction.NTOpen, 0, 0);
@@ -188,28 +188,28 @@ public class AttributesOnlyOplockGrantTest extends Test {
 			testLog( log, "Opened for attributes only access on server " + sess.getServer());
 
 			// Now open the same file with an oplock
-			
+
 			OplockBreakHandler oplockHandler = new OplockBreakHandler( log);
 			CIFSFile oplockFile = cifsSess.NTCreateWithOplock( testFileName, WinNT.RequestBatchOplock + WinNT.RequestExclusiveOplock, oplockHandler, AccessMode.NTReadWrite, FileAttribute.NTNormal,
 				       SharingMode.READWRITEDELETE, FileAction.NTOverwriteIf, 0, 0);
-			
+
 			if ( oplockFile.getOplockType() != OpLock.TypeNone)
 				testLog( log, "Opened file with oplock type " + OpLock.getTypeAsString( oplockFile.getOplockType()));
 			else {
 				testLog( log, "Failed to get oplock");
 				result = new BooleanTestResult( false, "Failed to get oplock on file");
 			}
-			
+
 			// Ping the server, runs the asynchrounous receive check to see if we received an oplock
 			// break from the server
-			
+
 			sess.pingServer();
 
 			// Close the attributes only and oplock files
-			
+
 			attribFile.Close();
 			oplockFile.Close();
-			
+
 			// Make sure an oplock break was not received
 
 			if ( result == null) {
@@ -218,55 +218,55 @@ public class AttributesOnlyOplockGrantTest extends Test {
 				else
 					result = new BooleanTestResult( true);
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
 		}
 		catch ( SMBException ex) {
 
 			// Check for a no such object error code
-			
+
 			if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNotFound) {
-				
+
 				// DEBUG
-				
+
 				testLog ( log, "Open failed with object not found error (expected)");
-				
+
 				// Successful test result
-				
+
 				result = new BooleanTestResult( true, "Object not found error (expected)");
 			}
 			else {
-				
+
 				// DEBUG
-				
+
 				testLog ( log, "Open failed with wrong error, ex=" + ex);
-				
+
 				// Failure test result
-				
+
 				result = new ExceptionTestResult( ex);
 			}
 		}
 		catch ( IOException ex) {
-			
+
 			// DEBUG
-			
+
 			testLog( log, "Open failed with error, ex=" + ex);
-			
+
 			// Failure test result
-			
+
 			result = new ExceptionTestResult( ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -277,7 +277,7 @@ public class AttributesOnlyOplockGrantTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		sess.DeleteFile( getPerThreadFileName( threadId, iter));
 	}
 }

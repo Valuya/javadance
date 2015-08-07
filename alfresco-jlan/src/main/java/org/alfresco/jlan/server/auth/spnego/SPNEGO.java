@@ -26,7 +26,7 @@ import org.alfresco.jlan.server.auth.asn.DER;
 
 /**
  * SPNEGO Class
- * 
+ *
  * <p>
  * Contains SPNEGO constants
  *
@@ -57,7 +57,7 @@ public class SPNEGO {
 
   /**
    * Return a result code as a string
-   * 
+   *
    * @param res int
    * @return String
    */
@@ -85,7 +85,7 @@ public class SPNEGO {
 
   /**
    * Determine the SPNEGO token type
-   * 
+   *
    * @param buf byte[]
    * @param off int
    * @param len int
@@ -96,7 +96,7 @@ public class SPNEGO {
     throws IOException {
 
     // Check the initial byte of the buffer
-    
+
     if ( DER.isApplicationSpecific( buf[ off]))
       return NegTokenInit;
     else if ( DER.isTagged( buf[ off]))

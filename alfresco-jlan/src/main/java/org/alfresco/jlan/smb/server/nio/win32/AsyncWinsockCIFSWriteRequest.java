@@ -27,28 +27,28 @@ import org.alfresco.jlan.smb.server.nio.AsynchronousWritesHandler;
 
 /**
  * Asynchronous Winsock NIO CIFS Write Request Class
- * 
+ *
  * <p>Holds the details of a Winsock NetBIOS JNI socket based CIFS session request for processing by a thread pool.
- * 
+ *
  * @author gkspencer
  */
 public class AsyncWinsockCIFSWriteRequest implements ThreadRequest {
 
 	// CIFS session
-	
+
 	private SMBSrvSession m_sess;
-	
+
 	// Socket event for this NetBIOS socket
-	
+
 	private int m_socketEvent;
-	
+
 	// Request handler
-	
+
 	private AsyncWinsockCIFSRequestHandler m_reqHandler;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param sockEvent int
 	 * @param reqHandler AsyncWinsockCIFSRequestHandler
@@ -58,55 +58,55 @@ public class AsyncWinsockCIFSWriteRequest implements ThreadRequest {
 		m_socketEvent  = sockEvent;
 		m_reqHandler   = reqHandler;
 	}
-	
+
 	/**
 	 * Run the CIFS request
 	 */
 	public void runRequest() {
-		
+
 		// Check if the session is still alive
-		
+
 		if ( m_sess.isShutdown() == false &&
 				m_sess.getPacketHandler() instanceof AsynchronousWritesHandler) {
-			
+
 			try {
-				
+
 				// Get the packet handler and check if there are queued write requests
-				
+
 				AsynchronousWritesHandler writeHandler = (AsynchronousWritesHandler) m_sess.getPacketHandler();
-				
+
 				if ( writeHandler.getQueuedWriteCount() > 0) {
-					
+
 					Debug.println("%%% Processing queued writes, queued=" + writeHandler.getQueuedWriteCount() + " %%%");
-					
+
 					// Process the queued write requests
-					
+
 					int wrCnt = writeHandler.processQueuedWrites();
-					
+
 					// DEBUG
-					
+
 					Debug.println("%%% Processed " + wrCnt + " queued write requests, queued=" + writeHandler.getQueuedWriteCount() + " %%%");
 				}
-				
+
 			}
 			catch ( Throwable ex) {
 				Debug.println(ex);
 			}
 		}
 	}
-	
+
 	/**
 	 * Return the CIFS request details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[Async Winsock CIFS Sess=");
 		str.append( m_sess.getUniqueId());
 		str.append("-Write]");
-		
+
 		return str.toString();
 	}
 }

@@ -36,10 +36,10 @@ public class DiskFullException extends IOException {
 	public DiskFullException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public DiskFullException(String msg) {

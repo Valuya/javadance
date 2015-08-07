@@ -113,9 +113,9 @@ public class TreeConnection {
 
     m_files[idx] = file;
     m_fileCount++;
-    
+
     // Save the protocol level id
-    
+
     file.setProtocolId( idx);
     return idx;
   }
@@ -152,16 +152,16 @@ public class TreeConnection {
    	      }
    	      catch (Exception ex) {
     	  }
-   	      
+
    	      // Remove the file from the open file table
-   	      
+
           removeFile(idx, sess);
     	}
       }
     }
-    
+
     //	Decrement the active connection count for the shared device
-    
+
     m_shareDev.decrementConnectionCount();
   }
 
@@ -184,7 +184,7 @@ public class TreeConnection {
 
 	/**
 	 * Return the length of the file table
-	 * 
+	 *
 	 * @return int
 	 */
 	public synchronized int getFileTableLength() {
@@ -192,10 +192,10 @@ public class TreeConnection {
 			return 0;
 		return m_files.length;
 	}
-	
+
 	/**
 	 * Determine if the shared device has an associated context
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasContext() {
@@ -203,7 +203,7 @@ public class TreeConnection {
 	  	return m_shareDev.getContext() != null ? true : false;
 	  return false;
 	}
-	
+
   /**
    * Return the interface specific context object.
    *
@@ -214,7 +214,7 @@ public class TreeConnection {
     	return null;
     return m_shareDev.getContext();
   }
-  
+
   /**
    * Return the share access permissions that the user has been granted.
    *
@@ -226,7 +226,7 @@ public class TreeConnection {
 
 	/**
 	 * Deterimine if the access permission for the shared device allows read access
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasReadAccess() {
@@ -235,10 +235,10 @@ public class TreeConnection {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Determine if the access permission for the shared device allows write access
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasWriteAccess() {
@@ -246,7 +246,7 @@ public class TreeConnection {
 			return true;
 		return false;
 	}
-	
+
   /**
    * Return the shared device that this tree connection is using.
    *
@@ -258,7 +258,7 @@ public class TreeConnection {
 
 	/**
 	 * Return the shared device interface
-	 * 
+	 *
 	 * @return DeviceInterface
 	 */
 	public final DeviceInterface getInterface() {
@@ -271,7 +271,7 @@ public class TreeConnection {
 		}
 		return null;
 	}
-			
+
   /**
    * Check if the user has been granted the required access permission for this share.
    *

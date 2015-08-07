@@ -23,17 +23,17 @@ import org.alfresco.jlan.smb.dcerpc.PolicyHandle;
 
 /**
  * Eventlog Handle Class
- * 
+ *
  * <p>
  * Contains the handle to a remote eventlog.
- * 
+ *
  * @author gkspencer
  */
 public class EventlogHandle extends PolicyHandle {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param logName String
 	 */
 	public EventlogHandle(String logName) {
@@ -43,7 +43,7 @@ public class EventlogHandle extends PolicyHandle {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param logName String
 	 * @param buf byte[]
 	 * @param off int

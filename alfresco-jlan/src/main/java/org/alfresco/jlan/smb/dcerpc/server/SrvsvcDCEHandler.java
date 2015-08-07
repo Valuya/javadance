@@ -45,14 +45,14 @@ import org.alfresco.jlan.smb.server.SMBSrvSession;
 
 /**
  * Srvsvc DCE/RPC Handler Class
- * 
+ *
  * @author gkspencer
  */
 public class SrvsvcDCEHandler implements DCEHandler {
 
 	/**
 	 * Process a SrvSvc DCE/RPC request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param inBuf DCEBuffer
 	 * @param pipeFile DCEPipeFile
@@ -136,7 +136,7 @@ public class SrvsvcDCEHandler implements DCEHandler {
 
 	/**
 	 * Handle a share enumeration request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param inBuf DCEPacket
 	 * @param outBuf DCEPacket
@@ -243,7 +243,7 @@ public class SrvsvcDCEHandler implements DCEHandler {
 
 	/**
 	 * Handle a get share information request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param inBuf DCEPacket
 	 * @param outBuf DCEPacket
@@ -320,7 +320,7 @@ public class SrvsvcDCEHandler implements DCEHandler {
 
 	/**
 	 * Handle a get server information request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param inBuf DCEPacket
 	 * @param outBuf DCEPacket

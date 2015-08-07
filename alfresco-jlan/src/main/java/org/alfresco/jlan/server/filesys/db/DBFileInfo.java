@@ -29,19 +29,19 @@ import org.alfresco.jlan.server.filesys.FileInfo;
 public class DBFileInfo extends FileInfo {
 
 	//	Full file name
-	
+
 	private String m_fullName;
-	
+
 	/**
 	 * Class constructor
 	 */
 	public DBFileInfo() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fullName String
 	 * @param fid int
@@ -54,19 +54,19 @@ public class DBFileInfo extends FileInfo {
 		setFileId(fid);
 		setDirectoryId(did);
 	}
-	
+
 	/**
 	 * Return the full file path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFullName() {
 		return m_fullName;
 	}
-		
+
 	/**
 	 * Set the full file path
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setFullName(String name) {
@@ -75,12 +75,12 @@ public class DBFileInfo extends FileInfo {
 
 	/**
 	 * Return the file information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		
+
 		str.append("[");
 		str.append(super.toString());
 		str.append(" - FID=");
@@ -88,7 +88,7 @@ public class DBFileInfo extends FileInfo {
 		str.append(",DID=");
 		str.append(getDirectoryId());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

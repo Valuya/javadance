@@ -80,11 +80,11 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * PostgreSQL Database Interface Class
- * 
+ *
  * <p>
  * PostgreSQL specific implementation of the database interface used by the database filesystem
  * driver (DBDiskDriver).
- * 
+ *
  * @author gkspencer
  */
 public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInterface, DBDataInterface, DBObjectIdInterface {
@@ -98,13 +98,13 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 	public final static String LockFileName = "PostgreSQLLoader.lock";
 
 	// OID read/write buffer size
-	
+
 	public final static int OIDBufferSize	= 32 * (int) MemorySize.KILOBYTE;
-	
+
 	// File data fragment size, to be stored via an oid file
-	
+
 	public final static long OIDFileSize	= MemorySize.GIGABYTE;
-			
+
 	// Database connection and prepared statement used to write file requests to
 	// the queue tables
 
@@ -121,7 +121,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Return the database interface name
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getDBInterfaceName() {
@@ -130,7 +130,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Get the supported database features mask
-	 * 
+	 *
 	 * @return int
 	 */
 	protected int getSupportedFeatures() {
@@ -142,7 +142,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Initialize the database interface
-	 * 
+	 *
 	 * @param dbCtx DBDeviceContext
 	 * @param params ConfigElement
 	 * @exception InvalidConfigurationException
@@ -160,14 +160,14 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 		super.initializeDatabase(dbCtx, params);
 
 		// Set the fragment size for saving data to the database oid files
-		
+
 		setDataFragmentSize( OIDFileSize);
-		
+
 		// Force autocommit to be enabled
 
 		if ( getDSNString().indexOf("?autoCommit=") == -1)
 			setDSNString(getDSNString() + "?autoCommit=true");
-		
+
 		// Create the database connection pool
 
 		try {
@@ -184,7 +184,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 			throw new InvalidConfigurationException("Failed to create connection pool, " + ex.getMessage());
 		}
-		
+
 		// Check if the file system table exists
 
 		Connection conn = null;
@@ -451,7 +451,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Check if a file/folder exists
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fname String
 	 * @return FileStatus.NotExist, FileStatus.FileExists or FileStatus.DirectoryExists
@@ -530,7 +530,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Create a file record for a new file or folder
-	 * 
+	 *
 	 * @param fname String
 	 * @param dirId int
 	 * @param params FileOpenParams
@@ -762,7 +762,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Create a stream record for a new file stream
-	 * 
+	 *
 	 * @param sname String
 	 * @param fid int
 	 * @return int
@@ -861,7 +861,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Delete a file or folder record
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param markOnly boolean
@@ -958,7 +958,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Delete a file stream record
-	 * 
+	 *
 	 * @param fid int
 	 * @param stid int
 	 * @param markOnly boolean
@@ -1024,7 +1024,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Set file information for a file or folder
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param finfo FileInfo
@@ -1197,7 +1197,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Set information for a file stream
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param stid int
@@ -1312,7 +1312,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Get the id for a file/folder, or -1 if the file/folder does not exist.
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fname String
 	 * @param dirOnly boolean
@@ -1434,7 +1434,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Get information for a file or folder
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param infoLevel int
@@ -1621,7 +1621,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Get information for a file stream
-	 * 
+	 *
 	 * @param fid int
 	 * @param stid int
 	 * @param infoLevel int
@@ -1760,7 +1760,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Return the list of streams for the specified file
-	 * 
+	 *
 	 * @param fid int
 	 * @param infoLevel int
 	 * @return StreamInfoList
@@ -1911,7 +1911,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Rename a file or folder, may also change the parent directory.
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param newName String
@@ -1986,7 +1986,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Rename a file stream
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param stid int
@@ -2002,7 +2002,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 	/**
 	 * Return the retention period expiry date/time for the specified file, or zero if the
 	 * file/folder is not under retention.
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @return RetentionDetails
@@ -2070,7 +2070,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Start a directory search
-	 * 
+	 *
 	 * @param dirId int
 	 * @param searchPath String
 	 * @param attrib int
@@ -2211,7 +2211,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Return the used file space, or -1 if not supported.
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getUsedFileSpace() {
@@ -2276,7 +2276,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Queue a file request.
-	 * 
+	 *
 	 * @param req FileRequest
 	 * @exception DBException
 	 */
@@ -2309,7 +2309,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 					// Get a database connection
 
 					stmt = m_dbConn.createStatement();
-					
+
 					// Write the file request record
 
 					int recCnt = 0;
@@ -2410,7 +2410,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 	/**
 	 * Perform a queue cleanup deleting temporary cache files that do not have an associated save or
 	 * transaction request.
-	 * 
+	 *
 	 * @param tempDir File
 	 * @param tempDirPrefix String
 	 * @param tempFilePrefix String
@@ -2968,7 +2968,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Check if the specified temporary file has a queued request.
-	 * 
+	 *
 	 * @param tempFile String
 	 * @param lastFile boolean
 	 * @return boolean
@@ -3055,7 +3055,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Delete a file request from the pending queue.
-	 * 
+	 *
 	 * @param fileReq FileRequest
 	 * @exception DBException
 	 */
@@ -3126,7 +3126,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Load a block of file request from the database into the specified queue.
-	 * 
+	 *
 	 * @param fromSeqNo int
 	 * @param reqType int
 	 * @param reqQueue FileRequestQueue
@@ -3227,7 +3227,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Load a transaction request from the queue.
-	 * 
+	 *
 	 * @param tranReq MultiplFileRequest
 	 * @return MultipleFileRequest
 	 * @exception DBException
@@ -3309,7 +3309,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Shutdown the database interface, release resources.
-	 * 
+	 *
 	 * @param context DBDeviceContext
 	 */
 	public void shutdownDatabase(DBDeviceContext context) {
@@ -3321,7 +3321,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Get the retention expiry date/time for a file/folder
-	 * 
+	 *
 	 * @param conn Connection
 	 * @param stmt Statement
 	 * @param fid int
@@ -3362,7 +3362,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Determine if the specified file/folder is still within an active retention period
-	 * 
+	 *
 	 * @param conn Connection
 	 * @param stmt Statement
 	 * @param fid int
@@ -3390,7 +3390,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Create the prepared statements used by the file request queueing database
-	 * 
+	 *
 	 * @exception SQLException
 	 */
 	protected final void createQueueStatements()
@@ -3433,7 +3433,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Return the file data details for the specified file or stream.
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @return DBDataDetails
@@ -3519,7 +3519,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Return the maximum data fragment size supported
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getMaximumFragmentSize() {
@@ -3528,7 +3528,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Load file data from the database into a temporary/local file
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param fileSeg FileSegment
@@ -3559,33 +3559,33 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 		Statement stmt = null;
 		LargeObjectManager lrgObjMgr = null;
 		LargeObject lObj = null;
-		
+
 		boolean autoCommit = true;
 
 		try {
 
 			// Make sure we have a Postgres connection
-			
+
 			conn = getConnection();
-			
+
 			if ( conn instanceof PGConnection) {
-				
+
 				// Access the large object manager
-				
+
 				lrgObjMgr = ((PGConnection) conn).getLargeObjectAPI();
 			}
 			else {
-				
+
 				// Wrong connection type
-				
+
 				throw new DBException( "Wrong connection type, require PGConnection");
 			}
-				
+
 			// Switch off auto-commit whilst working with large objects
-			
+
 			autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit( false);
-			
+
 			// Get a connection to the database, create a statement
 
 			stmt = conn.createStatement();
@@ -3620,7 +3620,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				fragSize = rs.getInt("FragLen");
 
 				// Access the large object file
-				
+
 				lObj = lrgObjMgr.open( dataOid, LargeObjectManager.READ);
 
 				// Allocate the read buffer, if not already allocated
@@ -3650,10 +3650,10 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				fileSeg.signalDataAvailable();
 
 				// Close the oid file
-				
+
 				lObj.close();
 				lObj = null;
-				
+
 				// Renew the lease on the database connection
 
 				getConnectionPool().renewLease(conn);
@@ -3664,9 +3664,9 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			rs.close();
 
 			// Commit any updates
-			
+
 			conn.commit();
-			
+
 			// DEBUG
 
 			if ( Debug.EnableInfo && hasDebug()) {
@@ -3699,7 +3699,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			}
 
 			// Make sure the oid file is closed
-			
+
 			if ( lrgObjMgr != null && lObj != null) {
 				try {
 					lObj.close();
@@ -3707,21 +3707,21 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				catch ( Exception ex) {
 				}
 			}
-			
+
 			// Release the database connection
 
 			if ( conn != null) {
-				
+
 				// Reset the auto-commit state
-				
+
 				try {
 					conn.setAutoCommit(autoCommit);
 				}
 				catch ( SQLException ex) {
 				}
-				
+
 				// Release back to the pool
-				
+
 				releaseConnection(conn);
 			}
 
@@ -3744,7 +3744,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Load Jar file data from the database into a temporary file
-	 * 
+	 *
 	 * @param jarId int
 	 * @param jarSeg FileSegment
 	 * @throws DBException
@@ -3763,35 +3763,35 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 		LargeObjectManager lrgObjMgr = null;
 		LargeObject lObj = null;
 		long oid = 0;
-		
+
 		boolean autoCommit = true;
 
 		try {
 
 			// Make sure we have a Postgres connection
-			
+
 			conn = getConnection();
-			
+
 			if ( conn instanceof PGConnection) {
-				
+
 				// Access the large object manager
-				
+
 				lrgObjMgr = ((PGConnection) conn).getLargeObjectAPI();
 			}
 			else {
-				
+
 				// Wrong connection type
-				
+
 				throw new DBException( "Wrong connection type, require PGConnection");
 			}
-				
+
 			// Switch off auto-commit whilst working with large objects
-			
+
 			autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit( false);
-			
+
 			// Get the Jar data oid(s)
-			
+
 			stmt = conn.createStatement();
 
 			String sql = "SELECT Data FROM " + getJarDataTableName() + " WHERE JarId = " + jarId;
@@ -3815,9 +3815,9 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				// Get the Jar file oid
 
 				oid = rs.getLong( 1);
-				
+
 				// Access the large object file
-				
+
 				lObj = lrgObjMgr.open( oid, LargeObjectManager.READ);
 
 				// Read the data from the oid file and write to the output file
@@ -3836,10 +3836,10 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				}
 
 				// Close the oid file
-				
+
 				lObj.close();
 				lObj = null;
-				
+
 				// Renew the lease on the database connection
 
 				getConnectionPool().renewLease(conn);
@@ -3878,7 +3878,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			}
 
 			// Make sure the oid file is closed
-			
+
 			if ( lrgObjMgr != null && lObj != null) {
 				try {
 					lObj.close();
@@ -3886,21 +3886,21 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				catch ( Exception ex) {
 				}
 			}
-			
+
 			// Release the database connection
 
 			if ( conn != null) {
-				
+
 				// Reset the auto-commit state
-				
+
 				try {
 					conn.setAutoCommit(autoCommit);
 				}
 				catch ( SQLException ex) {
 				}
-				
+
 				// Release back to the pool
-				
+
 				releaseConnection(conn);
 			}
 
@@ -3919,7 +3919,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Save the file data from the temporary/local file to the database
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param fileSeg FileSegment
@@ -3941,9 +3941,9 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 		PreparedStatement stmt = null;
 		LargeObjectManager lrgObjMgr = null;
 		LargeObject lObj = null;
-		
+
 		boolean autoCommit = true;
-		
+
 		int fragNo = 1;
 		long oid = -1L;
 		FileInputStream inFile = null;
@@ -3951,29 +3951,29 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 		try {
 
 			// Make sure we have a Postgres connection
-			
+
 			conn = getConnection();
-			
+
 			if ( conn instanceof PGConnection) {
-				
+
 				// Access the large object manager
-				
+
 				lrgObjMgr = ((PGConnection) conn).getLargeObjectAPI();
 			}
 			else {
-				
+
 				// Wrong connection type
-				
+
 				throw new DBException( "Wrong connection type, require PGConnection");
 			}
-				
+
 			// Switch off auto-commit whilst working with large objects
-			
+
 			autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit( false);
-			
+
 			// Delete any existing records/OIDs for the file
-			
+
 			delStmt = conn.createStatement();
 
 			String sql = "SELECT Data FROM " + getDataTableName() + " WHERE FileId = " + fileId + " AND StreamId = " + streamId;
@@ -3984,29 +3984,29 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				Debug.println("[PostgreSQL] Save file data SQL: " + sql);
 
 			ResultSet rs = delStmt.executeQuery( sql);
-			
+
 			while ( rs.next()) {
-				
+
 				// Get the OID and delete the associated data
-				
+
 				oid = rs.getLong( 1);
 				lrgObjMgr.delete( oid);
-				
+
 				// DEBUG
-				
+
 				if ( hasDebug())
 					Debug.println( "Deleted file data OID=" + oid);
 			}
-			
+
 			// Delete any existing file data records for this file
 
 			sql = "DELETE FROM " + getDataTableName() + " WHERE FileId = " + fileId + " AND StreamId = " + streamId;
-			
+
 			// DEBUG
 
 			if ( Debug.EnableInfo && hasSQLDebug())
 				Debug.println("[PostgreSQL] Save file data SQL: " + sql);
-			
+
 			int recCnt = delStmt.executeUpdate(sql);
 			delStmt.close();
 			delStmt = null;
@@ -4032,48 +4032,48 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			while ( saveSize > 0) {
 
 				// Create an OID for the current file data fragment
-				
+
 				oid = lrgObjMgr.createLO( LargeObjectManager.READWRITE);
 				lObj = lrgObjMgr.open( oid, LargeObjectManager.WRITE);
-				
+
 				// Determine the current fragment size to store
 
 				long fragSize = Math.min(saveSize, getDataFragmentSize());
 
 				// Copy file data from the temp file to the OID file
-				
+
 				long wrLen = 0L;
 				int rdLen = 0;
 				int rdOffset = 0;
-				
+
 				while ( wrLen < fragSize && rdLen != -1 && rdOffset == 0) {
-					
+
 					// Check if we need a short read
-					
+
 					if (( fragSize - wrLen) < inBuf.length)
 						rdOffset = inBuf.length - (int) ( fragSize - wrLen);
-							
+
 					// Read a buffer of data from the temp file
-					
+
 					rdLen = inFile.read( inBuf, rdOffset, inBuf.length - rdOffset);
-					
+
 					if ( rdLen > 0) {
-						
+
 						// Write to the OID file
-						
+
 						lObj.write( inBuf, rdOffset, rdLen);
-						
+
 						// Update the OID data length
-						
+
 						wrLen += rdLen;
 					}
 				}
 
 				// Close the OID file
-				
+
 				lObj.close();
 				lObj = null;
-				
+
 				// Store the current fragment details
 
 				stmt.clearParameters();
@@ -4097,13 +4097,13 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 				getConnectionPool().renewLease(conn);
 			}
-			
+
 			// Commit the updates
-			
+
 			conn.commit();
-			
+
 			// DEBUG
-			
+
 			if ( hasDebug())
 				Debug.println( "[PostgreSQL] Saved file fid=" + fileId + ", stid=" + streamId + " using " + oidCnt + " oid files");
 		}
@@ -4141,7 +4141,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			}
 
 			// Release any open large object
-			
+
 			if ( lrgObjMgr != null && lObj != null) {
 				try {
 					lObj.close();
@@ -4149,21 +4149,21 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				catch ( Exception ex) {
 				}
 			}
-			
+
 			// Release the database connection
 
 			if ( conn != null) {
-				
+
 				// Reset the auto-commit state
-				
+
 				try {
 					conn.setAutoCommit(autoCommit);
 				}
 				catch ( SQLException ex) {
 				}
-				
+
 				// Release back to the pool
-				
+
 				releaseConnection(conn);
 			}
 
@@ -4185,7 +4185,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Save the file data from a Jar file to the database
-	 * 
+	 *
 	 * @param jarPath String
 	 * @param fileList DBDataDetailsList
 	 * @return int
@@ -4202,7 +4202,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 		LargeObjectManager lrgObjMgr = null;
 		LargeObject lObj = null;
 		long oid = 0;
-		
+
 		boolean autoCommit = true;
 
 		int jarId = -1;
@@ -4210,24 +4210,24 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 		try {
 
 			// Make sure we have a Postgres connection
-			
+
 			conn = getConnection();
-			
+
 			if ( conn instanceof PGConnection) {
-				
+
 				// Access the large object manager
-				
+
 				lrgObjMgr = ((PGConnection) conn).getLargeObjectAPI();
 			}
 			else {
-				
+
 				// Wrong connection type
-				
+
 				throw new DBException( "Wrong connection type, require PGConnection");
 			}
-				
+
 			// Switch off auto-commit whilst working with large objects
-			
+
 			autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit( false);
 
@@ -4237,37 +4237,37 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			FileInputStream inJar = new FileInputStream(jarFile);
 
 			// Check if the Jar file will fit into the oid file
-			
+
 			if ( jarFile.length() > OIDFileSize)
 				throw new DBException("Jar file too big for oid file, jar=" + jarPath);
-			
+
 			// Create an OID for the current file data fragment
-			
+
 			oid = lrgObjMgr.createLO( LargeObjectManager.READWRITE);
 			lObj = lrgObjMgr.open( oid, LargeObjectManager.WRITE);
-			
+
 			byte[] inBuf = new byte[ OIDBufferSize];
 			int rdLen = 0;
-			
+
 			while ( rdLen != -1) {
 
 				// Read a buffer of data from the temp file
-					
+
 				rdLen = inJar.read( inBuf, 0, inBuf.length);
-					
+
 				if ( rdLen > 0) {
-						
+
 					// Write to the OID file
-						
+
 					lObj.write( inBuf, 0, rdLen);
 				}
 			}
-			
+
 			// Close the OID file
-				
+
 			lObj.close();
 			lObj = null;
-			
+
 			// Add the Jar file data to the database
 
 			stmt = conn.createStatement();
@@ -4305,9 +4305,9 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				stmt.executeUpdate("INSERT INTO " + getDataTableName() + " (FileId,StreamId,FragNo,JarId,JarFile) VALUES ("
 						+ dbDetails.getFileId() + "," + dbDetails.getStreamId() + ", 1," + jarId + ",TRUE);");
 			}
-			
+
 			// Commit the updates
-			
+
 			conn.commit();
 		}
 		catch (SQLException ex) {
@@ -4334,7 +4334,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			}
 
 			// Release any open large object
-			
+
 			if ( lrgObjMgr != null && lObj != null) {
 				try {
 					lObj.close();
@@ -4342,21 +4342,21 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 				catch ( Exception ex) {
 				}
 			}
-			
+
 			// Release the database connection
 
 			if ( conn != null) {
-				
+
 				// Reset the auto-commit state
-				
+
 				try {
 					conn.setAutoCommit(autoCommit);
 				}
 				catch ( SQLException ex) {
 				}
-				
+
 				// Release back to the pool
-				
+
 				releaseConnection(conn);
 			}
 		}
@@ -4368,7 +4368,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Delete the file data for the specified file/stream
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @throws DBException
@@ -4382,33 +4382,33 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 		Connection conn = null;
 		Statement delStmt = null;
 		LargeObjectManager lrgObjMgr = null;
-		
+
 		boolean autoCommit = true;
 
 		try {
 
 			// Make sure we have a Postgres connection
-			
+
 			conn = getConnection();
-			
+
 			if ( conn instanceof PGConnection) {
-				
+
 				// Access the large object manager
-				
+
 				lrgObjMgr = ((PGConnection) conn).getLargeObjectAPI();
 			}
 			else {
-				
+
 				// Wrong connection type
-				
+
 				throw new DBException( "Wrong connection type, require PGConnection");
 			}
-				
+
 			// Switch off auto-commit whilst working with large objects
-			
+
 			autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit( false);
-			
+
 			// Need to delete the existing data and associated oid data
 
 			delStmt = conn.createStatement();
@@ -4423,27 +4423,27 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 			if ( Debug.EnableInfo && hasSQLDebug())
 				Debug.println("[PostgreSQL] Delete file data (OIDs) SQL: " + sql);
-			
+
 			// Delete the associated oids
-			
+
 			ResultSet rs = delStmt.executeQuery( sql);
-			
+
 			while ( rs.next()) {
-				
+
 				// Get the current OID
-				
+
 				long oid = rs.getLong( 1);
-				
+
 				// Delete the oid data
-				
+
 				lrgObjMgr.delete( oid);
-				
+
 				// DEBUG
-	
+
 				if ( Debug.EnableInfo && hasDebug())
 					Debug.println("[PostgreSQL] Deleted OID data id=" + oid + " for fid=" + fileId + ", stid=" + streamId);
 			}
-			
+
 			// Check if the main file stream is being deleted, if so then delete
 			// all stream data too
 
@@ -4462,9 +4462,9 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			int recCnt = delStmt.executeUpdate(sql);
 
 			// Commit the updates
-			
+
 			conn.commit();
-			
+
 			// Debug
 
 			if ( Debug.EnableInfo && hasDebug() && recCnt > 0)
@@ -4492,17 +4492,17 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			// Release the database connection
 
 			if ( conn != null) {
-				
+
 				// Reset the auto-commit state
-				
+
 				try {
 					conn.setAutoCommit(autoCommit);
 				}
 				catch ( SQLException ex) {
 				}
-				
+
 				// Release back to the pool
-				
+
 				releaseConnection(conn);
 			}
 		}
@@ -4510,7 +4510,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Delete the file data for the specified Jar file
-	 * 
+	 *
 	 * @param jarId int
 	 * @throws DBException
 	 * @throws IOException
@@ -4524,51 +4524,51 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 		Statement delStmt = null;
 		LargeObjectManager lrgObjMgr = null;
 		long oid = 0;
-		
+
 		boolean autoCommit = true;
 
 		try {
 
 			// Make sure we have a Postgres connection
-			
+
 			conn = getConnection();
-			
+
 			if ( conn instanceof PGConnection) {
-				
+
 				// Access the large object manager
-				
+
 				lrgObjMgr = ((PGConnection) conn).getLargeObjectAPI();
 			}
 			else {
-				
+
 				// Wrong connection type
-				
+
 				throw new DBException( "Wrong connection type, require PGConnection");
 			}
-				
+
 			// Switch off auto-commit whilst working with large objects
-			
+
 			autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit( false);
 
 			// Get the oid for the Jar data file
-			
+
 			String sql = "SELECT Data FROM " + getJarDataTableName() + " WHERE JarId = " + jarId + ";";
-			
+
 			// DEBUG
 
 			if ( Debug.EnableInfo && hasSQLDebug())
 				Debug.println("[PostgreSQL] Delete Jar data SQL: " + sql);
 
 			ResultSet rs = delStmt.executeQuery( sql);
-			
+
 			if ( rs.next())
 				oid = rs.getLong( 1);
-			
+
 			// Delete the associated oid file
-			
+
 			lrgObjMgr.delete( oid);
-			
+
 			// Now delete the Jar record
 
 			delStmt = conn.createStatement();
@@ -4587,9 +4587,9 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 			if ( Debug.EnableInfo && hasDebug() && recCnt > 0)
 				Debug.println("[PostgreSQL] Deleted Jar data jarId=" + jarId + ", records=" + recCnt);
-			
+
 			// Commit the changes
-			
+
 			conn.commit();
 		}
 		catch (SQLException ex) {
@@ -4614,17 +4614,17 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 			// Release the database connection
 
 			if ( conn != null) {
-				
+
 				// Reset the auto-commit state
-				
+
 				try {
 					conn.setAutoCommit(autoCommit);
 				}
 				catch ( SQLException ex) {
 				}
-				
+
 				// Release back to the pool
-				
+
 				releaseConnection(conn);
 			}
 		}
@@ -4634,7 +4634,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Create a file id to object id mapping
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param objectId String
@@ -4715,7 +4715,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Load the object id for the specified file id
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @return String
@@ -4789,7 +4789,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Delete a file id/object id mapping
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param objectId String
@@ -4853,7 +4853,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Return the data for a symbolic link
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @return String
@@ -4928,7 +4928,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Delete a symbolic link record
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @exception DBException
@@ -4992,7 +4992,7 @@ public class PostgreSQLDBInterface extends JdbcDBInterface implements DBQueueInt
 
 	/**
 	 * Convert a file id to a share relative path
-	 * 
+	 *
 	 * @param fileid int
 	 * @param stmt Statement
 	 * @return String

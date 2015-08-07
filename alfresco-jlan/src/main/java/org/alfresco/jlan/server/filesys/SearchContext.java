@@ -42,13 +42,13 @@ public abstract class SearchContext {
   //	Flags
 
   private int m_flags;
-  
+
   /**
    * Default constructor.
    */
   public SearchContext() {
   }
-  
+
   /**
    * Construct a new search context.
    *
@@ -59,13 +59,13 @@ public abstract class SearchContext {
     m_maxFiles = maxFiles;
     m_treeId = treeId;
   }
-  
+
   /**
    * Close the search.
    */
   public void closeSearch() {
   }
-  
+
   /**
    * Return the search context flags.
    *
@@ -74,7 +74,7 @@ public abstract class SearchContext {
   public final int getFlags() {
     return m_flags;
   }
-  
+
   /**
    * Return the maximum number of files that should be returned per search request.
    *
@@ -83,14 +83,14 @@ public abstract class SearchContext {
   public final int getMaximumFiles() {
     return m_maxFiles;
   }
-  
+
   /**
    * Return the resume id for the current file/directory in the search.
    *
    * @return int
    */
   public abstract int getResumeId();
-  
+
   /**
    * Return the search string, used for resume keys in some SMB dialects.
    *
@@ -99,7 +99,7 @@ public abstract class SearchContext {
   public final String getSearchString() {
     return m_searchStr != null ? m_searchStr : "";
   }
-  
+
   /**
    * Return the tree identifier of the tree connection that this search is associated with.
    *
@@ -108,14 +108,14 @@ public abstract class SearchContext {
   public final int getTreeId() {
     return m_treeId;
   }
-  
+
   /**
    * Determine if there are more files for the active search.
    *
    * @return boolean
    */
   public abstract boolean hasMoreFiles();
-  
+
   /**
    * Return file information for the next file in the active search. Returns
    * false if the search is complete.
@@ -124,7 +124,7 @@ public abstract class SearchContext {
    * @return      true if the file information is valid, else false
    */
   public abstract boolean nextFileInfo(FileInfo info);
-  
+
   /**
    * Return the file name of the next file in the active search. Returns
    * null is the search is complete.
@@ -135,13 +135,13 @@ public abstract class SearchContext {
 
 	/**
 	 * Return the total number of file entries for this search if known, else return -1
-	 * 
+	 *
 	 * @return int
 	 */
 	public int numberOfEntries() {
-		return -1;  
+		return -1;
 	}
-	
+
   /**
    * Restart a search at the specified resume point.
    *
@@ -149,7 +149,7 @@ public abstract class SearchContext {
    * @return           true if the search can be restarted, else false.
    */
   public abstract boolean restartAt(int resumeId);
-  
+
   /**
    * Restart the current search at the specified file.
    *
@@ -157,7 +157,7 @@ public abstract class SearchContext {
    * @return       true if the search can be restarted, else false.
    */
   public abstract boolean restartAt(FileInfo info);
-  
+
   /**
    * Set the search context flags.
    *
@@ -166,7 +166,7 @@ public abstract class SearchContext {
   public final void setFlags(int flg) {
     m_flags = flg;
   }
-  
+
   /**
    * Set the maximum files to return per request packet.
    *
@@ -175,7 +175,7 @@ public abstract class SearchContext {
   public final void setMaximumFiles(int maxFiles) {
     m_maxFiles = maxFiles;
   }
-  
+
   /**
    * Set the search string.
    *
@@ -184,7 +184,7 @@ public abstract class SearchContext {
   public final void setSearchString(String str) {
     m_searchStr = str;
   }
-  
+
   /**
    * Set the tree connection id that the search is associated with.
    *
@@ -196,33 +196,33 @@ public abstract class SearchContext {
 
   /**
    * Wildcard searches return entries for the '.' and '..' pseudo entries
-   * 
+   *
    * @return boolean
    */
   public boolean hasDotFiles() {
 	  return false;
   }
-  
+
   /**
    * Return the '.' pseudo entry details
-   * 
+   *
    * @param finfo FileInfo
    * @return boolean
    */
   public boolean getDotInfo(FileInfo finfo) {
 	  return false;
   }
-  
+
   /**
    * Return the '..' pseudo entry details
-   * 
+   *
    * @param finfo FileInfo
    * @return boolean
    */
   public boolean getDotDotInfo(FileInfo finfo) {
 	  return false;
   }
-  
+
   /**
    * Return the search context as a string.
    *

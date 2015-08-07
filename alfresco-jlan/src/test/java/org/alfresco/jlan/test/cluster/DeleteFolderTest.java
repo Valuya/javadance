@@ -38,43 +38,43 @@ public class DeleteFolderTest extends Test {
 	public DeleteFolderTest() {
 		super( "DeleteFolder");
 	}
-	
+
 	/**
 	 * Per run initialization
-	 * 
+	 *
 	 * @param threadId int
 	 * @param curIter int
 	 * @param sess DiskSession
 	 * @return boolean
 	 */
 	public boolean runInit( int threadId, int curIter, DiskSession sess) {
-		
+
 		// Create the test folder, if this is the first test thread
-		
+
 		boolean initOK = false;
-		
+
 		if ( threadId == 1) {
 
 			try {
-				
+
 				// Check if the test folder exists
-				
+
 				String testFolderName = getPerTestFolderName( threadId, curIter);
-				
+
 				if ( sess.FileExists( testFolderName) && sess.isDirectory( testFolderName)) {
 					Debug.println("Folder " + testFolderName + " exists");
 					initOK = true;
 				}
 				else {
-					
+
 					// Create a new folder
-					
+
 					if ( isVerbose())
 						Debug.println("Creating folder " + testFolderName + " via " + sess.getServer());
 					sess.CreateDirectory( testFolderName);
-					
+
 					// Check the folder exists
-	
+
 					if ( sess.FileExists( testFolderName))
 						initOK = true;
 				}
@@ -86,15 +86,15 @@ public class DeleteFolderTest extends Test {
 		}
 		else
 			initOK = true;
-		
+
 		// Return the initialization status
-		
+
 		return initOK;
 	}
-	
+
 	/**
 	 * Run the delete folder test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iteration int
 	 * @param sess DiskSession
@@ -102,15 +102,15 @@ public class DeleteFolderTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Delete the folder
-			
+
 			String testFolderName = getPerTestFolderName( threadId, iteration);
-			
+
 			CIFSDiskSession cifsSess = (CIFSDiskSession) sess;
 			try {
 				cifsSess.DeleteDirectory( testFolderName);
@@ -131,19 +131,19 @@ public class DeleteFolderTest extends Test {
 				testLog( log, "Folder status on server " + sess.getServer() + "=NotExist");
 				result = new BooleanTestResult( true);
 			}
-				
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult( ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
 }

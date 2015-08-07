@@ -34,10 +34,10 @@ public class QuotaManagerException extends Exception {
 	public QuotaManagerException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public QuotaManagerException(String msg) {

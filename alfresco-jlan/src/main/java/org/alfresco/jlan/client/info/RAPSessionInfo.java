@@ -27,10 +27,10 @@ import org.alfresco.jlan.smb.dcerpc.info.SessionInfo;
 
 /**
  * Session Information Class.
- * 
+ *
  * <p>
  * The session information class contains the details of a connection to a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class RAPSessionInfo extends SessionInfo implements RAPReadable, Serializable {
@@ -44,7 +44,7 @@ public class RAPSessionInfo extends SessionInfo implements RAPReadable, Serializ
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */
@@ -54,7 +54,7 @@ public class RAPSessionInfo extends SessionInfo implements RAPReadable, Serializ
 
 	/**
 	 * Load the session information from the vector of objects
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */

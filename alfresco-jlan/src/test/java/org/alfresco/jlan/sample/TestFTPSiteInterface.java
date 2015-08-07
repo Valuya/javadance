@@ -30,7 +30,7 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * Test FTP Site Interface Class
- * 
+ *
  * <p>Implements the FTPSiteInterface to accept custom SITE commands.
  *
  * @author gkspencer
@@ -39,7 +39,7 @@ public class TestFTPSiteInterface implements FTPSiteInterface {
 
   /**
    * Initialize the FTP site interface
-   * 
+   *
    * @param config ServerConfiguration
    * @param params ConfigElement
    */
@@ -48,7 +48,7 @@ public class TestFTPSiteInterface implements FTPSiteInterface {
 
   /**
    * Process the FTP SITE command
-   * 
+   *
    * @param sess FTPSrvSession
    * @param req FTPRequest
    */
@@ -56,12 +56,12 @@ public class TestFTPSiteInterface implements FTPSiteInterface {
     throws IOException {
 
     // DEBUG
-    
+
     if ( sess.hasDebug( FTPSrvSession.DBG_INFO))
       sess.debugPrintln( "SITE command " + req.getArgument());
-    
+
     // Echo the user request
-    
+
     sess.sendFTPResponse( 200, "Site request : " + req.getArgument());
   }
 }

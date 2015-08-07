@@ -47,10 +47,10 @@ public class TcpipNetBIOSHostAnnouncer extends HostAnnouncer {
   private int m_port;
 
 	//	Broadcast address and port
-	
+
 	private InetAddress m_bcastAddr;
 	private int m_bcastPort = RFCNetBIOSProtocol.DATAGRAM;
-	
+
   //	NetBIOS datagram
 
   private NetBIOSDatagram m_nbdgram;
@@ -75,15 +75,15 @@ public class TcpipNetBIOSHostAnnouncer extends HostAnnouncer {
    * @param port		Port to use
    */
   public TcpipNetBIOSHostAnnouncer(String name, String domain, int intval, int port) {
-    
+
 		//	Add the host to the list of names to announce
-		
+
     addHostName(name);
     setDomain(domain);
     setInterval(intval);
-    
+
     //	If port is zero then use the default port
-    
+
     if ( port == 0)
       setPort(PORT);
     else
@@ -120,7 +120,7 @@ public class TcpipNetBIOSHostAnnouncer extends HostAnnouncer {
 
 	/**
 	 * Set the broadcast address
-	 * 
+	 *
 	 * @param addr String
 	 * @exception UnknownHostException
 	 */
@@ -128,10 +128,10 @@ public class TcpipNetBIOSHostAnnouncer extends HostAnnouncer {
 		throws UnknownHostException {
 	  m_bcastAddr = InetAddress.getByName ( addr);
 	}
-	
+
 	/**
 	 * Set the broadcast address and port
-	 * 
+	 *
 	 * @param addr String
 	 * @param port int
 	 * @exception UnknownHostException
@@ -141,10 +141,10 @@ public class TcpipNetBIOSHostAnnouncer extends HostAnnouncer {
 	  m_bcastAddr = InetAddress.getByName ( addr);
 	  m_bcastPort = port;
 	}
-	
+
   /**
    * Initialize the host announcer.
-   * 
+   *
    * @exception Exception
    */
   protected void initialize()
@@ -156,7 +156,7 @@ public class TcpipNetBIOSHostAnnouncer extends HostAnnouncer {
       setName("TCPHostAnnouncer");
     else
       setName("TCPHostAnnouncer_" + getBindAddress().getHostAddress());
-    
+
     //  Check if at least one host name has been set, if not then use the local host name
 
     if (numberOfNames() == 0) {
@@ -169,7 +169,7 @@ public class TcpipNetBIOSHostAnnouncer extends HostAnnouncer {
     //  Allocate the NetBIOS datagram
 
     m_nbdgram = new NetBIOSDatagram(512);
-    
+
     //	If the broadcast address has not been set, generate a broadcast address
 
 		if ( m_bcastAddr == null)
@@ -178,13 +178,13 @@ public class TcpipNetBIOSHostAnnouncer extends HostAnnouncer {
 
   /**
    * Determine if the network connection used for the host announcement is valid
-   * 
+   *
    * @return boolean
    */
   public boolean isNetworkEnabled() {
     return true;
   }
-  
+
   /**
    * Send an announcement broadcast.
    *
@@ -195,7 +195,7 @@ public class TcpipNetBIOSHostAnnouncer extends HostAnnouncer {
    */
   protected void sendAnnouncement( String hostName, byte[] buf, int offset, int len)
   	throws Exception {
-    
+
     //  Send the host announce datagram
 
 		m_nbdgram.SendDatagram(NetBIOSDatagram.DIRECT_GROUP, hostName, NetBIOSName.FileServer, getDomain(),

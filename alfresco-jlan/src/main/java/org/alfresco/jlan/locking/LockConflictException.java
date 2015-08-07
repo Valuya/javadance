@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * Lock Conflict Exception Class
- * 
+ *
  * <p>Thrown when a lock request overlaps with an existing lock on a file.
  *
  * @author gkspencer
@@ -38,10 +38,10 @@ public class LockConflictException extends IOException {
 	public LockConflictException() {
 		super();
 	}
-  
+
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s String
 	 */
 	public LockConflictException(String s) {
@@ -50,7 +50,7 @@ public class LockConflictException extends IOException {
 
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s String
 	 * @param ex Throwable
 	 */

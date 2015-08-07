@@ -55,11 +55,11 @@ public class TestConfiguration {
 	private static final int ELEMENT_TYPE = 1;
 
 	// Maximum number of threads per server
-	
+
 	public static final int MaximumThreadsPerServer		=	25;
-	
+
 	// Test classes
-	
+
 	private static final String[][] _testClasses = {{ "createFile", 		"org.alfresco.jlan.test.cluster.CreateFileTest"},
 									   				{ "createFolder", 		"org.alfresco.jlan.test.cluster.CreateFolderTest"},
 									   				{ "oplockGrant", 		"org.alfresco.jlan.test.cluster.OplockGrantTest"},
@@ -85,72 +85,72 @@ public class TestConfiguration {
 	};
 
 	// List of remote servers
-	
+
 	private List<TestServer> m_serverList;
-	
+
 	// List of tests
-	
+
 	private List<Test> m_testList;
 
 	// Test run options
 	//
 	// Run tests sequentially or interleaved
-	
+
 	private boolean m_runInterleaved;
-	
+
 	// Number of test threads to create per server
-	
+
 	private int m_threadsPerServer	= 1;
-	
+
 	// Debug configuration
-	
+
 	private DebugConfigSection m_debugConfig;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public TestConfiguration() {
 	}
-	
+
 	/**
 	 * Return the server list
-	 * 
+	 *
 	 * @return List<TestServer>
 	 */
 	public List<TestServer> getServerList() {
 		return m_serverList;
 	}
-	
+
 	/**
 	 * Return the test list
-	 * 
+	 *
 	 * @return List<Test>
 	 */
 	public List<Test> getTestList() {
 		return m_testList;
 	}
-	
+
 	/**
 	 * Check if the tests should be run interleaved or sequentially
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean runInterleaved() {
 		return m_runInterleaved;
 	}
-	
+
 	/**
 	 * Check how many test threads are to be created per server
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getThreadsPerServer() {
 		return m_threadsPerServer;
 	}
-	
+
 	/**
 	 * Load the configuration from the specified file.
-	 * 
+	 *
 	 * @param fname java.lang.String
 	 * @exception IOException
 	 * @exception InvalidConfigurationException
@@ -170,7 +170,7 @@ public class TestConfiguration {
 
 	/**
 	 * Load the configuration from the specified input stream
-	 * 
+	 *
 	 * @param in Reader
 	 * @exception IOException
 	 * @exception InvalidConfigurationException
@@ -210,7 +210,7 @@ public class TestConfiguration {
 
 	/**
 	 * Load the configuration from the specified document
-	 * 
+	 *
 	 * @param doc Document
 	 * @exception IOException
 	 * @exception InvalidConfigurationException
@@ -230,17 +230,17 @@ public class TestConfiguration {
 			// Process the server list element
 
 			procServerList( buildConfigElement( findChildNode("servers", childNodes)));
-			
+
 			// Process the test list
-			
+
 			procTestList( buildConfigElement( findChildNode("tests", childNodes)));
-			
+
 			// Process the run parameters
-			
+
 			procRunParameters( buildConfigElement( findChildNode( "run", childNodes)));
-			
+
 			// Process the debug output element
-			
+
 			procDebugSetup( buildConfigElement( findChildNode( "debug", childNodes)));
 		}
 		catch (Exception ex) {
@@ -253,63 +253,63 @@ public class TestConfiguration {
 
 	/**
 	 * Process the server list
-	 * 
+	 *
 	 * @param servers ConfigElement
 	 * @exception InvalidConfigurationException
 	 */
 	protected final void procServerList( ConfigElement servers)
 		throws InvalidConfigurationException {
-		
+
 		// Check if the server list is valid
-		
+
 		if ( servers == null)
 			throw new InvalidConfigurationException( "Server list must be specified");
-		
+
 		// Allocate the server list
-		
+
 		m_serverList = new ArrayList<TestServer>();
-		
+
 		// Check if default server settings have been specified
-		
+
 		ConfigElement defaultElem = servers.getChild( "default");
 		TestServer defaultSrv = null;
-		
+
 		if ( defaultElem != null) {
-			
+
 			// Check for default values for username, password, share
-			
+
 			String defUser = defaultElem.getAttribute( "username");
 			String defPass = defaultElem.getAttribute( "password");
 			String defShare= defaultElem.getAttribute( "share");
-			
+
 			// Create the default server details
-			
+
 			defaultSrv = new TestServer( "", defUser, defPass, defShare);
 		}
-		
+
 		// Process the server list
 
 		List<ConfigElement> srvElemList = servers.getChildren();
-		
+
 		for ( int idx = 0; idx < srvElemList.size(); idx++) {
-			
+
 			// Get the current server details
-			
+
 			ConfigElement curElem = srvElemList.get( idx);
 			if ( curElem.getName().equals( "server")) {
-				
+
 				// Create the server details
-				
+
 				String srvName = curElem.getAttribute( "name");
 				if ( srvName == null || srvName.length() == 0)
 					throw new InvalidConfigurationException( "Invalid server, name not specified");
-				
+
 				String srvUser = curElem.getAttribute( "username");
 				String srvPass = curElem.getAttribute( "password");
 				String srvShare= curElem.getAttribute( "share");
-				
+
 				// Add default values
-				
+
 				if ( defaultSrv != null) {
 					if ( srvUser == null)
 						srvUser = defaultSrv.getUserName();
@@ -318,46 +318,46 @@ public class TestConfiguration {
 					if ( srvShare == null)
 						srvShare = defaultSrv.getShareName();
 				}
-				
+
 				// Create the server details
-				
+
 				TestServer testSrv = new TestServer( srvName, srvUser, srvPass, srvShare);
 				m_serverList.add( testSrv);
 			}
 		}
 	}
-	
+
 	/**
 	 * Process the test list
-	 * 
+	 *
 	 * @param tests ConfigElement
 	 * @exception InvalidConfigurationException
 	 */
 	protected final void procTestList(ConfigElement tests)
 		throws InvalidConfigurationException {
-		
+
 		// Check if the test list is valid
-		
+
 		if ( tests == null)
 			throw new InvalidConfigurationException( "Test list must be specified");
-		
+
 		// Allocate the test list
-		
+
 		m_testList = new ArrayList<Test>();
-		
+
 		// Check if default test settings have been specified
-		
+
 		ConfigElement defaultElem = tests.getChild( "default");
 
 		String defPath = null;
 		int defIterations = -1;
 		boolean defVerbose = false;
 		boolean defCleanup = true;
-		
+
 		if ( defaultElem != null) {
-			
+
 			// Check for default values for path, iterations, verbose logging and test cleanup
-			
+
 			defPath = defaultElem.getAttribute( "path");
 			String defValue = defaultElem.getAttribute( "iterations");
 			if ( defValue != null) {
@@ -368,37 +368,37 @@ public class TestConfiguration {
 					throw new InvalidConfigurationException( "Invalid iterations value");
 				}
 			}
-			
+
 			defValue = defaultElem.getAttribute( "verbose");
 			if ( defValue != null)
 				defVerbose = Boolean.parseBoolean( defValue);
-			
+
 			defValue = defaultElem.getAttribute( "cleanup");
 			if ( defValue != null)
 				defCleanup = Boolean.parseBoolean( defValue);
 		}
-		
+
 		// Process the test list
 
 		List<ConfigElement> testElemList = tests.getChildren();
-		
+
 		for ( int idx = 0; idx < testElemList.size(); idx++) {
-			
+
 			// Get the current test details
-			
+
 			ConfigElement curElem = testElemList.get( idx);
 			if ( curElem.getName().equals( "default") == false) {
-				
+
 				// Get the test name and parameters
-				
+
 				String testName = curElem.getName();
 				String testPath = curElem.hasAttribute( "path") ? curElem.getAttribute( "path") : defPath;
 				int testIter = 1;
 				boolean testVerbose = false;
 				boolean testCleanup = true;
-				
+
 				if ( curElem.hasAttribute( "iterations")) {
-					String iterStr = curElem.getAttribute( "iterations"); 
+					String iterStr = curElem.getAttribute( "iterations");
 					try {
 						testIter = Integer.parseInt( iterStr);
 					}
@@ -415,78 +415,78 @@ public class TestConfiguration {
 				}
 				else
 					testVerbose = defVerbose;
-				
+
 				if ( curElem.hasAttribute( "cleanup")) {
 					String boolStr = curElem.getAttribute( "cleanup");
 					testCleanup = Boolean.parseBoolean( boolStr);
 				}
 				else
 					testCleanup = defCleanup;
-				
+
 				// Create the test class
-				
+
 				Test testClass = getTestClass( testName, testPath, testIter, testVerbose);
 				if ( testClass != null) {
 
 					// Set the test cleanup flag
-					
+
 					testClass.setTestCleanup( testCleanup);
-					
+
 					// Run the per test configuration
-				
+
 					testClass.configTest( curElem);
-					
+
 					// Add to the list of tests
-					
+
 					m_testList.add( testClass);
 				}
 				else
 					throw new InvalidConfigurationException( "Invalid test name '" + curElem.getName() + "'");
 			}
 		}
-		
+
 		// Check that there are tests configured
-		
+
 		if ( m_testList.size() == 0)
 			throw new InvalidConfigurationException( "No tests configured");
 	}
-	
+
 	/**
 	 * Process the run parameters
-	 * 
+	 *
 	 * @param runParams ConfigElement
 	 * @exception InvalidConfigurationException
 	 */
 	protected final void procRunParameters( ConfigElement runParams)
 		throws InvalidConfigurationException {
-		
+
 		// Check if custom run parameters have been specified
-		
+
 		if ( runParams == null)
 			return;
-		
+
 		// Check if tests should be run interleaved, or sequentially
-		
+
 		if ( runParams.getChild( "interleaved") != null)
 			m_runInterleaved = true;
-		
+
 		// Check if multiple threads per server should be used
-		
+
 		ConfigElement elem = runParams.getChild( "perServer");
 		if ( elem != null) {
-			
+
 			// Parse the thread per server count
-			
+
 			String srvThreads = elem.getAttribute( "threads");
 			if ( srvThreads != null) {
-				
+
 				// Parse the threads per server, and validate
-				
+
 				try {
 					m_threadsPerServer = Integer.parseInt( srvThreads);
-					
+
 					// Range check the threads per server value
-					
+
 					if ( m_threadsPerServer < 1 || m_threadsPerServer > MaximumThreadsPerServer)
 						throw new InvalidConfigurationException( "Invalid threads per server value, " + srvThreads + ", valid range 1-" + MaximumThreadsPerServer);
 				}
@@ -496,16 +496,16 @@ public class TestConfiguration {
 			}
 		}
 	}
-	
+
 	/**
 	 * Process the debug setup
-	 * 
+	 *
 	 * @param debug ConfigElement
 	 * @exception InvalidConfigurationException
 	 */
 	protected final void procDebugSetup( ConfigElement debug)
 		throws InvalidConfigurationException {
-		
+
 		// Check if the debug section has been specified
 
 		if ( debug == null)
@@ -534,7 +534,7 @@ public class TestConfiguration {
 
 	/**
 	 * Find the test class
-	 * 
+	 *
 	 * @param name String
 	 * @param path String
 	 * @param iter int
@@ -544,34 +544,34 @@ public class TestConfiguration {
 	private Test getTestClass( String name, String path, int iter, boolean verbose) {
 
 		// Validate the test name and return the test class
-		
+
 		Test test = null;
-		
+
 		try {
-			
+
 			// Validate the test name, find the associated test class
-			
+
 			String testClass = null;
 			int idx = 0;
-			
+
 			while ( idx < _testClasses.length && testClass == null) {
 				if ( _testClasses[idx][0].equalsIgnoreCase( name))
 					testClass = _testClasses[idx][1];
 				else
 					idx++;
 			}
-			
+
 			if ( testClass == null)
 				return null;
-			
+
 			// Load the test class, and validate
-			
+
 			Object testClassObj = Class.forName( testClass).newInstance();
 			if ( testClassObj != null && testClassObj instanceof Test) {
 				test = (Test) testClassObj;
-				
+
 				// Set the basic test settings
-				
+
 				test.setPath( path);
 				test.setIterations( iter);
 				test.setVerbose( verbose);
@@ -580,15 +580,15 @@ public class TestConfiguration {
 		catch ( Exception ex) {
 			ex.printStackTrace();
 		}
-		
+
 		// Return the test, or null if not found
-		
+
 		return test;
 	}
-	
+
 	/**
 	 * Find the specified child node in the node list
-	 * 
+	 *
 	 * @param name String
 	 * @param list NodeList
 	 * @return Element
@@ -618,7 +618,7 @@ public class TestConfiguration {
 
 	/**
 	 * Get the value text for the specified element
-	 * 
+	 *
 	 * @param elem Element
 	 * @return String
 	 */
@@ -639,7 +639,7 @@ public class TestConfiguration {
 
 	/**
 	 * Build a configuration element list from an elements child nodes
-	 * 
+	 *
 	 * @param root Element
 	 * @return GenericConfigElement
 	 */
@@ -649,7 +649,7 @@ public class TestConfiguration {
 
 	/**
 	 * Build a configuration element list from an elements child nodes
-	 * 
+	 *
 	 * @param root Element
 	 * @param cfgElem GenericConfigElement
 	 * @return GenericConfigElement

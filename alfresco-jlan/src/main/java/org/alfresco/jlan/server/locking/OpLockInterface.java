@@ -24,7 +24,7 @@ import org.alfresco.jlan.server.filesys.TreeConnection;
 
 /**
  * OpLock Interface
- * 
+ *
  * <p>Optional interface that a DiskInterface driver can implement to provide CIFS oplock support.
  *
  * @author gkspencer
@@ -33,16 +33,16 @@ public interface OpLockInterface {
 
 	/**
 	 * Return the oplock manager implementation associated with this virtual filesystem
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 * @return OpLockManager
 	 */
 	public OpLockManager getOpLockManager(SrvSession sess, TreeConnection tree);
-	
+
 	/**
 	 * Enable/disable oplock support
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 * @return boolean

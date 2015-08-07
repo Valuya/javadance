@@ -31,7 +31,7 @@ import org.alfresco.jlan.util.*;
 
 /**
  * jlanWatch Application
- * 
+ *
  * @author gkspencer
  */
 public class jlanWatch extends jlanApp {
@@ -45,7 +45,7 @@ public class jlanWatch extends jlanApp {
 
 	/**
 	 * Output the command help
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
@@ -60,7 +60,7 @@ public class jlanWatch extends jlanApp {
 
 	/**
 	 * Perform the main command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @exception Exception
 	 */
@@ -186,7 +186,7 @@ public class jlanWatch extends jlanApp {
 
 	/**
 	 * Validate the command line arguments
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -233,7 +233,7 @@ public class jlanWatch extends jlanApp {
 
 	/**
 	 * Run the jlanWatch command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public static void main(String[] args) {

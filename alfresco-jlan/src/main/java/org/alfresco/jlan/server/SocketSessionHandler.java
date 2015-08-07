@@ -29,11 +29,11 @@ import org.alfresco.jlan.debug.Debug;
 
 /**
  * Socket Session Handler Class
- * 
+ *
  * <p>
  * Implementation of a session handler that uses a Java socket to listen for incoming session
  * requests.
- * 
+ *
  * @author gkspencer
  */
 public abstract class SocketSessionHandler extends SessionHandlerBase implements Runnable {
@@ -43,12 +43,12 @@ public abstract class SocketSessionHandler extends SessionHandlerBase implements
 	private ServerSocket m_srvSock;
 
 	// Client socket read timeout
-	
+
 	private int m_clientSockTmo;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param protocol String
 	 * @param server NetworkServer
@@ -61,7 +61,7 @@ public abstract class SocketSessionHandler extends SessionHandlerBase implements
 
 	/**
 	 * Return the server socket
-	 * 
+	 *
 	 * @return ServerSocket
 	 */
 	public final ServerSocket getSocket() {
@@ -70,7 +70,7 @@ public abstract class SocketSessionHandler extends SessionHandlerBase implements
 
 	/**
 	 * Return the client socket timeout, in milliseconds
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSocketTimeout() {
@@ -79,16 +79,16 @@ public abstract class SocketSessionHandler extends SessionHandlerBase implements
 
 	/**
 	 * Set the client socket timeout, in milliseconds, zero for no timeout
-	 * 
+	 *
 	 * @param tmo int
 	 */
 	public final void setSocketTimeout(int tmo) {
 		m_clientSockTmo = tmo;
 	}
-	
+
 	/**
 	 * Initialize the session handler
-	 * 
+	 *
 	 * @param server NetworkServer
 	 */
 	public void initializeSessionHandler(NetworkServer server)
@@ -119,7 +119,7 @@ public abstract class SocketSessionHandler extends SessionHandlerBase implements
 
 	/**
 	 * Close the session handler
-	 * 
+	 *
 	 * @param server NetworkServer
 	 */
 	public void closeSessionHandler(NetworkServer server) {
@@ -215,7 +215,7 @@ public abstract class SocketSessionHandler extends SessionHandlerBase implements
 
 	/**
 	 * Accept a new connection on the specified socket
-	 * 
+	 *
 	 * @param sock Socket
 	 */
 	protected abstract void acceptConnection(Socket sock);

@@ -27,7 +27,7 @@ package org.alfresco.jlan.smb.nt;
 public class RID {
 
 	//	RID types
-	
+
 	public static final int TypeUser			= 1;
 	public static final int TypeDomainGroup		= 2;
 	public static final int TypeDomain			= 3;
@@ -36,34 +36,34 @@ public class RID {
 	public static final int TypeDeleted    		= 6;
 	public static final int TypeInvalid    		= 7;
 	public static final int TypeUnknown			= 8;
-	
+
 	//	RID type strings
-	
+
 	private static final String[] _types = { "User", "DomainGroup", "Domain", "Alias", "WellKnownGroup",
 											 "Deleted", "Invalid", "Unknown"
 	};
-	
+
 	//	Relative id
-	
+
 	private int m_rid;
-	
+
 	//	RID type
-	
+
 	private int m_type;
-	
+
 	//	Name
-	
+
 	private String m_name;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public RID() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param rid int
 	 * @param type int
 	 * @param name String
@@ -73,19 +73,19 @@ public class RID {
 		m_type = type;
 		m_name = name;
 	}
-	
+
 	/**
 	 * Return the relative id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getRID() {
 		return m_rid;
 	}
-	
+
 	/**
 	 * Return the id type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int isType() {
@@ -94,40 +94,40 @@ public class RID {
 
 	/**
 	 * Return the type as a string
-	 * 
+	 *
 	 * @return String
-	 */	
+	 */
 	public final String getTypeString() {
 		return getTypeAsString(isType());
 	}
-	
+
 	/**
 	 * Return the object name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
 		return m_name;
 	}
-	
+
 	/**
 	 * Set the relative id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setRID(int id) {
 		m_rid = id;
 	}
-	
+
 	/**
 	 * Set the type
-	 * 
+	 *
 	 * @param typ int
 	 */
 	public final void setType(int typ) {
 		m_type = typ;
 	}
-	
+
 	/**
 	 * Set the object name
 	 *
@@ -140,18 +140,18 @@ public class RID {
 	/**
 	 * Return the id type as a string
 	 *
-	 * @param typ int 
+	 * @param typ int
 	 * @return String
 	 */
 	public final static String getTypeAsString(int typ) {
-		
+
 		//	Range check the type
-		
+
 		if ( typ >= 1 && typ <= 8)
 			return _types[typ - 1];
 		return null;
 	}
-	
+
 	/**
 	 * Return the relative id as a string
 	 *
@@ -159,7 +159,7 @@ public class RID {
 	 */
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		
+
 		str.append("[");
 		str.append(getRID());
 		str.append(":");
@@ -167,7 +167,7 @@ public class RID {
 		str.append(":");
 		str.append(getName());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

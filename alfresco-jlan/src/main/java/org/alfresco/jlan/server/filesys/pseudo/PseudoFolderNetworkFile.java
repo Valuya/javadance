@@ -28,17 +28,17 @@ import org.alfresco.jlan.server.filesys.NetworkFile;
 
 /**
  * Pseudo Folder Network File Class
- * 
+ *
  * <p>
  * Represents an open pseudo folder.
- * 
+ *
  * @author gkspencer
  */
 public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Class constructor.
-   * 
+   *
    * @param name String
    */
   public PseudoFolderNetworkFile(String name) {
@@ -49,7 +49,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Class constructor.
-   * 
+   *
    * @param name String
    * @param relPath String
    */
@@ -70,7 +70,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Return the current file position.
-   * 
+   *
    * @return long
    */
   public long currentPosition() {
@@ -79,7 +79,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Flush the file.
-   * 
+   *
    * @exception IOException
    */
   public void flushFile()
@@ -90,7 +90,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Determine if the end of file has been reached.
-   * 
+   *
    * @return boolean
    */
   public boolean isEndOfFile()
@@ -101,7 +101,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Open the file.
-   * 
+   *
    * @param createFlag boolean
    * @exception IOException
    */
@@ -112,7 +112,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Read from the file.
-   * 
+   *
    * @param buf byte[]
    * @param len int
    * @param pos int
@@ -128,7 +128,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Seek to the specified file position.
-   * 
+   *
    * @param pos long
    * @param typ int
    * @return long
@@ -142,7 +142,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Truncate the file
-   * 
+   *
    * @param siz long
    * @exception IOException
    */
@@ -154,7 +154,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Write a block of data to the file.
-   * 
+   *
    * @param buf byte[]
    * @param len int
    * @exception IOException
@@ -167,7 +167,7 @@ public class PseudoFolderNetworkFile extends NetworkFile {
 
   /**
    * Write a block of data to the file.
-   * 
+   *
    * @param buf byte[]
    * @param len int
    * @param pos int

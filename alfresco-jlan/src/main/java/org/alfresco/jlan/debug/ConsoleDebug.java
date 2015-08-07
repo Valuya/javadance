@@ -30,7 +30,7 @@ public class ConsoleDebug extends DebugInterfaceBase {
 
 	/**
 	 * Output a debug string with a specific logging level
-	 * 
+	 *
 	 * @param str String
 	 * @param level int
 	 */
@@ -38,7 +38,7 @@ public class ConsoleDebug extends DebugInterfaceBase {
 	  if ( level <= getLogLevel())
 		System.out.print(str);
 	}
-	
+
 	/**
 	 * Output a debug string, and a newline, with a specific logging level
 	 *

@@ -26,7 +26,7 @@ import com.hazelcast.core.IMap;
 
 /**
  * Rename File State Task Class
- * 
+ *
  * <p>Used to synchronize renaing a file state by executing on the remote node that owns the file state/key.
  *
  * @author gkspencer
@@ -34,7 +34,7 @@ import com.hazelcast.core.IMap;
 public class RemoveOpLockTask extends RemoteStateTask<Boolean> {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -42,10 +42,10 @@ public class RemoveOpLockTask extends RemoteStateTask<Boolean> {
 	 */
 	public RemoveOpLockTask() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mapName String
 	 * @param key String
 	 * @param debug boolean
@@ -54,10 +54,10 @@ public class RemoveOpLockTask extends RemoteStateTask<Boolean> {
 	public RemoveOpLockTask( String mapName, String key, boolean debug, boolean timingDebug) {
 		super( mapName, key, true, false, debug, timingDebug);
 	}
-	
+
 	/**
 	 * Run a remote task against a file state
-	 * 
+	 *
 	 * @param stateCache IMap<String, ClusterFileState>
 	 * @param fState ClusterFileState
 	 * @return Boolean
@@ -65,18 +65,18 @@ public class RemoveOpLockTask extends RemoteStateTask<Boolean> {
 	 */
 	protected Boolean runRemoteTaskAgainstState( IMap<String, ClusterFileState> stateCache, ClusterFileState fState)
 		throws Exception {
-	
+
 		// DEBUG
-		
+
 		if ( hasDebug())
 			Debug.println( "RemoveOpLockTask: Remove oplock from " + fState);
-		
+
 		// Remove the oplock
-		
+
 		fState.clearOpLock();
-		
+
 		// Return a success status
-		
-		return new Boolean( true); 
+
+		return new Boolean( true);
 	}
 }

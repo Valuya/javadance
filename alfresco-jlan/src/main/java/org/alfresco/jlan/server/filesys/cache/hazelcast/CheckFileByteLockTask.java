@@ -27,7 +27,7 @@ import com.hazelcast.core.IMap;
 
 /**
  * Check File Byte Range Lock Remote Task Class
- * 
+ *
  * <p>Used to synchronize checking if an area of a file is readable/writeable by executing on the remote node
  * that owns the file state/key.
  *
@@ -36,26 +36,26 @@ import com.hazelcast.core.IMap;
 public class CheckFileByteLockTask extends RemoteStateTask<Boolean> {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
 
 	// File area details
-	
+
 	private ClusterFileLock m_lockCheck;
 
 	// Check write access
-	
+
 	private boolean m_writeCheck;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public CheckFileByteLockTask() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mapName String
 	 * @param key String
 	 * @param lockCheck ClusterFileLock
@@ -65,14 +65,14 @@ public class CheckFileByteLockTask extends RemoteStateTask<Boolean> {
 	 */
 	public CheckFileByteLockTask( String mapName, String key, ClusterFileLock lockCheck, boolean writeCheck, boolean debug, boolean timingDebug) {
 		super( mapName, key, true, false, debug, timingDebug);
-		
+
 		m_lockCheck = lockCheck;
 		m_writeCheck = writeCheck;
 	}
-	
+
 	/**
 	 * Run a remote task against a file state
-	 * 
+	 *
 	 * @param stateCache IMap<String, ClusterFileState>
 	 * @param fState ClusterFileState
 	 * @return Boolean
@@ -80,36 +80,36 @@ public class CheckFileByteLockTask extends RemoteStateTask<Boolean> {
 	 */
 	protected Boolean runRemoteTaskAgainstState( IMap<String, ClusterFileState> stateCache, ClusterFileState fState)
 		throws Exception {
-		
+
 		// DEBUG
-		
+
 		if ( hasDebug())
 			Debug.println( "CheckFileByteLockTask: checkArea=" + m_lockCheck + ( m_writeCheck ? " (Write)" : " (Read)") + " on " + fState);
-		
+
 		// Check if there are any locks on the file
-		
+
 		boolean accessOK = true;
-		
+
 		if ( fState.hasActiveLocks() == true) {
 
 			// Check if the area is readable/writeable by this user
-			
+
 			if ( m_writeCheck == true) {
-				
+
 				// Check if the file area is writeable
-				
+
 				accessOK = fState.getLockList().canWriteFile( m_lockCheck);
 			}
 			else {
-				
+
 				// Check if the file area is readable
-				
+
 				accessOK = fState.getLockList().canReadFile( m_lockCheck);
 			}
 		}
-		
+
 		// Return the access status
-		
+
 		return accessOK;
 	}
 }

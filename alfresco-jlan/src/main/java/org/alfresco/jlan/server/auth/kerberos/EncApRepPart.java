@@ -34,7 +34,7 @@ import org.alfresco.jlan.util.HexDump;
 
 /**
  * Encrypted AP-REP Part Class
- * 
+ *
  * @author gkspencer
  */
 public class EncApRepPart {
@@ -66,7 +66,7 @@ public class EncApRepPart {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param blob byte[]
 	 * @exception IOException
 	 */
@@ -76,7 +76,7 @@ public class EncApRepPart {
 
 	/**
 	 * Return the timestamp
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTimestamp() {
@@ -85,7 +85,7 @@ public class EncApRepPart {
 
 	/**
 	 * Return the sub-key type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSubKeyType() {
@@ -94,7 +94,7 @@ public class EncApRepPart {
 
 	/**
 	 * Return the sub-key
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getSubKey() {
@@ -103,7 +103,7 @@ public class EncApRepPart {
 
 	/**
 	 * Return the sequence number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSequenceNumber() {
@@ -112,7 +112,7 @@ public class EncApRepPart {
 
 	/**
 	 * Set the sub-key and type
-	 * 
+	 *
 	 * @param keyType int
 	 * @param subkey byte[]
 	 */
@@ -123,33 +123,33 @@ public class EncApRepPart {
 
 	/**
 	 * Parse the ASN/1 encoded AP-REP encrypted part
-	 * 
+	 *
 	 * @param apRep byte[]
 	 * @exception IOException
 	 */
 	public final void parseApRep(byte[] apRep)
 		throws IOException {
-		
+
 		// Create a stream to parse the ASN.1 encoded blob
 
 		DERBuffer derBuf = new DERBuffer(apRep);
 
 		DERObject derObj = derBuf.unpackObject();
 		if ( derObj instanceof DERSequence) {
-			
+
 			// Enumerate the AP-REP objects
 
 			DERSequence derSeq = (DERSequence) derObj;
 
 			for (int idx = 0; idx < derSeq.numberOfObjects(); idx++) {
-				
+
 				// Read an object
 
 				derObj = (DERObject) derSeq.getObjectAt(idx);
 
 				if ( derObj != null && derObj.isTagged()) {
 					switch (derObj.getTagNo()) {
-						
+
 						// Timestamp
 
 						case 0:
@@ -177,14 +177,14 @@ public class EncApRepPart {
 								// Enumerate the sequence
 
 								for (int i = 0; i < derEncSeq.numberOfObjects(); i++) {
-									
+
 									// Get the current sequence element
 
 									derObj = (DERObject) derEncSeq.getObjectAt(i);
 
 									if ( derObj != null && derObj.isTagged()) {
 										switch (derObj.getTagNo()) {
-											
+
 											// Encryption key type
 
 											case 0:
@@ -224,13 +224,13 @@ public class EncApRepPart {
 
 	/**
 	 * ASN.1 encode the encrypted AP-REP blob
-	 * 
+	 *
 	 * @return byte[]
 	 * @exception IOException
 	 */
 	public final byte[] encodeApRep()
 		throws IOException {
-		
+
 		// Build the sequence of tagged objects
 
 		DERSequence derList = new DERSequence();
@@ -254,7 +254,7 @@ public class EncApRepPart {
 		DERObject derObj = new DERInteger( m_subKeyType);
 		derObj.setTagNo( 0);
 		derSeq.addObject( derObj);
-		
+
 		derObj = new DEROctetString( m_subKey);
 		derObj.setTagNo( 1);
 		derSeq.addObject( derObj);
@@ -282,7 +282,7 @@ public class EncApRepPart {
 
 	/**
 	 * Return the AP-REP as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

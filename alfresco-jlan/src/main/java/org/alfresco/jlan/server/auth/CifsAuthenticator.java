@@ -51,11 +51,11 @@ import org.alfresco.jlan.util.IPAddress;
 
 /**
  * CIFS Authenticator Class
- * 
+ *
  * <p>
  * An authenticator is used by the CIFS server to authenticate users when in user level access mode
  * and authenticate requests to connect to a share when in share level access.
- * 
+ *
  * @author gkspencer
  */
 public abstract class CifsAuthenticator implements ICifsAuthenticator {
@@ -104,9 +104,9 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	// Cleanup sessions from the same client address/name if a session setup using virtual circuit zero
 	// is received
-	
+
 	private boolean m_sessCleanup = true;
-	
+
 	// Debug output enable
 
 	private boolean m_debug;
@@ -221,7 +221,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Initialize the authenticator, after properties have been set
-	 * 
+	 *
 	 * @exception InvalidConfigurationException
 	 */
 	public void initialize()
@@ -246,7 +246,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
     /**
      * Initialize the authenticator
-     * 
+     *
      * @param config ServerConfiguration
      * @param params ConfigElement
      * @exception InvalidConfigurationException
@@ -256,17 +256,17 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
         if ( params.getChild("Debug") != null)
             setDebug(true);
-        
+
         // Save the server configuration so we can access the authentication component
         setConfig(config);
-        
+
         initialize();
     }
 
     /**
 	 * Encrypt the plain text password with the specified encryption key using the specified
 	 * encryption algorithm.
-	 * 
+	 *
 	 * @param plainPwd String
 	 * @param encryptKey byte[]
 	 * @param alg int
@@ -358,7 +358,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Return the security configuration section
-	 * 
+	 *
 	 * @return SecurityConfigSection
 	 */
 	public final SecurityConfigSection getsecurityConfig() {
@@ -586,11 +586,11 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 		sess.setLoggedOn(true);
 
 		// Check for virtual circuit zero, disconnect any other sessions from this client
-		
+
 		if ( vcNum == 0 && hasSessionCleanup()) {
-		
+
 			// Disconnect other sessions from this client, cleanup any open files/locks/oplocks
-			
+
 			int discCnt = sess.disconnectClientSessions();
 
 			// DEBUG
@@ -598,27 +598,27 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 			if ( discCnt > 0 && Debug.EnableInfo && sess.hasDebug(SMBSrvSession.DBG_NEGOTIATE))
 				Debug.println("[SMB] Disconnected " + discCnt + " existing sessions from client, sess=" + sess);
 		}
-		
+
 		// Check if there is a chained commmand with the session setup request (usually a TreeConnect)
-		
+
 		SMBSrvPacket respPkt = reqPkt;
-		
+
 		if ( reqPkt.hasAndXCommand()) {
 
 			try {
 
 				// Allocate a new packet for the response
-			
+
 				respPkt = sess.getPacketPool().allocatePacket( reqPkt.getLength(), reqPkt);
 			}
 			catch ( NoPooledMemoryException ex) {
-				
+
 				// No memory, return a server error
-				
+
 				throw new SMBSrvException(SMBStatus.ErrSrv, SMBStatus.SRVNoBuffers);
 			}
 		}
-		
+
 		// Build the session setup response SMB
 
 		respPkt.setParameterCount(3);
@@ -701,7 +701,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Enable/disable the guest account
-	 * 
+	 *
 	 * @param ena Enable the guest account if true, only allow defined user accounts access if false
 	 */
 	public final void setAllowGuest(boolean ena) {
@@ -710,7 +710,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Set the guest user name
-	 * 
+	 *
 	 * @param guest String
 	 */
 	public final void setGuestUserName(String guest) {
@@ -719,7 +719,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Enable/disable mapping of unknown users to the guest account
-	 * 
+	 *
 	 * @param ena Enable mapping of unknown users to the guest if true
 	 */
 	public final void setMapToGuest(boolean ena) {
@@ -728,7 +728,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Set the security mode flags
-	 * 
+	 *
 	 * @param flg int
 	 */
 	protected final void setSecurityMode(int flg) {
@@ -737,7 +737,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Set the extended security flag
-	 * 
+	 *
 	 * @param extSec boolean
 	 */
 	protected final void setExtendedSecurity(boolean extSec) {
@@ -746,22 +746,22 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Cleanup existing sessions from the same client address/name
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasSessionCleanup() {
 		return m_sessCleanup;
 	}
-	
+
 	/**
 	 * Enable/disable session cleanup when a new logon is received using virtual circuit zero
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	public void setSessionCleanup( boolean ena) {
 		m_sessCleanup = ena;
 	}
-    
+
 	/* (non-Javadoc)
      * @see org.alfresco.jlan.server.auth.ICifsAuthenticator#closeAuthenticator()
      */
@@ -773,7 +773,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 	/**
 	 * Validate a password by encrypting the plain text password using the specified encryption key
 	 * and encryption algorithm.
-	 * 
+	 *
 	 * @param user UserAccount
 	 * @param client ClientInfo
 	 * @param authCtx AuthContext
@@ -869,7 +869,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Convert the password string to a byte array
-	 * 
+	 *
 	 * @param pwd String
 	 * @return byte[]
 	 */
@@ -894,7 +894,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Return the password encryptor
-	 * 
+	 *
 	 * @return PasswordEncryptor
 	 */
 	protected final PasswordEncryptor getEncryptor() {
@@ -903,7 +903,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Return the authentication status as a string
-	 * 
+	 *
 	 * @param sts int
 	 * @return String
 	 */
@@ -934,7 +934,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Set the access mode of the server.
-	 * 
+	 *
 	 * @param mode Either SHARE_MODE or USER_MODE.
 	 */
 	public final void setAccessMode(int mode) {
@@ -943,7 +943,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Logon using the guest user account
-	 * 
+	 *
 	 * @param client ClientInfo
 	 * @param sess SrvSession
 	 */
@@ -970,7 +970,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Set the current authenticated user context for this thread
-	 * 
+	 *
 	 * @param client ClientInfo
 	 */
 	public void setCurrentUser(ClientInfo client) {
@@ -978,7 +978,7 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	/**
 	 * Map a client IP address to a domain
-	 * 
+	 *
 	 * @param clientIP InetAddress
 	 * @return String
 	 */

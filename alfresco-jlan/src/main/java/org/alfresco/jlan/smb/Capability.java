@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb;
 
 /**
  * SMB Capabilities Class
- * 
+ *
  * <p>Contains the capability flags for the client/server during a session setup.
  *
  * @author gkspencer
@@ -29,7 +29,7 @@ package org.alfresco.jlan.smb;
 public class Capability {
 
 	//	Capabilities
-	
+
 	public static final int RawMode						= 0x00000001;
 	public static final int MpxMode						= 0x00000002;
 	public static final int Unicode						= 0x00000004;

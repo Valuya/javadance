@@ -37,11 +37,11 @@ import org.alfresco.jlan.server.filesys.loader.SingleFileRequest;
 
 /**
  * Background Load Save Class
- * 
+ *
  * <p>
  * Utility class that can be used by FileLoader or DBInterface implementations to provide a worker
  * thread pool to load/save the file data using a queue of file load/save requests.
- * 
+ *
  * @author gkspencer
  */
 public class BackgroundLoadSave {
@@ -168,7 +168,7 @@ public class BackgroundLoadSave {
 
 		/**
 		 * Class constructor
-		 * 
+		 *
 		 * @param name String
 		 * @param id int
 		 * @param queue FileRequestQueue
@@ -402,7 +402,7 @@ public class BackgroundLoadSave {
 
 		/**
 		 * Class constructor
-		 * 
+		 *
 		 * @param name String
 		 * @param type int
 		 * @param queue FileRequestQueue
@@ -433,7 +433,7 @@ public class BackgroundLoadSave {
 
 		/**
 		 * Check if there is a file request record load in progress
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public final boolean isLoading() {
@@ -442,7 +442,7 @@ public class BackgroundLoadSave {
 
 		/**
 		 * Notify the queue loader that a new record has been added to the database
-		 * 
+		 *
 		 * @param seqNo int
 		 */
 		public final synchronized void notifyNewRecord(int seqNo) {
@@ -640,7 +640,7 @@ public class BackgroundLoadSave {
 
 		/**
 		 * Class constructor
-		 * 
+		 *
 		 * @param name String
 		 * @param queue FileRequestQueue
 		 */
@@ -676,7 +676,7 @@ public class BackgroundLoadSave {
 
 		/**
 		 * Add a transaction to the queue, wakeup the transaction loader if required
-		 * 
+		 *
 		 * @param name String
 		 */
 		public final void addTransaction(String name) {
@@ -695,7 +695,7 @@ public class BackgroundLoadSave {
 
 		/**
 		 * Check if there is a transaction file request record load in progress
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public final boolean isLoading() {
@@ -834,7 +834,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param dbQueue DBQueueInterface
 	 * @param stateCache FileStateCache
 	 * @param bgLoader BackgroundFileLoader
@@ -864,7 +864,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param dbQueue DBQueueInterface
 	 * @param stateCache FileStateCache
@@ -895,7 +895,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Start the background load/save thread pool
-	 * 
+	 *
 	 * @param recCnt int
 	 */
 	public final void startThreads(int recCnt) {
@@ -976,7 +976,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Request file data to be loaded/saved
-	 * 
+	 *
 	 * @param req FileRequest
 	 */
 	public void queueFileRequest(FileRequest req) {
@@ -1032,7 +1032,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Flush the current pending transaction request
-	 * 
+	 *
 	 * @param tranId int
 	 */
 	public final void flushTransaction(int tranId) {
@@ -1044,7 +1044,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Check if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
@@ -1053,7 +1053,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the database queue interface
-	 * 
+	 *
 	 * @return DBQueueInterface
 	 */
 	public final DBQueueInterface getDBQueueInterface() {
@@ -1062,7 +1062,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the file loader interface
-	 * 
+	 *
 	 * @return BackgroundFileLoader
 	 */
 	public final BackgroundFileLoader getFileLoader() {
@@ -1071,7 +1071,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the default file state timeout
-	 * 
+	 *
 	 * @return int
 	 */
 	public final long getFileStateTimeout() {
@@ -1080,7 +1080,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the maximum in-memory file request queue size
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumQueueSize() {
@@ -1089,7 +1089,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the in-memory file request queue low water mark level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLowQueueSize() {
@@ -1098,7 +1098,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the worker thread prefix
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
@@ -1107,7 +1107,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the read request queue
-	 * 
+	 *
 	 * @return FileRequestQueue
 	 */
 	protected final FileRequestQueue getReadQueue() {
@@ -1116,7 +1116,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the read loader
-	 * 
+	 *
 	 * @return QueueLoader
 	 */
 	public final QueueLoader getReadLoader() {
@@ -1125,7 +1125,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the write request queue
-	 * 
+	 *
 	 * @return FileRequestQueue
 	 */
 	protected final FileRequestQueue getWriteQueue() {
@@ -1134,7 +1134,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the write loader
-	 * 
+	 *
 	 * @return QueueLoader
 	 */
 	public final QueueLoader getWriteLoader() {
@@ -1143,7 +1143,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the number of read worker threads
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getReadWorkers() {
@@ -1152,7 +1152,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the number of write worker threads
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getWriteWorkers() {
@@ -1161,7 +1161,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Return the file state cache
-	 * 
+	 *
 	 * @return FileStateCache
 	 */
 	protected final FileStateCache getStateCache() {
@@ -1170,7 +1170,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Set the worker thread name prefix
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setName(String name) {
@@ -1179,7 +1179,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Enable/disable debug output
-	 * 
+	 *
 	 * @param dbg boolean
 	 */
 	public final void setDebug(boolean dbg) {
@@ -1188,7 +1188,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Set the maximum in-memory file request queue size
-	 * 
+	 *
 	 * @param qsize int
 	 */
 	public final void setMaximumQueueSize(int qsize) {
@@ -1197,7 +1197,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Set the in-memory file request queue low water mark level
-	 * 
+	 *
 	 * @param lowqSize int
 	 */
 	public final void setLowQueueSize(int lowqSize) {
@@ -1206,7 +1206,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Set the number of read worker threads
-	 * 
+	 *
 	 * @param rdWorkers int
 	 */
 	public final void setReadWorkers(int rdWorkers) {
@@ -1215,7 +1215,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Set the number of write worker threads
-	 * 
+	 *
 	 * @param wrWorkers int
 	 */
 	public final void setWriteWorkers(int wrWorkers) {
@@ -1224,7 +1224,7 @@ public class BackgroundLoadSave {
 
 	/**
 	 * Re-create, or attach, a file request to the file state.
-	 * 
+	 *
 	 * @param fid int
 	 * @param tempPath String
 	 * @param virtPath String

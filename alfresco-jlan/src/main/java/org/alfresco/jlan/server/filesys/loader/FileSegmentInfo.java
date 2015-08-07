@@ -27,7 +27,7 @@ import org.alfresco.jlan.debug.Debug;
 
 /**
  * File Segment Info Class
- * 
+ *
  * <p>Contains the details of a file segment that may be shared by many users/sessions.
  *
  * @author gkspencer
@@ -35,7 +35,7 @@ import org.alfresco.jlan.debug.Debug;
 public class FileSegmentInfo {
 
 	//	Segment load/save status
-	
+
 	public final static int Initial		= 0;
 	public final static int LoadWait	= 1;
 	public final static int Loading		= 2;
@@ -43,35 +43,35 @@ public class FileSegmentInfo {
 	public final static int SaveWait    = 4;
 	public final static int Saving		= 5;
 	public final static int Saved		= 6;
-	
+
 	public final static int Error		= 7;
-	
+
 	//	Flags
-	
+
 	private static final int Updated		= 0x0001;
 	private static final int RequestQueued	= 0x0002;
 	private static final int DeleteOnStore	= 0x0004;
-	
+
 	//	Segment status strings
-	
+
 	private static final String[] _statusStr = { "Initial", "LoadWait", "Loading", "Available", "SaveWait", "Saving", "Saved", "Error"};
 
 	//	Temporary file path
-	
+
 	private String m_tempFile;
-	
+
 	//	Flags to indicate if this segment has been updated, queued
-	
+
 	private int m_flags;
-	
+
 	//	Segment status
-	
+
 	private int m_status = Initial;
 
 	//  Amount of valid data in the file, used to allow reads during data loading
-  
+
 	private long m_readable;
-  
+
 	/**
 	 * Default constructor
 	 */
@@ -81,7 +81,7 @@ public class FileSegmentInfo {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param tempFile String
 	 */
 	public FileSegmentInfo(String tempFile) {
@@ -91,16 +91,16 @@ public class FileSegmentInfo {
 
 	/**
 	 * Return the temporary file path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTemporaryFile() {
 		return m_tempFile;
 	}
-	
+
 	/**
 	 * Check if the segment has been updated
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isUpdated() {
@@ -109,7 +109,7 @@ public class FileSegmentInfo {
 
 	/**
 	 * Check if the segment has a file request queued
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isQueued() {
@@ -118,7 +118,7 @@ public class FileSegmentInfo {
 
 	/**
 	 * Check if the file data is available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isDataAvailable() {
@@ -127,87 +127,87 @@ public class FileSegmentInfo {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Check if the associated temporary file should be deleted once the data store
 	 * has completed successfully.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDeleteOnStore() {
 		return (m_flags & DeleteOnStore) != 0 ? true : false;
 	}
-			
+
 	/**
 	 * Delete the temporary file used by the file segment
-	 * 
+	 *
 	 * @exception IOException
 	 */
 	public final void deleteTemporaryFile()
 		throws IOException {
-			
+
 		//	Delete the temporary file used by the file segment
 
 		File tempFile = new File(getTemporaryFile());
-				
+
 		if ( tempFile.exists() && tempFile.delete() == false) {
 
 			//	DEBUG
-		  
+
 			Debug.println("** Failed to delete " + toString() + " **");
-		  
+
 		  	//	Throw an exception, delete failed
-		  
+
 		  	throw new IOException("Failed to delete file " + getTemporaryFile());
 		}
 	}
-		
+
 	/**
 	 * Return the segment status
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int hasStatus() {
 		return m_status;
 	}
-	
+
 	/**
 	 * Return the temporary file length
-	 * 
+	 *
 	 * @return long
 	 * @exception IOException
 	 */
 	public final long getFileLength()
 		throws IOException {
-		
+
 		//	Get the file length
-		
+
 		File tempFile = new File(getTemporaryFile());
 		return tempFile.length();
 	}
-	
+
   /**
    * Return the readable file data length
-   * 
+   *
    * @return long
    */
   public final long getReadableLength() {
     return m_readable;
   }
-  
+
   /**
    * Set the readable data length for the file, used during data loading to allow the file to be read before
    * the file load completes.
-   * 
+   *
    * @param readable long
    */
   public final void setReadableLength(long readable) {
     m_readable = readable;
   }
-  
+
 	/**
 	 * Set the segment load/update status
-	 * 
+	 *
 	 * @param sts int
 	 */
 	public synchronized final void setStatus(int sts) {
@@ -217,16 +217,16 @@ public class FileSegmentInfo {
 
 	/**
 	 * Set the temporary file that is used to hold the local copy of the file data
-	 * 
+	 *
 	 * @param tempFile String
 	 */
 	public final void setTemporaryFile(String tempFile) {
 		m_tempFile = tempFile;
 	}
-		
+
 	/**
 	 * Set/clear the updated segment flag
-	 * 
+	 *
 	 * @param sts boolean
 	 */
 	public synchronized final void setUpdated(boolean sts) {
@@ -235,7 +235,7 @@ public class FileSegmentInfo {
 
 	/**
 	 * Set/clear the request queued flag
-	 * 
+	 *
 	 * @param qd boolean
 	 */
 	public synchronized final void setQueued(boolean qd) {
@@ -253,7 +253,7 @@ public class FileSegmentInfo {
 
 	/**
 	 * Set/clear the specified flag
-	 * 
+	 *
 	 * @param flag int
 	 * @param sts boolean
 	 */
@@ -267,19 +267,19 @@ public class FileSegmentInfo {
 
 	/**
 	 * Wait for another thread to load the file data
-	 * 
+	 *
 	 * @param tmo long
 	 */
 	public final void waitForData(long tmo) {
 
 		//	Check if the file data has been loaded, if not then wait
-		
+
 		if ( isDataAvailable() == false) {
 			synchronized ( this) {
 				try {
-					
+
 					//	Wait for file data
-					
+
 					wait(tmo);
 				}
 				catch ( InterruptedException ex) {
@@ -291,36 +291,36 @@ public class FileSegmentInfo {
 	/**
 	 * Signal that the file data is available, any threads using the waitForData() method
 	 * will return so that the threads can access the file data.
-	 * 
+	 *
 	 */
 	public final synchronized void signalDataAvailable() {
 
 		//	Notify any waiting threads that the file data ia available
-			
+
 		notifyAll();
 	}
-	
+
 	/**
 	 * Return the file segment details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		
+
 		str.append("[");
 		str.append(getTemporaryFile());
 		str.append(":");
 		str.append(_statusStr[hasStatus()]);
 		str.append(",");
-		
+
 		if ( isUpdated())
 			str.append(",Updated");
 		if ( isQueued())
 			str.append(",Queued");
 
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

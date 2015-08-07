@@ -71,10 +71,10 @@ import org.ietf.jgss.Oid;
 
 /**
  * Enterprise CIFS Authenticator Class
- * 
+ *
  * <p>
  * CIFS authenticator that supports NTLMSSP and Kerberos logins.
- * 
+ *
  * @author gkspencer
  */
 public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements CallbackHandler {
@@ -118,9 +118,9 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	private String m_loginEntryName = LoginConfigEntry;
 
 	// Enable ticket cracking code, required for Java5 JVMs
-	
+
 	private boolean m_enableTicketCracking;
-	
+
 	// Server login context
 
 	private LoginContext m_loginContext;
@@ -138,7 +138,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Initialize the authenticator
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @param params ConfigElement
 	 * @exception InvalidConfigurationException
@@ -152,11 +152,11 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 		// Check if session cleanup should be disabled, when a session setup request is received
 		// on virtual circuit zero
-		
+
 		if ( params.getChild("disableSessionCleanup") != null) {
-			
+
 			// Disable session cleanup
-			
+
 			setSessionCleanup( false);
 
 			// Debug
@@ -164,27 +164,27 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 			if ( Debug.EnableInfo && hasDebug())
 				Debug.println("[SMB] Disabled session cleanup (for virtual circuit zero logons)");
 		}
-		
+
         // Check if Java API Kerberos debug output should be enabled
-        
+
         if ( params.getChild("kerberosDebug") != null) {
 
         	// Enable Kerberos API debug output
-        	
+
         	System.setProperty( "sun.security.jgss.debug", "true");
         	System.setProperty( "sun.security.krb5.debug", "true");
-        	
+
         	System.setProperty("com.ibm.security.jgss.debug", "all");
         }
-        
+
         // Access the CIFS server configuration
-        
+
         CIFSConfigSection cifsConfig = (CIFSConfigSection) config.getConfigSection(CIFSConfigSection.SectionName);
-        
+
 		// Check if Kerberos is enabled, get the Kerberos realm
 
 		ConfigElement krbRealm = params.getChild("Realm");
-		
+
 		if ( krbRealm != null && krbRealm.getValue() != null && krbRealm.getValue().length() > 0) {
 
 			// Set the Kerberos realm
@@ -273,26 +273,26 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 			}
 
             // DEBUG
-            
+
             if ( Debug.EnableDbg && hasDebug()) {
             	Debug.println("[SMB] Enabling mechTypes :-");
             	Debug.println("       Kerberos5");
             	Debug.println("       MS-Kerberos5");
             }
-            
+
 			// Create the Oid list for the SPNEGO NegTokenInit, include NTLMSSP for fallback
 
 			Vector<Oid> mechTypes = new Vector<Oid>();
 
 			mechTypes.add(OID.KERBEROS5);
 			mechTypes.add(OID.MSKERBEROS5);
-			
+
             if ( params.getChild("disableNTLM") == null)
             {
             	mechTypes.add(OID.NTLMSSP);
-            	
+
             	// DEBUG
-            	
+
             	if ( Debug.EnableDbg && hasDebug())
             		Debug.println("       NTLMSSP");
             }
@@ -308,7 +308,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 				String mecListMIC = null;
 
 				StringBuffer mic = new StringBuffer();
-				
+
 				mic.append("cifs/");
 				mic.append(cifsConfig.getServerName().toLowerCase());
 				mic.append("@");
@@ -393,11 +393,11 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 		ConfigElement disallowNTLMv1 = params.getChild("disallowNTLMv1");
 
 		m_acceptNTLMv1 = disallowNTLMv1 != null ? false : true;
-		
+
 		// Check if ticket cracking should be enabled
-		
+
 		ConfigElement enableTktCracking = params.getChild( "enableTicketCracking");
-		
+
 		m_enableTicketCracking = enableTktCracking != null ? true : false;
 
 		// Debug
@@ -408,7 +408,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Determine if raw NTLMSSP or SPNEGO security blobs are being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private final boolean useRawNTLMSSP() {
@@ -417,7 +417,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Determine if NTLMv1 logons are accepted
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private final boolean acceptNTLMv1Logon() {
@@ -426,7 +426,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * JAAS callback handler
-	 * 
+	 *
 	 * @param callbacks Callback[]
 	 * @exception IOException
 	 * @exception UnsupportedCallbackException
@@ -466,7 +466,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Return the encryption key/challenge length
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getEncryptionKeyLength() {
@@ -475,7 +475,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Return the server capability flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getServerCapabilities() {
@@ -487,7 +487,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	/**
 	 * Generate the CIFS negotiate response packet, the authenticator should add authentication
 	 * specific fields to the response.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param respPkt SMBSrvPacket
 	 * @param extendedSecurity boolean
@@ -538,7 +538,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Process the CIFS session setup request packet and build the session setup response
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param reqPkt SMBSrvPacket
 	 * @exception SMBSrvException
@@ -810,11 +810,11 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 		if ( loggedOn == true) {
 
 			// Check for virtual circuit zero, disconnect any other sessions from this client
-			
+
 			if ( vcNum == 0 && hasSessionCleanup()) {
-			
+
 				// Disconnect other sessions from this client, cleanup any open files/locks/oplocks
-				
+
 				int discCnt = sess.disconnectClientSessions();
 
 				// DEBUG
@@ -822,7 +822,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 				if ( discCnt > 0 && Debug.EnableInfo && sess.hasDebug(SMBSrvSession.DBG_NEGOTIATE))
 					Debug.println("[SMB] Disconnected " + discCnt + " existing sessions from client, sess=" + sess);
 			}
-			
+
 			// Clear any stored session setup object for the logon
 
 			sess.removeSetupObject(client.getProcessId());
@@ -897,7 +897,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Process an NTLMSSP security blob
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @param secbuf byte[]
@@ -1045,7 +1045,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Process an SPNEGO security blob
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @param secbuf byte[]
@@ -1229,7 +1229,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Perform a Kerberos login and return an SPNEGO response
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param negToken NegTokenInit
 	 * @param client ClientInfo
@@ -1240,107 +1240,107 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 		throws SMBSrvException {
 
         //  Authenticate the user
-        
+
         KerberosDetails krbDetails = null;
         NegTokenTarg negTokenTarg = null;
-        
+
         try
         {
         	// Parse the mechToken to get the AP-REQ details
-        	
+
         	KerberosApReq krbApReq = new KerberosApReq();
         	krbApReq.parseMechToken( negToken.getMechtoken());
-        	
+
         	if ( Debug.EnableDbg && hasDebug())
         		Debug.println( "[SMB] Kerberos AP-REQ - " + krbApReq);
-        	
+
         	// Check if mutual authentication is required
 
         	KrbAuthContext krbAuthCtx = null;
-        	
+
         	if ( krbApReq.hasMutualAuthentication() && m_enableTicketCracking == true)
         	{
         		// Allocate the Kerberos authentication and parse the AP-REQ
-        		
+
         		krbAuthCtx = new KrbAuthContext();
         		krbAuthCtx.setDebug(hasDebug());
-        		
+
         		// DEBUG
-        		
+
         		if ( Debug.EnableDbg && hasDebug())
         			Debug.println("[SMB] Kerberos mutual auth required, parsing AP-REQ");
-        		
+
         		try {
-        			
+
         			// Parse the AP-REQ
-        			
+
         			krbAuthCtx.parseKerberosApReq( m_loginContext.getSubject(), krbApReq);
         		}
         		catch ( IOException ex)
         		{
         			// Failed to parse AP-REQ
-        			
+
         			if ( Debug.EnableDbg && hasDebug())
         				Debug.println("[SMB] Failed to parse AP-REQ, " + ex.toString());
-        			
+
                     // Return a logon failure status
-                    
+
                     throw new SMBSrvException( SMBStatus.NTLogonFailure, SMBStatus.ErrDos, SMBStatus.DOSAccessDenied);
         		}
         	}
-        	
+
             //  Run the session setup as a privileged action
-            
+
             SessionSetupPrivilegedAction sessSetupAction = new SessionSetupPrivilegedAction( m_accountName, negToken.getMechtoken());
             Object result = Subject.doAs( m_loginContext.getSubject(), sessSetupAction);
-    
+
             if ( result != null)
             {
                 // Access the Kerberos response
-                
+
                 krbDetails = (KerberosDetails) result;
 
                 // Determine the response OID
-                
+
                 Oid respOid = null;
-                
+
                 if ( negToken.hasOid( OID.MSKERBEROS5))
                 {
                 	respOid = OID.MSKERBEROS5;
-                	
+
                 	// DEBUG
-                	
+
                 	if ( Debug.EnableDbg && hasDebug())
                 		Debug.println("[SMB] Using OID MS Kerberos5 for NegTokenTarg");
                 }
                 else
                 {
                 	respOid = OID.KERBEROS5;
-                	
+
                 	// DEBUG
-                	
+
                 	if ( Debug.EnableDbg && hasDebug())
                 		Debug.println("[SMB] Using OID Kerberos5 for NegTokenTarg");
                 }
 
                 // If mutual authentication is required then we unpack the AP-REP and add in the missing
                 // subkey that the AD client requires
-                
+
                 if ( krbAuthCtx != null)
                 {
 	                try
 	                {
 	                	// Parse the AP-REP and add the missing subkey, return the updated response blob
-	                	
+	
 	                	byte[] respToken = krbAuthCtx.parseKerberosApRep( krbDetails.getResponseToken());
 	                	krbDetails.setResponseToken(respToken);
-	                	
+	
 	                	// Create the NegtokenTarg
-	                	
+	
 		                negTokenTarg = new NegTokenTarg( SPNEGO.AcceptCompleted, respOid, krbDetails.getResponseToken());
-	                	
+	
 	                	// DEBUG
-	                	
+	
 	                	if ( Debug.EnableDbg && hasDebug())
 	                		Debug.println("[SMB] Created NegTokenTarg using updated AP-REP, added subkey");
 	                }
@@ -1355,96 +1355,96 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
                 else
                 {
 	                // Create the NegTokenTarg response blob
-	                
+
 	                negTokenTarg = new NegTokenTarg( SPNEGO.AcceptCompleted, respOid, krbDetails.getResponseToken());
-	                
+
 	                // DEBUG
-	                
+
 	                if ( Debug.EnableDbg && hasDebug())
 	                	Debug.println("[SMB] Created NegTokenTarg using standard Krb5 API response");
                 }
-                
+
             	// Check if this is a null logon
-            	
+
             	String userName = krbDetails.getUserName();
-            	
+
             	if ( userName != null)
             	{
             		// Check for the machine account name
-            		
+
             		if ( userName.endsWith( "$") && userName.equals( userName.toUpperCase()))
             		{
             			// Null logon
-            			
+
                 		client.setLogonType( ClientInfo.LogonNull);
 
                 		//  Debug
-                        
+
                         if ( Debug.EnableDbg && hasDebug())
                             Debug.println("[SMB] Machine account logon, " + userName + ", as null logon");
             		}
             		else
             		{
                         // Store the full user name in the client information, indicate that this is not a guest logon
-                        
+
                         client.setUserName( krbDetails.getSourceName());
                         client.setGuest( false);
-	                        
+
                         // Indicate that the session is logged on
-                        
+
                         sess.setLoggedOn(true);
             		}
             	}
             	else
             	{
             		// Null logon
-            		
+
             		client.setLogonType( ClientInfo.LogonNull);
             	}
-            	
+
                 // Indicate that the session is logged on
-                
+
                 sess.setLoggedOn(true);
-                
+
                 //  Debug
-                
+
                 if ( Debug.EnableDbg && hasDebug())
                 	Debug.println("[SMB] Logged on using Kerberos, user " + userName);
             }
             else
             {
             	// Debug
-            	
+
             	if ( Debug.EnableDbg && hasDebug())
             		Debug.println( "[SMB] No SPNEGO response, Kerberos logon failed");
-            	
+
                 // Return a logon failure status
-                
+
                 throw new SMBSrvException( SMBStatus.NTLogonFailure, SMBStatus.ErrDos, SMBStatus.DOSAccessDenied);
             }
         }
         catch (Exception ex)
         {
             // Log the error
-            
+
         	if ( Debug.EnableError && hasDebug()) {
         		Debug.println("[SMB] Kerberos logon error");
         		Debug.println(ex);
         	}
-    
+
             // Return a logon failure status
-            
+
             throw new SMBSrvException( SMBStatus.NTLogonFailure, SMBStatus.ErrDos, SMBStatus.DOSAccessDenied);
         }
-    
+
         // Return the response SPNEGO blob
-        
+
         return negTokenTarg;
 	}
 
 	/**
 	 * Perform an NTLMv1 logon using the NTLMSSP type3 message
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @param type3Msg Type3NTLMMessage
@@ -1533,7 +1533,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Perform an NTLMv1 logon using the NTLMSSP type3 message
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @exception SMBSrvException
@@ -1598,7 +1598,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Perform an NTLMv2 logon using the NTLMSSP type3 message
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @param type3Msg Type3NTLMMessage
@@ -1717,7 +1717,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Perform an NTLMv2 logon
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @exception SMBSrvException
@@ -1834,7 +1834,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Perform an NTLMv2 session key logon
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @param type3Msg Type3NTLMMessage
@@ -1996,7 +1996,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	/**
 	 * Perform a hashed password logon using either NTLMv1 or NTLMv2
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param reqPkt SMBSrvPacket
 	 * @exception SMBSrvException
@@ -2129,12 +2129,12 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 			}
 		}
 		else {
-			
+
 			// Mark the session as a null logon
-			
+
 			client.setLogonType( ClientInfo.LogonNull);
 		}
-			
+
 		// Check if the user was logged on as guest
 
 		if ( client.isGuest()) {

@@ -37,27 +37,27 @@ import org.alfresco.jlan.server.filesys.cache.FileStateReaper;
 public class FilesystemsConfigSection extends ConfigSection {
 
   // Filesystems configuration section name
-  
+
   public static final String SectionName = "Filesystems";
-  
+
   //  List of shared devices
 
   private SharedDeviceList m_shareList;
 
   // File state reaper, enabled if one or more filesystems uses a file state cache
-  
+
   private FileStateReaper m_stateReaper;
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param config ServerConfiguration
    */
   public FilesystemsConfigSection(ServerConfiguration config) {
     super( SectionName, config);
-    
+
     // Allocate the share list
-    
+
     m_shareList = new SharedDeviceList();
   }
 
@@ -79,62 +79,62 @@ public class FilesystemsConfigSection extends ConfigSection {
   public final boolean addShare(SharedDevice shr) {
     return m_shareList.addShare(shr);
   }
-  
+
   /**
    * Add a file state cache to the file state reaper thread, to scan for expired file states
-   * 
+   *
    * @param filesysName String
    * @param stateCache FileStateCache
    */
   public synchronized final void addFileStateCache( String filesysName, FileStateCache stateCache) {
-    
+
       // Check if the file state reaper has been allocated
-      
+
       if ( m_stateReaper == null)
           m_stateReaper = new FileStateReaper();
-      
+
       // Add the state cache to the reaper thread
-      
+
       m_stateReaper.addStateCache( filesysName, stateCache);
   }
-  
+
   /**
    * Close the configuration section
    */
   public final void closeConfig() {
 
     // Close the shared filesystems
-    
+
     if ( getShares() != null && getShares().numberOfShares() > 0) {
-      
+
       // Close the shared filesystems
-        
+
       Enumeration<SharedDevice> shareEnum = getShares().enumerateShares();
-        
+
       while ( shareEnum.hasMoreElements()) {
-          
+
         SharedDevice share = shareEnum.nextElement();
         DeviceContext devCtx = share.getContext();
-            
+
         if ( devCtx != null) {
-            
+
             // Remove the filesystem from the file state cache, if enabled
-            
+
             if ( m_stateReaper != null)
                 m_stateReaper.removeStateCache( share.getName());
-            
+
             // Close the device context
-        
+
             devCtx.CloseContext();
         }
       }
-      
+
       // Close the file state reaper thread
-      
+
       if ( m_stateReaper != null) {
           m_stateReaper.shutdownRequest();
           m_stateReaper = null;
-      }       
+      }
     }
   }
 }

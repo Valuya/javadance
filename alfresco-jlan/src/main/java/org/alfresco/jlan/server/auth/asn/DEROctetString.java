@@ -29,36 +29,36 @@ import java.io.IOException;
 public class DEROctetString extends DERObject {
 
   // String bytes
-  
+
   private byte[] m_string;
-  
+
   /**
    * Default constructor
    */
   public DEROctetString() {
   }
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param byts byte[]
    */
   public DEROctetString( byte[] byts) {
     m_string = byts;
   }
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param str String
    */
   public DEROctetString(String str) {
     m_string = str.getBytes();
   }
-  
+
   /**
    * Return the string bytes
-   * 
+   *
    * @return byte[]
    */
   public byte[] getValue() {
@@ -67,7 +67,7 @@ public class DEROctetString extends DERObject {
 
   /**
    * Return as a string
-   * 
+   *
    * @return String
    */
   public final String asString() {
@@ -75,26 +75,26 @@ public class DEROctetString extends DERObject {
       return new String(m_string);
     return null;
   }
-  
+
   /**
    * DER decode the object
-   * 
+   *
    * @param buf DERBuffer
    */
   public void derDecode(DERBuffer buf)
     throws IOException {
 
     // Decode the type
-    
+
     if ( buf.unpackType() == DER.OctetString) {
-      
+
       // Unpack the length and bytes
-      
+
       int len = buf.unpackLength();
       if ( len > 0) {
-        
+
         // Get the string bytes
-        
+
         m_string = buf.unpackBytes( len);
       }
       else
@@ -106,18 +106,18 @@ public class DEROctetString extends DERObject {
 
   /**
    * DER encode the object
-   * 
+   *
    * @param buf DERBuffer
    */
   public void derEncode(DERBuffer buf)
     throws IOException {
 
     // Get the string bytes
-    
+
     byte[] byts = m_string;
-    
+
     // Pack the type, length and bytes
-    
+
     buf.packByte( DER.OctetString);
 
     if ( byts != null) {
@@ -127,19 +127,19 @@ public class DEROctetString extends DERObject {
     else
       buf.packLength( 0);
   }
-  
+
   /**
    * Return the string details as a string
-   * 
+   *
    * @return String
    */
   public String toString() {
     StringBuffer str = new StringBuffer();
-    
+
     str.append("[OctetString:");
     str.append(m_string != null ? m_string.length : 0);
     str.append("]");
-    
+
     return str.toString();
   }
 }

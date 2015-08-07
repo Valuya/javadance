@@ -29,14 +29,14 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * Tcpip SMB Packet Handler Class
- * 
+ *
  * @author gkspencer
  */
 public class TcpipSMBChannelHandler extends ChannelPacketHandler {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sockChannel SocketChannel
 	 * @param packetPool CIFSPacketPool
 	 * @exception IOException If a network error occurs
@@ -48,7 +48,7 @@ public class TcpipSMBChannelHandler extends ChannelPacketHandler {
 
 	/**
 	 * Read a packet from the input stream
-	 * 
+	 *
 	 * @return SMBSrvPacket
 	 * @exception IOException If a network error occurs
 	 */
@@ -84,9 +84,9 @@ public class TcpipSMBChannelHandler extends ChannelPacketHandler {
 
 		// Get a packet from the pool to hold the request data, allow for the NetBIOS header length
 		// so that the CIFS request lines up with other implementations.
-		
+
 		SMBSrvPacket pkt = getPacketPool().allocatePacket( dlen + RFCNetBIOSProtocol.HEADER_LEN);
-		
+
 		// Read the data part of the packet into the users buffer, this may take
 		// several reads
 
@@ -94,45 +94,45 @@ public class TcpipSMBChannelHandler extends ChannelPacketHandler {
 		int totlen = offset;
 
 		try {
-			
+
 			while (dlen > 0) {
-	
+
 				// Read the data
-	
+
 				len = readBytes( pkt.getBuffer(), offset, dlen);
-	
+
 				// Check if the connection has been closed
-	
+
 				if ( len == -1)
 					throw new IOException("Connection closed (request read)");
-	
+
 				// Update the received length and remaining data length
-	
+
 				totlen += len;
 				dlen -= len;
-	
+
 				// Update the user buffer offset as more reads will be required
 				// to complete the data read
-	
+
 				offset += len;
-	
+
 			}
 		}
 		catch (Throwable ex) {
-			
+
 			// Release the packet back to the pool
-			
+
 			getPacketPool().releasePacket( pkt);
-			
+
 			// Rethrow the exception
-			
+
 			rethrowException(ex);
 		}
 
 		// Set the received request length
-		
+
 		pkt.setReceivedLength( totlen);
-		
+
 		// Return the received packet
 
 		return pkt;
@@ -140,7 +140,7 @@ public class TcpipSMBChannelHandler extends ChannelPacketHandler {
 
 	/**
 	 * Send a packet to the output stream
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 * @param len int
 	 * @param writeRaw boolean

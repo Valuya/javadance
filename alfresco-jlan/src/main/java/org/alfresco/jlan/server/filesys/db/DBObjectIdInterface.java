@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys.db;
 
 /**
  * Database Object Id Interface
- * 
+ *
  * <p>Provides methods for loading, saving and deleting file id to object id mappings in a database table.
  *
  * @author gkspencer
@@ -38,10 +38,10 @@ public interface DBObjectIdInterface {
    */
   public void saveObjectId(int fileId, int streamId, String objectId)
   	throws DBException;
-  
+
   /**
    * Load the object id for the specified file id
-   * 
+   *
    * @param fileId int
    * @param streamId int
    * @return String
@@ -49,7 +49,7 @@ public interface DBObjectIdInterface {
    */
   public String loadObjectId(int fileId, int streamId)
   	throws DBException;
-  
+
   /**
    * Delete a file id/object id mapping
    *

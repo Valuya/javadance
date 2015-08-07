@@ -21,21 +21,21 @@ package org.alfresco.jlan.smb;
 
 /**
  * SMB error text class.
- * 
+ *
  * <p>
  * The SMBErrorText is a static class that converts SMB error class/error codes into their appropriate error message
  * strings. The class is used by the SMBException class when outputting an SMB exception as a string.
- * 
+ *
  * <p>
  * SMB error classes and error codes are declared in the SMBStatus class.
- * 
+ *
  * @author gkspencer
  */
 public final class SMBErrorText {
 
 	/**
 	 * Return the error string associated with the SMB error class/code
-	 * 
+	 *
 	 * @param errclass Error class.
 	 * @param errcode Error code.
 	 * @return Error string.
@@ -119,7 +119,7 @@ public final class SMBErrorText {
 
 	/**
 	 * Return a DOS error string.
-	 * 
+	 *
 	 * @param errcode DOS error code.
 	 * @return DOS error string.
 	 */
@@ -242,7 +242,7 @@ public final class SMBErrorText {
 
 	/**
 	 * Return a hardware error string.
-	 * 
+	 *
 	 * @param errcode Hardware error code.
 	 * @return Hardware error string.
 	 */
@@ -316,7 +316,7 @@ public final class SMBErrorText {
 
 	/**
 	 * Return a JLAN error string.
-	 * 
+	 *
 	 * @return java.lang.String
 	 * @param errcode int
 	 */
@@ -363,7 +363,7 @@ public final class SMBErrorText {
 
 	/**
 	 * Return a network error string.
-	 * 
+	 *
 	 * @param errcode Network error code.
 	 * @return Network error string.
 	 */
@@ -485,7 +485,7 @@ public final class SMBErrorText {
 
 	/**
 	 * Return a server error string.
-	 * 
+	 *
 	 * @param errcode Server error code.
 	 * @return Server error string.
 	 */
@@ -585,7 +585,7 @@ public final class SMBErrorText {
 
 	/**
 	 * Return an NT error string.
-	 * 
+	 *
 	 * @param errcode NT error code.
 	 * @return NT error string.
 	 */
@@ -764,7 +764,7 @@ public final class SMBErrorText {
 
 	/**
 	 * Return a Win32 error string.
-	 * 
+	 *
 	 * @param errcode Win32 error code.
 	 * @return Win32 error string.
 	 */
@@ -844,7 +844,7 @@ public final class SMBErrorText {
 
 	/**
 	 * Return a DCE/RPC error string.
-	 * 
+	 *
 	 * @param errcode DCE/RPC error code
 	 * @return DCE/RPC error string.
 	 */

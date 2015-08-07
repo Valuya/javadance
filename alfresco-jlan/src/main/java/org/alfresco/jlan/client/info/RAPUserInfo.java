@@ -27,13 +27,13 @@ import org.alfresco.jlan.smb.dcerpc.info.UserInfo;
 
 /**
  * User Information Class
- * 
+ *
  * <p>
  * The UserInfo class contains the details of a user account on a remote server.
- * 
+ *
  * <p>
  * The AdminSession.getUserInfo () method returns an UserInfo object for the specified remote user.
- * 
+ *
  * @author gkspencer
  */
 public final class RAPUserInfo extends UserInfo implements RAPReadable, Serializable {
@@ -46,7 +46,7 @@ public final class RAPUserInfo extends UserInfo implements RAPReadable, Serializ
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */

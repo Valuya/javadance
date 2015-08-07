@@ -174,7 +174,7 @@ public class NetworkSettings {
 
 	/**
 	 * Set the broadcast mask to be used for broadcast packets.
-	 * 
+	 *
 	 * @param mask java.lang.String
 	 */
 	public static void setBroadcastMask(String mask) { m_broadcastMask = mask; }

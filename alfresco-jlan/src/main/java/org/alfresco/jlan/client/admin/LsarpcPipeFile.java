@@ -27,14 +27,14 @@ import org.alfresco.jlan.smb.dcerpc.client.DCEPacket;
 
 /**
  * LSA RPC Pipe File Class
- * 
+ *
  * @author gkspencer
  */
 public class LsarpcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param pkt DCEPacket
 	 * @param handle int
@@ -48,7 +48,7 @@ public class LsarpcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open the Local Security Authority (LSA) on the remote server
-	 * 
+	 *
 	 * @return LSAPolicyHandle
 	 * @exception IOException
 	 * @exception SMBException

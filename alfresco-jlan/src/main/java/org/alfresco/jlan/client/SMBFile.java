@@ -30,7 +30,7 @@ import org.alfresco.jlan.smb.SMBStatus;
  *  SMB file class.
  *
  *  <p>This is an abstract class that defines the standard SMB file methods.
- * 
+ *
  * @author gkspencer
  */
 public abstract class SMBFile {
@@ -78,7 +78,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Construct an SMBFile on the specified SMB session.
-	 * 
+	 *
 	 * @param sess SMB session that this file is associated with.
 	 * @param finfo File information for this file.
 	 * @param fid File identifier, allocated when the file was opened.
@@ -95,7 +95,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Check if the end of file has been reached.
-	 * 
+	 *
 	 * @return true if end of file has been reached, else false.
 	 */
 	public final boolean atEndOfFile() {
@@ -112,7 +112,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Return the number of bytes that are available for reading without blocking the input stream.
-	 * 
+	 *
 	 * @return Number of bytes available for read without blocking the input stream.
 	 */
 	public final int Available() {
@@ -121,7 +121,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Close the remote file.
-	 * 
+	 *
 	 * @param wrDateTime Set the last write date/time, or null to let the server set the date/time
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
@@ -131,7 +131,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Close the remote file, let the remote server set the last write date/time
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
@@ -163,7 +163,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Flush any buffered data for this file.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
@@ -172,7 +172,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Return the file attributes
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAttributes() {
@@ -181,7 +181,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Get the file name string.
-	 * 
+	 *
 	 * @return File name string.
 	 */
 	public final String getFileName() {
@@ -190,7 +190,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Get the file path string.
-	 * 
+	 *
 	 * @return File path string.
 	 */
 	public final String getFilePath() {
@@ -199,7 +199,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Get the file size, in bytes.
-	 * 
+	 *
 	 * @return File size in bytes.
 	 */
 	public final long getFileSize() {
@@ -208,7 +208,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Return the file id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -217,7 +217,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Get the session that this file is associated with.
-	 * 
+	 *
 	 * @return SMBSession that this file is associated with.
 	 */
 	protected final Session getSession() {
@@ -226,7 +226,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Return the current file read position
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getReadPosition() {
@@ -235,7 +235,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Return the current write position
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getWritePosition() {
@@ -244,7 +244,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Check if the file has been closed.
-	 * 
+	 *
 	 * @return true if the file has been closed, else false.
 	 */
 	public final boolean isClosed() {
@@ -253,7 +253,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Determine if this file is a directory
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isDirectory() {
@@ -262,7 +262,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Determine if this file is hidden
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isHidden() {
@@ -271,7 +271,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Determine if this file is read-only
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isReadOnly() {
@@ -280,7 +280,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Determine if this file is a system file
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isSystem() {
@@ -289,7 +289,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Read a block of data from the file.
-	 * 
+	 *
 	 * @param buf Byte buffer to receive the data.
 	 * @param siz Maximum length of data to receive.
 	 * @param offset Offset within buffer to place received data.
@@ -302,7 +302,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Read a block of data from the file.
-	 * 
+	 *
 	 * @param buf Byte buffer to receive the data.
 	 * @return Actual length of data received.
 	 * @exception java.io.IOException If an I/O error occurs
@@ -318,7 +318,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Write a block of data to the file.
-	 * 
+	 *
 	 * @param buf Byte buffer containing data to be written.
 	 * @param siz Length of data to be written.
 	 * @param offset Offset within buffer to start writing data from.
@@ -331,7 +331,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Write a block of data to the file.
-	 * 
+	 *
 	 * @param buf Byte buffer containing data to be written.
 	 * @return Actual length of data written.
 	 * @exception java.io.IOException If an I/O error occurs
@@ -347,7 +347,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Write a string to the file.
-	 * 
+	 *
 	 * @param str String to be written to the file
 	 * @return Actual length of data written.
 	 * @exception java.io.IOException If an I/O error occurs
@@ -365,7 +365,7 @@ public abstract class SMBFile {
 	/**
 	 * Seek to the specified point in the file. The seek may be relative to the start of file,
 	 * current file position or end of file.
-	 * 
+	 *
 	 * @param pos Relative offset
 	 * @param typ Seek type. @see org.alfresco.jlan.smb.SeekType
 	 * @return New file offset from start of file
@@ -377,7 +377,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Lock a range of bytes within the file
-	 * 
+	 *
 	 * @param offset Offset within the file to start lock
 	 * @param len Number of bytes to lock
 	 * @exception IOException
@@ -388,7 +388,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Unlock a range of bytes within the file
-	 * 
+	 *
 	 * @param offset Offset within the file to unlock
 	 * @param len Number of bytes to unlock
 	 * @exception IOException
@@ -399,7 +399,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Set a file state flag.
-	 * 
+	 *
 	 * @param flag File state flag to set/clear.
 	 * @param sts New file flag state, true or false.
 	 */
@@ -412,16 +412,16 @@ public abstract class SMBFile {
 
 	/**
 	 * Set/update the file information
-	 * 
+	 *
 	 * @param fInfo FileInfo
 	 */
 	protected final void setFileInformation( FileInfo fInfo) {
 		m_info = fInfo;
 	}
-	
+
 	/**
 	 * Create an input stream using this file
-	 * 
+	 *
 	 * @return SMBInputStream
 	 * @exception SMBException If the file is a directory
 	 */
@@ -440,7 +440,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Create an output stream using this file
-	 * 
+	 *
 	 * @return SMBOutputStream
 	 * @exception SMBException If the file is a directory
 	 */
@@ -462,21 +462,21 @@ public abstract class SMBFile {
 	 */
 	public void refreshFileInformation()
 		throws IOException, SMBException {
-		
+
 		// Get the latest file information for the file
-		
+
 		if ( m_sess instanceof DiskSession) {
 			DiskSession diskSess = (DiskSession) m_sess;
-		
+
 			FileInfo fInfo = diskSess.getFileInformation( getFileName());
 			if ( fInfo != null)
 				setFileInformation( fInfo);
 		}
 	}
-	
+
 	/**
 	 * Check if the specified state flag is set
-	 * 
+	 *
 	 * @param flg int
 	 * @return boolean
 	 */
@@ -486,7 +486,7 @@ public abstract class SMBFile {
 
 	/**
 	 * Return the SMB file as a string
-	 * 
+	 *
 	 * @return SMB file string.
 	 */
 	public final String toString() {

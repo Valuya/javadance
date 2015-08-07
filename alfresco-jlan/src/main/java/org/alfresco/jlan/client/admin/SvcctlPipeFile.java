@@ -39,12 +39,12 @@ import org.alfresco.jlan.util.StringList;
 
 /**
  * Service Control Pipe File Class
- * 
+ *
  * <p>
  * Pipe file connected to a remote service manager DCE/RPC service that can be used to retrieve
  * information about remote NT services, start and stop services, and perform other service
  * requests.
- * 
+ *
  * @author gkspencer
  */
 public class SvcctlPipeFile extends IPCPipeFile {
@@ -55,7 +55,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param pkt DCEPacket
 	 * @param handle int
@@ -76,7 +76,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open the service control manager on the remote server
-	 * 
+	 *
 	 * @return ServiceManagerHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -91,7 +91,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open the service control manager on the remote server
-	 * 
+	 *
 	 * @param accessMode int
 	 * @return ServiceManagerHandle
 	 * @exception IOException
@@ -148,7 +148,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Create a new service with no dependencies and using the default LocalSystem account
-	 * 
+	 *
 	 * @param serviceName String
 	 * @param displayName String
 	 * @param svcType From NTService.Type...
@@ -170,7 +170,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Create a new service
-	 * 
+	 *
 	 * @param serviceName String
 	 * @param displayName String
 	 * @param svcType From NTService.Type...
@@ -334,7 +334,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Delete a remote service
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @throws IOException
 	 * @throws SMBException
@@ -378,7 +378,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a service on the remote server
-	 * 
+	 *
 	 * @param serviceName String
 	 * @return ServiceHandle
 	 * @exception IOException
@@ -394,7 +394,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a service on the remote server
-	 * 
+	 *
 	 * @param serviceName String
 	 * @param accessMode int
 	 * @return ServiceHandle
@@ -446,7 +446,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the remote service configuration details
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @return ServiceConfigInfo
 	 * @exception IOException
@@ -494,7 +494,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Set the remote service configuration details
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @param config ServiceConfigInfo
 	 * @return int
@@ -549,7 +549,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 	/**
 	 * Return the service status list for services matching the specified type and state on the
 	 * remote server.
-	 * 
+	 *
 	 * @param typ int
 	 * @param state int
 	 * @return ServiceStatusList
@@ -613,7 +613,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the service status for the specified service
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -661,7 +661,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Start a service
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -695,7 +695,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Stop a service
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -710,7 +710,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Pause a service
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -725,7 +725,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Resume a service
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -740,7 +740,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Service control
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @param ctrl int
 	 * @exception IOException
@@ -778,7 +778,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Close a remote service
-	 * 
+	 *
 	 * @param handle ServiceHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -793,7 +793,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Close the remote service manager
-	 * 
+	 *
 	 * @param handle ServiceManagerHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -808,7 +808,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the service manager handle
-	 * 
+	 *
 	 * @return ServiceManagerHandle
 	 */
 	protected final ServiceManagerHandle getManagerHandle() {
@@ -817,7 +817,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Close the pipe
-	 * 
+	 *
 	 * @exception IOException
 	 * @exception SMBException
 	 */
@@ -841,7 +841,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 
 	/**
 	 * Close a remote handle
-	 * 
+	 *
 	 * @param handle PolicyHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -876,7 +876,7 @@ public class SvcctlPipeFile extends IPCPipeFile {
 	/**
 	 * Return the service status list for services matching the specified type and state on the
 	 * remote server.
-	 * 
+	 *
 	 * @param typ int
 	 * @param state int
 	 * @return ServiceStatusExList

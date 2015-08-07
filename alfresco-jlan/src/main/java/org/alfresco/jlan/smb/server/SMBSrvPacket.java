@@ -31,7 +31,7 @@ import org.alfresco.jlan.util.HexDump;
 
 /**
  * SMB packet type class
- * 
+ *
  * @author gkspencer
  */
 public class SMBSrvPacket {
@@ -66,9 +66,9 @@ public class SMBSrvPacket {
 	public static final int PARAMWORDS 		= 33 + RFCNetBIOSProtocol.HEADER_LEN;
 
 	// SMB packet header length
-	
+
 	public static final int HeaderLength	= PARAMWORDS - RFCNetBIOSProtocol.HEADER_LEN;
-	
+
 	// SMB packet header length for a transaction type request
 
 	public static final int TRANS_HEADERLEN = 66 + RFCNetBIOSProtocol.HEADER_LEN;
@@ -133,23 +133,23 @@ public class SMBSrvPacket {
 	protected int m_endpos;
 
 	// Associated packet
-	
+
 	private SMBSrvPacket m_assocPkt;
-	
+
 	// Packet is queued for sending via asynchronous I/O
-	
+
 	private boolean m_asyncQueued;
-	
+
 	// Count of how many times the processing of this packet has been deferred
-	
+
 	private int m_deferredCount;
-	
+
 	// Request packet, do not set the 'response' flag
-	
+
 	private boolean m_requestPkt;
-	
+
 	// Packet lease time, when allocated from the memory pool
-	
+
 	private long m_leaseTime;
 
 	/**
@@ -162,7 +162,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Construct an SMB packet using the specified packet buffer.
-	 * 
+	 *
 	 * @param buf SMB packet buffer.
 	 */
 	public SMBSrvPacket(byte[] buf) {
@@ -171,7 +171,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Construct an SMB packet of the specified size.
-	 * 
+	 *
 	 * @param siz Size of SMB packet buffer to allocate.
 	 */
 	public SMBSrvPacket(int siz) {
@@ -181,7 +181,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Copy constructor.
-	 * 
+	 *
 	 * @param pkt SMB packet buffer.
 	 */
 	public SMBSrvPacket(SMBSrvPacket pkt) {
@@ -197,7 +197,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Copy constructor.
-	 * 
+	 *
 	 * @param pkt SMB packet buffer.
 	 * @param len Length of packet to be copied
 	 */
@@ -214,7 +214,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check the SMB AndX command for the required minimum parameter count and byte count.
-	 * 
+	 *
 	 * @param off Offset to the AndX command within the SMB packet.
 	 * @param reqWords Minimum number of parameter words expected.
 	 * @param reqBytes Minimum number of bytes expected.
@@ -235,7 +235,7 @@ public class SMBSrvPacket {
 	/**
 	 * Check the SMB packet for a valid SMB signature, and the required minimum parameter count and
 	 * byte count.
-	 * 
+	 *
 	 * @param reqWords Minimum number of parameter words expected.
 	 * @param reqBytes Minimum number of bytes expected.
 	 * @return boolean True if the packet passes the checks, else false.
@@ -260,7 +260,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check the SMB packet has a valid SMB signature.
-	 * 
+	 *
 	 * @return boolean True if the SMB signature is valid, else false.
 	 */
 	public final boolean checkPacketSignature() {
@@ -278,7 +278,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check if the packet is an SMB2 request/response
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isSMB2() {
@@ -313,7 +313,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Dump the SMB packet to the debug stream
-	 * 
+	 *
 	 * @param dumpAll boolean
 	 */
 
@@ -424,7 +424,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the data byte count for the SMB AndX command.
-	 * 
+	 *
 	 * @param off Offset to the AndX command.
 	 * @return Data byte count
 	 */
@@ -439,7 +439,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the AndX data byte area offset within the SMB packet
-	 * 
+	 *
 	 * @param off Offset to the AndX command.
 	 * @return Data byte offset within the SMB packet.
 	 */
@@ -456,7 +456,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the secondary command code
-	 * 
+	 *
 	 * @return Secondary command code
 	 */
 
@@ -466,7 +466,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get an AndX parameter word from the SMB packet.
-	 * 
+	 *
 	 * @param off Offset to the AndX command.
 	 * @param idx Parameter index (zero based).
 	 * @return Parameter word value.
@@ -489,7 +489,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get an AndX parameter integer from the SMB packet.
-	 * 
+	 *
 	 * @param off Offset to the AndX command.
 	 * @param idx Parameter index (zero based).
 	 * @return Parameter integer value.
@@ -512,7 +512,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the AndX command parameter count.
-	 * 
+	 *
 	 * @param off Offset to the AndX command.
 	 * @return Parameter word count.
 	 */
@@ -523,7 +523,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Return the byte array used for the SMB packet
-	 * 
+	 *
 	 * @return Byte array used for the SMB packet.
 	 */
 
@@ -533,7 +533,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Return the total buffer size available to the SMB request
-	 * 
+	 *
 	 * @return Total SMB buffer length available.
 	 */
 
@@ -543,7 +543,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the data byte count for the SMB packet
-	 * 
+	 *
 	 * @return Data byte count
 	 */
 
@@ -557,7 +557,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the data byte area offset within the SMB packet
-	 * 
+	 *
 	 * @return Data byte offset within the SMB packet.
 	 */
 
@@ -572,7 +572,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the SMB command
-	 * 
+	 *
 	 * @return SMB command code.
 	 */
 
@@ -582,7 +582,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the SMB error class
-	 * 
+	 *
 	 * @return SMB error class.
 	 */
 
@@ -592,7 +592,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the SMB error code
-	 * 
+	 *
 	 * @return SMB error code.
 	 */
 
@@ -602,7 +602,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the SMB flags value.
-	 * 
+	 *
 	 * @return SMB flags value.
 	 */
 
@@ -612,7 +612,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the SMB flags2 value.
-	 * 
+	 *
 	 * @return SMB flags2 value.
 	 */
 	public final int getFlags2() {
@@ -621,7 +621,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Return the NetBIOS header flags value.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getHeaderFlags() {
@@ -630,7 +630,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Return the NetBIOS header data length value.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getHeaderLength() {
@@ -639,7 +639,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Return the NetBIOS header message type.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getHeaderType() {
@@ -649,7 +649,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Calculate the total used packet length.
-	 * 
+	 *
 	 * @return Total used packet length.
 	 */
 	public final int getLength() {
@@ -661,7 +661,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Calculate the total packet length, including header
-	 * 
+	 *
 	 * @return Total packet length.
 	 */
 	public final int getPacketLength() {
@@ -673,7 +673,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Return the available buffer space for data bytes
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAvailableLength() {
@@ -682,7 +682,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Return the available buffer space for data bytes for the specified buffer length
-	 * 
+	 *
 	 * @param len int
 	 * @return int
 	 */
@@ -692,7 +692,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the long SMB error code
-	 * 
+	 *
 	 * @return Long SMB error code.
 	 */
 	public final int getLongErrorCode() {
@@ -701,7 +701,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the multiplex identifier.
-	 * 
+	 *
 	 * @return Multiplex identifier.
 	 */
 	public final int getMultiplexId() {
@@ -710,7 +710,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Dump the packet type
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPacketTypeString() {
@@ -817,7 +817,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get a parameter word from the SMB packet.
-	 * 
+	 *
 	 * @param idx Parameter index (zero based).
 	 * @return Parameter word value.
 	 * @exception java.lang.IndexOutOfBoundsException If the parameter index is out of range.
@@ -839,7 +839,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the parameter count
-	 * 
+	 *
 	 * @return Parameter word count.
 	 */
 
@@ -849,7 +849,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the specified parameter words, as an int value.
-	 * 
+	 *
 	 * @param idx Parameter index (zero based).
 	 * @return int
 	 */
@@ -861,7 +861,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the process identifier (PID)
-	 * 
+	 *
 	 * @return Process identifier value.
 	 */
 	public final int getProcessId() {
@@ -870,7 +870,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the process identifier (PID) high bytes, or zero if not used
-	 * 
+	 *
 	 * @return Process identifier value.
 	 */
 	public final int getProcessIdHigh() {
@@ -879,22 +879,22 @@ public class SMBSrvPacket {
 
 	/**
 	 * Return the 32bit process id value
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getProcessIdFull() {
 		int pid = getProcessId();
 		int pidHigh = getProcessIdHigh();
-		
+
 		if ( pidHigh != 0)
 			pid += pidHigh << 16;
-		
+
 		return pid;
 	}
-	
+
 	/**
 	 * Get the actual received data length.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getReceivedLength() {
@@ -903,7 +903,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the session identifier (SID)
-	 * 
+	 *
 	 * @return Session identifier (SID)
 	 */
 
@@ -913,7 +913,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the tree identifier (TID)
-	 * 
+	 *
 	 * @return Tree identifier (TID)
 	 */
 
@@ -923,7 +923,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Get the user identifier (UID)
-	 * 
+	 *
 	 * @return User identifier (UID)
 	 */
 
@@ -933,7 +933,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Determine if there is a secondary command in this packet.
-	 * 
+	 *
 	 * @return Secondary command code
 	 */
 
@@ -964,7 +964,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Determine if this packet is an SMB response, or command packet
-	 * 
+	 *
 	 * @return true if this SMB packet is a response, else false
 	 */
 
@@ -977,7 +977,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check if the response packet is valid, ie. type and flags
-	 * 
+	 *
 	 * @return true if the SMB packet is a response packet and the response is valid, else false.
 	 */
 
@@ -992,7 +992,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check if the packet contains ASCII or Unicode strings
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isUnicode() {
@@ -1001,7 +1001,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check if the packet is using caseless filenames
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isCaseless() {
@@ -1010,7 +1010,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check if long file names are being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLongFileNames() {
@@ -1019,7 +1019,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check if long error codes are being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLongErrorCode() {
@@ -1028,16 +1028,16 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check if this is a request packet
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isRequestPacket() {
 		return m_requestPkt;
 	}
-	
+
 	/**
 	 * Pack a byte (8 bit) value into the byte area
-	 * 
+	 *
 	 * @param val byte
 	 */
 	public final void packByte(byte val) {
@@ -1046,7 +1046,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Pack a byte (8 bit) value into the byte area
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packByte(int val) {
@@ -1055,7 +1055,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Pack the specified bytes into the byte area
-	 * 
+	 *
 	 * @param byts byte[]
 	 * @param len int
 	 */
@@ -1066,7 +1066,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Pack a string using either ASCII or Unicode into the byte area
-	 * 
+	 *
 	 * @param str String
 	 * @param uni boolean
 	 */
@@ -1093,7 +1093,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Pack a string using either ASCII or Unicode into the byte area
-	 * 
+	 *
 	 * @param str String
 	 * @param uni boolean
 	 * @param nul boolean
@@ -1125,7 +1125,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Pack a word (16 bit) value into the byte area
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packWord(int val) {
@@ -1135,7 +1135,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Pack an integer (32 bit) value into the byte area
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packInt(int val) {
@@ -1145,7 +1145,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Pack a long integer (64 bit) value into the byte area
-	 * 
+	 *
 	 * @param val long
 	 */
 	public final void packLong(long val) {
@@ -1155,7 +1155,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Return the current byte area buffer position
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPosition() {
@@ -1164,7 +1164,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Unpack a byte value from the byte area
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackByte() {
@@ -1173,7 +1173,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Unpack a block of bytes from the byte area
-	 * 
+	 *
 	 * @param len int
 	 * @return byte[]
 	 */
@@ -1189,7 +1189,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Unpack a word (16 bit) value from the byte area
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackWord() {
@@ -1200,7 +1200,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Unpack an integer (32 bit) value from the byte area
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackInt() {
@@ -1211,7 +1211,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Unpack a long integer (64 bit) value from the byte area
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long unpackLong() {
@@ -1222,7 +1222,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Unpack a string from the byte area
-	 * 
+	 *
 	 * @param uni boolean
 	 * @return String
 	 */
@@ -1257,7 +1257,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Check if there is more data in the byte area
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasMoreData() {
@@ -1268,7 +1268,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Send the SMB response packet.
-	 * 
+	 *
 	 * @param out Output stream associated with the session socket.
 	 * @param proto Protocol type, either PROTOCOL_NETBIOS or PROTOCOL_TCPIP
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -1284,7 +1284,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Send the SMB response packet.
-	 * 
+	 *
 	 * @param out Output stream associated with the session socket.
 	 * @param proto Protocol type, either PROTOCOL_NETBIOS or PROTOCOL_TCPIP
 	 * @param len Packet length
@@ -1326,7 +1326,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Send a success SMB response packet.
-	 * 
+	 *
 	 * @param out Output stream associated with the session socket.
 	 * @param proto Protocol type, either PROTOCOL_NETBIOS or PROTOCOL_TCPIP
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -1347,7 +1347,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the AndX data byte count for this SMB packet.
-	 * 
+	 *
 	 * @param off AndX command offset.
 	 * @param cnt Data byte count.
 	 */
@@ -1359,7 +1359,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the AndX data byte area in the SMB packet
-	 * 
+	 *
 	 * @param off Offset to the AndX command.
 	 * @param byts Byte array containing the data to be copied to the SMB packet.
 	 */
@@ -1376,7 +1376,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the secondary SMB command
-	 * 
+	 *
 	 * @param cmd Secondary SMB command code.
 	 */
 
@@ -1387,7 +1387,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the AndX command for an AndX command block.
-	 * 
+	 *
 	 * @param off Offset to the current AndX command.
 	 * @param cmd Secondary SMB command code.
 	 */
@@ -1399,7 +1399,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the specified AndX parameter word.
-	 * 
+	 *
 	 * @param off Offset to the AndX command.
 	 * @param idx Parameter index (zero based).
 	 * @param val Parameter value.
@@ -1412,7 +1412,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the AndX parameter count
-	 * 
+	 *
 	 * @param off Offset to the AndX command.
 	 * @param cnt Parameter word count.
 	 */
@@ -1423,7 +1423,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the data byte count for this SMB packet
-	 * 
+	 *
 	 * @param cnt Data byte count.
 	 */
 
@@ -1444,7 +1444,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the data byte area in the SMB packet
-	 * 
+	 *
 	 * @param byts Byte array containing the data to be copied to the SMB packet.
 	 */
 
@@ -1460,7 +1460,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the SMB command
-	 * 
+	 *
 	 * @param cmd SMB command code
 	 */
 
@@ -1471,7 +1471,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the error class and code.
-	 * 
+	 *
 	 * @param errCode int
 	 * @param errClass int
 	 */
@@ -1485,7 +1485,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the error class/code.
-	 * 
+	 *
 	 * @param longError boolean
 	 * @param ntErr int
 	 * @param errCode int
@@ -1517,7 +1517,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the SMB error class.
-	 * 
+	 *
 	 * @param cl SMB error class.
 	 */
 
@@ -1527,7 +1527,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the SMB error code
-	 * 
+	 *
 	 * @param sts SMB error code.
 	 */
 
@@ -1537,7 +1537,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the long SMB error code
-	 * 
+	 *
 	 * @param err Long SMB error code.
 	 */
 
@@ -1551,10 +1551,10 @@ public class SMBSrvPacket {
 	public final void setSuccessStatus() {
 		setLongErrorCode( SMBStatus.NTSuccess);
 	}
-	
+
 	/**
 	 * Set the SMB flags value.
-	 * 
+	 *
 	 * @param flg SMB flags value.
 	 */
 
@@ -1564,7 +1564,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the SMB flags2 value.
-	 * 
+	 *
 	 * @param flg SMB flags2 value.
 	 */
 
@@ -1574,7 +1574,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the NetBIOS packet header flags value.
-	 * 
+	 *
 	 * @param flg int
 	 */
 	public final void setHeaderFlags(int flg) {
@@ -1583,7 +1583,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the NetBIOS packet data length in the packet header.
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setHeaderLength(int len) {
@@ -1592,7 +1592,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the NetBIOS packet type in the packet header.
-	 * 
+	 *
 	 * @param typ int
 	 */
 	public final void setHeaderType(int typ) {
@@ -1601,7 +1601,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the multiplex identifier.
-	 * 
+	 *
 	 * @param mid Multiplex identifier
 	 */
 
@@ -1611,7 +1611,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the specified parameter word.
-	 * 
+	 *
 	 * @param idx Parameter index (zero based).
 	 * @param val Parameter value.
 	 */
@@ -1623,7 +1623,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the parameter count
-	 * 
+	 *
 	 * @param cnt Parameter word count.
 	 */
 
@@ -1640,7 +1640,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the specified parameter words.
-	 * 
+	 *
 	 * @param idx Parameter index (zero based).
 	 * @param val Parameter value.
 	 */
@@ -1652,7 +1652,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the pack/unpack position
-	 * 
+	 *
 	 * @param pos int
 	 */
 	public final void setPosition(int pos) {
@@ -1661,7 +1661,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the process identifier value (PID).
-	 * 
+	 *
 	 * @param pid Process identifier value.
 	 */
 
@@ -1671,7 +1671,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the actual received data length.
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setReceivedLength(int len) {
@@ -1680,7 +1680,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the packet sequence number, for connectionless commands.
-	 * 
+	 *
 	 * @param seq Sequence number.
 	 */
 
@@ -1690,7 +1690,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the session id.
-	 * 
+	 *
 	 * @param sid Session id.
 	 */
 	public final void setSID(int sid) {
@@ -1699,7 +1699,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the tree identifier (TID)
-	 * 
+	 *
 	 * @param tid Tree identifier value.
 	 */
 
@@ -1709,7 +1709,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the user identifier (UID)
-	 * 
+	 *
 	 * @param uid User identifier value.
 	 */
 
@@ -1727,7 +1727,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the unpack pointer to the specified offset, for AndX processing
-	 * 
+	 *
 	 * @param off int
 	 * @param len int
 	 */
@@ -1754,7 +1754,7 @@ public class SMBSrvPacket {
 
 	/**
 	 * Skip a number of bytes in the parameter/byte area
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void skipBytes(int cnt) {
@@ -1763,75 +1763,75 @@ public class SMBSrvPacket {
 
 	/**
 	 * Set the data buffer
-	 * 
+	 *
 	 * @param buf byte[]
 	 */
 	public final void setBuffer(byte[] buf) {
 		m_smbbuf = buf;
 	}
-	
+
 	/**
 	 * Check if there is an associated packet
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasAssociatedPacket() {
 		return m_assocPkt != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the associated packet
-	 * 
+	 *
 	 * @return SMBSrvPacket
 	 */
 	public final SMBSrvPacket getAssociatedPacket() {
 		return m_assocPkt;
 	}
-	
+
 	/**
 	 * Set the associated packet
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 */
 	public final void setAssociatedPacket( SMBSrvPacket smbPkt) {
 		m_assocPkt = smbPkt;
 	}
-	
+
 	/**
 	 * Clear the associated packet
 	 */
 	public final void clearAssociatedPacket() {
 		m_assocPkt = null;
 	}
-	
+
 	/**
 	 * Calculate the header length for the specified number of parameters
-	 * 
+	 *
 	 * @param numParams int
 	 * @return int
 	 */
 	public static final int calculateHeaderLength( int numParams) {
 		return HeaderLength + ( numParams * 2) + RFCNetBIOSProtocol.HEADER_LEN;
 	}
-	
+
 	/**
 	 * Determine if the packet is queued for sending via asynchronous I/O
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isQueuedForAsyncIO() {
 		return m_asyncQueued;
 	}
-	
+
 	/**
 	 * Set/clear the asynchronous I/O flag
-	 * 
+	 *
 	 * @param asyncIO boolean
 	 */
 	public final void setQueuedForAsyncIO( boolean asyncIO) {
 		m_asyncQueued = asyncIO;
 	}
-	
+
 	/**
 	 * Clear the packet header
 	 */
@@ -1839,80 +1839,80 @@ public class SMBSrvPacket {
 		for ( int i = SIGNATURE; i < (SIGNATURE + HeaderLength); m_smbbuf[ i++] = 0);
 		InitializeBuffer();
 	}
-	
+
 	/**
 	 * Return the deferred processing count for this packet
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDeferredCount() {
 		return m_deferredCount;
 	}
-	
+
 	/**
 	 * Increment the deferred processing count for this packet
 	 */
 	public final void incrementDeferredCount() {
 		m_deferredCount++;
 	}
-	
+
 	/**
 	 * Set/clear the request packet flag
-	 * 
+	 *
 	 * @param reqPkt boolean
 	 */
 	public final void setRequestPacket( boolean reqPkt) {
 		m_requestPkt = reqPkt;
 	}
-	
+
 	/**
 	 * Check if the packet has a lease
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasLeaseTime() {
 		return m_leaseTime != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Return the packet lease time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getLeaseTime() {
 		return m_leaseTime;
 	}
-	
+
 	/**
 	 * Clear the lease time
 	 */
 	public final void clearLeaseTime() {
 		m_leaseTime = 0L;
 	}
-	
+
 	/**
 	 * Set the packet lease time
-	 * 
+	 *
 	 * @param tmo long
 	 */
 	public final void setLeaseTime( long tmo) {
 		m_leaseTime = tmo;
 	}
-	
+
 	/**
 	 * Return the SMB packet details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[SMBPkt Typ=");
 		str.append( getPacketTypeString());
 
 		if ( isResponse())
 			str.append( "(Resp)");
-		
+
 		str.append(",TID=");
 		str.append( getTreeId());
 		str.append(",PID=");
@@ -1921,17 +1921,17 @@ public class SMBSrvPacket {
 		str.append(getUserId());
 		str.append(",MID=");
 		str.append(getMultiplexId());
-		
+
 		str.append(",Flags=0x");
 		str.append(Integer.toBinaryString(getFlags()));
 		str.append("/0x");
 		str.append(Integer.toBinaryString(getFlags2()));
-		
+
 		str.append(": Prms=");
 		str.append( getParameterCount());
 		str.append(",BytCnt=");
 		str.append( getByteCount());
-		
+
 		if ( m_deferredCount > 0) {
 			str.append(",Defer=");
 			str.append(m_deferredCount);
@@ -1941,9 +1941,9 @@ public class SMBSrvPacket {
 			str.append(",Lease=");
 			str.append( new Date(getLeaseTime()));
 		}
-		
+
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

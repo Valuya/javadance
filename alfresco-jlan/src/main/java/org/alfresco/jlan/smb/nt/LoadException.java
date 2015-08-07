@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb.nt;
 
 /**
  * Load Exception Class
- * 
+ *
  * <p>Thrown when an error occurs loading an ACE, ACL, SID or security descriptor from a buffer.
  *
  * @author gkspencer
@@ -36,10 +36,10 @@ public class LoadException extends Exception {
 	public LoadException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public LoadException(String msg) {

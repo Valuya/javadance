@@ -24,22 +24,22 @@ import org.alfresco.jlan.smb.server.SMBSrvSession;
 
 /**
  * Deferred Request Class
- * 
+ *
  * <p>Holds the session and request details for a deferred request that is waiting on an oplock break
  * notification from the client owning the oplock.
- * 
+ *
  * @author gkspencer
  */
 public class DeferredRequest {
 
 	// Session and request packet
-	
+
 	private SMBSrvSession m_deferredSess;
 	private SMBSrvPacket m_deferredPkt;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param reqPkt SMBSrvPacket
 	 */
@@ -47,48 +47,48 @@ public class DeferredRequest {
 		m_deferredSess = sess;
 		m_deferredPkt = reqPkt;
 	}
-	
+
 	/**
 	 * Return the deferred session
-	 * 
+	 *
 	 * @return SMBSrvSession
 	 */
 	public final SMBSrvSession getDeferredSession() {
 		return m_deferredSess;
 	}
-	
+
 	/**
 	 * Return the deferred request packet
-	 * 
+	 *
 	 * @return SMBSrvPacket
 	 */
 	public final SMBSrvPacket getDeferredPacket() {
 		return m_deferredPkt;
 	}
-	
+
 	/**
 	 * Return the deferred request details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[Deferred sess=");
-		
+
 		if ( getDeferredSession() != null)
 			str.append( getDeferredSession().getUniqueId());
 		else
 			str.append( "null");
-		
+
 		str.append( ", pkt=");
-		
+
 		if ( getDeferredPacket() != null)
 			str.append( getDeferredPacket());
 		else
 			str.append( "null");
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

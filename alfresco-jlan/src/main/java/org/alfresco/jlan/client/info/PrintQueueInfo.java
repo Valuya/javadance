@@ -28,7 +28,7 @@ import java.io.Serializable;
  *  a remote print server.
  *
  * <p>A list of remote print queues is returned by the AdminSession.getPrintList () method.
- * 
+ *
  * @author gkspencer
  */
 public final class PrintQueueInfo implements Serializable {
@@ -93,10 +93,10 @@ public final class PrintQueueInfo implements Serializable {
 	//	Queue comment
 
 	private String m_comment;
-  
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param qname Name of the print queue
 	 */
 	public PrintQueueInfo(String qname) {
@@ -105,7 +105,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the queue comment.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public String getComment() {
@@ -114,7 +114,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the printer queue device driver name
-	 * 
+	 *
 	 * @return Printer device driver name
 	 */
 	public final String getDeviceDriver() {
@@ -123,7 +123,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the printer queue device driver data string
-	 * 
+	 *
 	 * @return Printer device driver data string
 	 */
 	public final String getDriverData() {
@@ -132,7 +132,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the count of jobs in the print queue
-	 * 
+	 *
 	 * @return Count of jobs in the print queue
 	 */
 	public final int getJobCount() {
@@ -141,7 +141,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the printer queue parameter string
-	 * 
+	 *
 	 * @return Printer queue parameter string
 	 */
 	public final String getParameterString() {
@@ -150,7 +150,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the print queue pre-processor. A null string indicates the default pre-processor.
-	 * 
+	 *
 	 * @return Print queue pre-processor
 	 */
 	public final String getPreProcessor() {
@@ -159,7 +159,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the list of print destinations
-	 * 
+	 *
 	 * @return Print destination list
 	 */
 	public final String getPrinterList() {
@@ -169,7 +169,7 @@ public final class PrintQueueInfo implements Serializable {
 	/**
 	 * Return the queue priority. A value of 1 indidcates the highest priority and a value of 9
 	 * indicates the lowest priority.
-	 * 
+	 *
 	 * @return Queue priority
 	 */
 	public final int getPriority() {
@@ -178,7 +178,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the queue name
-	 * 
+	 *
 	 * @return Queue name string
 	 */
 	public final String getQueueName() {
@@ -187,7 +187,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the seperator page file name
-	 * 
+	 *
 	 * @return Seperator page file name
 	 */
 	public final String getSeperatorPage() {
@@ -196,7 +196,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the queue start time, as the number of minutes since midnight.
-	 * 
+	 *
 	 * @return Queue start time
 	 */
 	public final int getStartTime() {
@@ -206,7 +206,7 @@ public final class PrintQueueInfo implements Serializable {
 	/**
 	 * Return the queue status. The value is one of QueueActive, QueuePaused, QueueError or
 	 * QueueDelPending.
-	 * 
+	 *
 	 * @return Print queue status
 	 */
 	public final int getStatus() {
@@ -215,7 +215,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the queue status as a string
-	 * 
+	 *
 	 * @return Queue status string
 	 */
 	public final String getStatusString() {
@@ -227,7 +227,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the queue status as a string
-	 * 
+	 *
 	 * @return Queue status string
 	 */
 	public final static String getStatusString(int s) {
@@ -258,7 +258,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Return the queue stop time, as the number of minutes since midnight.
-	 * 
+	 *
 	 * @return Queue stop time.
 	 */
 	public final int getStopTime() {
@@ -267,7 +267,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the queue comment.
-	 * 
+	 *
 	 * @param comment java.lang.String
 	 */
 	public void setComment(String comment) {
@@ -276,7 +276,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the pending print job count for the queue
-	 * 
+	 *
 	 * @param jobs Number of pending print jobs
 	 */
 	public final void setJobCount(int jobs) {
@@ -285,7 +285,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the printer parameters string
-	 * 
+	 *
 	 * @param prm Printer parameters string.
 	 */
 	public final void setParameterString(String prm) {
@@ -294,7 +294,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the queue pre-processor
-	 * 
+	 *
 	 * @param pre Queeu pre-processor
 	 */
 	public final void setPreProcessor(String pre) {
@@ -303,7 +303,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the printer queue destination print device(s)
-	 * 
+	 *
 	 * @param prn Destination print device list
 	 */
 	public final void setPrinterList(String prn) {
@@ -312,7 +312,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the queue priority
-	 * 
+	 *
 	 * @param pri Queue priority, 1 is the highest priority and 9 is the lowest priority.
 	 */
 	public final void setPriority(int pri) {
@@ -321,7 +321,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the seperator page details
-	 * 
+	 *
 	 * @param sep Seperator page details
 	 */
 	public final void setSeperatorPage(String sep) {
@@ -330,7 +330,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the queue start time, in minutes since midnight.
-	 * 
+	 *
 	 * @param startMin int
 	 */
 	public void setStartTime(int startMin) {
@@ -339,7 +339,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the queue status
-	 * 
+	 *
 	 * @param sts Queue status
 	 */
 	public final void setStatus(int sts) {
@@ -348,7 +348,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Set the queue stop time, in minutes since midnight.
-	 * 
+	 *
 	 * @param stopMin int
 	 */
 	public void setStopTime(int stopMin) {
@@ -357,7 +357,7 @@ public final class PrintQueueInfo implements Serializable {
 
 	/**
 	 * Output the printer queue information as a string
-	 * 
+	 *
 	 * @return Printer queue information string
 	 */
 	public final String toString() {

@@ -28,7 +28,7 @@ import org.alfresco.jlan.smb.dcerpc.PolicyHandle;
 
 /**
  * Registry Key Class
- * 
+ *
  * @author gkspencer
  */
 public class RegistryKey extends PolicyHandle implements DCEReadable {
@@ -53,7 +53,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 */
 	public RegistryKey(String name) {
@@ -62,7 +62,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param parent RegistryKey
 	 */
 	public RegistryKey(RegistryKey parent) {
@@ -71,7 +71,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param parent RegistryKey
 	 */
@@ -82,7 +82,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Check if the registry key is open, ie. a handle has been allocated
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isOpen() {
@@ -98,7 +98,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Check if the registry key has a parent key
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasParent() {
@@ -107,7 +107,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Return the parent key
-	 * 
+	 *
 	 * @return RegistryKey
 	 */
 	public final RegistryKey getParent() {
@@ -116,7 +116,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Check if the registry key has a sibling
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasSibling() {
@@ -125,7 +125,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Return the sibling key
-	 * 
+	 *
 	 * @return RegistryKey
 	 */
 	public final RegistryKey getSibling() {
@@ -134,7 +134,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Check if the key has child keys
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasChild() {
@@ -143,7 +143,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Return the child registry key
-	 * 
+	 *
 	 * @return RegistryKey
 	 */
 	public final RegistryKey getChild() {
@@ -153,7 +153,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 	/**
 	 * Return the full registry key name by walking back to the root registry key and prepending key
 	 * names.
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFullName() {
@@ -197,7 +197,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Read the key details from a DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -220,7 +220,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Read the strings for this object from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -232,7 +232,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Set the parent registry key for this key
-	 * 
+	 *
 	 * @param parent RegistryKey
 	 */
 	protected final void setParent(RegistryKey parent) {
@@ -241,7 +241,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Set the sibling registry key
-	 * 
+	 *
 	 * @param key RegistryKey
 	 */
 	public final void setSibling(RegistryKey key) {
@@ -250,7 +250,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Set the child registry key
-	 * 
+	 *
 	 * @param key RegistryKey
 	 */
 	public final void setChild(RegistryKey key) {
@@ -259,7 +259,7 @@ public class RegistryKey extends PolicyHandle implements DCEReadable {
 
 	/**
 	 * Return the registry key as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

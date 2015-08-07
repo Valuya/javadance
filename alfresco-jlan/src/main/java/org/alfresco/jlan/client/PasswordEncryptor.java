@@ -23,24 +23,24 @@ import java.security.*;
 
 /**
  * Password Encryptor Abstract Class
- * 
+ *
  * <p>Generates LanMan and NTLMv1 encrypted passwords from the plain text password and challenge key.
- * 
+ *
  * @author gkspencer
  */
 public abstract class PasswordEncryptor {
 
 	//	Encryption algorithm types
-	
+
 	public static final int LANMAN		= 0;
 	public static final int NTLM1		= 1;
 	public static final int NTLM2		= 2;
 	public static final int MD4			= 3;
 
 	//	Encrpytion algorithm names
-	
+
 	private final static String[] _algNames = {"LanMan", "NTLMv1", "NTLMv2", "MD4" };
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -49,7 +49,7 @@ public abstract class PasswordEncryptor {
 
 	/**
 	 * Check if the required algorithms are available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean checkEncryptionAlgorithms() {
@@ -59,7 +59,7 @@ public abstract class PasswordEncryptor {
 	/**
 	 * Encrypt the plain text password with the specified encryption key using the specified
 	 * encryption algorithm.
-	 * 
+	 *
 	 * @param plainPwd Plaintext password string
 	 * @param encryptKey byte[] Encryption key
 	 * @param alg int Encryption algorithm
@@ -71,7 +71,7 @@ public abstract class PasswordEncryptor {
 
 	/**
 	 * Generate a session key using the specified password and key.
-	 * 
+	 *
 	 * @param plainPwd Plaintext password string
 	 * @param encryptKey byte[] Encryption key
 	 * @param alg int Encryption algorithm
@@ -83,7 +83,7 @@ public abstract class PasswordEncryptor {
 
 	/**
 	 * P16 encryption
-	 * 
+	 *
 	 * @param pwd java.lang.String
 	 * @param s8 byte[]
 	 * @return byte[]
@@ -94,7 +94,7 @@ public abstract class PasswordEncryptor {
 
 	/**
 	 * P24 DES encryption
-	 * 
+	 *
 	 * @param p21 Plain password or hashed password bytes
 	 * @param ch Challenge bytes
 	 * @return Encrypted password
@@ -105,7 +105,7 @@ public abstract class PasswordEncryptor {
 
 	/**
 	 * Return the encryption algorithm as a string
-	 * 
+	 *
 	 * @param alg int
 	 * @return String
 	 */

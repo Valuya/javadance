@@ -21,13 +21,13 @@ package org.alfresco.jlan.client.info;
 
 /**
  * Device Information Class
- * 
+ *
  * @author gkspencer
  */
 public class DeviceInfo {
 
 	//	Device types
-	
+
 	public static final int Beep				= 1;
 	public static final int CDROM				= 2;
 	public static final int CDROMFileSystem		= 3;
@@ -72,9 +72,9 @@ public class DeviceInfo {
 	public static final int BusExtended			= 42;
 	public static final int Modem				= 43;
 	public static final int VDM					= 44;
-	
+
 	//	Device characteristics
-	
+
 	public static final int RemoveableMedia		= 0x0001;
 	public static final int ReadOnlyDevice		= 0x0002;
 	public static final int FloppyDisk			= 0x0004;
@@ -82,18 +82,18 @@ public class DeviceInfo {
 	public static final int RemoteDevice		= 0x0010;
 	public static final int DeviceMounted		= 0x0020;
 	public static final int VirtualVolume		= 0x0040;
-	
+
 	//	Device type
-	
+
 	private int m_type;
-	
+
 	//	Device characteristics
-	
+
 	private int m_chars;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param typ int
 	 * @param chr int
 	 */
@@ -104,7 +104,7 @@ public class DeviceInfo {
 
 	/**
 	 * Get the device type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getType() {
@@ -113,7 +113,7 @@ public class DeviceInfo {
 
 	/**
 	 * Return the device characteristics
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCharacteristics() {
@@ -122,7 +122,7 @@ public class DeviceInfo {
 
 	/**
 	 * Determine if the device has removeable media
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isRemoveable() {
@@ -131,7 +131,7 @@ public class DeviceInfo {
 
 	/**
 	 * Determine if the device is read only
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isReadOnly() {
@@ -140,7 +140,7 @@ public class DeviceInfo {
 
 	/**
 	 * Determine if the device is a floppy disk type device
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isFloppyDisk() {
@@ -149,7 +149,7 @@ public class DeviceInfo {
 
 	/**
 	 * Determine if the device is a write once device
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isWriteOnce() {
@@ -158,7 +158,7 @@ public class DeviceInfo {
 
 	/**
 	 * Determine if the device is a remote device
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isRemote() {
@@ -167,7 +167,7 @@ public class DeviceInfo {
 
 	/**
 	 * Determine if the device is mounted
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isMounted() {
@@ -176,7 +176,7 @@ public class DeviceInfo {
 
 	/**
 	 * Determine if the device is a virtual device
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isVirtual() {
@@ -185,7 +185,7 @@ public class DeviceInfo {
 
 	/**
 	 * Check if the device characteristic flag is set
-	 * 
+	 *
 	 * @param flg int
 	 * @return boolan
 	 */
@@ -195,7 +195,7 @@ public class DeviceInfo {
 
 	/**
 	 * Return the device information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

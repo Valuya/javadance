@@ -21,15 +21,15 @@ package org.alfresco.jlan.smb.dcerpc.client;
 
 /**
  * Security Accounts Manager Ids Class
- * 
+ *
  * <p>Contains constants for requests to the SAMR DCE/RPC service on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class Samr {
 
 	//	Samr opcodes
-	
+
 	public static final int SamrCloseHandle			= 0x01;
 	public static final int SamrLookupDomain		= 0x05;
 	public static final int SamrEnumDomains			= 0x06;
@@ -48,12 +48,12 @@ public class Samr {
 
 	/**
 	 * Convert an opcode to a function name
-	 * 
+	 *
 	 * @param opCode int
 	 * @return String
 	 */
 	public final static String getOpcodeName(int opCode) {
-	  
+
 		String ret = "";
 		switch ( opCode) {
 			case SamrCloseHandle:

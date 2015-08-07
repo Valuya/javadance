@@ -27,21 +27,21 @@ package org.alfresco.jlan.test.cluster;
 public class TestServer {
 
 	// Server name
-	
+
 	private String m_name;
-	
+
 	// CIFS username and password
-	
+
 	private String m_userName;
 	private String m_password;
-	
+
 	// Share to run tests on
-	
+
 	private String m_share;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param user String
 	 * @param pass String
@@ -53,51 +53,51 @@ public class TestServer {
 		m_password = pass;
 		m_share    = share;
 	}
-	
+
 	/**
 	 * Return the server name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
 		return m_name;
 	}
-	
+
 	/**
 	 * Return the user name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getUserName() {
 		return m_userName;
 	}
-	
+
 	/**
 	 * Return the password
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPassword() {
 		return m_password;
 	}
-	
+
 	/**
 	 * Return the share name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getShareName() {
 		return m_share;
 	}
-	
+
 	/**
 	 * Return the test server details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[");
 		str.append( getName());
 		str.append(",username=");
@@ -107,7 +107,7 @@ public class TestServer {
 		str.append(",share=");
 		str.append( getShareName());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

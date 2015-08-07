@@ -34,10 +34,10 @@ public class InvalidPathException extends Exception {
 	public InvalidPathException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public InvalidPathException(String msg) {

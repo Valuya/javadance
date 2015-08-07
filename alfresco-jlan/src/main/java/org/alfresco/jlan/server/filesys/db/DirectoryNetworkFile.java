@@ -26,7 +26,7 @@ import org.alfresco.jlan.server.filesys.cache.FileStateProxy;
 
 /**
  * Directory Network File Class
- * 
+ *
  * <p>The directory network file is used by file loader implementations that only store file data and do not
  * store the filesystem structure.
  *
@@ -36,7 +36,7 @@ public class DirectoryNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fid int
 	 * @param did int
@@ -45,10 +45,10 @@ public class DirectoryNetworkFile extends DBNetworkFile {
 		super(name,fid,0,did);
 		setAttributes( FileAttribute.Directory);
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fid int
 	 * @param did int
@@ -59,10 +59,10 @@ public class DirectoryNetworkFile extends DBNetworkFile {
 		setFileState(stateProxy);
 		setAttributes( FileAttribute.Directory);
 	}
-	
+
 	/**
 	 * Open the file
-	 * 
+	 *
 	 * @param createFlag boolean
 	 * @exception IOException
 	 */
@@ -100,13 +100,13 @@ public class DirectoryNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Flush any buffered output to the file
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public void flushFile()
 		throws IOException {
 	}
-		
+
 	/**
    * Seek to the specified file position.
    *
@@ -122,7 +122,7 @@ public class DirectoryNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Truncate the file to the specified file size
-	 * 
+	 *
 	 * @param siz long
 	 * @exception IOException
 	 */

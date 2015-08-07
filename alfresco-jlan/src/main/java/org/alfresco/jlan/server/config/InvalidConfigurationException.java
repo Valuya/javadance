@@ -29,9 +29,9 @@ public class InvalidConfigurationException extends Exception {
   private static final long serialVersionUID = 4660972667850041322L;
 
   //	Chained exception details
-	
+
   private Exception m_exception;
-	
+
   /**
    * InvalidConfigurationException constructor.
    */
@@ -41,7 +41,7 @@ public class InvalidConfigurationException extends Exception {
 
   /**
    * InvalidConfigurationException constructor.
-   * 
+   *
    * @param s java.lang.String
    */
   public InvalidConfigurationException(String s) {
@@ -50,7 +50,7 @@ public class InvalidConfigurationException extends Exception {
 
 	/**
 	 * InvalidConfigurationException constructor.
-	 * 
+	 *
 	 * @param s java.lang.String
 	 * @param ex Exception
 	 */
@@ -58,19 +58,19 @@ public class InvalidConfigurationException extends Exception {
 		super(s, ex);
 		m_exception = ex;
 	}
-	
+
 	/**
 	 * Check if there is a chained exception
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasChainedException() {
 		return m_exception != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the chained exception details
-	 * 
+	 *
 	 * @return Exception
 	 */
 	public final Exception getChainedException() {

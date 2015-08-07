@@ -28,17 +28,17 @@ import org.alfresco.jlan.smb.SMBException;
 
 /**
  * SMB IPC session class
- * 
+ *
  * <p>
  * Contains the details of a connection to a remote named pipe service.
- * 
+ *
  * @author gkspencer
  */
 public abstract class IPCSession extends Session {
 
 	/**
 	 * Construct an IPC session
-	 * 
+	 *
 	 * @param shr Remote server details.
 	 * @param dialect SMB dialect that this session is using
 	 */
@@ -53,7 +53,7 @@ public abstract class IPCSession extends Session {
 
 	/**
 	 * Send/receive an SMB transaction packet on this pipe session
-	 * 
+	 *
 	 * @param tpkt SMBTransPacket to send
 	 * @param rxpkt Packet to receive the reply into
 	 * @exception java.io.IOException If an I/O error occurs
@@ -65,7 +65,7 @@ public abstract class IPCSession extends Session {
 
 	/**
 	 * Close the connection to the IPC$ named pipe
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws SMBException
 	 */

@@ -28,7 +28,7 @@ import org.alfresco.jlan.server.config.ServerConfiguration;
 
 /**
  * Native SMB Session Socket Handler Class
- * 
+ *
  * @author gkspencer
  */
 public class TcpipSMBSessionSocketHandler extends SocketSessionHandler {
@@ -39,7 +39,7 @@ public class TcpipSMBSessionSocketHandler extends SocketSessionHandler {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param srv SMBServer
 	 * @param port int
 	 * @param bindAddr InetAddress
@@ -47,15 +47,15 @@ public class TcpipSMBSessionSocketHandler extends SocketSessionHandler {
 	 */
 	public TcpipSMBSessionSocketHandler(SMBServer srv, int port, InetAddress bindAddr, boolean debug) {
 		super("TCP-SMB", "SMB", srv, bindAddr, port);
-		
+
 		// Enable/disable debug output
-		
+
 		setDebug( debug);
 	}
 
 	/**
 	 * Accept a new connection on the specified socket
-	 * 
+	 *
 	 * @param sock Socket
 	 */
 	protected void acceptConnection(Socket sock) {
@@ -63,9 +63,9 @@ public class TcpipSMBSessionSocketHandler extends SocketSessionHandler {
 		try {
 
 			// Set a socket timeout
-			
+
 			sock.setSoTimeout( getSocketTimeout());
-			
+
 			// Create a packet handler for the session
 
 			SMBServer smbServer = (SMBServer) getServer();
@@ -92,7 +92,7 @@ public class TcpipSMBSessionSocketHandler extends SocketSessionHandler {
 	}
 	/**
 	 * Create the TCP/IP native SMB/CIFS session socket handlers for the main SMB/CIFS server
-	 * 
+	 *
 	 * @param server SMBServer
 	 * @param sockDbg boolean
 	 * @exception Exception
@@ -109,7 +109,7 @@ public class TcpipSMBSessionSocketHandler extends SocketSessionHandler {
 
 		SocketSessionHandler sessHandler = new TcpipSMBSessionSocketHandler(server, cifsConfig.getTcpipSMBPort(), cifsConfig.getSMBBindAddress(), sockDbg);
 		sessHandler.setSocketTimeout( cifsConfig.getSocketTimeout());
-		
+
 		sessHandler.initializeSessionHandler(server);
 
 		// Run the TCP/IP SMB session handler in a seperate thread

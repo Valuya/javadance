@@ -34,11 +34,11 @@ import org.alfresco.jlan.debug.Debug;
 public class TcpRpcClient extends RpcClient {
 
   //	TCP RPC client connection
-  
+
   private TcpRpcPacketHandler m_client;
-  
+
   /**
-   * Class constructor 
+   * Class constructor
    *
    * @param addr InetAddress
    * @param port int
@@ -48,22 +48,22 @@ public class TcpRpcClient extends RpcClient {
   public TcpRpcClient(InetAddress addr, int port, int maxRpcSize)
   	throws IOException {
     super(addr, port, Rpc.TCP, maxRpcSize);
-    
+
     //	Connect a socket to the remote server
-    
+
     Socket sock = new Socket();
     sock.setReuseAddress( true);
     sock.setSoLinger( false, 0);
-    
+
     sock.connect( new InetSocketAddress( addr, port));
 
     //	Create the TCP RPC packet handler for the client connection
-    
+
     m_client = new TcpRpcPacketHandler(sock, maxRpcSize);
   }
-  
+
   /**
-   * Class constructor 
+   * Class constructor
    *
    * @param addr InetAddress
    * @param port int
@@ -75,24 +75,24 @@ public class TcpRpcClient extends RpcClient {
   public TcpRpcClient(InetAddress addr, int port,InetAddress fromAddr, int fromPort, int maxRpcSize)
   	throws IOException {
     super(addr, port, Rpc.TCP, maxRpcSize);
-    
+
     //	Connect a socket to the remote server
 
     Socket sock = new Socket();
     sock.setReuseAddress( true);
     sock.setSoLinger( false, 0);
-    
+
    	sock.bind( new InetSocketAddress( fromAddr, fromPort));
    	sock.connect( new InetSocketAddress( addr, port));
-    
+
     //	Create the TCP RPC packet handler for the client connection
-    
+
     m_client = new TcpRpcPacketHandler(sock, maxRpcSize);
   }
-  
+
   /**
    * Send an RPC request using the socket connection, and receive a response
-   * 
+   *
    * @param rpc RpcPacket
    * @param rxRpc RpcPacket
    * @return RpcPacket
@@ -102,29 +102,29 @@ public class TcpRpcClient extends RpcClient {
   	throws IOException {
 
     //	Use the TCP packet handler to send the RPC
-    
+
     m_client.sendRpc(rpc);
-    
+
     //	Receive a response RPC
-    
+
     RpcPacket rxPkt = rxRpc;
     if ( rxPkt == null)
       rxPkt = new RpcPacket(getMaximumRpcSize());
-    
+
     m_client.receiveRpc(rxPkt);
-    
+
     //	Return the RPC response
-    
+
     return rxPkt;
   }
-  
+
   /**
-   * Close the connection to the remote RPC server 
+   * Close the connection to the remote RPC server
    */
   public void closeConnection() {
 
     //	Close the packet handler
-    
+
     if ( m_client != null) {
 	    m_client.closePacketHandler();
 	    m_client = null;

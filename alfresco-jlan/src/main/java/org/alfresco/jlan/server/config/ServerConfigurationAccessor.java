@@ -27,7 +27,7 @@ public interface ServerConfigurationAccessor
 {
     /**
      * Return the required configuration section
-     * 
+     *
      * @param name
      *            String
      * @return ConfigSection
@@ -36,14 +36,14 @@ public interface ServerConfigurationAccessor
 
     /**
      * Return the server name
-     * 
+     *
      * @return String
      */
     public String getServerName();
 
     /**
      * Check if the specified protocol server exists and is running
-     * 
+     *
      * @param proto String
      * @return boolean
      */

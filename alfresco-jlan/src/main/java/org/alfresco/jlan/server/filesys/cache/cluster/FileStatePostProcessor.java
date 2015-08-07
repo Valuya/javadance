@@ -29,17 +29,17 @@ import org.alfresco.jlan.server.RequestPostProcessor;
 public abstract class FileStatePostProcessor extends RequestPostProcessor {
 
 	// File state and state cache
-	
+
 	private ClusterFileStateCache m_stateCache;
 	private ClusterFileState m_state;
-	
+
 	// Post processor debug enable
-	
+
 	private static boolean m_debug = true;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param stateCache ClusterFileStateCache
 	 * @param state ClusterFileState
 	 */
@@ -47,37 +47,37 @@ public abstract class FileStatePostProcessor extends RequestPostProcessor {
 		m_stateCache = stateCache;
 		m_state      = state;
 	}
-	
+
 	/**
 	 * Return the file state cache
-	 * 
+	 *
 	 * @return ClusterFileStateCache
 	 */
 	protected final ClusterFileStateCache getStateCache() {
 		return m_stateCache;
 	}
-	
+
 	/**
 	 * Return the file state
-	 * 
+	 *
 	 * @return ClusterFileState
 	 */
 	protected final ClusterFileState getState() {
 		return m_state;
 	}
-	
+
 	/**
 	 * Check if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public static final boolean hasDebug() {
 		return m_debug;
 	}
-	
+
 	/**
 	 * Enable/disable debug output
-	 * 
+	 *
 	 * @param dbg boolean
 	 */
 	public static final void setDebug( boolean dbg) {

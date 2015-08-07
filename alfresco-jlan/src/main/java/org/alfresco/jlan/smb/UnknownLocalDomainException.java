@@ -37,10 +37,10 @@ public class UnknownLocalDomainException extends Exception {
 	public UnknownLocalDomainException() {
 	  super();
 	}
-	
+
 	/**
 	 * UnknownLocalDomainException constructor comment.
-	 * 
+	 *
 	 * @param s java.lang.String
 	 */
 	public UnknownLocalDomainException(String s) {

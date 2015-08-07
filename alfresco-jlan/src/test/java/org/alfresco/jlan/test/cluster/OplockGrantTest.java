@@ -48,92 +48,92 @@ public class OplockGrantTest extends Test {
 	 * Oplock Break Callback Class
 	 */
 	public class OplockBreakHandler extends OplockAdapter {
-	
+
 		// Run log
-		
+
 		private StringWriter m_log;
-		
+
 		/**
 		 * Class constructor
-		 * 
+		 *
 		 * @param log StringWriter
 		 */
 		public OplockBreakHandler( StringWriter log) {
 			m_log = log;
 		}
-		
+
 		/**
 		 * Oplock break callback
-		 * 
+		 *
 		 * @param cifsFile CIFSFile
 		 * @return int
 		 */
 		public int oplockBreak( CIFSFile cifsFile) {
-			
+
 			// DEBUG
-			
+
 			testLog( m_log, "Oplock break on file " + cifsFile.getFileName());
-			
+
 			// Flush the file
-			
+
 			try {
 				cifsFile.Flush();
 			}
 			catch (Exception ex) {
 			}
-			
+
 			// Return the oplock break response
-			
+
 			return OpLock.TypeNone;
 		}
 	}
-	
+
 	/**
 	 * Default constructor
 	 */
 	public OplockGrantTest() {
 		super( "OplockGrant");
 	}
-	
+
 	/**
 	 * Initialize the test setup
-	 * 
+	 *
 	 * @param threadId int
 	 * @param curIter int
 	 * @param sess DiskSession
 	 * @return boolean
 	 */
 	public boolean runInit( int threadId, int curIter, DiskSession sess) {
-		
+
 		// Create the test file, if this is the first test thread
-		
+
 		boolean initOK = false;
-		
+
 		if ( threadId == 1) {
 
 			try {
-				
+
 				// Check if the test file exists
-				
+
 				String testFileName = getPerTestFileName(threadId, curIter);
-				
+
 				if ( sess.FileExists( testFileName)) {
 					if ( isVerbose())
 						Debug.println( "File " + testFileName + " exists");
 					initOK = true;
 				}
 				else {
-					
+
 					// Create a new file
-					
+
 					if ( isVerbose())
 						Debug.println( "Creating file " + testFileName + " via " + sess.getServer());
 					SMBFile testFile = sess.CreateFile( testFileName);
 					if ( testFile != null)
 						testFile.Close();
-					
+
 					// Check the file exists
-	
+
 					if ( sess.FileExists( testFileName))
 						initOK = true;
 				}
@@ -144,15 +144,15 @@ public class OplockGrantTest extends Test {
 		}
 		else
 			initOK = true;
-		
+
 		// Return the initialization status
-		
+
 		return initOK;
 	}
-	
+
 	/**
 	 * Run the oplock grant test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iteration int
 	 * @param sess DiskSession
@@ -160,85 +160,85 @@ public class OplockGrantTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Open the test file with an oplock
-			
+
 			String testFileName = getPerTestFileName(threadId, iteration);
-			
+
 			OplockBreakHandler oplockHandler = new OplockBreakHandler( log);
 			CIFSDiskSession cifsSess = (CIFSDiskSession) sess;
 			CIFSFile oplockFile = cifsSess.NTCreateWithOplock( testFileName, WinNT.RequestBatchOplock + WinNT.RequestExclusiveOplock, oplockHandler, AccessMode.NTReadWrite, FileAttribute.NTNormal,
 														       SharingMode.READWRITEDELETE, FileAction.NTOverwriteIf, 0, 0);
 
 			testLog( log, "Oplock granted, type=" + OpLock.getTypeAsString( oplockFile.getOplockType()) + " on server " + sess.getServer());
-			
+
 			// Sleep a while, check for an oplock break from the server
-			
+
 			for ( int i = 0; i < 8; i++) {
 				testSleep( 250L);
 				sess.pingServer();
 			}
 
 			// Close the oplock file
-			
+
 			oplockFile.Close();
-			
+
 			// Successful test result
-			
+
 			result = new BooleanTestResult( true);
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
 		}
 		catch ( SMBException ex) {
 
 			// Check for a no such object error code
-			
+
 			if ( ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNotFound) {
-				
+
 				// DEBUG
-				
+
 				testLog ( log, "Open failed with object not found error (expected)");
-				
+
 				// Successful test result
-				
+
 				result = new BooleanTestResult( true, "Object not found error (expected)");
 			}
 			else {
-				
+
 				// DEBUG
-				
+
 				testLog ( log, "Open failed with wrong error, ex=" + ex);
-				
+
 				// Failure test result
-				
+
 				result = new ExceptionTestResult( ex);
 			}
 		}
 		catch ( IOException ex) {
-			
+
 			// DEBUG
-			
+
 			testLog( log, "Open failed with error, ex=" + ex);
-			
+
 			// Failure test result
-			
+
 			result = new ExceptionTestResult( ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -249,7 +249,7 @@ public class OplockGrantTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		if ( threadId == 1)
 			sess.DeleteFile( getPerTestFileName( threadId, iter));
 	}

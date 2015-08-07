@@ -26,7 +26,7 @@ import org.alfresco.jlan.server.filesys.loader.FileSegment;
 
 /**
  * Database Data Interface
- * 
+ *
  * <p>The database data interface provides methods for loading/saving file data to database fields.
  *
  * @author gkspencer
@@ -35,7 +35,7 @@ public interface DBDataInterface {
 
   /**
    * Return the file data details for the specified file or stream.
-   * 
+   *
    * @param fileId int
    * @param streamId int
    * @return DBDataDetails
@@ -43,17 +43,17 @@ public interface DBDataInterface {
    */
   public DBDataDetails getFileDataDetails(int fileId, int streamId)
   	throws DBException;
-  
+
   /**
    * Return the maximum data fragment size supported
    *
-   * @return long 
+   * @return long
    */
   public long getMaximumFragmentSize();
-  
+
   /**
    * Load file data from the database into a temporary/local file
-   * 
+   *
    * @param fileId int
    * @param streamId int
    * @param fileSeg FileSegment
@@ -62,7 +62,7 @@ public interface DBDataInterface {
    */
   public void loadFileData(int fileId, int streamId, FileSegment fileSeg)
 		throws DBException, IOException;
-  
+
   /**
    * Load Jar file data from the database into a temporary file
    *
@@ -73,7 +73,7 @@ public interface DBDataInterface {
    */
   public void loadJarData(int jarId, FileSegment jarSeg)
 		throws DBException, IOException;
-  
+
   /**
    * Save the file data from the temporary/local file to the database
    *
@@ -86,10 +86,10 @@ public interface DBDataInterface {
    */
   public int saveFileData(int fileId, int streamId, FileSegment fileSeg)
 		throws DBException, IOException;
-  
+
   /**
    * Save the file data from a Jar file to the database
-   * 
+   *
    * @param jarFile String
    * @param fileList DBDataDetailsList
    * @return int
@@ -98,10 +98,10 @@ public interface DBDataInterface {
    */
   public int saveJarData( String jarFile, DBDataDetailsList fileList)
   	throws DBException, IOException;
-  
+
   /**
    * Delete the file data for the specified file/stream
-   * 
+   *
    * @param fileId int
    * @param streamId int
    * @throws DBException
@@ -109,7 +109,7 @@ public interface DBDataInterface {
    */
   public void deleteFileData(int fileId, int streamId)
   	throws DBException, IOException;
-  
+
   /**
    * Delete the file data for the specified Jar file
    *

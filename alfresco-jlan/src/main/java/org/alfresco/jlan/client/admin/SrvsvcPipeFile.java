@@ -36,18 +36,18 @@ import org.alfresco.jlan.smb.dcerpc.info.ShareInfoList;
 
 /**
  * Server Service Pipe File Class
- * 
+ *
  * <p>
  * Pipe file connected to a remote file server DCE/RPC service that can be used to receive
  * information about the remote server such as the list of available shares, and active sessions.
- * 
+ *
  * @author gkspencer
  */
 public class SrvsvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param pkt DCEPacket
 	 * @param handle int
@@ -61,7 +61,7 @@ public class SrvsvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the servier information
-	 * 
+	 *
 	 * @return ServerInfo
 	 * @exception IOException
 	 * @exception SMBException
@@ -116,7 +116,7 @@ public class SrvsvcPipeFile extends IPCPipeFile {
 	/**
 	 * Return a list of normal shares available on the server, ie. not admin shares that end with
 	 * '$'
-	 * 
+	 *
 	 * @return ShareInfoList
 	 * @exception IOException
 	 * @exception SMBException
@@ -131,7 +131,7 @@ public class SrvsvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return a list of the shares available on the server
-	 * 
+	 *
 	 * @param wantAdmin boolean
 	 * @return ServerShareInfoList
 	 * @exception IOException
@@ -197,7 +197,7 @@ public class SrvsvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return detailed information for a share
-	 * 
+	 *
 	 * @param shareName String
 	 * @return ShareInfo
 	 * @exception IOException
@@ -213,7 +213,7 @@ public class SrvsvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return detailed information for a share
-	 * 
+	 *
 	 * @param shareName String
 	 * @param infoLevel int
 	 * @return ShareInfo
@@ -277,7 +277,7 @@ public class SrvsvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return a list of the active sessions
-	 * 
+	 *
 	 * @param clientName String
 	 * @param userName String
 	 * @return SessionList
@@ -362,7 +362,7 @@ public class SrvsvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return a list of the active connections
-	 * 
+	 *
 	 * @param clientOrShare String
 	 * @return ConnectionList
 	 * @exception IOException
@@ -431,7 +431,7 @@ public class SrvsvcPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return a list of the open files
-	 * 
+	 *
 	 * @return ServerFileInfoList
 	 * @exception IOException
 	 * @exception SMBException

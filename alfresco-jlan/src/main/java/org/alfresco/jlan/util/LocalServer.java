@@ -31,19 +31,19 @@ import org.alfresco.jlan.netbios.win32.Win32NetBIOS;
 
 /**
  * Local Server Class
- * 
+ *
  * @author gkspencer
  */
 public class LocalServer {
 
   // Local server name and domain
-  
+
   private static String m_localName;
   private static String m_localDomain;
-  
+
   /**
    * Get the local server name and optionally trim the domain name
-   * 
+   *
    * @param trimDomain boolean
    * @return String
    */
@@ -59,13 +59,13 @@ public class LocalServer {
     String srvName = null;
 
     if (Platform.isPlatformType() == Platform.Type.WINDOWS) {
-      
+
       // Get the local name via JNI
 
       srvName = Win32NetBIOS.GetLocalNetBIOSName();
     }
     else {
-      
+
       // Get the DNS name of the local system
 
       try {
@@ -94,7 +94,7 @@ public class LocalServer {
 
   /**
    * Get the local domain/workgroup name
-   * 
+   *
    * @return String
    */
   public static final String getLocalDomainName() {
@@ -109,13 +109,13 @@ public class LocalServer {
     String domainName = null;
 
     if (Platform.isPlatformType() == Platform.Type.WINDOWS) {
-      
+
       // Get the local domain/workgroup name via JNI
 
       domainName = Win32NetBIOS.GetLocalDomainName();
     }
     else {
-      
+
       NetBIOSName nbName = null;
 
       try {
@@ -128,9 +128,9 @@ public class LocalServer {
         NetBIOSNameList nbNameList = NetBIOSSession.FindNamesForAddress(nbName.getIPAddressString(0));
         if (nbNameList != null) {
           nbName = nbNameList.findName(NetBIOSName.MasterBrowser, false);
-          
+
           // Set the domain/workgroup name
-          
+
           if (nbName != null)
             domainName = nbName.getName();
         }

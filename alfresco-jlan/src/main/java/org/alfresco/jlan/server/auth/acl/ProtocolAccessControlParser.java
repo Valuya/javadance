@@ -33,10 +33,10 @@ public class ProtocolAccessControlParser extends AccessControlParser {
 	 */
 	public ProtocolAccessControlParser() {
 	}
-	
+
 	/**
 	 * Return the parser type
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getType() {
@@ -45,35 +45,35 @@ public class ProtocolAccessControlParser extends AccessControlParser {
 
 	/**
 	 * Validate the parameters and create a user access control
-	 * 
+	 *
 	 * @param params ConfigElement
 	 * @return AccessControl
 	 * @throws ACLParseException
 	 */
 	public AccessControl createAccessControl(ConfigElement params)
 		throws ACLParseException {
-			
+
 		//	Get the access type
-	
+
 		int access = parseAccessType(params);
-	
+
 		//	Get the list of protocols to check for
-	
+
 		String val = params.getAttribute("type");
 		if ( val == null || val.length() == 0)
 			throw new ACLParseException("Protocol type not specified");
-		
+
 		String protList = val.trim();
 		if ( protList.length() == 0)
 			throw new ACLParseException("Protocol type not valid");
-		
+
 		//	Validate the protocol list
-		
+
 		if ( ProtocolAccessControl.validateProtocolList(protList) == false)
 			throw new ACLParseException("Invalid protocol type");
-		 
+
 		//	Create the protocol access control
-	
+
 		return new ProtocolAccessControl(protList, getType(), access);
 	}
 }

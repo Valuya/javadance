@@ -35,21 +35,21 @@ public final class AccessMode {
 	public static final int WriteOnly 			= 0x0001;
 	public static final int ReadWrite 			= 0x0002;
 	public static final int Execute 			= 0x0003;
-	
+
 	// Sharing mode constants
-	
+
 	public static final int Compatability 		= 0x0000;
 	public static final int Exclusive 			= 0x0010;
 	public static final int DenyWrite 			= 0x0020;
 	public static final int DenyRead 			= 0x0030;
 	public static final int DenyNone 			= 0x0040;
-	
+
 	public static final int NoCaching 			= 0x1000;
 	public static final int WriteThrough 		= 0x4000;
 	public static final int FCBOpen 			= 0x00FF;
 
 	//	NT access mode constants
-	
+
 	public static final int	NTRead				= 0x00000001;
 	public static final int	NTWrite				= 0x00000002;
 	public static final int	NTAppend			= 0x00000004;
@@ -59,38 +59,38 @@ public final class AccessMode {
 	public static final int	NTDeleteChild		= 0x00000040;
 	public static final int	NTReadAttrib		= 0x00000080;
 	public static final int	NTWriteAttrib		= 0x00000100;
-	
+
 	public static final int	NTDelete			= 0x00010000;
 	public static final int	NTReadControl		= 0x00020000;
 	public static final int	NTWriteDAC			= 0x00040000;
 	public static final int	NTWriteOwner		= 0x00080000;
 	public static final int	NTSynchronize		= 0x00100000;
 	public static final int NTSystemSecurity	= 0x01000000;
-	
+
 	public static final int NTGenericRead		= 0x80000000;
 	public static final int NTGenericWrite		= 0x40000000;
 	public static final int NTGenericExecute	= 0x20000000;
 	public static final int NTGenericAll		= 0x10000000;
-	
+
 	public static final int NTMaximumAllowed	= 0x02000000;
-  
+
 	public static final int NTReadWrite			= NTRead + NTWrite;
-	
+
 	public static final int NTGenericReadWrite =  NTGenericRead + NTGenericWrite;
-  
+
 	// NT file open modes
-	
+
 	public static final int NTFileGenericAll	= 0x1F01FF;
 	public static final int NTFileGenericRead	= 0x120089;
 	public static final int NTFileGenericWrite	= 0x120116;
 	public static final int NTFileGenericExecute= 0x12019F;
-	
+
 	public static final int NTFileWriteCheck	= NTWrite + NTAppend + NTWriteEA + NTWriteAttrib + NTWriteDAC + NTWriteOwner;
 	public static final int NTFileReadCheck		= NTRead + NTReadEA + NTReadAttrib + NTReadControl;
-	
+
 	public static final int NTReadAttributesOnly	= NTReadEA + NTReadAttrib + NTReadControl;
 	public static final int NTWriteAttribtuesOnly	= NTWriteEA + NTWriteAttrib + NTWriteDAC + NTWriteOwner;
-			
+
   /**
    * Return the file access mode from the specified flags value.
    *
@@ -100,7 +100,7 @@ public final class AccessMode {
   public static final int getAccessMode(int val) {
     return val & 0x03;
   }
-  
+
   /**
    * Return the file sharing mode from the specified flags value.
    *

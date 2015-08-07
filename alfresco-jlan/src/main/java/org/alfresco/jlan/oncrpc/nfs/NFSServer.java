@@ -72,7 +72,7 @@ import org.alfresco.jlan.util.HexDump;
 
 /**
  * NFS Server Class
- * 
+ *
  * <p>Contains the main NFS server.
  *
  * @author gkspencer
@@ -118,7 +118,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   public static final int MODE_FILE_DEFAULT = MODE_STFILE + (MODE_STREAD | MODE_STWRITE);
 
   //	Readdir/Readdirplus cookie masks/shift
-  //	
+  //
   //	32bit cookies (required by Solaris)
 
   public static final long COOKIE_RESUMEID_MASK = 0x00FFFFFFL;
@@ -141,9 +141,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   public final static int READDIR_ENTRY_LENGTH 			= 24;
 
   //	File id offset
-  
+
   public static final long FILE_ID_OFFSET				= 2L;
-  
+
   //	Maximum request size to accept
 
   public final static int MaxRequestSize = 0xFFFF;
@@ -160,14 +160,14 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   public static final long MaxFileSize 				= 0x01FFFFFFF000L;
 
   //	Thread pool and packet pool defaults
-  
+
   private static final int DefaultThreadPoolSize	= 8;
   private static final int DefaultPacketPoolSize	= 50;
-  
+
   //  Configuration sections
-  
+
   private NFSConfigSection m_nfsConfig;
-  
+
   //	Incoming datagram handler for UDP requests
 
   private MultiThreadedUdpRpcDatagramHandler m_udpHandler;
@@ -190,32 +190,32 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   private NFSSessionTable m_sessAuthUnix;
 
   //	Session id generator
-  
+
   private int m_sessId = 1;
-  
+
   //	Port to bind the NFS server to (UDP and TCP)
-  
+
   private int m_port;
 
   //	Shared thread pool, used by TCP and UDP request handlers
-  
+
   private RpcRequestThreadPool m_threadPool;
-  
+
   //	Shared packet pool, usd by TCP and UDP request handlers
-  
+
   private RpcPacketPool m_packetPool;
-  
+
   //	RPC authenticator, from the main server configuration
-  
+
   private RpcAuthenticator m_rpcAuthenticator;
-  
+
   //	Write verifier, generated from the server start time
-  
+
   private long m_writeVerifier;
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param config ServerConfiguration
    */
   public NFSServer(ServerConfiguration config) {
@@ -226,32 +226,32 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     setVersion(ServerVersion);
 
     //  Get the NFS configuration
-    
+
     m_nfsConfig = (NFSConfigSection) config.getConfigSection( NFSConfigSection.SectionName);
-    
+
     if ( m_nfsConfig != null) {
-      
+
       //	Set the debug flags
-  
+
       setDebugFlags( getNFSConfiguration().getNFSDebug());
-      
+
       //	Set the port to bind the server to
-      
+
       if ( getNFSConfiguration().getNFSServerPort() != 0)
         setPort( getNFSConfiguration().getNFSServerPort());
       else
         setPort(NFS.DefaultPort);
-      
+
       //	Set the RPC authenticator
-      
+
       m_rpcAuthenticator = getNFSConfiguration().getRpcAuthenticator();
-      
+
       //	Generate the write verifier
-      
+
       m_writeVerifier = System.currentTimeMillis();
-		
+
 	  // Set the port mapper port
-		
+
       setPortMapper( getNFSConfiguration().getPortMapperPort());
     }
     else
@@ -260,31 +260,31 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
 	/**
 	 * Return the port to bind to
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPort() {
 	  return m_port;
 	}
-	
+
   /**
    * Return the NFS configuration section
-   * 
+   *
    * @return NFSConfigSection
    */
   protected final NFSConfigSection getNFSConfiguration() {
     return m_nfsConfig;
   }
-  
+
 	/**
 	 * Set the port to use
-	 * 
+	 *
 	 * @param port int
 	 */
 	public final void setPort(int port) {
 	  m_port = port;
 	}
-	
+
   /**
    * Start the NFS server
    */
@@ -301,34 +301,34 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       checkForNewShares();
 
       //	Get the thread pool and packet pool sizes
-      
+
       int threadPoolSize = DefaultThreadPoolSize;
-      
+
       if ( getNFSConfiguration().getNFSThreadPoolSize() > 0)
         threadPoolSize = getNFSConfiguration().getNFSThreadPoolSize();
-      
+
       int packetPoolSize = DefaultPacketPoolSize;
-      
+
       if ( getNFSConfiguration().getNFSPacketPoolSize() > 0)
         	packetPoolSize = getNFSConfiguration().getNFSPacketPoolSize();
-      
+
       //	Create the share thread pool for RPC processing
-      
+
       m_threadPool = new RpcRequestThreadPool("NFS", threadPoolSize, this);
-      
+
       //	Create the shared packet pool
-      
+
       m_packetPool = new RpcPacketPool(MaxRequestSize, packetPoolSize);
-      
+
       //	Create the UDP handler for accepting incoming requests
 
       m_udpHandler = new MultiThreadedUdpRpcDatagramHandler("Nfsd", "Nfs", this, this, null, getPort(), MaxRequestSize);
-      
+
       //	Use the shared thread pool and packet pool
-      
+
       m_udpHandler.setThreadPool(m_threadPool);
       m_udpHandler.setPacketPool(m_packetPool);
-      
+
       m_udpHandler.initializeSessionHandler(this);
 
       //	Start the UDP request listener is a seperate thread
@@ -342,10 +342,10 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       m_tcpHandler = new MultiThreadedTcpRpcSessionHandler("Nfsd", "Nfs", this, this, null, getPort(), MaxRequestSize);
 
       //	Use the shared thread pool and packet pool
-      
+
       m_tcpHandler.setThreadPool(m_threadPool);
       m_tcpHandler.setPacketPool(m_packetPool);
-      
+
       m_tcpHandler.initializeSessionHandler(this);
 
       //	Start the UDP request listener is a seperate thread
@@ -361,24 +361,24 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       mappings[1] = new PortMapping(NFS.ProgramId, NFS.VersionId, Rpc.TCP, m_tcpHandler.getPort());
 
       registerRPCServer(mappings);
-      
+
       // Indicate the NFS server is running
-      
+
       setActive( true);
     }
     catch (Exception ex) {
-    	
+
       // Save the exception
-    	
+
       setException( ex);
-      
+
       Debug.println(ex);
     }
   }
 
   /**
    * Shutdown the NFS server
-   * 
+   *
    * @param immediate boolean
    */
   public void shutdownServer(boolean immediate) {
@@ -389,17 +389,17 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       PortMapping[] mappings = new PortMapping[2];
       mappings[0] = new PortMapping(NFS.ProgramId, NFS.VersionId, Rpc.UDP, m_udpHandler.getPort());
       mappings[1] = new PortMapping(NFS.ProgramId, NFS.VersionId, Rpc.TCP, m_tcpHandler.getPort());
-  
+
       unregisterRPCServer(mappings);
     }
     catch ( IOException ex) {
 
       //  DEBUG
-      
+
       if ( hasDebugFlag(DBG_ERROR))
         Debug.println( ex);
     }
-    
+
     //	Stop the RPC handlers
 
     if (m_udpHandler != null) {
@@ -411,23 +411,23 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       m_tcpHandler.closeSessionHandler(this);
       m_tcpHandler = null;
     }
-    
+
     //  Stop the thread pool
-    
+
     m_threadPool.shutdownThreadPool();
-    
+
     //	Fire a shutdown notification event
-    
+
     fireServerEvent(ServerListener.ServerShutdown);
-    
+
     // Indicate the server has been shutdown
-    
+
     setActive( false);
   }
 
   /**
    * Process an RPC request to the NFS or mount server
-   * 
+   *
    * @param rpc RpcPacket
    * @return RpcPacket
    * @throws IOException
@@ -462,17 +462,17 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     // 	session
 
     NFSSrvSession nfsSess = null;
-    
+
     try {
-      
+
       //	Find the associated session, or create a new session
-      
+
       nfsSess = findSessionForRequest(rpc);
     }
     catch ( RpcAuthenticationException ex) {
-      
+
       //	Failed to authenticate the RPC client
-      
+
       rpc.buildAuthFailResponse(ex.getAuthenticationErrorCode());
       return rpc;
     }
@@ -488,133 +488,133 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     switch (rpc.getProcedureId()) {
 
 	    //	Null request
-	
+
 	    case NFS.ProcNull:
 	      response = procNull(nfsSess, rpc);
 	      break;
-	
+
 	    // Get attributes request
-	
+
 	    case NFS.ProcGetAttr:
 	      response = procGetAttr(nfsSess, rpc);
 	      break;
-	
+
 	    //	Set attributes request
-	
+
 	    case NFS.ProcSetAttr:
 	      response = procSetAttr(nfsSess, rpc);
 	      break;
-	
+
 	    //	Lookup request
-	
+
 	    case NFS.ProcLookup:
 	      response = procLookup(nfsSess, rpc);
 	      break;
-	
+
 	    //	Access request
-	
+
 	    case NFS.ProcAccess:
 	      response = procAccess(nfsSess, rpc);
 	      break;
-	
+
 	    //	Read symbolic link request
-	
+
 	    case NFS.ProcReadLink:
 	      response = procReadLink(nfsSess, rpc);
 	      break;
-	
+
 	    //	Read file request
-	
+
 	    case NFS.ProcRead:
 	      response = procRead(nfsSess, rpc);
 	      break;
-	
+
 	    //	Write file request
-	
+
 	    case NFS.ProcWrite:
 	      response = procWrite(nfsSess, rpc);
 	      break;
-	
+
 	    //	Create file request
-	
+
 	    case NFS.ProcCreate:
 	      response = procCreate(nfsSess, rpc);
 	      break;
-	
+
 	    //	Create directory request
-	
+
 	    case NFS.ProcMkDir:
 	      response = procMkDir(nfsSess, rpc);
 	      break;
-	
+
 	    //	Create symbolic link request
-	
+
 	    case NFS.ProcSymLink:
 	      response = procSymLink(nfsSess, rpc);
 	      break;
-	
+
 	    //	Create special device request
-	
+
 	    case NFS.ProcMkNode:
 	      response = procMkNode(nfsSess, rpc);
 	      break;
-	
+
 	    //	Delete file request
-	
+
 	    case NFS.ProcRemove:
 	      response = procRemove(nfsSess, rpc);
 	      break;
-	
+
 	    //	Delete directory request
-	
+
 	    case NFS.ProcRmDir:
 	      response = procRmDir(nfsSess, rpc);
 	      break;
-	
+
 	    //	Rename request
-	
+
 	    case NFS.ProcRename:
 	      response = procRename(nfsSess, rpc);
 	      break;
-	
+
 	    //	Create hard link request
-	
+
 	    case NFS.ProcLink:
 	      response = procLink(nfsSess, rpc);
 	      break;
-	
+
 	    //	Read directory request
-	
+
 	    case NFS.ProcReadDir:
 	      response = procReadDir(nfsSess, rpc);
 	      break;
-	
+
 	    //	Read directory plus request
-	
+
 	    case NFS.ProcReadDirPlus:
 	      response = procReadDirPlus(nfsSess, rpc);
 	      break;
-	
+
 	    //	Filesystem status request
-	
+
 	    case NFS.ProcFsStat:
 	      response = procFsStat(nfsSess, rpc);
 	      break;
-	
+
 	    //	Filesystem information request
-	
+
 	    case NFS.ProcFsInfo:
 	      response = procFsInfo(nfsSess, rpc);
 	      break;
-	
+
 	    //	Retrieve POSIX information request
-	
+
 	    case NFS.ProcPathConf:
 	      response = procPathConf(nfsSess, rpc);
 	      break;
-	
+
 	    //	Commit request
-	
+
 	    case NFS.ProcCommit:
 	      response = procCommit(nfsSess, rpc);
 	      break;
@@ -624,7 +624,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
     if ( nfsSess != null)
     	nfsSess.endTransaction();
-    
+
     //	Dump the response
 
     if (Debug.EnableInfo && hasDebugFlag(DBG_DUMPDATA)) {
@@ -639,7 +639,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the null request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -654,7 +654,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the get attributes request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -719,20 +719,20 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
 
       // Get the network file details, if the file is open
-      
+
       NetworkFile netFile = getOpenNetworkFileForHandle(sess, handle, conn);
-      
+
       //	Get the file information for the specified path
 
       FileInfo finfo = disk.getFileInformation(sess, conn, path);
       if (finfo != null) {
 
         //  Blend in live file details, if the file is open
-          
+
         if ( netFile != null) {
-            
+
             // Update file size from open file
-            
+
             finfo.setFileSize( netFile.getFileSize());
 
             //  DEBUG
@@ -740,7 +740,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
             if (Debug.EnableInfo && hasDebugFlag(DBG_INFO))
               sess.debugPrintln("GetAttr added details from open file");
         }
-            
+
         //	Pack the file information into the NFS attributes structure
 
         rpc.packInt(NFS.StsSuccess);
@@ -794,7 +794,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the set attributes request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -802,54 +802,54 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   private final RpcPacket procSetAttr(NFSSrvSession sess, RpcPacket rpc) {
 
     //	Unpack the set attributes parameters
-    
+
     byte[] handle = new byte[NFS.FileHandleSize];
     rpc.unpackByteArrayWithLength(handle);
-    
+
 		//	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_INFO))
 			sess.debugPrintln("SetAttr request from " + rpc.getClientDetails());
 
 		//	Check if the handle is valid
-		
+
 		if (NFSHandle.isValid(handle) == false) {
 		  rpc.buildErrorResponse(NFS.StsBadHandle);
 			return rpc;
 		}
-		
+
 		//	Check if this is a share handle
-		
+
 		int shareId = -1;
 		String path = null;
 		int errorSts = NFS.StsSuccess;
-		
+
 		//	Call the disk share driver to get the file information for the path
-		
+
 		try {
-			
+
 			//	Get the share id and path
-			
+
 			shareId = getShareIdFromHandle(handle);
 			TreeConnection conn = getTreeConnection(sess, shareId);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasWriteAccess() == false)
 				throw new AccessDeniedException();
-				
+
 			//	Get the path from the handle
-			
+
 			path = getPathForHandle(sess, handle, conn);
-			
+
 			//	Get the disk interface from the disk driver
-			
+
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
-			
+
 			//	Get the current file information
-			
+
 			FileInfo oldInfo = disk.getFileInformation(sess, conn, path);
-			
+
 			//	Get the values to be set for the file/folder
 
 			int setFlags = 0;
@@ -859,30 +859,30 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			long fsize = -1L;
 			long atime = -1L;
 			long mtime = -1L;
-			
+
 			//	Check if the file mode has been specified
-			
+
 			if (rpc.unpackInt() == Rpc.True) {
 				mode = rpc.unpackInt();
 				setFlags += FileInfo.SetMode;
 			}
 
 			//	Check if the file owner uid has been specified
-			
+
 			if (rpc.unpackInt() == Rpc.True) {
 				uid = rpc.unpackInt();
 				setFlags += FileInfo.SetUid;
 			}
 
 			//	Check if the file group gid has been specified
-			
+
 			if (rpc.unpackInt() == Rpc.True) {
 				gid = rpc.unpackInt();
 				setFlags += FileInfo.SetGid;
 			}
 
 			//	Check if a new file size has been specified
-			
+
 			if ( rpc.unpackInt() == Rpc.True) {
 			  fsize = rpc.unpackLong();
 			  setFlags += FileInfo.SetFileSize;
@@ -890,9 +890,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
 			//	Check if the access date/time should be set. It may be set to a client specified time
 			//	or using the server time
-			
+
 			int setTime = rpc.unpackInt();
-			
+
 			if ( setTime == NFS.SetTimeClient) {
 			  atime = (long) rpc.unpackInt();
 			  atime *= 1000L;
@@ -903,12 +903,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			  atime = System.currentTimeMillis();
 			  setFlags += FileInfo.SetAccessDate;
 			}
-			
+
 			//	Check if the modify date/time should be set. It may be set to a client specified time
 			//	or using the server time
 
 			setTime = rpc.unpackInt();
-			
+
 			if ( setTime == NFS.SetTimeClient) {
 			  mtime = (long) rpc.unpackInt();
 			  mtime *= 1000L;
@@ -919,16 +919,16 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			  mtime = System.currentTimeMillis();
 			  setFlags += FileInfo.SetModifyDate;
 			}
-			
+
 			//	Check if any of the file times should be updated
-			
+
 			if ( setFlags != 0) {
-					 	
+					
 				//	Set the file access/modify date/times
-				
+
 				FileInfo finfo = new FileInfo();
 				finfo.setFileInformationFlags(setFlags);
-				
+
 				if ( atime != -1L)
 					finfo.setAccessDateTime(atime);
 
@@ -936,51 +936,51 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 					finfo.setModifyDateTime(mtime);
 
 				//	Check if the group id should be set
-				
+
 				if ( gid != -1) {
-					
+
 					//	Set the group id in the file information
-					
-					finfo.setGid(gid);					
+
+					finfo.setGid(gid);
 				}
-				
+
 				//	Check if the user id should be set
-				
+
 				if ( uid != -1) {
-					
+
 					//	Set the user id in the file information
-					
+
 					finfo.setUid(uid);
 				}
-				
+
 				//	Check if the mode should be set
-				
+
 				if ( mode != -1) {
-					
+
 					//	Set the mode in the file information
-					
+
 					finfo.setMode(mode);
 				}
-				
+
 				//	Set the file information
-				
+
 				disk.setFileInformation(sess, conn, path, finfo);
 
 				//	DEBUG
-				
+
 				if (Debug.EnableInfo && hasDebugFlag(DBG_INFO))
 					sess.debugPrintln("SetAttr handle=" + NFSHandle.asString(handle) + ", accessTime=" + finfo.getAccessDateTime() +
 											      ", modifyTime=" + finfo.getModifyDateTime() + ", mode=" + mode + ", gid/uid=" + gid + "/" + uid);
 			}
 
 			//	Check if the file size should be updated
-			
+
 			if ( fsize != -1L) {
-				
+
 				//	Open the file, may be cached
-								
+
 				NetworkFile netFile = getNetworkFileForHandle(sess, handle, conn, false);
-				
+
 				synchronized (netFile) {
 
 					//	Open the network file
@@ -988,42 +988,42 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 					netFile.openFile(false);
 
 					//	Change the file size
-					
+
 					disk.truncateFile(sess, conn, netFile, fsize);
-					
+
 					//	Close the file
-					
+
 //					netFile.close();
-				}	
+				}
 
 				//	DEBUG
-				
+
 				if (Debug.EnableInfo && hasDebugFlag(DBG_INFO))
 					sess.debugPrintln("SetAttr handle=" + NFSHandle.asString(handle) + ", newSize=" + fsize);
 			}
-			
+
 			//	Get the updated file information
-			
+
 			FileInfo newInfo = disk.getFileInformation(sess, conn, path);
 
 			//  Check if the file size was changed
-			
+
 			if ( fsize != -1L)
 			    newInfo.setFileSize( fsize);
 			else {
-			    
+
 			    // Check if the file is open, use the current size
-			    
+
 			    NetworkFile netFile = getOpenNetworkFileForHandle(sess, handle, conn);
 			    if ( netFile != null)
 			        newInfo.setFileSize( netFile.getFileSize());
 			}
-			
+
 			//	Pack the response
-			
+
 			rpc.buildResponseHeader();
 			rpc.packInt(NFS.StsSuccess);
-			
+
 			packWccData(rpc, oldInfo);
 			packPostOpAttr(sess, newInfo, shareId, rpc);
 		}
@@ -1041,24 +1041,24 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("SetAttr Exception: " + ex.toString());
 		}
-		
+
 		//	Check for a failure status
-		
+
 		if ( errorSts != NFS.StsSuccess) {
-			
+
 			//	Pack the error response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
 		  packWccData(rpc, null);
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("SetAttr error=" + NFS.getStatusString(errorSts));
 		}
@@ -1071,7 +1071,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the lookup request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -1092,12 +1092,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			    				      ", name=" + fileName);
 
 		//	Check if the handle is valid
-		
+
 		if (NFSHandle.isValid(handle) == false) {
 		  rpc.buildErrorResponse(NFS.StsBadHandle);
 			return rpc;
 		}
-		
+
 		//	Call the disk share driver to get the file information for the path
 
 		int shareId = -1;
@@ -1112,12 +1112,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			TreeConnection conn = getTreeConnection(sess, shareId);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasReadAccess() == false)
 				throw new AccessDeniedException();
-			
+
 			//	Get the path from the handle
-			
+
 			path = getPathForHandle(sess, handle, conn);
 
 			//	Get the disk interface from the disk driver
@@ -1139,20 +1139,20 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				if (finfo != null) {
 
 				    // Get a handle to the file
-				    
+
 				    byte[] fHandle = getHandleForFile(sess, handle, conn, fileName);
-				    
+
 				    // Get the network file details, if the file is open
-				      
+
 				    NetworkFile netFile = getOpenNetworkFileForHandle(sess, fHandle, conn);
 				    if ( netFile != null)
 				        finfo.setFileSize( netFile.getFileSize());
-				    
+
 				    //	Pack the response
-				  
+
 				    rpc.buildResponseHeader();
 				    rpc.packInt(NFS.StsSuccess);
-				  
+
 					//	Pack the file handle
 
 					if (finfo.isDirectory())
@@ -1167,24 +1167,24 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 					//	Add a cache entry for the path
 
 					ShareDetails details = m_shareDetails.findDetails(shareId);
-					
+
 					details.getFileIdCache().addPath(finfo.getFileId(), lookupPath);
 
 					//	Check if the file path is a file name only, if so then get the parent directory details
-					
+
 					if ( pathHasDirectories(fileName) == false || fileName.equals("..")) {
-						
+
 						//	Get the parent directory file information
-						
+
 						FileInfo dirInfo = disk.getFileInformation(sess, conn, path);
 						packPostOpAttr(sess, dirInfo, shareId, rpc);
-						
+
 						//	Add the path to the file id cache, if the filesystem does not support id lookups
-						
+
 						if ( details.hasFileIdSupport() == false)
 						  details.getFileIdCache().addPath(dirInfo.getFileId(), path);
 					}
-					
+
 					//	DEBUG
 
 					if (Debug.EnableInfo && hasDebugFlag(DBG_SEARCH))
@@ -1209,28 +1209,28 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 			errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Lookup Exception: " + ex.toString());
 		}
 
 		//	Check if an error is being returned
-		
+
 		if ( errorSts != NFS.StsSuccess) {
-		  
+
 		  //	Pack the response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
 		  packPostOpAttr(sess, null, shareId, rpc);
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				Debug.println("Lookup error=" + NFS.getStatusString(errorSts));
 		}
-		
+
 		//	Return the response
 
 		rpc.setLength();
@@ -1239,7 +1239,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the access request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -1282,9 +1282,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		// Check if the access check is on the share handle
 
 		if ( NFSHandle.isShareHandle(handle)) {
-			
+
 			// Pack the response
-			
+
 			rpc.buildResponseHeader();
 			rpc.packInt(NFS.StsSuccess);
 
@@ -1295,10 +1295,10 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
 			if (Debug.EnableInfo && hasDebugFlag(DBG_INFO))
 				Debug.println("Access share path=" + path);
-		
+
 		}
 		else {
-			
+
 			// Get the share id and path
 
 			shareId = getShareIdFromHandle(handle);
@@ -1317,7 +1317,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				// Check the access that the session has to the filesystem
 
 				int mask = 0;
-				
+
 				if (conn.hasWriteAccess()) {
 
 					// Set the mask to allow all operations
@@ -1330,13 +1330,13 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
 					mask = NFS.AccessRead + NFS.AccessLookup + NFS.AccessExecute;
 				}
-			
+
 				// Check if the file is open, blend in current file details
-				
+
 				NetworkFile netFile = getOpenNetworkFileForHandle(sess, handle, conn);
 				if ( netFile != null)
 				    finfo.setFileSize( netFile.getFileSize());
-				
+
 				// Pack the response
 
 				rpc.buildResponseHeader();
@@ -1349,7 +1349,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
 				if (Debug.EnableInfo && hasDebugFlag(DBG_INFO))
 					Debug.println("Access path=" + path + ", info=" + finfo);
-			
+
 			} else {
 
 				// Return an error status
@@ -1396,7 +1396,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the read link request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -1409,16 +1409,16 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     rpc.unpackByteArrayWithLength(handle);
 
     //  Check if the handle is valid
-    
+
     if (NFSHandle.isValid(handle) == false) {
       rpc.buildErrorResponse(NFS.StsBadHandle);
       return rpc;
     }
 
     //  Build the response header
-    
+
     rpc.buildResponseHeader();
-    
+
     //  Call the disk share driver to read the symbolic link data
 
     int shareId = -1;
@@ -1437,21 +1437,21 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       //  Check if the filesystem supports symbolic links
 
       boolean symLinks = false;
-      
+
       if ( conn.getInterface() instanceof SymbolicLinkInterface) {
-        
+
         // Check if symbolic links are enabled in the filesystem
-        
+
         SymbolicLinkInterface symLinkIface = (SymbolicLinkInterface) conn.getInterface();
         symLinks = symLinkIface.hasSymbolicLinksEnabled(sess, conn);
       }
-      
+
       // Check if symbolic links are not supported or not enabled
-      
+
       if ( symLinks == false) {
 
         // Symbolic links not supported on this filesystem
-        
+
         rpc.buildErrorResponse(NFS.StsNotSupp);
         packPostOpAttr(sess, null, 0, rpc);
         packWccData(rpc, null);
@@ -1459,34 +1459,34 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         rpc.setLength();
         return rpc;
       }
-      
+
       //  Get the disk interface from the disk driver
 
       DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
 
       // Get the file information for the symbolic link
-      
+
       FileInfo finfo = disk.getFileInformation(sess, conn, path);
       if ( finfo != null && finfo.isFileType() == FileType.SymbolicLink) {
-        
+
         // Get the symbolic link data
-        
+
         SymbolicLinkInterface symLinkInterface = (SymbolicLinkInterface) disk;
         String linkData = symLinkInterface.readSymbolicLink( sess, conn, path);
-        
+
         // Pack the read link response
-        
+
         rpc.packInt(NFS.StsSuccess);
         packPostOpAttr( sess, finfo, shareId, rpc);
         rpc.packString( linkData);
       }
       else {
-        
+
         // Return an error status, not a symbolic link
-        
+
         errorSts = NFS.StsInVal;
       }
-      
+
     }
     catch (BadHandleException ex) {
       errorSts = NFS.StsBadHandle;
@@ -1519,16 +1519,16 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       if (Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
         sess.debugPrintln("ReadLink error=" + NFS.getStatusString(errorSts));
     }
-    
+
     //  Return the response
-    
+
     rpc.setLength();
     return rpc;
   }
 
   /**
    * Process the read file request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -1536,18 +1536,18 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   private final RpcPacket procRead(NFSSrvSession sess, RpcPacket rpc) {
 
     //	Unpack the read parameters
-    
+
     byte[] handle = new byte[NFS.FileHandleSize];
     rpc.unpackByteArrayWithLength(handle);
 
     long offset = rpc.unpackLong();
     int count   = rpc.unpackInt();
-    
+
 		//	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_FILEIO))
 			sess.debugPrintln("[NFS] Read request " + rpc.getClientDetails() + ", count=" + count + ", pos=" + offset);
-			
+
 		//	Call the disk share driver to read the file
 
 		int shareId = -1;
@@ -1562,10 +1562,10 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			TreeConnection conn = getTreeConnection(sess, shareId);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasReadAccess() == false)
 				throw new AccessDeniedException();
-			
+
 			//	Get the network file, it may be cached
 
 			netFile = getNetworkFileForHandle(sess, handle, conn, true);
@@ -1575,22 +1575,22 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
 
 			//	Pack the start of the response
-			
+
 			rpc.buildResponseHeader();
 			rpc.packInt(NFS.StsSuccess);
-			
+
 			//	Get file information for the path and pack into the reply
 
 			FileInfo finfo = disk.getFileInformation(sess, conn, netFile.getFullName());
 			finfo.setFileSize( netFile.getFileSize());
-			
+
 			packPostOpAttr(sess, finfo, shareId, rpc);
-		  
+
 			//	Save the current position in the response buffer to fill in the length and end of file flag after
 			//	the read.
-		  
+
 			int bufPos = rpc.getPosition();
-		  
+
 			//	Read the network file
 
 			int rdlen = -1;
@@ -1612,11 +1612,11 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			rpc.packInt(rdlen);
 			rpc.packInt(rdlen < count ? Rpc.True : Rpc.False);
 			rpc.packInt(rdlen);
-			
+
 			//	Set the response length
-			
+
 			rpc.setLength(bufPos + 12 + ((rdlen + 3) & 0xFFFFFFFC));
-			
+
 			//	DEBUG
 
 			if (Debug.EnableInfo && hasDebugFlag(DBG_FILEIO))
@@ -1633,9 +1633,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR)) {
 				sess.debugPrintln("Read Exception: netFile=" + netFile + ", cache=" + sess.getFileCache().numberOfEntries());
 				Debug.println(ex);
@@ -1643,20 +1643,20 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 
 		//	Check for an error status
-		
+
 		if ( errorSts != NFS.StsSuccess) {
-		  
+
 		  //	Pack the error response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
 		  packPostOpAttr(sess, null, shareId, rpc);
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Read error=" + NFS.getStatusString(errorSts));
 		}
-		
+
 		//	Return the response
 
 		return rpc;
@@ -1664,7 +1664,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the write file request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -1672,7 +1672,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   private final RpcPacket procWrite(NFSSrvSession sess, RpcPacket rpc) {
 
     //	Unpack the read parameters
-    
+
     byte[] handle = new byte[NFS.FileHandleSize];
     rpc.unpackByteArrayWithLength(handle);
 
@@ -1681,9 +1681,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     int stable  = rpc.unpackInt();
 
     //	Skip the second write length, position at the start of the data to write
-    
+
     rpc.skipBytes(4);
-    
+
 		//	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_FILEIO))
@@ -1704,16 +1704,16 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			TreeConnection conn = getTreeConnection(sess, shareId);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasWriteAccess() == false)
 				throw new AccessDeniedException();
 
 			//	Get the network file, it may be cached
 
 			netFile = getNetworkFileForHandle(sess, handle, conn, false);
-			
+
 			//	Get the file path
-			
+
 			path = getPathForHandle(sess, handle, conn);
 
 			//	Get the disk interface from the disk driver
@@ -1723,7 +1723,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			//	Check if threaded writes should be used
 
 			FileInfo preInfo = null;
-			
+
 			synchronized (netFile) {
 
 				//	Make sure the network file is open
@@ -1732,34 +1732,34 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 					netFile.openFile(false);
 
 				//	Get the pre-operation file details
-				
+
 				preInfo = disk.getFileInformation(sess, conn, path);
-				
+
 				//	Write to the network file
 
 				disk.writeFile(sess, conn, netFile, rpc.getBuffer(), rpc.getPosition(), count, offset);
 			}
-			
+
 			//	Get file information for the path and pack the response
 
 			FileInfo finfo = disk.getFileInformation(sess, conn, path);
-			
+
 			// Set the current file size from the open file
-			
+
 			finfo.setFileSize( netFile.getFileSize());
-			
+
 			// Pack the response
-			
+
 			rpc.buildResponseHeader();
 			rpc.packInt(NFS.StsSuccess);
 
 			packPreOpAttr(sess, preInfo, rpc);
 			packPostOpAttr(sess, finfo, shareId, rpc);
-			
+
 			rpc.packInt(count);
 			rpc.packInt(stable);
 			rpc.packLong(m_writeVerifier);			//	verifier
-			
+
 			//	DEBUG
 
 			if (Debug.EnableInfo && hasDebugFlag(DBG_FILEIO))
@@ -1779,9 +1779,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR)) {
 				sess.debugPrintln("Write Exception: netFile=" + netFile + ", cache=" + sess.getFileCache().numberOfEntries());
 				sess.debugPrintln(ex);
@@ -1789,21 +1789,21 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 
 		//	Check for a failure status
-		
+
 		if ( errorSts != NFS.StsSuccess) {
-		  
+
 		  //	Pack the error response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
       packWccData(rpc, null); // before attributes
       packWccData(rpc, null); // after attributes
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Write error=" + NFS.getStatusString(errorSts));
 		}
-		
+
 		//	Return the write response
 
 		rpc.setLength();
@@ -1812,7 +1812,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the create file request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -1825,7 +1825,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     rpc.unpackByteArrayWithLength(handle);
 
     String fileName = rpc.unpackUTF8String();
-    
+
     int createMode = rpc.unpackInt();
 
     //	DEBUG
@@ -1834,12 +1834,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       sess.debugPrintln("Create request from " + rpc.getClientDetails() + ", name=" + fileName);
 
 	//	Check if the handle is valid
-		
+
 	if (NFSHandle.isValid(handle) == false) {
 		rpc.buildErrorResponse(NFS.StsBadHandle);
 		return rpc;
 	}
-		
+
     //	Call the disk share driver to create the new file
 
     int shareId = -1;
@@ -1867,7 +1867,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       //	Get the pre-operation state for the parent directory
 
       FileInfo preInfo = disk.getFileInformation(sess, conn, path);
-      
+
       //	Build the full path string
 
       StringBuffer str = new StringBuffer();
@@ -1914,7 +1914,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
         if (Debug.EnableInfo && hasDebugFlag(DBG_FILE))
           sess.debugPrintln("  Create file params=" + params);
-        
+
         //	Get file information for the path
 
         FileInfo finfo = disk.getFileInformation(sess, conn, filePath);
@@ -1925,7 +1925,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
           rpc.buildResponseHeader();
           rpc.packInt(NFS.StsSuccess);
-          
+
           if (finfo.isDirectory())
             packDirectoryHandle(shareId, finfo.getFileId(), rpc);
           else
@@ -1947,7 +1947,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
           //	Pack the wcc data structure for the directory
 
           packPreOpAttr(sess, preInfo, rpc);
-          
+
           FileInfo postInfo = disk.getFileInformation(sess, conn, path);
           packPostOpAttr(sess, postInfo, shareId, rpc);
 
@@ -2007,7 +2007,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the create directory request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -2020,69 +2020,69 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     rpc.unpackByteArrayWithLength(handle);
 
     String dirName = rpc.unpackUTF8String();
-   
+
 		//	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_DIRECTORY))
 			sess.debugPrintln("MkDir request from " + rpc.getClientDetails() + ", name=" + dirName);
 
 		//	Check if the handle is valid
-		
+
 		if (NFSHandle.isValid(handle) == false) {
 		  rpc.buildErrorResponse(NFS.StsBadHandle);
 			return rpc;
 		}
-		
+
 		//	Call the disk share driver to create the new directory
-		
+
 		int shareId = -1;
 		String path = null;
 		int errorSts = NFS.StsSuccess;
 
 		try {
-			
+
 			//	Get the share id and path
-			
+
 			shareId = getShareIdFromHandle(handle);
 			TreeConnection conn = getTreeConnection(sess, shareId);
 			path = getPathForHandle(sess, handle, conn);
-			
+
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasWriteAccess() == false)
 				throw new AccessDeniedException();
-			
+
 			//	Get the disk interface from the disk driver
-			
+
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
-			
+
       //	Get the pre-operation state for the parent directory
 
       FileInfo preInfo = disk.getFileInformation(sess, conn, path);
-      
+
 			//	Build the full path string
-			
+
 			StringBuffer str = new StringBuffer();
 			str.append(path);
 			if (path.endsWith("\\") == false)
 				str.append("\\");
 			str.append(dirName);
 			String dirPath = str.toString();
-			
+
 			//	Check if the file exists
-			
+
 			int existSts = disk.fileExists(sess, conn, dirPath);
 			if (existSts != FileStatus.NotExist) {
 				errorSts = NFS.StsExist;
 			}
 			else {
-				
+
 				//	Get the user id, group id and mode for the new directory
 
 				int gid  = -1;
 				int uid  = -1;
 				int mode = -1;
-				
+
 				if (rpc.unpackInt() == Rpc.True)
 					mode = rpc.unpackInt();
 
@@ -2091,53 +2091,53 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
 				if (rpc.unpackInt() == Rpc.True)
 					gid = rpc.unpackInt();
-					
+
 				//	Directory creation parameters
-			
+
 				FileOpenParams params = new FileOpenParams(dirPath, FileAction.CreateNotExist, AccessMode.ReadWrite,
 																									 FileAttribute.NTDirectory, gid, uid, mode, 0);
 
 				//	Create a new directory
-				
+
 				disk.createDirectory(sess, conn, params);
 
 				//	Get file information for the new directory
-				
+
 				FileInfo finfo = disk.getFileInformation(sess, conn, dirPath);
-				
+
 				if (finfo != null) {
-					
+
 					//	Pack the response
-				  
+
 				  rpc.buildResponseHeader();
 				  rpc.packInt(NFS.StsSuccess);
-					
+
 					packDirectoryHandle(shareId, finfo.getFileId(), rpc);
-					
+
 					//	Pack the file attributes
-					
+
 					packPostOpAttr(sess, finfo, shareId, rpc);
-					
+
 					//	Add a cache entry for the path
-					
+
 					ShareDetails details = m_shareDetails.findDetails(shareId);
-					
+
 					details.getFileIdCache().addPath(finfo.getFileId(), dirPath);
 
 					//	Pack the post operation details for the parent directory
-					
+
 					packWccData(rpc, preInfo);
 					packPostOpAttr(sess, conn, handle, rpc);
-										
+
 					//	Notify change listeners that a new directory has been created
 
 					DiskDeviceContext diskCtx = (DiskDeviceContext) conn.getContext();
 
-					if ( diskCtx.hasChangeHandler())			
+					if ( diskCtx.hasChangeHandler())
 						diskCtx.getChangeHandler().notifyFileChanged(NotifyChange.ActionAdded, dirPath);
-						
+
 					//	DEBUG
-					
+
 					if (Debug.EnableInfo && hasDebugFlag(DBG_DIRECTORY))
 						sess.debugPrintln("Mkdir path=" + dirPath + ", finfo=" + finfo.toString());
 				}
@@ -2155,9 +2155,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Mkdir Exception: " + ex.toString());
 		}
@@ -2165,19 +2165,19 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		//	Check for an error status
 
 		if ( errorSts != NFS.StsSuccess) {
-		  
+
 		  //	Pack the error response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
       packWccData(rpc, null);
       packWccData(rpc, null);
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Mkdir error=" + NFS.getStatusString(errorSts));
 		}
-			
+
 		//	Return the response
 
 		rpc.setLength();
@@ -2186,7 +2186,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the create symbolic link request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -2201,12 +2201,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     String fileName = rpc.unpackUTF8String();
 
     //  Check if the handle is valid
-    
+
     if (NFSHandle.isValid(handle) == false) {
       rpc.buildErrorResponse(NFS.StsBadHandle);
       return rpc;
     }
-    
+
     //  Call the disk share driver to create the symbolic link
 
     int shareId = -1;
@@ -2225,21 +2225,21 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       //  Check if the filesystem supports symbolic links
 
       boolean symLinks = false;
-      
+
       if ( conn.getInterface() instanceof SymbolicLinkInterface) {
-        
+
         // Check if symbolic links are enabled in the filesystem
-        
+
         SymbolicLinkInterface symLinkIface = (SymbolicLinkInterface) conn.getInterface();
         symLinks = symLinkIface.hasSymbolicLinksEnabled(sess, conn);
       }
-      
+
       // Check if symbolic links are not supported or not enabled
-      
+
       if ( symLinks == false) {
 
         // Symbolic links not supported on this filesystem
-        
+
         rpc.buildErrorResponse(NFS.StsNotSupp);
         packPostOpAttr(sess, null, 0, rpc);
         packWccData(rpc, null);
@@ -2247,7 +2247,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         rpc.setLength();
         return rpc;
       }
-      
+
       //  Check if the session has the required access to the shared filesystem
 
       if (conn.hasWriteAccess() == false)
@@ -2262,30 +2262,30 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       long fsize = -1L;
       long atime = -1L;
       long mtime = -1L;
-      
+
       //  Check if the file mode has been specified
-      
+
       if (rpc.unpackInt() == Rpc.True) {
         mode = rpc.unpackInt();
         setFlags += FileInfo.SetMode;
       }
 
       //  Check if the file owner uid has been specified
-      
+
       if (rpc.unpackInt() == Rpc.True) {
         uid = rpc.unpackInt();
         setFlags += FileInfo.SetUid;
       }
 
       //  Check if the file group gid has been specified
-      
+
       if (rpc.unpackInt() == Rpc.True) {
         gid = rpc.unpackInt();
         setFlags += FileInfo.SetGid;
       }
 
       //  Check if a new file size has been specified
-      
+
       if ( rpc.unpackInt() == Rpc.True) {
         fsize = rpc.unpackLong();
         setFlags += FileInfo.SetFileSize;
@@ -2293,9 +2293,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
       //  Check if the access date/time should be set. It may be set to a client specified time
       //  or using the server time
-      
+
       int setTime = rpc.unpackInt();
-      
+
       if ( setTime == NFS.SetTimeClient) {
         atime = (long) rpc.unpackInt();
         atime *= 1000L;
@@ -2306,12 +2306,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         atime = System.currentTimeMillis();
         setFlags += FileInfo.SetAccessDate;
       }
-      
+
       //  Check if the modify date/time should be set. It may be set to a client specified time
       //  or using the server time
 
       setTime = rpc.unpackInt();
-      
+
       if ( setTime == NFS.SetTimeClient) {
         mtime = (long) rpc.unpackInt();
         mtime *= 1000L;
@@ -2324,9 +2324,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       }
 
       //  Get the symbolic link name
-      
+
       String linkName = rpc.unpackString();
-      
+
       //  DEBUG
 
       if (Debug.EnableInfo && hasDebugFlag(DBG_FILE))
@@ -2339,7 +2339,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       //  Get the pre-operation state for the parent directory
 
       FileInfo preInfo = disk.getFileInformation(sess, conn, path);
-      
+
       //  Build the full path string
 
       StringBuffer str = new StringBuffer();
@@ -2366,14 +2366,14 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
         FileOpenParams params = new FileOpenParams(filePath, FileAction.CreateNotExist, AccessMode.ReadWrite, 0, gid, uid, mode, 0);
         params.setSymbolicLink( linkName);
-        
+
         NetworkFile netFile = disk.createFile(sess, conn, params);
 
         //  DEBUG
 
         if (Debug.EnableInfo && hasDebugFlag(DBG_FILE))
           sess.debugPrintln("  Symbolic link params=" + params);
-        
+
         //  Get file information for the path
 
         FileInfo finfo = disk.getFileInformation(sess, conn, filePath);
@@ -2384,7 +2384,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
           rpc.buildResponseHeader();
           rpc.packInt(NFS.StsSuccess);
-          
+
           packFileHandle(shareId, getFileIdForHandle(handle), finfo.getFileId(), rpc);
 
           //  Pack the file attributes
@@ -2403,7 +2403,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
           //  Pack the wcc data structure for the directory
 
           packPreOpAttr(sess, preInfo, rpc);
-          
+
           FileInfo postInfo = disk.getFileInformation(sess, conn, path);
           packPostOpAttr(sess, postInfo, shareId, rpc);
 
@@ -2431,7 +2431,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       if (Debug.EnableError && hasDebugFlag(DBG_ERROR))
         sess.debugPrintln("SymbolicLink Exception: " + ex.toString());
     }
-    
+
     //  Error status
 
     if (errorSts != NFS.StsSuccess) {
@@ -2445,16 +2445,16 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       if (Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
         sess.debugPrintln("SymLink error=" + NFS.getStatusString(errorSts));
     }
-    
+
     //  Return the response
-    
+
     rpc.setLength();
     return rpc;
   }
 
   /**
    * Process the make special device request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -2465,7 +2465,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_DIRECTORY))
 			sess.debugPrintln("MkNode request from " + rpc.getClientDetails());
-			
+
 		//	Return an error status
 
     rpc.buildErrorResponse(NFS.StsNotSupp);
@@ -2478,7 +2478,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the delete file request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -2491,7 +2491,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     rpc.unpackByteArrayWithLength(handle);
 
     String fileName = rpc.unpackUTF8String();
-    
+
 		//	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_FILE))
@@ -2510,22 +2510,22 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			shareId = getShareIdFromHandle(handle);
 			ShareDetails details = m_shareDetails.findDetails(shareId);
 			TreeConnection conn  = getTreeConnection(sess, shareId);
-			
+
 			path = getPathForHandle(sess, handle, conn);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasWriteAccess() == false)
 				throw new AccessDeniedException();
-			
+
 			//	Get the disk interface from the disk driver
 
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
 
 			//	Get the pre-operation details for the directory
-			
+
 			FileInfo preInfo = disk.getFileInformation(sess, conn, path);
-			
+
 			//	Build the full path string
 
 			StringBuffer str = new StringBuffer();
@@ -2562,19 +2562,19 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				}
 
 				//	Get the post-operation details for the directory
-				
+
 				FileInfo postInfo = disk.getFileInformation(sess, conn, path);
-				
+
 				//	Pack the response
-				
+
 				rpc.buildResponseHeader();
 				rpc.packInt(NFS.StsSuccess);
-				
+
 				packPreOpAttr(sess, preInfo, rpc);
 				packPostOpAttr(sess, postInfo, shareId, rpc);
-				
+
 				//	Check if there are any file/directory change notify requests active
-    
+
 				DiskDeviceContext diskCtx = (DiskDeviceContext) conn.getContext();
 				if ( diskCtx.hasChangeHandler())
 					diskCtx.getChangeHandler().notifyFileChanged(NotifyChange.ActionRemoved, delPath);
@@ -2594,29 +2594,29 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("GetAttr Exception: " + ex.toString());
 		}
 
 		//	Check for an error status
-		
+
 		if ( errorSts != NFS.StsSuccess) {
 
 		  //	Pack the error response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
 		  packWccData(rpc, null);
       packWccData(rpc, null);
-		  
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Remove error=" + NFS.getStatusString(errorSts));
 		}
-		
+
 		//	Return the remove repsonse
 
 		rpc.setLength();
@@ -2625,7 +2625,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the delete directory request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -2638,19 +2638,19 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     rpc.unpackByteArrayWithLength(handle);
 
     String dirName = rpc.unpackUTF8String();
-   
+
 		//	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_DIRECTORY))
 			sess.debugPrintln("RmDir request from " + rpc.getClientDetails() + ", name=" + dirName);
 
 		//	Check if the handle is valid
-		
+
 		if (NFSHandle.isValid(handle) == false) {
 		  rpc.buildErrorResponse(NFS.StsBadHandle);
 			return rpc;
 		}
-		
+
 		int shareId = -1;
 		String path = null;
 		int errorSts = NFS.StsSuccess;
@@ -2664,21 +2664,21 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			TreeConnection conn  = getTreeConnection(sess, shareId);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasWriteAccess() == false)
 				throw new AccessDeniedException();
 
 			//	Build the pre-operation part of the response
-			
+
 			rpc.buildResponseHeader();
 			rpc.packInt(NFS.StsSuccess);
-			
+
 			//	Pack the pre operation attributes for the parent directory
-			
+
 			packPreOpAttr(sess, conn, handle, rpc);
-			
+
 			//	Get the path to be removed
-			
+
 			path = getPathForHandle(sess, handle, conn);
 
 			//	Get the disk interface from the disk driver
@@ -2721,11 +2721,11 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 					details.getFileIdCache().deletePath(finfo.getFileId());
 
 				//	Pack the post operation attributes for the parent directory
-				
+
 				packPostOpAttr(sess, conn, handle, rpc);
-									
+
 				//	Check if there are any file/directory change notify requests active
-    
+
 				DiskDeviceContext diskCtx = (DiskDeviceContext) conn.getContext();
 				if ( diskCtx.hasChangeHandler())
 					diskCtx.getChangeHandler().notifyFileChanged(NotifyChange.ActionRemoved, delPath);
@@ -2745,29 +2745,29 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Rmdir Exception: " + ex.toString());
 		}
 
 		//	Check if an error status is being returned
-		
+
 		if ( errorSts != NFS.StsSuccess) {
-		  
+
 		  //	Pack the error response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
       packWccData(rpc, null);
       packWccData(rpc, null);
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Rmdir error=" + NFS.getStatusString(errorSts));
 		}
-		
+
 		//	Return the response
 
 		rpc.setLength();
@@ -2776,7 +2776,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the rename file request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -2789,12 +2789,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     rpc.unpackByteArrayWithLength(fromHandle);
 
     String fromName = rpc.unpackUTF8String();
-    
+
     byte[] toHandle = new byte[NFS.FileHandleSize];
     rpc.unpackByteArrayWithLength(toHandle);
 
     String toName = rpc.unpackUTF8String();
-    
+
 		//	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_FILE)) {
@@ -2819,12 +2819,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			TreeConnection conn  = getTreeConnection(sess, shareId);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasWriteAccess() == false)
 				throw new AccessDeniedException();
 
 			//	Get paths from the handles
-						
+
 			fromPath = getPathForHandle(sess, fromHandle, conn);
 			toPath = getPathForHandle(sess, toHandle, conn);
 
@@ -2855,19 +2855,19 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
 
 			//	Get the pre-operation details for the parent directories
-			
+
 			FileInfo preFromInfo = disk.getFileInformation(sess, conn, fromPath);
 			FileInfo preToInfo = null;
-			
+
 			if ( NFSHandle.unpackDirectoryId(fromHandle) == NFSHandle.unpackDirectoryId(toHandle))
 			  preToInfo = preFromInfo;
 			else
 			  preToInfo = disk.getFileInformation(sess, conn, toPath);
-			
+
 			//	Check if the from path exists
 
 			int existSts = disk.fileExists(sess, conn, oldPath);
-			
+
 			if (existSts == FileStatus.NotExist) {
 			  errorSts = NFS.StsNoEnt;
 			}
@@ -2879,58 +2879,58 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 					sess.debugPrintln("Rename from=" + oldPath + ", to=" + newPath);
 
 				//	Get the file details for the file/folder being renamed
-				
+
 				FileInfo finfo = disk.getFileInformation(sess, conn, oldPath);
-				
+
 				// Check if the file being renamed is in the open file cache
-				
+
 				if ( finfo != null && finfo.isDirectory() == false) {
-				    
+
 				    // Build a handle for the file
-				    
+
 				    byte[] fHandle = getHandleForFile(sess, fromHandle, conn, fromName);
-				    
+
 				    // Get the open file
-				    
+
 				    NetworkFile netFile = getOpenNetworkFileForHandle(sess, fHandle, conn);
 				    if ( netFile != null) {
-				        
+
 				        // DEBUG
-				        
+
 	                    if (Debug.EnableInfo && hasDebugFlag(DBG_FILE))
 	                        sess.debugPrintln("  Closing file " + oldPath + " before rename");
-	                    
+
 				        // Close the file
-				        
+
 				        disk.closeFile(sess, conn, netFile);
-				        
+
 				        // Remove the file from the open file cache
-				        
+
 				        NetworkFileCache fileCache = sess.getFileCache();
 
 				        synchronized (fileCache) {
 
 				            // Remove the file from the open file cache
-				            
+
 				            fileCache.removeFile( netFile.getFileId());
 				        }
 				    }
 				}
-				
+
 				// Check if the target exists and it is a file, if so then delete it
-				
+
 				if ( disk.fileExists(sess, conn, newPath) == FileStatus.FileExists) {
 
 				    // DEBUG
-				    
+
 	                if (Debug.EnableInfo && hasDebugFlag(DBG_FILE))
 	                    sess.debugPrintln("  Delete existing file before rename, newPath=" + newPath);
-	                
+
 				    // Delete the existing target file
-				    
+
 				    disk.deleteFile( sess, conn, newPath);
 				}
-				
+
 				//	Rename the file/directory
 
 				disk.renameFile(sess, conn, oldPath, newPath);
@@ -2939,7 +2939,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
 				if ( finfo != null && finfo.getFileId() != -1) {
 				  details.getFileIdCache().deletePath(finfo.getFileId());
-				  
+
 				  // Add an entry with the original file id mapped to the new path
 				  //
 				  // The file id from the file information for the new path may not be the same
@@ -2951,17 +2951,17 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				//	Get the file id for the new file/directory
 
 				finfo = disk.getFileInformation(sess, conn, newPath);
-				if (finfo != null) 
+				if (finfo != null)
 					details.getFileIdCache().addPath(finfo.getFileId(), newPath);
 
 				//	Check if there are any file/directory change notify requests active
-    
+
 				DiskDeviceContext diskCtx = (DiskDeviceContext) conn.getContext();
 				if ( diskCtx.hasChangeHandler())
 					diskCtx.getChangeHandler().notifyRename(oldPath, newPath);
-				
+
 				//	Get the post-operation details for the parent directories
-				
+
 				FileInfo postFromInfo = disk.getFileInformation(sess, conn, fromPath);
 				FileInfo postToInfo = null;
 
@@ -2971,13 +2971,13 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				  postToInfo = disk.getFileInformation(sess, conn, toPath);
 
 				//	Pack the rename response
-				
+
 				rpc.buildResponseHeader();
 				rpc.packInt(NFS.StsSuccess);
-				
+
 				packWccData(rpc, preFromInfo);
 				packPostOpAttr(sess, postFromInfo, shareId, rpc);
-				
+
 				packWccData(rpc, preToInfo);
 				packPostOpAttr(sess, postToInfo, shareId, rpc);
 			}
@@ -2999,37 +2999,37 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     }
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Rename Exception: " + ex.toString());
 		}
 
 		//	Check for an error status
-		
+
 		if ( errorSts != NFS.StsSuccess) {
-		  
+
 		  //	Pack the error response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
-      
+
       // Pack the from dir WCC data
-      
+
 		  packWccData(rpc, null);
 		  packWccData(rpc, null);
-			
+
       // Pack the to dir WCC data
-      
+
       packWccData(rpc, null);
       packWccData(rpc, null);
-      
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Rename error=" + NFS.getStatusString(errorSts));
 		}
-		
+
 		//	Return the rename response
 
 		rpc.setLength();
@@ -3038,7 +3038,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the create hard link request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -3063,7 +3063,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the read directory request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -3077,20 +3077,20 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
     long cookie     = rpc.unpackLong();
     long cookieVerf = rpc.unpackLong();
-    
+
     int maxCount = rpc.unpackInt();
-    
+
 		//	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_SEARCH))
 			sess.debugPrintln("ReadDir request from " + rpc.getClientDetails() + " handle=" + NFSHandle.asString(handle) +
 			    				      ", count=" + maxCount);
-			
-		//	Check if this is a share handle        
+
+		//	Check if this is a share handle
 
 		int shareId = -1;
 		String path = null;
-		
+
 		int errorSts = NFS.StsSuccess;
 
 		//	Call the disk share driver to get the file information for the path
@@ -3104,49 +3104,49 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			TreeConnection conn  = getTreeConnection(sess, shareId);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasReadAccess() == false)
 				throw new AccessDeniedException();
-				
+
 			//	Get the disk interface from the disk driver
 
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
 
 			//	Get the path from the handle
-			
+
 			path = getPathForHandle(sess, handle, conn);
 
 			//	If the filesystem driver cannot convert file ids to relative paths we need to build a relative path for
 			//	every file and sub-directory in the search
-			
+
 			StringBuffer pathBuf = null;
 			int pathLen = 0;
 			FileIdCache fileCache = details.getFileIdCache();
-			
+
 			if ( details.hasFileIdSupport() == false) {
-				
+
 				//	Allocate the buffer for building the relative paths
-				
+
 				pathBuf = new StringBuffer(256);
 				pathBuf.append(path);
 				if ( path.endsWith("\\") == false)
 					pathBuf.append("\\");
-				
+
 				//	Set the length of the search path portion of the string
-				
+
 				pathLen = pathBuf.length();
 			}
 
 			//	Build the response header
-			
+
 			rpc.buildResponseHeader();
 			rpc.packInt(NFS.StsSuccess);
-			
+
 			//	Get the root directory information
-			
+
 			FileInfo dinfo = disk.getFileInformation(sess, conn, path);
 			packPostOpAttr(sess, dinfo, shareId, rpc);
-				
+
 			//	Generate the search path
 
 			String searchPath = generatePath(path, "*.*");
@@ -3172,7 +3172,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				searchId = sess.allocateSearchSlot(search);
 
 				//	Set the cookie verifier
-				
+
 				cookieVerf = dinfo.getModifyDateTime();
 
 				//	DEBUG
@@ -3183,11 +3183,11 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			else {
 
 				//	Check if the cookie verifier is valid, check reverse byte order
-				
+
 				if ( cookieVerf != 0L && cookieVerf != dinfo.getModifyDateTime() &&
 						Long.reverseBytes( cookieVerf) != dinfo.getModifyDateTime())
 					throw new BadCookieException();
-					
+
 				//	Retrieve the search from the active search cache
 
 				searchId = (cookie & COOKIE_SEARCHID_MASK) >> COOKIE_SEARCHID_SHIFT;
@@ -3195,13 +3195,13 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				//	Get the active search
 
 				search = sess.getSearchContext((int) searchId);
-				
+
 				//	Check if the search has been closed, if so then restart the search
-				
+
 				if ( search == null) {
-					
+
 					//	Restart the search
-					
+
 					search = disk.startSearch(sess, conn, searchPath, FileAttribute.Directory + FileAttribute.Normal);
 
 					//	Allocate a search id for the new search
@@ -3209,26 +3209,26 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 					searchId = sess.allocateSearchSlot(search);
 
 					//	Set the cookie verifier
-				
+
 					cookieVerf = dinfo.getModifyDateTime();
 
 					//	DEBUG
-				
+
 					if (Debug.EnableInfo && hasDebugFlag(DBG_SEARCH))
 						sess.debugPrintln("ReadDir restarted search, searchId=" + searchId);
 				}
 
 				//	Check if the search is at the required restart point
-				
+
 				int resumeId = (int) (cookie & COOKIE_RESUMEID_MASK);
 				if ( search.getResumeId() != resumeId)
 					search.restartAt(resumeId);
 			}
 
 			//	Pack the cookie verifier
-			
+
 			rpc.packLong(cookieVerf);
-			
+
 			//	Check if the search id is valid
 
 			if (searchId == -1)
@@ -3247,57 +3247,57 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			FileInfo finfo = new FileInfo();
 
 			//	Check if this is the start of a search, if so then add the '.' and '..' entries
-			
+
 			if ( cookie == 0) {
-				
+
 				//	Add the search directory details, the '.' directory
-				
+
 			    rpc.packInt(Rpc.True);
 				rpc.packLong(dinfo.getFileIdLong() + FILE_ID_OFFSET);
 				rpc.packString(".");
 				rpc.packLong(COOKIE_DOT_DIRECTORY);
-				
+
 				//	Get the file information for the parent directory
-				
+
 				String parentPath = generatePath(path, "..");
 				FileInfo parentInfo = disk.getFileInformation(sess, conn, parentPath);
-				
+
 				//	Add the parent of the search directory, the '..' directory
 
 				rpc.packInt(Rpc.True);
 				rpc.packLong(parentInfo.getFileIdLong() + FILE_ID_OFFSET);
 				rpc.packString("..");
 				rpc.packLong(COOKIE_DOTDOT_DIRECTORY);
-				
+
 				//	Update the entry count and current used reply buffer count
-				
+
 				entCnt = 2;
 			}
-			
+
 			//	Add file/sub-directory entries until there are no more entries or the buffer is full
-			
+
 			boolean replyFull = false;
-			
+
 			while (entCnt++ < maxCount && replyFull == false && search.nextFileInfo(finfo)) {
 
 				//	Check if the new file entry will fit into the reply buffer without exceeding the clients maximum
 				//	reply size
-				
+
 				int entryLen = READDIR_ENTRY_LENGTH + (( finfo.getFileName().length() + 3) & 0xFFFFFFFC);
-				
+
 				if ( entryLen > rpc.getAvailableLength() ||
 				    ( rpc.getPosition() + entryLen > maxCount)) {
 					replyFull = true;
-					
+
                     //  DEBUG
-	                
+
                     if (Debug.EnableInfo && hasDebugFlag(DBG_SEARCH))
                         sess.debugPrintln("ReadDir response full, restart at=" + finfo.getFileName() + ", resumeId=" + search.getResumeId());
-					
+
 					search.restartAt( finfo);
 					break;
 				}
-				
+
 				//	Fill in the entry details
 
 				rpc.packInt(Rpc.True);
@@ -3306,22 +3306,22 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				rpc.packLong(search.getResumeId() + searchMask);
 
 				//	Check if the relative path should be added to the file id cache
-				
+
 				if ( details.hasFileIdSupport() == false && fileCache.findPath(finfo.getFileId()) == null) {
-					
+
 					//	Create a relative path for the current file/sub-directory and add to the file id cache
-					
+
 					pathBuf.setLength(pathLen);
 					pathBuf.append(finfo.getFileName());
-					
+
 					fileCache.addPath(finfo.getFileId(), pathBuf.toString());
 				}
 			}
 
 			//	Indicate no more file entries in this response
-			
+
 			rpc.packInt(Rpc.False);
-		  
+
 			//	Check if the search is complete
 
 			if (search.hasMoreFiles()) {
@@ -3363,9 +3363,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR)) {
 				sess.debugPrintln("ReadDir Exception: " + ex.toString());
 				sess.debugPrintln(ex);
@@ -3373,29 +3373,29 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 
 		//	Check for an error status
-		
+
 		if ( errorSts != NFS.StsSuccess) {
-		  
+
 		  //	Pack the error response
-		  
+
 			rpc.buildErrorResponse(errorSts);
 			packPostOpAttr(sess, null, shareId, rpc);
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("ReadDir error=" + NFS.getStatusString(errorSts));
 		}
-			
+
 		//	Return the read directory response
-		
+
 		rpc.setLength();
 		return rpc;
   }
 
   /**
    * Process the read directory plus request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -3409,23 +3409,23 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
     long cookie     = rpc.unpackLong();
     long cookieVerf = rpc.unpackLong();
-    
+
     int maxDir   = rpc.unpackInt();
     int maxCount = rpc.unpackInt();
-    
+
     //	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_SEARCH))
 			sess.debugPrintln("ReadDir request from " + rpc.getClientDetails() + " handle=" + NFSHandle.asString(handle) +
  				 					      ", dir=" + maxDir + ", count=" + maxCount);
-		
-		//	Check if this is a share handle        
+
+		//	Check if this is a share handle
 
 		int shareId = -1;
 		String path = null;
-		
+
 		int errorSts = NFS.StsSuccess;
-		
+
 		//	Call the disk share driver to get the file information for the path
 
 		try {
@@ -3437,7 +3437,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			TreeConnection conn  = getTreeConnection(sess, shareId);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasReadAccess() == false)
 				throw new AccessDeniedException();
 
@@ -3446,40 +3446,40 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
 
 			//	Get the path from the handle
-			
+
 			path = getPathForHandle(sess, handle, conn);
 
 			//	If the filesystem driver cannot convert file ids to relative paths we need to build a relative path for
 			//	every file and sub-directory in the search
-			
+
 			StringBuffer pathBuf = null;
 			int pathLen = 0;
 			FileIdCache fileCache = details.getFileIdCache();
-			
+
 			if ( details.hasFileIdSupport() == false) {
-				
+
 				//	Allocate the buffer for building the relative paths
-				
+
 				pathBuf = new StringBuffer(256);
 				pathBuf.append(path);
 				if ( path.endsWith("\\") == false)
 					pathBuf.append("\\");
-				
+
 				//	Set the length of the search path portion of the string
-				
+
 				pathLen = pathBuf.length();
 			}
 
 			//	Build the response header
-			
+
 			rpc.buildResponseHeader();
 			rpc.packInt(NFS.StsSuccess);
-			
+
 			//	Get the root directory information
-			
+
 			FileInfo dinfo = disk.getFileInformation(sess, conn, path);
 			packPostOpAttr(sess, dinfo, shareId, rpc);
-				
+
 			//	Generate the search path
 
 			String searchPath = generatePath(path, "*.*");
@@ -3505,24 +3505,24 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				searchId = sess.allocateSearchSlot(search);
 
 				//	Set the cookie verifier
-				
+
 				cookieVerf = dinfo.getModifyDateTime();
-				
+
 				//	DEBUG
-				
+
 				if (Debug.EnableInfo && hasDebugFlag(DBG_SEARCH))
 					sess.debugPrintln("ReadDirPlus allocated searchId=" + searchId);
 			}
 			else {
 
 				//	Check if the cookie verifier is valid, check reverse byte order
-				
+
 				if ( cookieVerf != 0L && cookieVerf != dinfo.getModifyDateTime() &&
 						Long.reverseBytes( cookieVerf) != dinfo.getModifyDateTime()) {
 					sess.debugPrintln("Bad cookie verifier, verf=0x" + Long.toHexString(cookieVerf) + ", modTime=0x" + Long.toHexString(dinfo.getModifyDateTime()));
 					throw new BadCookieException();
 				}
-					
+
 				//	Retrieve the search from the active search cache
 
 				searchId = (cookie & COOKIE_SEARCHID_MASK) >> COOKIE_SEARCHID_SHIFT;
@@ -3530,13 +3530,13 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				//	Get the active search
 
 				search = sess.getSearchContext((int) searchId);
-				
+
 				//	Check if the search has been closed, if so then restart the search
-				
+
 				if ( search == null) {
-					
+
 					//	Restart the search
-					
+
 					search = disk.startSearch(sess, conn, searchPath, FileAttribute.Directory + FileAttribute.Normal);
 
 					//	Allocate a search id for the new search
@@ -3544,26 +3544,26 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 					searchId = sess.allocateSearchSlot(search);
 
 					//	Set the cookie verifier
-				
+
 					cookieVerf = dinfo.getModifyDateTime();
 
 					//	DEBUG
-				
+
 					if (Debug.EnableInfo && hasDebugFlag(DBG_SEARCH))
 						sess.debugPrintln("ReadDirPlus restarted search, searchId=" + searchId);
 				}
 
 				//	Get the search resume id from the cookie
-				
+
 				int resumeId = (int) (cookie & COOKIE_RESUMEID_MASK);
 				if ( search != null && search.getResumeId() != resumeId)
 					search.restartAt(resumeId);
 			}
 
 			//	Pack the cookie verifier
-			
+
 			rpc.packLong(cookieVerf);
-			
+
 			//	Check if the search id is valid
 
 			if (searchId == -1)
@@ -3582,75 +3582,75 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			FileInfo finfo = new FileInfo();
 
 			//	Check if this is the start of a search, if so then add the '.' and '..' entries
-			
+
 			if ( cookie == 0) {
-				
+
 				//	Add the search directory details, the '.' directory
-				
+
 			    rpc.packInt(Rpc.True);
 				rpc.packLong(dinfo.getFileIdLong() + FILE_ID_OFFSET);
 				rpc.packString(".");
 				rpc.packLong(COOKIE_DOT_DIRECTORY);
-				
+
 				//	Fill in the file attributes
 
 				rpc.packInt(Rpc.True);
 				packAttributes3(rpc, dinfo, shareId);
-				
+
 				//	Fill in the file handle
 
 				packDirectoryHandle(shareId, dinfo.getFileId(), rpc);
 
 				//	Get the file information for the parent directory
-								
+
 				String parentPath = generatePath(path, "..");
 				FileInfo parentInfo = disk.getFileInformation(sess, conn, parentPath);
-				
+
 				//	Add the parent of the search directory, the '..' directory
 
 				rpc.packInt(Rpc.True);
 				rpc.packLong(parentInfo.getFileIdLong() + FILE_ID_OFFSET);
 				rpc.packString("..");
 				rpc.packLong(COOKIE_DOTDOT_DIRECTORY);
-				
+
 				//	Fill in the file attributes
 
 				rpc.packInt(Rpc.True);
 				packAttributes3(rpc, parentInfo, shareId);
-				
+
 				//	Fill in the file handle
 
 				packDirectoryHandle(shareId, parentInfo.getFileId(), rpc);
 
 				//	Update the entry count and current used reply buffer count
-				
+
 				entCnt = 2;
 			}
-			
+
 			//	Pack the file entries
 
 			boolean replyFull = false;
-			
+
 			while (entCnt++ < maxDir && replyFull == false && search.nextFileInfo(finfo)) {
 
 				//	Check if the new file entry will fit into the reply buffer without exceeding the clients maximum
 				//	reply size
-				
+
 				int entryLen = READDIRPLUS_ENTRY_LENGTH + (( finfo.getFileName().length() + 3) & 0xFFFFFFFC);
-				
+
 				if ( entryLen > rpc.getAvailableLength() ||
 				    ( rpc.getPosition() + entryLen > maxCount)) {
 					replyFull = true;
-                    
+
                     //  DEBUG
-                    
+
                     if (Debug.EnableInfo && hasDebugFlag(DBG_SEARCH))
                         sess.debugPrintln("ReadDirPlus response full, restart at=" + finfo.getFileName() + ", resumeId=" + search.getResumeId());
-                    
+
 					search.restartAt( finfo);
 					break;
 				}
-				
+
 				//	Fill in the entry details
 
 				rpc.packInt(Rpc.True);
@@ -3662,7 +3662,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
 				rpc.packInt(Rpc.True);
 				packAttributes3(rpc, finfo, shareId);
-				
+
 				//	Fill in the file or directory handle
 
 				if ( finfo.isDirectory())
@@ -3671,26 +3671,26 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				  packFileHandle(shareId, dinfo.getFileId(), finfo.getFileId(), rpc);
 
 				//	Check if the relative path should be added to the file id cache
-				
+
 				if ( details.hasFileIdSupport() == false && fileCache.findPath(finfo.getFileId()) == null) {
-					
+
 					//	Create a relative path for the current file/sub-directory and add to the file id cache
-					
+
 					pathBuf.setLength(pathLen);
 					pathBuf.append(finfo.getFileName());
-					
+
 					fileCache.addPath(finfo.getFileId(), pathBuf.toString());
 				}
-        
+
                 // Reset the file type
-                
+
                 finfo.setFileType( FileType.RegularFile);
 			}
 
 			//	Indicate that there are no more file entries in this response
-			
+
 			rpc.packInt(Rpc.False);
-			
+
 			//	Check if the search is complete
 
 			if (search.hasMoreFiles()) {
@@ -3727,9 +3727,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR)) {
 				sess.debugPrintln("ReadDirPlus Exception: " + ex.toString());
 				sess.debugPrintln(ex);
@@ -3737,29 +3737,29 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 
 		//	Check for an error status
-		
+
 		if ( errorSts != NFS.StsSuccess) {
-		  
+
 		  //	Pack the error response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
 		  packPostOpAttr(sess, null, shareId, rpc);
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("ReadDir error=" + NFS.getStatusString(errorSts));
 		}
-			
+
 		//	Return the read directory plus response
 
 		rpc.setLength();
-		return rpc;			
+		return rpc;
   }
 
   /**
    * Process the filesystem status request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -3897,7 +3897,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the filesystem information request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -3983,14 +3983,14 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
       int fileSysProps = NFS.FileSysHomogeneuos + NFS.FileSysCanSetTime;
       if ( conn.getInterface() instanceof SymbolicLinkInterface) {
-        
+
         // Check if symbolic links are enabled
-        
+
         SymbolicLinkInterface symLinkIface = (SymbolicLinkInterface) conn.getInterface();
         if ( symLinkIface.hasSymbolicLinksEnabled(sess, conn))
           fileSysProps += NFS.FileSysSymLink;
       }
-      
+
       rpc.packInt(fileSysProps);
     }
     catch (BadHandleException ex) {
@@ -4030,7 +4030,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Process the retrieve POSIX information request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -4041,7 +4041,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
     byte[] handle = new byte[NFS.FileHandleSize];
     rpc.unpackByteArrayWithLength(handle);
-    
+
 		//	DEBUG
 
 		if (Debug.EnableInfo && hasDebugFlag(DBG_SEARCH))
@@ -4061,12 +4061,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			TreeConnection conn = getTreeConnection(sess, shareId);
 
 			//	Check if the session has the required access to the shared filesystem
-			
+
 			if ( conn.hasReadAccess() == false)
 				throw new AccessDeniedException();
 
 			//	Get the path from the handle
-						
+
 			path = getPathForHandle(sess, handle, conn);
 
 			//	Get the disk interface from the disk driver
@@ -4082,17 +4082,17 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 				FileInfo finfo = disk.getFileInformation(sess, conn, path);
 
 				//	Build the response
-				
+
 				rpc.buildResponseHeader();
 				rpc.packInt(NFS.StsSuccess);
-				
+
 				packPostOpAttr(sess, finfo, shareId, rpc);
-				
+
 				//	Pack the filesystem options
 
 				rpc.packInt(32767);
 				rpc.packInt(255);
-				
+
 				rpc.packInt(Rpc.True);		//	truncate over size names
 				rpc.packInt(Rpc.True);		//	chown restricted
 				rpc.packInt(Rpc.True);		//	case insensitive
@@ -4121,37 +4121,37 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 		}
 		catch (Exception ex) {
 		  errorSts = NFS.StsServerFault;
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableError && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Pathconf Exception: " + ex.toString());
 		}
 
 		//	Check if an error is being returned
-		
+
 		if ( errorSts != NFS.StsSuccess) {
-		 
+
 		  //	Pack the error response
-		  
+
 		  rpc.buildErrorResponse(errorSts);
       packPostOpAttr(sess, null, shareId, rpc);
-			
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebugFlag(DBG_ERROR))
 				sess.debugPrintln("Pathconf error=" + NFS.getStatusString(errorSts));
 		}
-		
+
 		//	Return the path information response
-		
+
 		rpc.setLength();
 		return rpc;
   }
 
   /**
    * Commit request
-   * 
+   *
    * @param sess NFSSrvSession
    * @param rpc RpcPacket
    * @return RpcPacket
@@ -4183,7 +4183,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Find, or create, the session for the specified RPC request.
-   * 
+   *
    * @param rpc RpcPacket
    * @return NFSSrvSession
    * @exception RpcAuthenticationException
@@ -4198,36 +4198,36 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
     boolean authFailed = true;
     NFSSrvSession sess = null;
-    
+
     try {
-    	
+
 	    //	Authenticate the request
-	    
+
 	    Object sessKey = getRpcAuthenticator().authenticateRpcClient(authType, rpc);
-	    
+
 	    switch (authType) {
-	
+
 		    //	Null authentication
-		
+
 		    case AuthType.Null:
 		      sess = findAuthNullSession(rpc, sessKey);
 		      break;
-		
+
 		    //	Unix authentication
-		
+
 		    case AuthType.Unix:
 		      sess = findAuthUnixSession(rpc, sessKey);
 		      break;
 	    }
-	
+
 	    // Setup the user context for this request
-	    
+
 	    if ( sess != null) {
 		    getRpcAuthenticator().setCurrentUser( sess, sess.getClientInformation());
 		    authFailed = false;
 
 		    // DEBUG
-	        
+
 	        if ( Debug.EnableDbg && hasDebugFlag( DBG_SESSION))
 	            Debug.println("[NFS] Found session " + sess + ", client=" + sess.getClientInformation());
 	    }
@@ -4243,14 +4243,14 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     // Check if the session is valid
 
     if ( authFailed) {
-    	
+
     	// Check if the request is a Null request
-    	
+
     	rpc.positionAtParameters();
     	if ( rpc.getProcedureId() != NFS.ProcNull)
     		throw new RpcAuthenticationException(Rpc.AuthBadCred);
     }
-    
+
     //	Return the server session
 
     return sess;
@@ -4258,7 +4258,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Find, or create, a null authentication session for the specified request
-   * 
+   *
    * @param rpc RpcPacket
    * @param sessKey Object
    * @return NFSSrvSession
@@ -4292,19 +4292,19 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       sess.setAuthIdentifier(sessKey);
 
       //	Get the client information from the RPC
-      
+
       sess.setClientInformation(getRpcAuthenticator().getRpcClientInformation(sessKey, rpc));
-      
+
       //	Add the new session to the session table
 
       m_sessAuthNull.addSession(sess);
 
       //	Set the session id and debug output prefix
-      
+
 	    sess.setUniqueId("" + sessKey.hashCode());
 	    sess.setDebugPrefix("[NFS_AN_" + getNextSessionId() + "] ");
 	    sess.setDebug(getNFSConfiguration().getNFSDebug());
-      
+
       //	DEBUG
 
       if (Debug.EnableInfo && hasDebugFlag(DBG_SESSION))
@@ -4318,7 +4318,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Find, or create, a Unix authentication session for the specified request
-   * 
+   *
    * @param rpc RpcPacket
    * @param sessKey Object
    * @return NFSSrvSession
@@ -4328,7 +4328,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     //	Check if the Unix authentication session table is valid
 
     NFSSrvSession sess = null;
-    
+
     if (m_sessAuthUnix != null) {
 
       //	Search for the required session using the client IP address + gid + uid
@@ -4352,16 +4352,16 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       sess.setAuthIdentifier(sessKey);
 
       //	Set the session id and debug output prefix
-      
+
 	    sess.setUniqueId("" + sessKey.hashCode());
 	    sess.setDebugPrefix("[NFS_AU_" + getNextSessionId() + "] ");
 	    sess.setDebug(getNFSConfiguration().getNFSDebug());
-      
+
       //	Get the client information from the RPC
-      
+
       sess.setNFSClientInformation(getRpcAuthenticator().getRpcClientInformation(sessKey, rpc));
       sess.setClientInformation( sess.getNFSClientInformation());
-      
+
       //	Add the new session to the session table
 
       m_sessAuthUnix.addSession(sess);
@@ -4372,9 +4372,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         Debug.println("[NFS] Added Unix session " + sess.getUniqueId());
     }
     else {
-    	
+
     	// Set the thread local client information
-    	
+
         sess.setClientInformation( sess.getNFSClientInformation());
     }
 
@@ -4385,7 +4385,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Pack the NFS v3 file attributes structure using the file information
-   * 
+   *
    * @param rpc RpcPacket
    * @param finfo FileInfo
    * @param fileSysId int
@@ -4412,7 +4412,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         rpc.packInt(NFS.FileTypeLnk);
       else
         rpc.packInt(NFS.FileTypeReg);
-      
+
       if (finfo.hasMode())
         rpc.packInt(finfo.getMode());
       else
@@ -4481,52 +4481,52 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Pack a share handle
-   * 
+   *
    * @param shareName String
    * @param rpc RpcPacket
    */
   protected final void packShareHandle(String shareName, RpcPacket rpc) {
-    
+
     //	Indicate that a handle follows, pack the handle
-    
+
     rpc.packInt(Rpc.True);
     NFSHandle.packShareHandle(shareName, rpc, NFS.FileHandleSize);
   }
-  
+
   /**
    * Pack a directory handle
-   * 
+   *
    * @param shareId int
    * @param dirId int
    * @param rpc RpcPacket
    */
   protected final void packDirectoryHandle(int shareId, int dirId, RpcPacket rpc) {
-    
+
     //	Indicate that a handle follows, pack the handle
-    
+
     rpc.packInt(Rpc.True);
     NFSHandle.packDirectoryHandle(shareId, dirId, rpc, NFS.FileHandleSize);
   }
-  
+
   /**
    * Pack a directory handle
-   * 
+   *
    * @param shareId int
    * @param dirId int
    * @param fileId int
    * @param rpc RpcPacket
    */
   protected final void packFileHandle(int shareId, int dirId, int fileId, RpcPacket rpc) {
-    
+
     //	Indicate that a handle follows, pack the handle
-    
+
     rpc.packInt(Rpc.True);
     NFSHandle.packFileHandle(shareId, dirId, fileId, rpc, NFS.FileHandleSize);
   }
-  
+
   /**
    * Get the share id from the specified handle
-   * 
+   *
    * @param handle byte[]
    * @return int
    * @exception BadHandleException
@@ -4550,7 +4550,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Get the path for the specified handle
-   * 
+   *
    * @param sess NFSSrvSession
    * @param handle byte[]
    * @param tree TreeConnection
@@ -4634,13 +4634,13 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         }
       }
       else if ( NFSHandle.isDirectoryHandle(handle) && dirId == 0) {
-        
+
         //	Path is the root directory
-        
+
         path = "\\";
-        
+
         //	Add an entry to the cache
-        
+
         details.getFileIdCache().addPath(dirId, path);
       }
     }
@@ -4658,7 +4658,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Get the handle for the specified directory handle and file name
-   * 
+   *
    * @param sess NFSSrvSession
    * @param handle byte[]
    * @param tree TreeConnection
@@ -4690,9 +4690,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       path = details.getFileIdCache().findPath(dirId);
     }
     else if ( NFSHandle.isShareHandle(handle)) {
-        
+
         // Use the root path
-        
+
         dirId = 0;
         path = "\\";
     }
@@ -4700,21 +4700,21 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       throw new BadHandleException();
 
     byte[] fHandle = null;
-    
+
     try {
-        
+
         //  Get the disk interface from the disk driver
 
         DiskInterface disk = (DiskInterface) tree.getSharedDevice().getInterface();
 
         // Build the path to the file
-        
+
         String filePath = generatePath( path, fname);
-        
+
         //  Check if the file/directory exists
 
         int fsts = disk.fileExists(sess, tree, filePath);
-        
+
         if ( fsts == FileStatus.FileExists || fsts == FileStatus.DirectoryExists) {
 
             //  Get file information for the path
@@ -4722,13 +4722,13 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
             FileInfo finfo = disk.getFileInformation(sess, tree, filePath);
 
             if (finfo != null) {
-                
+
                 // Get the file id
-                
+
                 fileId = finfo.getFileId();
-                
+
                 // Allocate and build the file handle
-                
+
                 fHandle = new byte[NFS.FileHandleSize];
                 if ( finfo.isDirectory())
                     NFSHandle.packDirectoryHandle( shareId, dirId, fHandle);
@@ -4739,20 +4739,20 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     }
     catch (Exception ex) {
     }
-    
+
     // Check if the file handle is valid
-    
+
     if ( fHandle == null)
         throw new BadHandleException();
-    
+
     // Return the file handle
-    
+
     return fHandle;
   }
-  
+
   /**
    * Get the file id from the specified handle
-   * 
+   *
    * @param handle byte[]
    * @return String
    * @exception BadHandleException
@@ -4795,12 +4795,12 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Find, or open, the required network file using the file handle
-   * 
+   *
    * @param sess NFSSrvSession
    * @param handle byte[]
    * @param conn TreeConnection
    * @param readOnly boolean
-   * @return NetworkFile 
+   * @return NetworkFile
    * @exception BadHandleException		If the handle is not valid
    * @exception StaleHandleException  If the file id cannot be converted to a path
    */
@@ -4838,10 +4838,10 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         try {
 
         	// Close the existing file, if switching from read-only to writeable access
-      	  
+
         	if ( file != null)
         		file.closeFile();
-        	
+
         	//	Get the disk interface from the connection
 
         	DiskInterface disk = (DiskInterface) conn.getSharedDevice().getInterface();
@@ -4865,7 +4865,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         }
       }
       else if ( file.getGrantedAccess() == NetworkFile.READONLY && readOnly == false) {
-    	  
+
       }
     }
 
@@ -4876,11 +4876,11 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Find the required network file using the file handle, or return null if the file has not been opened
-   * 
+   *
    * @param sess NFSSrvSession
    * @param handle byte[]
    * @param conn TreeConnection
-   * @return NetworkFile 
+   * @return NetworkFile
    * @exception BadHandleException      If the handle is not valid
    * @exception StaleHandleException  If the file id cannot be converted to a path
    */
@@ -4915,7 +4915,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Return the tree connection for the specified share index
-   * 
+   *
    * @param sess NFSSrvSession
    * @param shareId int
    * @return TreeConnection
@@ -4932,15 +4932,15 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
       TreeConnection template = m_connections.findConnection(shareId);
       if (template == null) {
-        
+
         // Check if any new shares have been added and try to find the required connection again
-        
+
         if ( checkForNewShares() > 0)
           template = m_connections.findConnection(shareId);
       }
 
       // Matching tree connection not found, handle is not valid
-      
+
       if ( template == null)
         throw new BadHandleException();
 
@@ -4974,9 +4974,9 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         sess.addConnection(conn);
       }
       else {
-        
+
         // No access control manager, allow full access to the filesystem
-        
+
         conn = new TreeConnection(template.getSharedDevice());
         conn.setPermission(AccessControl.ReadWrite);
 
@@ -4993,7 +4993,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Pack a weak cache consistency structure
-   * 
+   *
    * @param rpc RpcPacket
    * @param finfo FileInfo
    */
@@ -5034,7 +5034,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Check if a file path contains any directory components
-   * 
+   *
    * @param fpath String
    * @return boolean
    */
@@ -5063,13 +5063,13 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   /**
    * Pack the pre operation weak cache consistency data for the specified
    * file/directory
-   * 
+   *
    * @param sess NFSSrvSession
    * @param finfo FileInfo
    * @param rpc RpcPacket
    */
   protected final void packPreOpAttr(NFSSrvSession sess, FileInfo finfo, RpcPacket rpc) {
-    
+
     //	Pack the file information
 
     if ( finfo != null)
@@ -5077,11 +5077,11 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
     else
       rpc.packInt(Rpc.False);
   }
-  
+
   /**
    * Pack the pre operation weak cache consistency data for the specified
    * file/directory
-   * 
+   *
    * @param sess NFSSrvSession
    * @param conn TreeConnection
    * @param fhandle byte[]
@@ -5114,7 +5114,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   /**
    * Pack the post operation weak cache consistency data for the specified
    * file/directory
-   * 
+   *
    * @param sess NFSSrvSession
    * @param conn TreeConnection
    * @param fhandle byte[]
@@ -5152,7 +5152,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
   /**
    * Pack the post operation weak cache consistency data for the specified
    * file/directory
-   * 
+   *
    * @param sess NFSSrvSession
    * @param finfo FileInfo
    * @param fileSysId int
@@ -5177,7 +5177,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
    * Generate a share relative path from the directory path and argument path.
    * The argument path may contain the value '..' in which case the directory
    * path will be stipped back one level.
-   * 
+   *
    * @param dirPath String
    * @param argPath String
    * @return String
@@ -5222,7 +5222,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       pathBuf.append(dirPath);
       if (dirPath.endsWith("\\") == false)
         pathBuf.append("\\");
-      
+
       if ( argPath.equals( ".") == false)
           pathBuf.append(argPath);
     }
@@ -5231,21 +5231,21 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
     return pathBuf.toString();
   }
-  
+
   /**
    * Check for new shared devices and add them to the share and tree connection lists
-   * 
+   *
    * @return int
    */
   protected final int checkForNewShares() {
-    
+
     //  Scan the shared device list and check for new shared devices
-    
+
     SharedDeviceList shareList = getShareMapper().getShareList(getConfiguration().getServerName(), null, false);
     Enumeration<SharedDevice> shares = shareList.enumerateShares();
 
     int newShares = 0;
-    
+
     while (shares.hasMoreElements()) {
 
       //  Get the shared device
@@ -5258,7 +5258,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
       if (share != null && share.getType() == ShareType.DISK) {
 
         //  Check if the filesystem driver has file id support
-        
+
         boolean fileIdSupport = false;
         try {
           if ( share.getInterface() instanceof FileIdInterface)
@@ -5266,40 +5266,40 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
         }
         catch (InvalidDeviceInterfaceException ex) {
         }
-        
+
         //  Check if the share is already in the share/tree connection lists
-        
+
         if ( m_shareDetails.findDetails(share.getName()) == null) {
-          
+
           // Add the new share details
 
           m_shareDetails.addDetails(new ShareDetails(share.getName(), fileIdSupport));
           m_connections.addConnection(new TreeConnection(share));
-          
+
           // Update the new share count
-          
+
           newShares++;
         }
       }
     }
 
     // Return the count of new shares added
-    
+
     return newShares;
   }
-  
+
   /**
    * Return the next session id
-   * 
+   *
    * @return int
    */
   protected final synchronized int getNextSessionId() {
     return m_sessId++;
   }
-  
+
   /**
    * Return the configured RPC authenticator
-   * 
+   *
    * @return RpcAuthenticator
    */
   protected final RpcAuthenticator getRpcAuthenticator() {
@@ -5313,16 +5313,16 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 
   /**
    * Inform session listeners that a new session has been created
-   * 
+   *
    * @param sess SrvSession
    */
   protected final void fireSessionOpened(SrvSession sess) {
     fireSessionOpenEvent(sess);
   }
-  
+
   /**
    * Inform session listeners that a session has been closed
-   * 
+   *
    * @param sess SrvSession
    */
   protected final void fireSessionClosed(SrvSession sess) {

@@ -27,10 +27,10 @@ import org.alfresco.jlan.smb.dcerpc.info.WorkstationInfo;
 
 /**
  * Workstation information class
- * 
+ *
  * <p>
  * The WorkStationInfo class contains the basic details of a remote workstation.
- * 
+ *
  * @author gkspencer
  */
 public class RAPWorkstationInfo extends WorkstationInfo implements RAPReadable, Serializable {
@@ -43,7 +43,7 @@ public class RAPWorkstationInfo extends WorkstationInfo implements RAPReadable, 
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */
@@ -53,7 +53,7 @@ public class RAPWorkstationInfo extends WorkstationInfo implements RAPReadable, 
 
 	/**
 	 * Load the workstation information from the vector of objects
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */

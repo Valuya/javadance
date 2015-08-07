@@ -35,10 +35,10 @@ public class ServerActiveException extends Exception {
   public ServerActiveException() {
     super();
   }
-  
+
   /**
    * ServerActiveException constructor.
-   * 
+   *
    * @param s java.lang.String
    */
   public ServerActiveException(String s) {

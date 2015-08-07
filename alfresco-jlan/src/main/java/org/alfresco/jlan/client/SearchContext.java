@@ -24,15 +24,15 @@ import org.alfresco.jlan.smb.SMBException;
 
 /**
  * SMB search context class
- * 
+ *
  * <p>
  * Holds the details of an in progress folder search on a remote file server.
- * 
+ *
  * <p>
  * For large folder listings the search will be split up over a number of SMB/CIFS requests. The
  * SearchContext derived class is used to hold the search state between requests to the remote file
  * server.
- * 
+ *
  * @author gkspencer
  */
 public abstract class SearchContext {
@@ -55,7 +55,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess Disk session that the search is associated with
 	 */
 	protected SearchContext(DiskSession sess) {
@@ -64,7 +64,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Return the next file in this search as an SMB file information object.
-	 * 
+	 *
 	 * @return FileInfo object, or null if there are no more files.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -74,7 +74,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Return the next file name in this search.
-	 * 
+	 *
 	 * @return Next file name string, or null if there are no more files.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -85,7 +85,7 @@ public abstract class SearchContext {
 	/**
 	 * Start a new search using the specified file name string and search attributes, return the
 	 * specified file information level
-	 * 
+	 *
 	 * @param fname File name string, may contain wilcards.
 	 * @param attr File attributes bit mask. @see org.alfresco.jlan.server.filesys.FileAttribute
 	 * @param level File information level to return. @see org.alfresco.jlan.smb.FileInfoLevel
@@ -97,7 +97,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Return the associated disk session
-	 * 
+	 *
 	 * @return DiskSession
 	 */
 	protected final DiskSession getSession() {
@@ -106,7 +106,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Return the search path
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getSearchPath() {
@@ -115,7 +115,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Return the search attributes
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final int getSearchAttributes() {
@@ -124,7 +124,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Return the required information level
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final int getInformationLevel() {
@@ -133,7 +133,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Set the search path
-	 * 
+	 *
 	 * @param path String
 	 */
 	protected final void setSearchPath(String path) {
@@ -142,7 +142,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Set the search attributes
-	 * 
+	 *
 	 * @param attr int
 	 */
 	protected final void setSearchAttributes(int attr) {
@@ -151,7 +151,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Set the information level
-	 * 
+	 *
 	 * @param level int
 	 */
 	protected final void setInformationLevel(int level) {
@@ -160,7 +160,7 @@ public abstract class SearchContext {
 
 	/**
 	 * Set the search parameters
-	 * 
+	 *
 	 * @param path String
 	 * @param attr int
 	 * @param level int

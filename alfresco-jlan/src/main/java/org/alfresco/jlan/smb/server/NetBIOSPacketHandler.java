@@ -27,7 +27,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * NetBIOS Protocol Packet Handler Class
- * 
+ *
  * @author gkspencer
  */
 public class NetBIOSPacketHandler extends SocketPacketHandler {
@@ -38,7 +38,7 @@ public class NetBIOSPacketHandler extends SocketPacketHandler {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sock Socket
 	 * @param packetPool CIFSPacketPool
 	 * @exception IOException If a network error occurs
@@ -49,7 +49,7 @@ public class NetBIOSPacketHandler extends SocketPacketHandler {
 
 	/**
 	 * Read a packet from the input stream
-	 * 
+	 *
 	 * @return SMBSrvPacket
 	 * @exception IOException If a network error occurs
 	 */
@@ -86,9 +86,9 @@ public class NetBIOSPacketHandler extends SocketPacketHandler {
 
 		// Get a packet from the pool to hold the request data, allow for the NetBIOS header length
 		// so that the CIFS request lines up with other implementations.
-		
+
 		SMBSrvPacket pkt = getPacketPool().allocatePacket( dlen + RFCNetBIOSProtocol.HEADER_LEN);
-		
+
 		// Read the data part of the packet into the users buffer, this may take
 		// several reads
 
@@ -96,48 +96,48 @@ public class NetBIOSPacketHandler extends SocketPacketHandler {
 		int totlen = offset;
 
 		try {
-			
+
 			while (dlen > 0) {
-	
+
 				// Read the data
-	
+
 				len = readBytes( pkt.getBuffer(), offset, dlen);
-	
+
 				// Check if the connection has been closed
-	
+
 				if ( len == -1)
 					throw new IOException("Connection closed (request read)");
-	
+
 				// Update the received length and remaining data length
-	
+
 				totlen += len;
 				dlen -= len;
-	
+
 				// Update the user buffer offset as more reads will be required
 				// to complete the data read
-	
+
 				offset += len;
-	
+
 			}
 		}
 		catch (Throwable ex) {
-			
+
 			// Release the packet back to the pool
-			
+
 			getPacketPool().releasePacket( pkt);
-			
+
 			// Rethrow the exception
 			rethrowException(ex);
 		}
 
 		// Copy the NetBIOS header to the request buffer
-		
+
 		System.arraycopy( m_headerBuf, 0, pkt.getBuffer(), 0, 4);
-		
+
 		// Set the received request length
-		
+
 		pkt.setReceivedLength( totlen);
-		
+
 		// Return the received packet
 
 		return pkt;
@@ -145,7 +145,7 @@ public class NetBIOSPacketHandler extends SocketPacketHandler {
 
 	/**
 	 * Send a packet to the output stream
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 * @param len int
 	 * @param writeRaw boolean
@@ -155,38 +155,38 @@ public class NetBIOSPacketHandler extends SocketPacketHandler {
 		throws IOException {
 
 		// Update the NetBIOS header, unless this is  write raw request
-		
+
 		byte[] buf = pkt.getBuffer();
-		 
+
 		if ( writeRaw == false) {
-			
+
 			// Fill in the NetBIOS message header, this is already allocated as part of the users buffer.
-	
+
 			buf[0] = (byte) RFCNetBIOSProtocol.SESSION_MESSAGE;
 			buf[1] = (byte) 0;
-	
+
 			if ( len > 0xFFFF) {
-	
+
 				// Set the >64K flag
-	
+
 				buf[1] = (byte) 0x01;
-	
+
 				// Set the low word of the data length
-	
+
 				DataPacker.putShort((short) (len & 0xFFFF), buf, 2);
 			}
 			else {
-	
+
 				// Set the data length
-	
+
 				DataPacker.putShort((short) len, buf, 2);
 			}
-			
+
 			// Update the length to include the NetBIOS header
-			
+
 			len += RFCNetBIOSProtocol.HEADER_LEN;
 		}
-		
+
 		// Output the data packet
 
 		writeBytes(buf, 0, len);

@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * RPC Packet Handler Interface
- * 
+ *
  * <p>Interface used by an RpcPacket to send a response RPC via either TCP or UDP.
  *
  * @author gkspencer
@@ -32,7 +32,7 @@ public interface RpcPacketHandler {
 
   /**
    * Send an RPC response
-   * 
+   *
    * @param rpc RpcPacket
    * @exception IOException
    */

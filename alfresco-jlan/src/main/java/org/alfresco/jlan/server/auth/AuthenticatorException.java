@@ -37,7 +37,7 @@ public class AuthenticatorException extends Exception
 
   /**
    * Class constructor.
-   * 
+   *
    * @param s String
    */
   public AuthenticatorException(String s) {

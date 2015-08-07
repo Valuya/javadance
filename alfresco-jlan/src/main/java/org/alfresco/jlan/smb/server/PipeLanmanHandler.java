@@ -33,7 +33,7 @@ import org.alfresco.jlan.util.DataBuffer;
 
 /**
  * IPC$ Transaction handler for \PIPE\LANMAN requests.
- * 
+ *
  * @author gkspencer
  */
 class PipeLanmanHandler {
@@ -73,7 +73,7 @@ class PipeLanmanHandler {
 
 	/**
 	 * Process a \PIPE\LANMAN transaction request.
-	 * 
+	 *
 	 * @param tbuf Transaction setup, parameter and data buffers
 	 * @param sess SMB server session that received the transaction.
 	 * @param trans Packet to use for reply
@@ -152,17 +152,17 @@ class PipeLanmanHandler {
 
 		// Check if the transaction packet has allocated an associated packet from the pool, we need to copy the associated packet
 		// to the outer request packet so that it is released back to the pool.
-		
+
 		if ( tpkt.hasAssociatedPacket()) {
 
  				Debug.println("[SMB] PipeLanManHandler allocated associated packet, len=" + tpkt.getAssociatedPacket().getBufferLength());
-			
+
 			// Copy the associated packet to the outer request packet
-			
+
 			trans.setAssociatedPacket( tpkt.getAssociatedPacket());
 			tpkt.setAssociatedPacket( null);
 		}
-		
+
 		// Return the transaction processed status
 
 		return processed;
@@ -170,7 +170,7 @@ class PipeLanmanHandler {
 
 	/**
 	 * Process a NetServerGetInfo transaction request.
-	 * 
+	 *
 	 * @param sess Server session that received the request.
 	 * @param tbuf Transaction buffer
 	 * @param prmDesc Parameter descriptor string.
@@ -261,7 +261,7 @@ class PipeLanmanHandler {
 
 	/**
 	 * Process a NetShareEnum transaction request.
-	 * 
+	 *
 	 * @param sess Server session that received the request.
 	 * @param tbuf Transaction buffer
 	 * @param prmDesc Parameter descriptor string.
@@ -363,7 +363,7 @@ class PipeLanmanHandler {
 
 	/**
 	 * Process a NetShareGetInfo transaction request.
-	 * 
+	 *
 	 * @param sess Server session that received the request.
 	 * @param tbuf Transaction buffer
 	 * @param prmDesc Parameter descriptor string.
@@ -482,7 +482,7 @@ class PipeLanmanHandler {
 
 	/**
 	 * Process a NetWkstaGetInfo transaction request.
-	 * 
+	 *
 	 * @param sess Server session that received the request.
 	 * @param tbuf Transaction buffer
 	 * @param prmDesc Parameter descriptor string.
@@ -599,7 +599,7 @@ class PipeLanmanHandler {
 
 	/**
 	 * Process a NetPrintQGetInfo transaction request.
-	 * 
+	 *
 	 * @param sess Server session that received the request.
 	 * @param tbuf Transaction buffer
 	 * @param prmDesc Parameter descriptor string.

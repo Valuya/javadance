@@ -28,14 +28,14 @@ import org.alfresco.jlan.smb.SMBException;
 
 /**
  * SMB core protocol print session class.
- * 
+ *
  * @author gkspencer
  */
 class CorePrintSession extends PrintSession {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param shr Remote server details.
 	 * @param dialect SMB dialect that this session is using
 	 */
@@ -46,7 +46,7 @@ class CorePrintSession extends PrintSession {
 	/**
 	 * Return an SMBPrintQueue object that can be used to list the pending print jobs in the print
 	 * servers queue.
-	 * 
+	 *
 	 * @param idx Specifies the starting index of the first entry in the queue to be returned.
 	 * @param cnt Number of entries to return, may be a positive value for a forward search and
 	 *            negative for a backward search.
@@ -61,7 +61,7 @@ class CorePrintSession extends PrintSession {
 
 	/**
 	 * Open a spool file on the remote print server.
-	 * 
+	 *
 	 * @param id Identifier string for this print request.
 	 * @param mode Print mode, either TextMode or GraphicsMode.
 	 * @param setuplen Length of data in the start of the spool file that is printer setup code.

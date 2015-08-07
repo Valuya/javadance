@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys.cache.cluster;
 
 /**
  * Cluster File Open Count Class
- * 
+ *
  * <p>Keeps track of the file open count for a remote node
  *
  * @author gkspencer
@@ -29,20 +29,20 @@ package org.alfresco.jlan.server.filesys.cache.cluster;
 public class ClusterFileOpenCount {
 
 	// Cluster node details
-	
+
 	private ClusterNode m_node;
-	
+
 	// Remote file open count
-	
+
 	private int m_openCount;
-	
+
 	// Link to next file open count
-	
+
 	private ClusterFileOpenCount m_link;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param node ClusterNode
 	 * @param count int
 	 */
@@ -50,78 +50,78 @@ public class ClusterFileOpenCount {
 		m_node = node;
 		m_openCount = count;
 	}
-	
+
 	/**
 	 * Return the cluster node
-	 * 
+	 *
 	 * @return ClusterNode
 	 */
 	public final ClusterNode getNode() {
 		return m_node;
 	}
-	
+
 	/**
 	 * Return the remote file open count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getOpenCount() {
 		return m_openCount;
 	}
-	
+
 	/**
 	 * Check if there is a linked file open count object
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasLink() {
 		return m_link != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the linked file open count object
-	 * 
+	 *
 	 * @return ClusterFileOpenCount
 	 */
 	public final ClusterFileOpenCount getLink() {
 		return m_link;
 	}
-	
+
 	/**
 	 * Set the file open count
-	 * 
+	 *
 	 * @param count int
 	 */
 	public final void setOpenCount( int count) {
 		m_openCount = count;
 	}
-	
+
 	/**
 	 * Set, or clear, the linked file open count object
-	 * 
+	 *
 	 * @param clusterCount ClusterFileOpenCount
 	 */
 	public final void setLink( ClusterFileOpenCount clusterCount) {
 		m_link = clusterCount;
 	}
-	
+
 	/**
 	 * Return the cluster file open count details as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[");
 		str.append( getNode().getName());
 		str.append( ":");
 		str.append( getOpenCount());
-		
+
 		if ( hasLink())
 			str.append(" ->");
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

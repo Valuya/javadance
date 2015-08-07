@@ -25,13 +25,13 @@ import java.util.List;
 
 /**
  * SMB server list class
- * 
+ *
  * <p>
  * The ServerList contains a list of ServerInfo objects.
- * 
+ *
  * <p>
  * An ServerList is returned by the AdminSession.getServerList () method.
- * 
+ *
  * @author gkspencer
  */
 public class ServerList implements Serializable {
@@ -49,7 +49,7 @@ public class ServerList implements Serializable {
 
 	/**
 	 * Add a server information object to the list.
-	 * 
+	 *
 	 * @param srvinf ServerInfo to add to the list.
 	 */
 	public final void addServerInfo(RAPServerInfo srvinf) {
@@ -58,7 +58,7 @@ public class ServerList implements Serializable {
 
 	/**
 	 * Clear all server information objects from the list
-	 * 
+	 *
 	 */
 	public final void clearList() {
 		m_list.clear();
@@ -66,7 +66,7 @@ public class ServerList implements Serializable {
 
 	/**
 	 * Get a server information object from the list
-	 * 
+	 *
 	 * @param idx Index of the server information to return
 	 * @return ServerInfo for the required server.
 	 * @exception java.lang.ArrayIndexOutOfBoundsException If the index is invalid
@@ -86,7 +86,7 @@ public class ServerList implements Serializable {
 
 	/**
 	 * Get the number of servers in the list
-	 * 
+	 *
 	 * @return Number of ServerInfo objects in the list.
 	 */
 	public final int NumberOfServers() {

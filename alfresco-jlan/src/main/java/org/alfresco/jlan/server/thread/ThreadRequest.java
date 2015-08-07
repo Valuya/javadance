@@ -21,9 +21,9 @@ package org.alfresco.jlan.server.thread;
 
 /**
  * Thread Request Class
- * 
+ *
  * <p>Runnable item that can be queued to a thread pool for processing.
- * 
+ *
  * @author gkspencer
  */
 public interface ThreadRequest {

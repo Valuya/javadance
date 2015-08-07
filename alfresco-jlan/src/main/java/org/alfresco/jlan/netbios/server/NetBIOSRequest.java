@@ -23,7 +23,7 @@ import org.alfresco.jlan.netbios.NetBIOSName;
 
 /**
  * NetBIOS Request Class
- * 
+ *
  * <p>Contains the details of NetBIOS server request, such as an add name request.
  *
  * @author gkspencer
@@ -31,44 +31,44 @@ import org.alfresco.jlan.netbios.NetBIOSName;
 class NetBIOSRequest {
 
 	//	Request types
-	
+
 	public final static int AddName			= 0;
 	public final static int DeleteName	= 1;
 	public final static int RefreshName	= 2;
-	
+
 	//	Default retry count and interval
-	
+
 	public final static int DefaultRetries		= 5;
 	public final static long DefaultInterval	= 2000;	//	ms
 
 	//	Requets type strings
-	
+
 	private final static String[] _typeNames = {"AddName", "DelName", "RefreshName"};
-		
+
 	//	Request type
-	
+
 	private int m_type;
-	
+
 	//	NetBIOS name details
-	
+
 	private NetBIOSName m_nbName;
-	
+
 	//	Retry count and interval
-	
+
 	private int m_retry;
 	private long m_retryIntvl;
-	
+
 	//	Response status
-	
+
 	private boolean m_error;
-	
+
 	//	Transaction id for this request
-	
+
 	private int m_tranId;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param typ int
 	 * @param nbName NetBIOSName
 	 * @param tranId int
@@ -77,16 +77,16 @@ class NetBIOSRequest {
 		m_type   = typ;
 		m_nbName = nbName;
 		m_tranId = tranId;
-		
+
 		m_retry      = DefaultRetries;
 		m_retryIntvl = DefaultInterval;
 
 		m_error = false;
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param typ int
 	 * @param nbName NetBIOSName
 	 * @param tranId int
@@ -96,16 +96,16 @@ class NetBIOSRequest {
 		m_type   = typ;
 		m_nbName = nbName;
 		m_tranId = tranId;
-		
+
 		m_retry      = retry;
 		m_retryIntvl = DefaultInterval;
 
 		m_error = false;
 	}
-	
+
 	/**
 	 * Return the request type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int isType() {
@@ -114,7 +114,7 @@ class NetBIOSRequest {
 
 	/**
 	 * Return the type as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTypeAsString() {
@@ -122,10 +122,10 @@ class NetBIOSRequest {
 			return "";
 		return _typeNames[m_type];
 	}
-	
+
 	/**
 	 * Return the NetBIOS name details
-	 * 
+	 *
 	 * @return NetBIOSName
 	 */
 	public final NetBIOSName getNetBIOSName() {
@@ -134,16 +134,16 @@ class NetBIOSRequest {
 
 	/**
 	 * Return the retry count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getRetryCount() {
 		return m_retry;
 	}
-	
+
 	/**
 	 * Return the retry interval
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getRetryInterval() {
@@ -152,7 +152,7 @@ class NetBIOSRequest {
 
 	/**
 	 * Return the transaction id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getTransactionId() {
@@ -161,25 +161,25 @@ class NetBIOSRequest {
 
 	/**
 	 * Check if the request has an error status
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasErrorStatus() {
 		return m_error;
 	}
-			
+
 	/**
 	 * Decrement the retry count
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final int decrementRetryCount() {
 		return m_retry--;
 	}
-	
+
 	/**
 	 * Set the error status
-	 * 
+	 *
 	 * @param sts boolean
 	 */
 	protected final void setErrorStatus(boolean sts) {
@@ -188,16 +188,16 @@ class NetBIOSRequest {
 
 	/**
 	 * Set the request retry count
-	 * 
+	 *
 	 * @param retry int
 	 */
 	public final void setRetryCount(int retry) {
-		m_retry = retry;	
+		m_retry = retry;
 	}
-	
+
 	/**
 	 * Set the retry interval, in milliseconds
-	 * 
+	 *
 	 * @param interval long
 	 */
 	public final void setRetryInterval(long interval) {
@@ -206,12 +206,12 @@ class NetBIOSRequest {
 
 	/**
 	 * Return the request as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		
+
 		str.append("[");
 		str.append(getTypeAsString());
 		str.append(":");
@@ -223,7 +223,7 @@ class NetBIOSRequest {
 		str.append(",");
 		str.append(getTransactionId());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

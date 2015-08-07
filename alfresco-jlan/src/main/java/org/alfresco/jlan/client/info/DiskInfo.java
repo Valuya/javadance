@@ -26,15 +26,15 @@ import org.alfresco.jlan.smb.PCShare;
  *
  *  <p>The DiskInfo class contains the details of a remote disk share. This
  *  class is returned by the DiskSession.getDiskInformation () method.
- * 
+ *
  * @see org.alfresco.jlan.client.DiskSession
- * 
+ *
  * @author gkspencer
  */
 public class DiskInfo implements java.io.Serializable {
 
 	//	Node/share details
-	
+
 	protected String m_nodename;
 	protected String m_share;
 
@@ -56,7 +56,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param shr PCShare
 	 * @param totunits int
 	 * @param blkunit int
@@ -78,7 +78,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param shr PCShare
 	 * @param totunits long
 	 * @param blkunit int
@@ -100,7 +100,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the block size, in bytes.
-	 * 
+	 *
 	 * @return Block size in bytes.
 	 */
 	public final int getBlockSize() {
@@ -109,7 +109,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the number of blocks per allocation unit.
-	 * 
+	 *
 	 * @return Number of blocks per allocation unit.
 	 */
 	public final int getBlocksPerAllocationUnit() {
@@ -118,7 +118,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the disk free space size in bytes
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getDiskFreeSizeBytes() {
@@ -127,7 +127,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the disk free space in kilobytes.
-	 * 
+	 *
 	 * @return Remote disk free space in kilobytes.
 	 */
 	public final int getDiskFreeSizeKb() {
@@ -136,7 +136,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the disk free space in megabytes.
-	 * 
+	 *
 	 * @return Remtoe disk free space in megabytes.
 	 */
 	public final int getDiskFreeSizeMb() {
@@ -145,7 +145,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the disk total size in bytes
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getDiskSizeBytes() {
@@ -154,7 +154,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the disk size in kilobytes.
-	 * 
+	 *
 	 * @return Remote disk size in kilobytes.
 	 */
 	public final int getDiskSizeKb() {
@@ -163,7 +163,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the disk size in megabytes.
-	 * 
+	 *
 	 * @return Remote disk size in megabytes.
 	 */
 	public final int getDiskSizeMb() {
@@ -172,7 +172,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the number of free units on this share.
-	 * 
+	 *
 	 * @return Number of free units.
 	 */
 	public final long getFreeUnits() {
@@ -181,7 +181,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the node name.
-	 * 
+	 *
 	 * @return Node name of the remote server.
 	 */
 	public final String getNodeName() {
@@ -190,7 +190,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the share name.
-	 * 
+	 *
 	 * @return Remote share name.
 	 */
 	public final String getShareName() {
@@ -199,7 +199,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Get the total number of allocation units.
-	 * 
+	 *
 	 * @return The total number of allocation units.
 	 */
 	public final long getTotalUnits() {
@@ -208,7 +208,7 @@ public class DiskInfo implements java.io.Serializable {
 
 	/**
 	 * Return the disk information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

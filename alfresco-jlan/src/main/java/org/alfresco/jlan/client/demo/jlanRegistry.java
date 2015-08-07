@@ -31,10 +31,10 @@ import org.alfresco.jlan.util.*;
 
 /**
  * jlanRegistry Application
- * 
+ *
  * <p>
  * Display remote registry keys/values.
- * 
+ *
  * @author gkspencer
  */
 public class jlanRegistry extends jlanApp {
@@ -56,7 +56,7 @@ public class jlanRegistry extends jlanApp {
 
 	/**
 	 * Display the usage information for the command
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
@@ -73,7 +73,7 @@ public class jlanRegistry extends jlanApp {
 
 	/**
 	 * Perform the main command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @throws Exception
 	 */
@@ -194,7 +194,7 @@ public class jlanRegistry extends jlanApp {
 
 	/**
 	 * Validate the command line parameters
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -283,7 +283,7 @@ public class jlanRegistry extends jlanApp {
 
 	/**
 	 * Return the root key id
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final int getRootKey() {
@@ -292,7 +292,7 @@ public class jlanRegistry extends jlanApp {
 
 	/**
 	 * Check if the subkey path is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected final boolean hasSubkeyPath() {
@@ -303,7 +303,7 @@ public class jlanRegistry extends jlanApp {
 
 	/**
 	 * Return the sub key path
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getSubkeyPath() {
@@ -312,7 +312,7 @@ public class jlanRegistry extends jlanApp {
 
 	/**
 	 * Set the root key id
-	 * 
+	 *
 	 * @param root int
 	 */
 	protected final void setRootKey(int root) {
@@ -321,7 +321,7 @@ public class jlanRegistry extends jlanApp {
 
 	/**
 	 * Set the sub key path
-	 * 
+	 *
 	 * @param subkey String
 	 */
 	protected final void setSubkeyPath(String subkey) {
@@ -330,7 +330,7 @@ public class jlanRegistry extends jlanApp {
 
 	/**
 	 * Run the jlanRegistry command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public static void main(String[] args) {

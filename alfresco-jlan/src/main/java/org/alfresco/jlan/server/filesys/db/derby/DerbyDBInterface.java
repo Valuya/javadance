@@ -70,11 +70,11 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * Derby Base Database Interface Class
- * 
+ *
  * <p>
  * Derby (formerly Cloudscape) specific implementation of the database interface used by the
  * database filesystem driver (DBDiskDriver).
- * 
+ *
  * @author gkspencer
  */
 public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterface, DBDataInterface, DBObjectIdInterface {
@@ -106,7 +106,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the database interface name
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getDBInterfaceName() {
@@ -115,7 +115,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get the supported database features mask
-	 * 
+	 *
 	 * @return int
 	 */
 	protected int getSupportedFeatures() {
@@ -127,7 +127,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Initialize the database interface
-	 * 
+	 *
 	 * @param dbCtx DBDeviceContext
 	 * @param params ConfigElement
 	 * @exception InvalidConfigurationException
@@ -402,7 +402,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Check if a file/folder exists
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fname String
 	 * @return FileStatus.NotExist, FileStatus.FileExists or FileStatus.DirectoryExists
@@ -489,7 +489,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Create a file record for a new file or folder
-	 * 
+	 *
 	 * @param fname String
 	 * @param dirId int
 	 * @param params FileOpenParams
@@ -577,7 +577,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 				stmt = conn.prepareStatement( "SELECT FileId FROM " + getFileSysTableName() + " WHERE FileName = ? AND DirId = ?");
 				stmt.setString( 1, fname);
 				stmt.setInt( 2, dirId);
-				
+
 				ResultSet rs2 = stmt.executeQuery();
 
 				if ( rs2.next())
@@ -662,7 +662,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Create a stream record for a new file stream
-	 * 
+	 *
 	 * @param sname String
 	 * @param fid int
 	 * @return int
@@ -764,7 +764,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a file or folder record
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param markOnly boolean
@@ -835,7 +835,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a file stream record
-	 * 
+	 *
 	 * @param fid int
 	 * @param stid int
 	 * @param markOnly boolean
@@ -901,7 +901,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Set file information for a file or folder
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param finfo FileInfo
@@ -1074,7 +1074,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Set information for a file stream
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param stid int
@@ -1189,7 +1189,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get the id for a file/folder, or -1 if the file/folder does not exist.
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fname String
 	 * @param dirOnly boolean
@@ -1251,12 +1251,12 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 			if ( Debug.EnableInfo && hasSQLDebug())
 				Debug.println("[Derby] Get file id SQL: " + sql.toString());
 
-			// Use a prepared statement 
-			
+			// Use a prepared statement
+
 			stmt = conn.prepareStatement( sql.toString());
 			stmt.setInt(1, dirId);
 			stmt.setString(2, fname);
-			
+
 			// Run the database search
 
 			ResultSet rs = stmt.executeQuery();
@@ -1310,7 +1310,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get information for a file or folder
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param infoLevel int
@@ -1495,7 +1495,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get information for a file stream
-	 * 
+	 *
 	 * @param fid int
 	 * @param stid int
 	 * @param infoLevel int
@@ -1639,7 +1639,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the list of streams for the specified file
-	 * 
+	 *
 	 * @param fid int
 	 * @param infoLevel int
 	 * @return StreamInfoList
@@ -1795,7 +1795,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Rename a file or folder, may also change the parent directory.
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param newName String
@@ -1873,7 +1873,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Rename a file stream
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @param stid int
@@ -1889,7 +1889,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 	/**
 	 * Return the retention period expiry date/time for the specified file, or zero if the
 	 * file/folder is not under retention.
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @return RetentionDetails
@@ -1957,7 +1957,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Start a directory search
-	 * 
+	 *
 	 * @param dirId int
 	 * @param searchPath String
 	 * @param attrib int
@@ -1984,7 +1984,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 		WildCard wildCard = null;
 		String searchStr = null;
-		
+
 		if ( WildCard.containsWildcards(searchPath)) {
 
 			// For the '*.*' and '*' wildcards the SELECT will already return all files/directories
@@ -1995,9 +1995,9 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 			if ( searchPath.endsWith("\\*.*") == false && searchPath.endsWith("\\*") == false) {
 
 				// Use a wildcard match either before or after the search string
-				
+
 				sql.append(" AND FileName LIKE(?)");
-				
+
 				// Create a wildcard search pattern
 
 				wildCard = new WildCard(paths[1], true);
@@ -2009,7 +2009,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 					// Set the search string
 
 					searchStr = wildCard.getMatchPart() + "%";
-					
+
 					// Clear the wildcard object, we do not want it to filter the search results
 
 					wildCard = null;
@@ -2037,7 +2037,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 		// Return directories first
 
 		sql.append(" ORDER BY DirectoryFile DESC");
-		
+
 		// Start the search
 
 		ResultSet rs = null;
@@ -2050,7 +2050,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 			conn = getConnection();
 			stmt = conn.prepareStatement( sql.toString(), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			
+
 			stmt.setInt( 1, dirId);
 			if ( searchStr != null)
 				stmt.setString( 2, searchStr);
@@ -2090,7 +2090,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the used file space, or -1 if not supported.
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getUsedFileSpace() {
@@ -2155,7 +2155,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Shutdown the database interface, release resources.
-	 * 
+	 *
 	 * @param context DBDeviceContext
 	 */
 	public void shutdownDatabase(DBDeviceContext context) {
@@ -2167,7 +2167,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Get the retention expiry date/time for a file/folder
-	 * 
+	 *
 	 * @param conn Connection
 	 * @param stmt Statement
 	 * @param fid int
@@ -2208,7 +2208,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Determine if the specified file/folder is still within an active retention period
-	 * 
+	 *
 	 * @param conn Connection
 	 * @param stmt Statement
 	 * @param fid int
@@ -2238,7 +2238,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Queue a file request.
-	 * 
+	 *
 	 * @param req FileRequest
 	 * @exception DBException
 	 */
@@ -2347,7 +2347,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 	/**
 	 * Perform a queue cleanup deleting temporary cache files that do not have an associated save or
 	 * transaction request.
-	 * 
+	 *
 	 * @param tempDir File
 	 * @param tempDirPrefix String
 	 * @param tempFilePrefix String
@@ -2514,7 +2514,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Check if the specified temporary file has a queued request.
-	 * 
+	 *
 	 * @param tempFile String
 	 * @param lastFile boolean
 	 * @return boolean
@@ -2601,7 +2601,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a file request from the pending queue.
-	 * 
+	 *
 	 * @param fileReq FileRequest
 	 * @exception DBException
 	 */
@@ -2671,7 +2671,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load a block of file request from the database into the specified queue.
-	 * 
+	 *
 	 * @param fromSeqNo int
 	 * @param reqType int
 	 * @param reqQueue FileRequestQueue
@@ -2770,7 +2770,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load a transaction request from the queue.
-	 * 
+	 *
 	 * @param tranReq MultiplFileRequest
 	 * @return MultipleFileRequest
 	 * @exception DBException
@@ -2852,7 +2852,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Create the prepared statements used by the file request queueing database
-	 * 
+	 *
 	 * @exception SQLException
 	 */
 	protected final void createQueueStatements()
@@ -2895,7 +2895,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the file data details for the specified file or stream.
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @return DBDataDetails
@@ -2986,7 +2986,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the maximum data fragment size supported
-	 * 
+	 *
 	 * @return long
 	 */
 	public long getMaximumFragmentSize() {
@@ -2995,7 +2995,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load file data from the database into a temporary/local file
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param fileSeg FileSegment
@@ -3155,7 +3155,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load Jar file data from the database into a temporary file
-	 * 
+	 *
 	 * @param jarId int
 	 * @param jarSeg FileSegment
 	 * @throws DBException
@@ -3272,7 +3272,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Save the file data from the temporary/local file to the database
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param fileSeg FileSegment
@@ -3468,7 +3468,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Save the file data from a Jar file to the database
-	 * 
+	 *
 	 * @param jarPath String
 	 * @param fileList DBDataDetailsList
 	 * @return int
@@ -3583,7 +3583,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete the file data for the specified file/stream
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @throws DBException
@@ -3657,7 +3657,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete the file data for the specified Jar file
-	 * 
+	 *
 	 * @param jarId int
 	 * @throws DBException
 	 * @throws IOException
@@ -3725,7 +3725,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Create a file id to object id mapping
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param objectId String
@@ -3806,7 +3806,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Load the object id for the specified file id
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @return String
@@ -3880,7 +3880,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a file id/object id mapping
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param objectId String
@@ -3944,7 +3944,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Return the data for a symbolic link
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @return String
@@ -3958,7 +3958,7 @@ public class DerbyDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 	/**
 	 * Delete a symbolic link record
-	 * 
+	 *
 	 * @param dirId int
 	 * @param fid int
 	 * @exception DBException

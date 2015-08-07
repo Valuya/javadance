@@ -40,7 +40,7 @@ public class IncompleteConfigurationException extends Exception {
 
   /**
    * IncompleteConfigurationException constructor.
-   * 
+   *
    * @param s java.lang.String
    */
   public IncompleteConfigurationException(String s) {

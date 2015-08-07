@@ -19,7 +19,7 @@
 package org.alfresco.jlan.server.filesys.cache;
 
 /**
- * Exceptions thrown for invalid cache state   
+ * Exceptions thrown for invalid cache state
  */
 public class StateCacheException extends RuntimeException
 {
@@ -28,20 +28,20 @@ public class StateCacheException extends RuntimeException
      * Serial version UUID
      */
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param msgId     the message id
      */
     public StateCacheException(String msgId)
     {
         super(msgId);
     }
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param msgId     the message id
      * @param cause     the exception cause
      */

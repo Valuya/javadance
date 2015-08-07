@@ -26,7 +26,7 @@ import java.net.Socket;
 
 /**
  * Socket Packet Handler Class
- * 
+ *
  * <p>Provides the base class for Java Socket based packet handler implementations.
  *
  * @author gkspencer
@@ -44,7 +44,7 @@ public abstract class SocketPacketHandler extends PacketHandler {
 
   /**
    * Class constructor
-   * 
+   *
    * @param sock Socket
    * @param typ int
    * @param name String
@@ -54,28 +54,28 @@ public abstract class SocketPacketHandler extends PacketHandler {
    */
   public SocketPacketHandler(Socket sock, int typ, String name, String shortName, CIFSPacketPool packetPool)
     throws IOException {
-    
+
     super(typ, name, shortName, packetPool);
-    
+
     m_socket = sock;
 
     //  Set socket options
-    
+
     sock.setTcpNoDelay(true);
-    
+
     //  Open the input/output streams
-    
+
     m_in  = new DataInputStream(m_socket.getInputStream());
     m_out = new DataOutputStream(m_socket.getOutputStream());
-    
+
     // Set the remote address
-    
+
     setRemoteAddress(m_socket.getInetAddress());
   }
-  
+
   /**
    * Return the count of available bytes in the receive input stream
-   * 
+   *
    * @return int
    * @exception IOException   If a network error occurs.
    */
@@ -85,26 +85,26 @@ public abstract class SocketPacketHandler extends PacketHandler {
       return m_in.available();
     return 0;
   }
-  
+
   /**
    * Read bytes from the socket input stream
-   * 
+   *
    * @return int
    * @exception IOException   If a network error occurs.
    */
   protected int readBytes( byte[] buf, int offset, int len)
     throws IOException {
-      
+
     //  Read a packet of data
-    
+
     if ( m_in != null)
       return m_in.read( buf, offset, len);
     return 0;
   }
-  
+
   /**
    * Write bytes to the output socket stream
-   * 
+   *
    * @param pkt byte[]
    * @param off int
    * @param len int
@@ -114,29 +114,29 @@ public abstract class SocketPacketHandler extends PacketHandler {
     throws IOException {
 
     //  Output the raw packet
-    
+
     if ( m_out != null)
       m_out.write(pkt, off, len);
   }
 
   /**
    * Flush the output socket
-   * 
+   *
    * @exception IOException   If a network error occurs
    */
   public void flushPacket()
     throws IOException {
     if ( m_out != null)
-      m_out.flush();    
+      m_out.flush();
   }
-  
+
   /**
    * Close the protocol handler
    */
   public void closeHandler() {
 
     //  Close the input stream
-    
+
     if ( m_in != null) {
       try {
         m_in.close();
@@ -145,9 +145,9 @@ public abstract class SocketPacketHandler extends PacketHandler {
       }
       m_in = null;
     }
-    
+
     //  Close the output stream
-    
+
     if ( m_out != null) {
       try {
         m_out.close();
@@ -158,7 +158,7 @@ public abstract class SocketPacketHandler extends PacketHandler {
     }
 
     //  Close the socket
-    
+
     if (m_socket != null) {
       try {
         m_socket.close();

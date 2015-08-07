@@ -33,10 +33,10 @@ public class UserAccessControlParser extends AccessControlParser {
 	 */
 	public UserAccessControlParser() {
 	}
-	
+
 	/**
 	 * Return the parser type
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getType() {
@@ -45,30 +45,30 @@ public class UserAccessControlParser extends AccessControlParser {
 
 	/**
 	 * Validate the parameters and create a user access control
-	 * 
+	 *
 	 * @param params ConfigElement
 	 * @return AccessControl
 	 * @throws ACLParseException
 	 */
 	public AccessControl createAccessControl(ConfigElement params)
 		throws ACLParseException {
-			
+
 		//	Get the access type
-		
+
 		int access = parseAccessType(params);
-		
+
 		//	Get the user name to check for
-		
+
 		String val = params.getAttribute("name");
 		if ( val == null || val.length() == 0)
 			throw new ACLParseException("User name not specified");
-			
+
 		String userName = val.trim();
 		if ( userName.length() == 0)
 			throw new ACLParseException("User name not valid");
-			
+
 		//	Create the user access control
-		
+
 		return new UserAccessControl(userName, getType(), access);
 	}
 }

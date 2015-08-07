@@ -30,99 +30,99 @@ import org.alfresco.jlan.server.filesys.FileAccessToken;
 public class LocalFileAccessToken implements FileAccessToken {
 
 	// Use the request process id
-	
+
 	private int m_pid;
-	
+
 	// Attributes only file access
-	
+
 	private boolean m_attribOnly;
-	
+
 	// Access token has been released
-	
+
 	private transient boolean m_released = false;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param pid int
 	 */
 	public LocalFileAccessToken( int pid) {
 		m_pid = pid;
 	}
-	
+
 	/**
 	 * Return the process id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getProcessId() {
 		return m_pid;
 	}
-	
+
 	/**
 	 * Check if the access token has been released
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isReleased() {
 		return m_released;
 	}
-	
+
 	/**
 	 * Set the released state of the access token
-	 * 
+	 *
 	 * @param released boolean
 	 */
 	public final void setReleased( boolean released) {
 		m_released = released;
 	}
-	
+
 	/**
 	 * Check if the access token is on attributes only file open
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isAttributesOnly() {
 		return m_attribOnly;
 	}
-	
+
 	/**
 	 * Set/clear the attributes only flag
-	 * 
+	 *
 	 * @param attrOnly boolean
 	 */
 	public final void setAttributesOnly( boolean attrOnly) {
 		m_attribOnly = attrOnly;
 	}
-	
+
 	/**
 	 * Return the access token as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[Token pid=");
 		str.append( getProcessId());
-		
+
 		if ( isAttributesOnly())
 			str.append( ",AttribOnly");
-		
+
 		if ( isReleased())
 			str.append( ",Released");
 		str.append( "]");
-		
+
 		return str.toString();
 	}
-	
+
 	/**
 	 * Finalize
 	 */
 	public void finalize() {
-		
+
 		// Check if hte access token was released
-		
+
 		if ( isReleased() == false)
 			Debug.println( "** Access token finalized, not released, " + toString() + " **");
 	}

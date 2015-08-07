@@ -23,10 +23,10 @@ import java.io.IOException;
 
 /**
  * Deferred Packet Exception Class
- * 
+ *
  * <p>Indicates that the processing of a file server request has been deferred whilst other processing
  * is done, and the request packet should not be released.
- * 
+ *
  * @author gkspencer
  */
 public class DeferredPacketException extends IOException {
@@ -39,10 +39,10 @@ public class DeferredPacketException extends IOException {
 	  public DeferredPacketException() {
 	    super();
 	  }
-	  
+
 	  /**
 	   * Class constructor.
-	   * 
+	   *
 	   * @param s String
 	   */
 	  public DeferredPacketException(String s) {

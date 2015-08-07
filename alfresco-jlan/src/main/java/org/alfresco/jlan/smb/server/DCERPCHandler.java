@@ -41,14 +41,14 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * DCE/RPC Protocol Handler Class
- * 
+ *
  * @author gkspencer
  */
 public class DCERPCHandler {
 
 	/**
 	 * Process a DCE/RPC request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param srvTrans SMBSrvTransPacket
 	 * @param smbPkt SMBSrvPacket
@@ -174,19 +174,19 @@ public class DCERPCHandler {
 		dcePkt.setLongErrorCode(sts);
 
 		sess.sendResponseSMB(dcePkt);
-		
+
 		// Check if the transaction packet has allocated an associated packet from the pool, we need to copy the associated packet
 		// to the outer request packet so that it is released back to the pool.
-		
+
 		if ( dcePkt.hasAssociatedPacket()) {
 
 			// DEBUG
-			
+
 			if ( Debug.EnableDbg && sess.hasDebug( SMBSrvSession.DBG_PKTPOOL))
 				Debug.println("[SMB] DCERPCHandler allocated associated packet, len=" + dcePkt.getAssociatedPacket().getBufferLength());
-			
+
 			// Copy the associated packet to the outer request packet
-			
+
 			smbPkt.setAssociatedPacket( dcePkt.getAssociatedPacket());
 			dcePkt.setAssociatedPacket( null);
 		}
@@ -194,7 +194,7 @@ public class DCERPCHandler {
 
 	/**
 	 * Process a DCE/RPC request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param vc VirtualCircuit
 	 * @param tbuf TransactBuffer
@@ -307,21 +307,21 @@ public class DCERPCHandler {
 		}
 
 		// Check if a new buffer needs to be allocated for the response
-		
+
 		int pktLen = dcePkt.getByteOffset() + len + 4;	// allow for alignment
-		
+
 		if ( smbPkt.getBufferLength() < pktLen) {
-			
+
 			// Allocate a new buffer for the response
-			
+
 			SMBSrvPacket respPkt = sess.getPacketPool().allocatePacket( pktLen, smbPkt, dcePkt.getByteOffset());
-			
+
 			// Switch the response to the new buffer
-			
+
 			buf = respPkt.getBuffer();
 			dcePkt.setBuffer( buf);
 		}
-		
+
 		// Debug
 
 		if ( Debug.EnableInfo && sess.hasDebug(SMBSrvSession.DBG_DCERPC))
@@ -348,19 +348,19 @@ public class DCERPCHandler {
 		dcePkt.setLongErrorCode(sts);
 
 		sess.sendResponseSMB(dcePkt);
-		
+
 		// Check if the transaction packet has allocated an associated packet from the pool, we need to copy the associated packet
 		// to the outer request packet so that it is released back to the pool.
-		
+
 		if ( dcePkt.hasAssociatedPacket()) {
 
 			// DEBUG
-			
+
 			if ( Debug.EnableDbg && sess.hasDebug( SMBSrvSession.DBG_PKTPOOL))
 				Debug.println("[SMB] DCERPCHandler allocated associated packet, len=" + dcePkt.getAssociatedPacket().getBufferLength());
-			
+
 			// Copy the associated packet to the outer request packet
-			
+
 			smbPkt.setAssociatedPacket( dcePkt.getAssociatedPacket());
 			dcePkt.setAssociatedPacket( null);
 		}
@@ -368,7 +368,7 @@ public class DCERPCHandler {
 
 	/**
 	 * Process a DCE/RPC write request to the named pipe file
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -492,7 +492,7 @@ public class DCERPCHandler {
 
 	/**
 	 * Process a DCE/RPC pipe read request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -545,7 +545,7 @@ public class DCERPCHandler {
 		// Check if there is a valid reply buffered
 
 		SMBSrvPacket respPkt = smbPkt;
-		
+
 		if ( pipeFile.hasBufferedData()) {
 
 			// Get the buffered data
@@ -564,21 +564,21 @@ public class DCERPCHandler {
 				rdLen = bufLen;
 
 			// Check if the requested data will fit into the current packet
-			
+
 			byte[] buf = respPkt.getBuffer();
 			int pos = respPkt.getByteOffset();
-			
+
 			if ( cmd == PacketType.ReadFile)
 				pos += 2;
-			
+
 			if ( rdLen > ( buf.length - pos)) {
 
 				// Allocate a larger packet for the response
-				
+
 				respPkt = sess.getPacketPool().allocatePacket( rdLen + pos, smbPkt, pos);
-				
+
 				// Switch to the response buffer
-				
+
 				buf = respPkt.getBuffer();
 
 				// Debug
@@ -586,12 +586,12 @@ public class DCERPCHandler {
 				if ( Debug.EnableInfo && sess.hasDebug(SMBSrvSession.DBG_IPC))
 					sess.debugPrintln("  Allocated larger reply packet, pktLen=" + respPkt.getBuffer().length);
 			}
-			
+
 			// Set the DCE response buffer flags and fragment length
-			
+
 			bufData.setHeaderValue( DCEBuffer.HDR_FLAGS, DCEBuffer.FLG_ONLYFRAG);
 			bufData.setHeaderValue( DCEBuffer.HDR_FRAGLEN, bufData.getLength());
-			
+
 			// Build the read response
 
 			if ( cmd == PacketType.ReadFile) {
@@ -687,7 +687,7 @@ public class DCERPCHandler {
 
 	/**
 	 * Process the DCE/RPC request buffer
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param dceBuf DCEBuffer
 	 * @param pipeFile DCEPipeFile
@@ -722,7 +722,7 @@ public class DCERPCHandler {
 
 	/**
 	 * Process a DCE bind request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param dceBuf DCEBuffer
 	 * @param pipeFile DCEPipeFile
@@ -753,7 +753,7 @@ public class DCERPCHandler {
 
 			int ctxElems = dceBuf.getByte(DCEBuffer.ALIGN_SHORT);
 			dceBuf.skipBytes(2);
-			
+
 			int presCtxId = dceBuf.getShort();
 			int trfSyntax = dceBuf.getShort();
 
@@ -808,7 +808,7 @@ public class DCERPCHandler {
 
 	/**
 	 * Process a DCE request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param inBuf DCEBuffer
 	 * @param pipeFile DCEPipeFile

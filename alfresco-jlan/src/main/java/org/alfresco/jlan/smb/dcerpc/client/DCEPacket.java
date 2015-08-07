@@ -33,13 +33,13 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * DCE/RPC Packet Class
- * 
+ *
  * @author gkspencer
  */
 public class DCEPacket extends TransPacket {
 
 	//	DCE/RPC header offsets
-	
+
 	public static final int VERSIONMAJOR		= 0;
 	public static final int VERSIONMINOR		= 1;
 	public static final int PDUTYPE				= 2;
@@ -49,51 +49,51 @@ public class DCEPacket extends TransPacket {
 	public static final int AUTHLEN				= 10;
 	public static final int CALLID				= 12;
 	public static final int DCEDATA				= 16;
-	
+
 	//	DCE/RPC Request offsets
-	
+
 	public static final int ALLOCATIONHINT		= 16;
 	public static final int PRESENTIDENT		= 20;
 	public static final int OPERATIONID			= 22;
 	public static final int OPERATIONDATA		= 24;
-	
+
 	//	Header flags
-	
+
 	public static final int FLG_FIRSTFRAG		= 0x01;
 	public static final int FLG_LASTFRAG		= 0x02;
 	public static final int FLG_CANCEL			= 0x04;
 	public static final int FLG_IDEMPOTENT		= 0x20;
 	public static final int FLG_BROADCAST		= 0x40;
-	
+
 	public static final int FLG_ONLYFRAG		= 0x03;
-	
+
 	//	DCE/RPC header constants
-	
+
 	private static final byte HDR_VERSIONMAJOR	= 5;
 	private static final byte HDR_VERSIONMINOR	= 0;
 	private static final int HDR_PACKEDDATAREP	= 0x00000010;
-	
+
 	//	DCE Bind fragment length
-	
+
 	private static final int BIND_DATALEN		= 56;
 	private static final int BIND_LENGTH		= 72;
-	
+
 	//	Header lengths
-	
+
 	public static final int HDRLEN_STANDARD		= 16;
 	public static final int HDRLEN_REQUEST		= 24;
 
 	//  Offset that the write data is placed within the write SMB packet, including protocol header of 4 bytes
 
 	private static final int WriteDataOffset  = 64;
-  
+
 	// Offset to DCE/RPC header
 
 	private int m_offset;
 
 	/**
 	 * Construct a DCE/RPC transaction packet
-	 * 
+	 *
 	 * @param buf Buffer that contains the SMB transaction packet.
 	 */
 	public DCEPacket(byte[] buf) {
@@ -103,7 +103,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Construct a DCE/RPC transaction packet
-	 * 
+	 *
 	 * @param siz Size of packet to allocate.
 	 */
 	public DCEPacket(int siz) {
@@ -113,7 +113,7 @@ public class DCEPacket extends TransPacket {
 	/**
 	 * Construct a DCE/RPC transaction packet of the specified size, and initialize from the
 	 * supplied SMB packet.
-	 * 
+	 *
 	 * @param siz int
 	 * @param pkt SMBPacket
 	 */
@@ -129,7 +129,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the parameter block offset
-	 * 
+	 *
 	 * @return Paramter block offset within the SMB packet
 	 */
 	public final int getParameterOffset() {
@@ -139,7 +139,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the major version number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMajorVersion() {
@@ -148,7 +148,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the minor version number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMinorVersion() {
@@ -157,7 +157,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the PDU packet type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPDUType() {
@@ -166,7 +166,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the header flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getHeaderFlags() {
@@ -175,7 +175,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Set the header flags
-	 * 
+	 *
 	 * @param flags int
 	 */
 	public final void setHeaderFlags(int flags) {
@@ -184,7 +184,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the packed data representation
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPackedDataRepresentation() {
@@ -193,7 +193,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the fragment length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFragmentLength() {
@@ -202,7 +202,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Set the fragment length
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setFragmentLength(int len) {
@@ -214,7 +214,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the authentication length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAuthenticationLength() {
@@ -223,7 +223,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the call id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCallId() {
@@ -232,7 +232,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Determine if this is the first fragment
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isFirstFragment() {
@@ -243,7 +243,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Determine if this is the last fragment
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLastFragment() {
@@ -254,7 +254,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Determine if this is the only fragment in the request
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isOnlyFragment() {
@@ -265,7 +265,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the DCE/RPC fragment offset
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDCEOffset() {
@@ -274,7 +274,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Return the DCE data offset
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDCEBaseOffset() {
@@ -283,7 +283,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Get the offset to the DCE/RPC data within the SMB packet
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDCEDataOffset() {
@@ -323,7 +323,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Get the request allocation hint
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAllocationHint() {
@@ -332,7 +332,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Set the allocation hint
-	 * 
+	 *
 	 * @param alloc int
 	 */
 	public final void setAllocationHint(int alloc) {
@@ -341,7 +341,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Get the request presentation identifier
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPresentationIdentifier() {
@@ -350,7 +350,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Set the presentation identifier
-	 * 
+	 *
 	 * @param ident int
 	 */
 	public final void setPresentationIdentifier(int ident) {
@@ -359,7 +359,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Get the request operation id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getOperationId() {
@@ -368,7 +368,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Set the request operation id
-	 * 
+	 *
 	 * @param opCode int
 	 */
 	public final void setOperationId(int opCode) {
@@ -378,7 +378,7 @@ public class DCEPacket extends TransPacket {
 	/**
 	 * Initialize the DCE/RPC transaction header. Set the SMB transaction parameter count so that
 	 * the data offset can be calculated.
-	 * 
+	 *
 	 * @param handle int
 	 * @param typ byte
 	 * @param flags int
@@ -442,7 +442,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Initialize the DCE/RPC write header, used for multi fragment DCE/RPC requests.
-	 * 
+	 *
 	 * @param handle int
 	 * @param flags int
 	 * @param callId int
@@ -491,7 +491,7 @@ public class DCEPacket extends TransPacket {
 	/**
 	 * Initialize the DCE/RPC reply. Set the SMB transaction parameter count so that the data offset
 	 * can be calculated.
-	 * 
+	 *
 	 * @param typ byte
 	 * @param flags int
 	 * @param callId int
@@ -551,7 +551,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Initialize a DCE Bind request
-	 * 
+	 *
 	 * @param pipeHandle int
 	 * @param maxTx int
 	 * @param maxRx int
@@ -601,7 +601,7 @@ public class DCEPacket extends TransPacket {
 
 	/**
 	 * Initialize a DCE request packet
-	 * 
+	 *
 	 * @param pipeHandle int
 	 * @param opCode int
 	 * @param buf DCEBuffer

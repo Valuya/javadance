@@ -23,17 +23,17 @@ import org.alfresco.jlan.smb.dcerpc.PolicyHandle;
 
 /**
  * Service Handle Class
- * 
+ *
  * <p>
  * Contains the handle to a remote service opened via the service manager.
- * 
+ *
  * @author gkspencer
  */
 public class ServiceHandle extends PolicyHandle {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param serviceName String
 	 */
 	public ServiceHandle(String serviceName) {
@@ -43,7 +43,7 @@ public class ServiceHandle extends PolicyHandle {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param serviceName String
 	 * @param buf byte[]
 	 * @param off int

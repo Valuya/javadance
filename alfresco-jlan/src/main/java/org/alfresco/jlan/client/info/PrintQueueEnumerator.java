@@ -23,14 +23,14 @@ import java.io.IOException;
 
 /**
  * SMB print queue interface
- * 
+ *
  * @author gkspencer
  */
 public interface PrintQueueEnumerator {
 
 	/**
 	 * Return the next print queue entry.
-	 * 
+	 *
 	 * @return Next PrintJob in this print queue.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
@@ -39,7 +39,7 @@ public interface PrintQueueEnumerator {
 
 	/**
 	 * Start a new scan of the print servers queue.
-	 * 
+	 *
 	 * @param idx Starting index for the first queue entry to return.
 	 * @param cnt Number of queue entries to return. A positive value indicates a forward search,
 	 *            and a negative value indicates a reverse search.

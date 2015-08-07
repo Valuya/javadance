@@ -24,14 +24,14 @@ import java.util.List;
 
 /**
  * Pseudo File List Class
- * 
+ *
  * <p>
  * Contains a list of pseudo file list entries for a folder.
- * 
+ *
  * @author gkspencer
  */
 public class PseudoFileList {
-  
+
   // List of pseudo files
 
   private List<PseudoFile> m_list;
@@ -45,7 +45,7 @@ public class PseudoFileList {
 
   /**
    * Add a pseudo file to the list
-   * 
+   *
    * @param pfile PseudoFile
    */
   public final void addFile(PseudoFile pfile) {
@@ -54,7 +54,7 @@ public class PseudoFileList {
 
   /**
    * Return the count of files in the list
-   * 
+   *
    * @return int
    */
   public final int numberOfFiles() {
@@ -72,7 +72,7 @@ public class PseudoFileList {
 
   /**
    * Return the file at the specified index in the list
-   * 
+   *
    * @param idx int
    * @return PseudoFile
    */
@@ -84,7 +84,7 @@ public class PseudoFileList {
 
   /**
    * Search for the specified pseudo file name
-   * 
+   *
    * @param fname String
    * @param caseSensitive boolean
    * @return PseudoFile or null if it does not exist.
@@ -112,7 +112,7 @@ public class PseudoFileList {
 
   /**
    * Remove the specified pseudo file from the list
-   * 
+   *
    * @param fname String
    * @param caseSensitive boolean
    * @return PseudoFile

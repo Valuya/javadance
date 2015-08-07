@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys;
 
 /**
  * Disk Size Interface
- * 
+ *
  * <p>Optional interface that a DiskInterface driver can implement to provide disk sizing information. The disk size
  * information may also be specified via the configuration.
  *

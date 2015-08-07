@@ -21,16 +21,16 @@ package org.alfresco.jlan.client.smb;
 
 /**
  * Directory Watcher Interface
- * 
+ *
  * <p>This interface is used to receive change notifications from a file server after registering to receive notifications
  * using the CIFSDiskSession.NTNotifyChange() method.
- * 
+ *
  * @author gkspencer
  */
 public interface DirectoryWatcher {
-	
+
 	//	Notification event types
-	
+
 	public final static int FileActionUnknown	= -1;
 	public final static int FileNoAction		= 0;
 	public final static int FileAdded			= 1;
@@ -41,7 +41,7 @@ public interface DirectoryWatcher {
 
 	/**
 	 * Directory change occurred
-	 * 
+	 *
 	 * @param typ int
 	 * @param fname String
 	 */

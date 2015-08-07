@@ -25,7 +25,7 @@ import org.alfresco.jlan.server.filesys.cache.cluster.ClusterNode;
 
 /**
  * Cluster Message Class
- * 
+ *
  * <p>Base object for messages passed between cluster nodes using the message topic.
  *
  * @author gkspencer
@@ -33,34 +33,34 @@ import org.alfresco.jlan.server.filesys.cache.cluster.ClusterNode;
 public class ClusterMessage implements Serializable {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// Target to indicate message is for all nodes
-	
+
 	public static final String AllNodes = "*";
-	
+
 	// Target node name, or '*' for all nodes
-	
+
 	private String m_targetNode;
-	
+
 	// Node the message was sent from
-	
+
 	private String m_fromNode;
-	
+
 	// Message type
-	
+
 	private int m_msgType;
-	
+
 	/**
 	 * Default constructor
 	 */
 	ClusterMessage() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param targetNode String
 	 * @param msgType int
 	 */
@@ -68,10 +68,10 @@ public class ClusterMessage implements Serializable {
 		m_targetNode = targetNode;
 		m_msgType = msgType;
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param targetNode String
 	 * @param fromNode String
 	 * @param msgType int
@@ -81,10 +81,10 @@ public class ClusterMessage implements Serializable {
 		m_fromNode   = fromNode;
 		m_msgType = msgType;
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param targetNode String
 	 * @param fromNode ClusterNode
 	 * @param msgType int
@@ -95,28 +95,28 @@ public class ClusterMessage implements Serializable {
 			m_fromNode = fromNode.getName();
 		m_msgType = msgType;
 	}
-	
+
 	/**
 	 * Return the target node name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTargetNode() {
 		return m_targetNode;
 	}
-	
+
 	/**
 	 * Check if the target is all nodes
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isAllNodes() {
 		return m_targetNode.equals( AllNodes) ? true : false;
 	}
-	
+
 	/**
 	 * Return the message type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int isType() {
@@ -125,25 +125,25 @@ public class ClusterMessage implements Serializable {
 
 	/**
 	 * Check if the from node is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasFromNode() {
 		return ( m_fromNode != null && m_fromNode.length() > 0) ? true : false;
 	}
-	
+
 	/**
 	 * Return the from node
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getFromNode() {
 		return m_fromNode;
 	}
-	
+
 	/**
 	 * Check if the message was sent by the local node
-	 * 
+	 *
 	 * @param localNode ClusterNode
 	 * @return boolean
 	 */
@@ -152,15 +152,15 @@ public class ClusterMessage implements Serializable {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Return the cluster message as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[Target=");
 		if ( isAllNodes())
 			str.append( "All");
@@ -173,7 +173,7 @@ public class ClusterMessage implements Serializable {
 		str.append( ",type=");
 		str.append( ClusterMessageType.getTypeAsString( isType()));
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

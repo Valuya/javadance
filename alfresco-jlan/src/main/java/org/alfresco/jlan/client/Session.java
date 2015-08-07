@@ -35,18 +35,18 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  *  SMB Session Class
- * 
+ *
  * <p>Base class for sessions connected to remote disk, print, named pipe and administration named pipe shares.
- * 
+ *
  * @author gkspencer
  */
 public class Session {
 
 	//	Session security mode
-	
+
 	public static final int SecurityModeUser	= 1;
 	public static final int SecurityModeShare	= 2;
-	
+
 	//	Tree identifier that indicates that the disk session has been closed
 
 	protected final static int Closed = -1;
@@ -63,9 +63,9 @@ public class Session {
   	public static final int DEFAULT_BUFSIZE = 4096;
 
   	//  Multiplex id to indicate the session is not in a transaction
-  
+
   	public static final int NO_TRANSACTION  = -1;
-  
+
 	//	SMB dialect id and string for this session
 
   	private int m_dialect;
@@ -80,10 +80,10 @@ public class Session {
   	protected SMBPacket m_pkt;
 
 	//	Default packet flags
-	
+
 	private int m_defFlags 	= SMBPacket.FLG_CASELESS;
 	private int m_defFlags2 = SMBPacket.FLG2_LONGFILENAMES;
-	
+
 	//	Server connection details
 
 	private PCShare m_remoteShr;
@@ -98,9 +98,9 @@ public class Session {
   	private String m_srvLM;
 
 	//	Security mode (user or share)
-	
+
 	private int m_secMode;
-	
+
 	//	Challenge encryption key
 
   	private byte[] m_encryptKey;
@@ -128,48 +128,48 @@ public class Session {
   	private int m_sessCaps;
 
 	//	Maximum virtual circuits allowed on this session, and maximum multiplxed read/writes
-	
+
 	private int m_maxVCs;
 	private int m_maxMPX;
-	
+
 	//	Indicate if the session was created as a guest rather than using the supplied username/password
-	
+
 	private boolean m_guest;
-	
+
 	//	SMB signing support
 	//
 	//	Session key, packet sequence number and MD5 digest
-	
+
 	private byte[] m_sessionKey;
 	private int m_seqNo;
 	private MessageDigest m_md5;
-	
+
 	private long m_lastTxSig;
-	
+
 	//  Multiplex id of an active transaction
 	//
 	//  A transaction may span multiple requests/responses, when signing is enabled the sequence number is not
 	//  incremented for a transaction that spans multiple packets
 	//
 	//  -1 indicates that there is no currently active transaction
-  
+
 	private int m_transMID = NO_TRANSACTION;
-  
+
 	//	Global session id
 
 	private static int m_sessionIdx = 1;
 
 	//	Multiplex id
-	
+
 	private static int m_multiplexId = 1;
-	
+
 	//	Debug support
 
 	private static int m_debug = 0;
-  
+
 	/**
 	 * Construct an SMB session
-	 * 
+	 *
 	 * @param shr Remote server details.
 	 * @param dialect SMB dialect for this session.
 	 * @param pkt SMB packet
@@ -198,7 +198,7 @@ public class Session {
 	/**
 	 * Allocate an SMB packet for this session. The preferred packet size is specified, if a smaller
 	 * buffer size has been negotiated a smaller SMB packet will be returned.
-	 * 
+	 *
 	 * @param pref Preferred SMB packet size
 	 * @return Allocated SMB packet
 	 */
@@ -217,7 +217,7 @@ public class Session {
 
 	/**
 	 * Determine if the session supports raw mode read/writes
-	 * 
+	 *
 	 * @return true if this session supports raw mode, else false
 	 */
 	public final boolean supportsRawMode() {
@@ -226,7 +226,7 @@ public class Session {
 
 	/**
 	 * Determine if the session supports Unicode
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean supportsUnicode() {
@@ -235,7 +235,7 @@ public class Session {
 
 	/**
 	 * Determine if the session supports large files (ie. 64 bit file offsets)
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean supportsLargeFiles() {
@@ -244,7 +244,7 @@ public class Session {
 
 	/**
 	 * Determine if the session supports NT specific SMBs
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean supportsNTSmbs() {
@@ -253,7 +253,7 @@ public class Session {
 
 	/**
 	 * Determine if the session supports RPC API requests
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean supportsRPCAPIs() {
@@ -262,7 +262,7 @@ public class Session {
 
 	/**
 	 * Determine if the session supports NT status codes
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean supportsNTStatusCodes() {
@@ -271,7 +271,7 @@ public class Session {
 
 	/**
 	 * Determine if the session supports level 2 oplocks
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean supportsLevel2Oplocks() {
@@ -280,7 +280,7 @@ public class Session {
 
 	/**
 	 * Determine if the session supports lock and read
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean supportsLockAndRead() {
@@ -289,7 +289,7 @@ public class Session {
 
 	/**
 	 * Determine if the session supports NT find
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean supportsNTFind() {
@@ -298,7 +298,7 @@ public class Session {
 
 	/**
 	 * Close this connection with the remote server.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
 	 */
@@ -321,7 +321,7 @@ public class Session {
 
 	/**
 	 * Return the default flags settings for this session
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDefaultFlags() {
@@ -330,7 +330,7 @@ public class Session {
 
 	/**
 	 * Return the default flags2 settings for this session
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDefaultFlags2() {
@@ -339,7 +339,7 @@ public class Session {
 
 	/**
 	 * Get the device type that this session is connected to.
-	 * 
+	 *
 	 * @return Device type for this session.
 	 */
 	public final int getDeviceType() {
@@ -348,7 +348,7 @@ public class Session {
 
 	/**
 	 * Get the SMB dialect property
-	 * 
+	 *
 	 * @return SMB dialect that this session has negotiated.
 	 */
 	public final int getDialect() {
@@ -357,7 +357,7 @@ public class Session {
 
 	/**
 	 * Get the SMB dialect string
-	 * 
+	 *
 	 * @return SMB dialect string for this session.
 	 */
 	public final String getDialectString() {
@@ -366,7 +366,7 @@ public class Session {
 
 	/**
 	 * Get the servers primary domain name
-	 * 
+	 *
 	 * @return Servers primary domain name, if known, else null.
 	 */
 	public final String getDomain() {
@@ -375,7 +375,7 @@ public class Session {
 
 	/**
 	 * Determine if there is a challenge encryption key
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasEncryptionKey() {
@@ -384,7 +384,7 @@ public class Session {
 
 	/**
 	 * Return the cahllenge encryption key
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getEncryptionKey() {
@@ -393,7 +393,7 @@ public class Session {
 
 	/**
 	 * Get the servers LAN manager type
-	 * 
+	 *
 	 * @return Servers LAN manager type, if known, else null.
 	 */
 	public final String getLANManagerType() {
@@ -402,7 +402,7 @@ public class Session {
 
 	/**
 	 * Get the maximum number of multiplxed requests that are allowed
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumMultiplexedRequests() {
@@ -411,7 +411,7 @@ public class Session {
 
 	/**
 	 * Get the maximum packet size allowed for this session
-	 * 
+	 *
 	 * @return Maximum packet size, in bytes.
 	 */
 	public final int getMaximumPacketSize() {
@@ -420,7 +420,7 @@ public class Session {
 
 	/**
 	 * Get the maximum virtual circuits allowed on this session
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumVirtualCircuits() {
@@ -429,7 +429,7 @@ public class Session {
 
 	/**
 	 * Get the next multiplex id to uniquely identify a transaction
-	 * 
+	 *
 	 * @return Unique multiplex id for a transaction
 	 */
 	public final synchronized int getNextMultiplexId() {
@@ -438,7 +438,7 @@ public class Session {
 
 	/**
 	 * Get the next session id
-	 * 
+	 *
 	 * @return int
 	 */
 	protected final synchronized int getNextSessionId() {
@@ -447,7 +447,7 @@ public class Session {
 
 	/**
 	 * Get the servers operating system type
-	 * 
+	 *
 	 * @return Servers operating system, if known, else null.
 	 */
 	public final String getOperatingSystem() {
@@ -456,7 +456,7 @@ public class Session {
 
 	/**
 	 * Get the remote share password string
-	 * 
+	 *
 	 * @return Remote share password string
 	 */
 	public final String getPassword() {
@@ -465,7 +465,7 @@ public class Session {
 
 	/**
 	 * Get the remote share details for this session
-	 * 
+	 *
 	 * @return PCShare information for this session
 	 */
 	public final PCShare getPCShare() {
@@ -474,7 +474,7 @@ public class Session {
 
 	/**
 	 * Return the security mode of the session (user or share)
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSecurityMode() {
@@ -483,7 +483,7 @@ public class Session {
 
 	/**
 	 * Get the remote server name
-	 * 
+	 *
 	 * @return Remote server name
 	 */
 	public final String getServer() {
@@ -492,7 +492,7 @@ public class Session {
 
 	/**
 	 * Access the associated network session
-	 * 
+	 *
 	 * @return NetworkSession that the SMB session is using
 	 */
 	public final NetworkSession getSession() {
@@ -501,7 +501,7 @@ public class Session {
 
 	/**
 	 * Return the session capability flags.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCapabilities() {
@@ -510,7 +510,7 @@ public class Session {
 
 	/**
 	 * Get the process id for this session
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getProcessId() {
@@ -519,7 +519,7 @@ public class Session {
 
 	/**
 	 * Get the session identifier property
-	 * 
+	 *
 	 * @return Session identifier
 	 */
 	public final int getSessionId() {
@@ -528,7 +528,7 @@ public class Session {
 
 	/**
 	 * Get the remote share name
-	 * 
+	 *
 	 * @return Remote share name string
 	 */
 	public final String getShareName() {
@@ -537,7 +537,7 @@ public class Session {
 
 	/**
 	 * Get the connected tree identifier.
-	 * 
+	 *
 	 * @return Tree identifier.
 	 */
 	public final int getTreeId() {
@@ -546,7 +546,7 @@ public class Session {
 
 	/**
 	 * Return the assigned use id for this SMB session
-	 * 
+	 *
 	 * @return Assigned user id
 	 */
 	public final int getUserId() {
@@ -555,7 +555,7 @@ public class Session {
 
 	/**
 	 * Get the remote share user name string
-	 * 
+	 *
 	 * @return Remote share user name string
 	 */
 	public final String getUserName() {
@@ -564,7 +564,7 @@ public class Session {
 
 	/**
 	 * Check if there is data available in the network receive buffer
-	 * 
+	 *
 	 * @return boolean
 	 * @exception IOException
 	 */
@@ -575,7 +575,7 @@ public class Session {
 
 	/**
 	 * Determine if the specified debugging option is enabled
-	 * 
+	 *
 	 * @param opt Debug option bit mask
 	 * @return true if the debug option is enabled, else false
 	 */
@@ -589,7 +589,7 @@ public class Session {
 
 	/**
 	 * Check if SMB signing is enabled on this session
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasSMBSigning() {
@@ -598,7 +598,7 @@ public class Session {
 
 	/**
 	 * Determine if the session is valid, ie. still open.
-	 * 
+	 *
 	 * @return true if the session is still active, else false.
 	 */
 	public final boolean isActive() {
@@ -607,7 +607,7 @@ public class Session {
 
 	/**
 	 * Determine if SMB session debugging is enabled
-	 * 
+	 *
 	 * @return true if debugging is enabled, else false.
 	 */
 	public static boolean hasDebug() {
@@ -616,7 +616,7 @@ public class Session {
 
 	/**
 	 * Determine if the session has been created as a guest logon
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isGuest() {
@@ -625,7 +625,7 @@ public class Session {
 
 	/**
 	 * Determine if the Unicode flag is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isUnicode() {
@@ -634,7 +634,7 @@ public class Session {
 
 	/**
 	 * Send a single echo request to the server
-	 * 
+	 *
 	 * @throws java.io.IOException
 	 * @throws SMBException
 	 */
@@ -648,7 +648,7 @@ public class Session {
 
 	/**
 	 * Send an echo request to the server
-	 * 
+	 *
 	 * @param cnt Number of packets to echo from the remote server
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException SMB error occurred
@@ -692,7 +692,7 @@ public class Session {
 
 	/**
 	 * Enable/disable SMB session debugging
-	 * 
+	 *
 	 * @param dbg Bit mask of debug options to enable, or zero to disable
 	 */
 	public static void setDebug(int dbg) {
@@ -701,7 +701,7 @@ public class Session {
 
 	/**
 	 * Set the default SMB packet flags for this session
-	 * 
+	 *
 	 * @param flg int
 	 */
 	protected final void setDefaultFlags(int flg) {
@@ -710,7 +710,7 @@ public class Session {
 
 	/**
 	 * Set the SMB packet default flags2 for this session
-	 * 
+	 *
 	 * @param flg2 int
 	 */
 	protected final void setDefaultFlags2(int flg2) {
@@ -719,7 +719,7 @@ public class Session {
 
 	/**
 	 * Set the device type for this session.
-	 * 
+	 *
 	 * @param dev Device type for this session.
 	 */
 	protected final void setDeviceType(int dev) {
@@ -728,7 +728,7 @@ public class Session {
 
 	/**
 	 * Set the dialect for this session
-	 * 
+	 *
 	 * @param dia SMB dialect that this session is using.
 	 */
 	protected final void setDialect(int dia) {
@@ -737,7 +737,7 @@ public class Session {
 
 	/**
 	 * Set the dialect string for this session
-	 * 
+	 *
 	 * @param dia SMB dialect string
 	 */
 	protected final void setDialectString(String dia) {
@@ -746,7 +746,7 @@ public class Session {
 
 	/**
 	 * Set the remote servers primary domain name
-	 * 
+	 *
 	 * @param dom Servers primary domain name.
 	 */
 	protected final void setDomain(String dom) {
@@ -755,7 +755,7 @@ public class Session {
 
 	/**
 	 * Set the encryption key
-	 * 
+	 *
 	 * @param key byte[]
 	 */
 	public final void setEncryptionKey(byte[] key) {
@@ -767,7 +767,7 @@ public class Session {
 
 	/**
 	 * Set the guest status for the session
-	 * 
+	 *
 	 * @param sts boolean
 	 */
 	protected final void setGuest(boolean sts) {
@@ -776,7 +776,7 @@ public class Session {
 
 	/**
 	 * Set the remote servers LAN manager type
-	 * 
+	 *
 	 * @param lm Servers LAN manager type string.
 	 */
 	protected final void setLANManagerType(String lm) {
@@ -785,7 +785,7 @@ public class Session {
 
 	/**
 	 * Set the maximum number of multiplexed requests allowed
-	 * 
+	 *
 	 * @param maxMulti int
 	 */
 	protected final void setMaximumMultiplexedRequests(int maxMulti) {
@@ -794,7 +794,7 @@ public class Session {
 
 	/**
 	 * Set the maximum packet size allowed on this session
-	 * 
+	 *
 	 * @param siz Maximum allowed packet size.
 	 */
 	protected final void setMaximumPacketSize(int siz) {
@@ -803,7 +803,7 @@ public class Session {
 
 	/**
 	 * Set the maximum number of virtual circuits allowed on this session
-	 * 
+	 *
 	 * @param maxVC int
 	 */
 	protected final void setMaximumVirtualCircuits(int maxVC) {
@@ -812,7 +812,7 @@ public class Session {
 
 	/**
 	 * Set the remote servers operating system type
-	 * 
+	 *
 	 * @param os Servers operating system type string.
 	 */
 	protected final void setOperatingSystem(String os) {
@@ -821,7 +821,7 @@ public class Session {
 
 	/**
 	 * Set the remote share password
-	 * 
+	 *
 	 * @param pwd Remtoe share password string.
 	 */
 	protected final void setPassword(String pwd) {
@@ -830,7 +830,7 @@ public class Session {
 
 	/**
 	 * Set the session security mode (user or share)
-	 * 
+	 *
 	 * @param secMode int
 	 */
 	public final void setSecurityMode(int secMode) {
@@ -839,7 +839,7 @@ public class Session {
 
 	/**
 	 * Set the remote server name
-	 * 
+	 *
 	 * @param srv Server name string
 	 */
 	protected final void setServer(String srv) {
@@ -848,7 +848,7 @@ public class Session {
 
 	/**
 	 * Set the network session that this SMB session is associated with
-	 * 
+	 *
 	 * @param netSess Network session that this SMB session is to be associated with.
 	 */
 	protected final void setSession(NetworkSession netSess) {
@@ -857,7 +857,7 @@ public class Session {
 
 	/**
 	 * Set the session capability flags
-	 * 
+	 *
 	 * @param caps Capability flags.
 	 */
 	protected final void setCapabilities(int caps) {
@@ -866,7 +866,7 @@ public class Session {
 
 	/**
 	 * Set the remote share name
-	 * 
+	 *
 	 * @param shr Remote share name string
 	 */
 	protected final void setShareName(String shr) {
@@ -875,7 +875,7 @@ public class Session {
 
 	/**
 	 * Set the process id for this session
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setProcessId(int id) {
@@ -884,7 +884,7 @@ public class Session {
 
 	/**
 	 * Set the connected tree identifier for this session.
-	 * 
+	 *
 	 * @param id Tree identifier for this session.
 	 */
 	protected final void setTreeId(int id) {
@@ -893,7 +893,7 @@ public class Session {
 
 	/**
 	 * Set the user identifier for this session
-	 * 
+	 *
 	 * @param uid User identifier
 	 */
 	protected final void setUserId(int uid) {
@@ -902,7 +902,7 @@ public class Session {
 
 	/**
 	 * Set the remote share user name
-	 * 
+	 *
 	 * @param user Remote share user name string
 	 */
 	protected final void setUserName(String user) {
@@ -911,7 +911,7 @@ public class Session {
 
 	/**
 	 * Process an asynchronous packet
-	 * 
+	 *
 	 * @param pkt SMBPacket
 	 */
 	protected void processAsynchResponse(SMBPacket pkt) {
@@ -926,7 +926,7 @@ public class Session {
 
 	/**
 	 * Enable SMB signing for this session
-	 * 
+	 *
 	 * @param sessKey byte[]
 	 * @exception NoSuchAlgorithmException If the MD5 message digest is not available
 	 */
@@ -959,7 +959,7 @@ public class Session {
 
 	/**
 	 * Add an SMB signature to an outgoing SMB request
-	 * 
+	 *
 	 * @param pkt SMBPacket
 	 */
 	protected final void signTxPacket(SMBPacket pkt) {
@@ -1001,7 +1001,7 @@ public class Session {
 
 	/**
 	 * Verify the SMB signature on an incoming SMB response
-	 * 
+	 *
 	 * @param pkt SMBPacket
 	 * @exception SMBException If the received packet SMB signature is not valid
 	 */
@@ -1090,7 +1090,7 @@ public class Session {
 
 	/**
 	 * Set the multiplex id of an active transaction
-	 * 
+	 *
 	 * @param mid int
 	 */
 	public final void setTransactionMID(int mid) {
@@ -1104,7 +1104,7 @@ public class Session {
 
 	/**
 	 * Determine if there is an active transaction
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasActiveTransaction() {
@@ -1113,7 +1113,7 @@ public class Session {
 
 	/**
 	 * Get the SMB signing sequence number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSMBSequence() {
@@ -1122,7 +1122,7 @@ public class Session {
 
 	/**
 	 * Set the SMB signing sequence number
-	 * 
+	 *
 	 * @param seq int
 	 */
 	public final void setSMBSequence(int seq) {
@@ -1131,7 +1131,7 @@ public class Session {
 
 	/**
 	 * Output the session details as a string
-	 * 
+	 *
 	 * @return Session details string
 	 */
 	public String toString() {

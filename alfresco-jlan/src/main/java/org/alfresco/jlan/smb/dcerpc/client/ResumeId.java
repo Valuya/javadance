@@ -21,11 +21,11 @@ package org.alfresco.jlan.smb.dcerpc.client;
 
 /**
  * DCE/RPC Enumeration Resume Id Class
- * 
+ *
  * <p>
  * Contains the resume id integer value used to continue DCE/RPC requests that return large amounts
  * of data.
- * 
+ *
  * @author gkspencer
  */
 public class ResumeId {
@@ -43,7 +43,7 @@ public class ResumeId {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param resId int
 	 */
 	public ResumeId(int resId) {
@@ -52,7 +52,7 @@ public class ResumeId {
 
 	/**
 	 * Return the resume id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getResumeId() {
@@ -61,7 +61,7 @@ public class ResumeId {
 
 	/**
 	 * Set the resume id
-	 * 
+	 *
 	 * @param resId int
 	 */
 	public final void setResumeId(int resId) {
@@ -70,7 +70,7 @@ public class ResumeId {
 
 	/**
 	 * Return the resume id as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

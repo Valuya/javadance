@@ -36,10 +36,10 @@ public class FileLockException extends IOException {
 	public FileLockException() {
 		super();
 	}
-  
+
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s java.lang.String
 	 */
 	public FileLockException(String s) {

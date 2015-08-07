@@ -21,17 +21,17 @@ package org.alfresco.jlan.client;
 
 /**
  * Notify Change Transaction Class
- * 
+ *
  * <p>Contains constants used when registering a change notification handler via the CIFSDiskSession.NTNotifyChange() method.
- * 
+ *
  * <p>Contains static methods for converting change notification flags and actions to strings.
- * 
+ *
  * @author gkspencer
  */
 public class NotifyChange {
 
 	//	Change notification filter flags
-	
+
 	public final static int FileName			= 0x0001;
 	public final static int DirectoryName		= 0x0002;
 	public final static int Attributes			= 0x0004;
@@ -42,7 +42,7 @@ public class NotifyChange {
 	public final static int Security			= 0x0100;
 
 	//	Change notifcation actions
-	
+
 	public final static int ActionAdded				= 1;
 	public final static int ActionRemoved			= 2;
 	public final static int ActionModified			= 3;
@@ -51,9 +51,9 @@ public class NotifyChange {
 	public final static int ActionAddedStream		= 6;
 	public final static int ActionRemovedStream		= 7;
 	public final static int ActionModifiedStream	= 8;
-	
+
 	//	Change notification action names
-	
+
 	private final static String[] _actnNames = {"Added",
 												"Removed",
 												"Modified",
@@ -63,10 +63,10 @@ public class NotifyChange {
 												"Removed Stream",
 												"Modified Stream"
 	};
-																							
+
 	/**
 	 * Return the change notification action as a string
-	 * 
+	 *
 	 * @param action int
 	 * @return String
 	 */
@@ -85,7 +85,7 @@ public class NotifyChange {
 	/**
 	 * Return the change notification filter flag as a string. This method assumes a single flag is
 	 * set.
-	 * 
+	 *
 	 * @param filter int
 	 * @return String
 	 */
@@ -134,7 +134,7 @@ public class NotifyChange {
 
 	/**
 	 * Return the change notification filter flags as a string.
-	 * 
+	 *
 	 * @param filter int
 	 * @return String
 	 */

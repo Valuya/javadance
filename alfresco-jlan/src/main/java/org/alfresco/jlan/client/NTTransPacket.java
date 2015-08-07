@@ -31,7 +31,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * NT Transaction Packet Class
- * 
+ *
  * @author gkspencer
  */
 public class NTTransPacket extends SMBPacket {
@@ -42,17 +42,17 @@ public class NTTransPacket extends SMBPacket {
 	private static final int ParameterBytes = 36;		//	8 x 32bit params + max setup count byte + setup count byte + reserved word
 
 	//	Offset to start of NT parameters from start of packet
-	
+
 	private static final int NTMaxSetupCount 	= SMBPacket.PARAMWORDS;
 	private static final int NTParams 		    = SMBPacket.PARAMWORDS + 3;
 	private static final int NTSetupCount     	= NTParams + 32;
 	private static final int NTFunction		    = NTSetupCount + 1;
 
 	//	Default return parameter/data byte counts
-	
+
 	private static final int DefaultReturnParams		= 4;
 	private static final int DefaultReturnData			= 1024;
-		
+
 	/**
 	 * Default constructor
 	 */
@@ -62,7 +62,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf byte[]
 	 */
 	public NTTransPacket(byte[] buf) {
@@ -71,7 +71,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the data block size
-	 * 
+	 *
 	 * @return Data block size in bytes
 	 */
 	public final int getDataLength() {
@@ -80,7 +80,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the data block offset
-	 * 
+	 *
 	 * @return Data block offset within the SMB packet.
 	 */
 	public final int getDataOffset() {
@@ -89,7 +89,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Unpack the parameter block
-	 * 
+	 *
 	 * @return int[]
 	 */
 	public final int[] getParameterBlock() {
@@ -132,7 +132,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the total parameter count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getTotalParameterCount() {
@@ -141,7 +141,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the total data count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getTotalDataCount() {
@@ -150,7 +150,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the parameter block count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getParameterBlockCount() {
@@ -159,7 +159,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the parameter block offset
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getParameterBlockOffset() {
@@ -168,7 +168,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the paramater block displacement
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getParameterBlockDisplacement() {
@@ -177,7 +177,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the data block count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockCount() {
@@ -186,7 +186,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the data block offset
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockOffset() {
@@ -195,7 +195,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the data block displacment
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockDisplacement() {
@@ -204,7 +204,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Initialize the transact SMB packet
-	 * 
+	 *
 	 * @param func NT transaction function code
 	 * @param paramblk Parameter block data bytes
 	 * @param plen Parameter block data length
@@ -218,7 +218,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Initialize the transact SMB packet
-	 * 
+	 *
 	 * @param func NT transaction function code
 	 * @param paramblk Parameter block data bytes
 	 * @param plen Parameter block data length
@@ -286,7 +286,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Perform a transaction request and receive the response data
-	 * 
+	 *
 	 * @param sess Session
 	 * @param tbuf TransactBuffer
 	 * @return TransactBuffer
@@ -673,7 +673,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the total parameter count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setTotalParameterCount(int cnt) {
@@ -682,7 +682,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the total data count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setTotalDataCount(int cnt) {
@@ -691,7 +691,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the maximum return parameter count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setMaximumParameterReturn(int cnt) {
@@ -700,7 +700,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the maximum return data count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setMaximumDataReturn(int cnt) {
@@ -709,7 +709,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the paramater block count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setNTParameterCount(int cnt) {
@@ -718,7 +718,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the parameter block offset within the packet
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setParameterBlockOffset(int off) {
@@ -727,7 +727,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the data block count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setDataBlockCount(int cnt) {
@@ -736,7 +736,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the data block offset
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setDataBlockOffset(int off) {
@@ -745,7 +745,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Get an NT parameter (32bit)
-	 * 
+	 *
 	 * @param idx int
 	 * @return int
 	 */
@@ -756,7 +756,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Get the setup parameter count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSetupCount() {
@@ -766,7 +766,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Return the offset to the setup words data
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSetupOffset() {
@@ -775,7 +775,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Get the NT transaction function code
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNTFunction() {
@@ -785,7 +785,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set an NT parameter (32bit)
-	 * 
+	 *
 	 * @param idx int
 	 * @param val int
 	 */
@@ -796,7 +796,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the maximum setup parameter count
-	 * 
+	 *
 	 * @param cnt Maximum count of setup paramater words
 	 */
 	public final void setMaximumSetupCount(int cnt) {
@@ -806,7 +806,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the setup parameter count
-	 * 
+	 *
 	 * @param cnt Count of setup paramater words
 	 */
 	public final void setSetupCount(int cnt) {
@@ -816,7 +816,7 @@ public class NTTransPacket extends SMBPacket {
 
 	/**
 	 * Set the NT transaction function code
-	 * 
+	 *
 	 * @param func int
 	 */
 	public final void setNTFunction(int func) {

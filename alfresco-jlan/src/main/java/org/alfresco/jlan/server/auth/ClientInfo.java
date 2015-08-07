@@ -34,28 +34,28 @@ public class ClientInfo {
   public final static int LogonNull		= 2;
   public final static int LogonAdmin	= 3;
   public final static int LogonUnknown  = 4;
-  
+
   //	Logon type strings
-  
+
   private static final String[] _logonTypStr = { "Normal", "Guest", "Null", "Administrator", "Unknown" };
-  
+
 	//	Client information object factory
-	
+
 	private static ClientInfoFactory m_factory = new DefaultClientInfoFactory();
-	
+
   //  User name and password
 
   private String m_user;
   private byte[] m_password;
 
 	//	ANSI encrypted password
-	
+
 	private byte[] m_ansiPwd;
-	
+
 	//	Logon type
-	
+
 	private int m_logonType = LogonUnknown;
-	
+
   //  User's domain
 
   private String m_domain;
@@ -65,26 +65,26 @@ public class ClientInfo {
   private String m_opsys;
 
 	//	Remote network address
-	
+
 	private String m_ipAddr;
-	
+
   //  PID of the logon process for multi-stage logons
-  
+
   private int m_pid = -1;
-  
+
 	//	Group and user id
-	
+
 	private int m_gid = -1;
 	private int m_uid = -1;
-	
+
 	//	List of groups for this user
-	
+
 	private int[] m_groups;
-	
+
 	//	NFS authentication type
-	
+
 	private int m_nfsAuthType = -1;
-	
+
   /**
    * Class constructor
    *
@@ -125,7 +125,7 @@ public class ClientInfo {
 
 	/**
 	 * Return the password as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPasswordAsString() {
@@ -133,28 +133,28 @@ public class ClientInfo {
 			return new String(m_password);
 		return null;
 	}
-	
+
 	/**
 	 * Determine if the client has specified an ANSI password
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasANSIPassword() {
 		return m_ansiPwd != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the ANSI encrypted password
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getANSIPassword() {
 		return m_ansiPwd;
 	}
-	
+
 	/**
 	 * Return the ANSI password as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getANSIPasswordAsString() {
@@ -162,7 +162,7 @@ public class ClientInfo {
 			return new String(m_ansiPwd);
 		return null;
 	}
-	
+
   /**
    * Get the user name.
    *
@@ -174,25 +174,25 @@ public class ClientInfo {
 
   /**
    * Return the logon type
-   * 
+   *
    * @return int
    */
   public final int getLogonType() {
     return m_logonType;
   }
-  
+
   /**
    * Return the logon type as a string
-   * 
+   *
    * @return String
    */
   public final String getLogonTypeString() {
     return _logonTypStr[m_logonType];
   }
-  
+
 	/**
 	 * Determine if the user is logged on as a guest
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isGuest() {
@@ -201,34 +201,34 @@ public class ClientInfo {
 
 	/**
 	 * Determine if the session is a null session
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isNullSession() {
 	  return m_logonType == LogonNull ? true : false;
 	}
-	
+
 	/**
 	 * Determine if the user if logged on as an administrator
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isAdministrator() {
 	  return m_logonType == LogonAdmin ? true : false;
 	}
-	
+
 	/**
 	 * Determine if the client network address has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasClientAddress() {
 		return m_ipAddr != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the client network address
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getClientAddress() {
@@ -237,16 +237,16 @@ public class ClientInfo {
 
 	/**
 	 * Get the group id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getGid() {
 		return m_gid;
 	}
-	
+
 	/**
 	 * Return the user id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getUid() {
@@ -255,49 +255,49 @@ public class ClientInfo {
 
 	/**
 	 * Determine if the client has additional groups
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasGroupsList() {
 	  return m_groups != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the additional groups list
-	 * 
+	 *
 	 * @return int[]
 	 */
 	public final int[] getGroupsList() {
 	  return m_groups;
 	}
-	
+
 	/**
 	 * Return the NFS authentication type
-	 * 
+	 *
 	 * @return int
-	 */	
+	 */
 	public final int getNFSAuthenticationType() {
 		return m_nfsAuthType;
 	}
 
   /**
    * Return the process id
-   * 
+   *
    * @return int
    */
   public final int getProcessId() {
     return m_pid;
   }
-  
+
   /**
    * Set the process id
-   * 
+   *
    * @param pid int
    */
   public final void setProcessId( int pid) {
     m_pid = pid;
   }
-  
+
   /**
    * Set the remote users domain
    *
@@ -327,13 +327,13 @@ public class ClientInfo {
 
 	/**
 	 * Set the ANSI encrypted password
-	 * 
+	 *
 	 * @param pwd byte[]
 	 */
 	public final void setANSIPassword(byte[] pwd) {
 		m_ansiPwd = pwd;
 	}
-	
+
   /**
    * Set the password
    *
@@ -357,16 +357,16 @@ public class ClientInfo {
 
   /**
    * Set the logon type
-   * 
+   *
    * @param logonType int
    */
   public final void setLogonType(int logonType) {
     m_logonType = logonType;
   }
-  
+
 	/**
 	 * Set the guest logon flag
-	 * 
+	 *
 	 * @param guest boolean
 	 */
   public final void setGuest(boolean guest) {
@@ -378,7 +378,7 @@ public class ClientInfo {
 
 	/**
 	 * Set the client network address
-	 * 
+	 *
 	 * @param addr String
 	 */
 	public final void setClientAddress(String addr) {
@@ -387,16 +387,16 @@ public class ClientInfo {
 
 	/**
 	 * Set the group id
-	 * 
+	 *
 	 * @param gid int
 	 */
 	public final void setGid(int gid) {
 		m_gid = gid;
 	}
-	
+
 	/**
 	 * Set the user id
-	 * 
+	 *
 	 * @param uid int
 	 */
 	public final void setUid(int uid) {
@@ -405,22 +405,22 @@ public class ClientInfo {
 
 	/**
 	 * Set the groups list
-	 * 
+	 *
 	 * @param groups int[]
 	 */
 	public final void setGroupsList(int[] groups) {
 	  m_groups = groups;
 	}
-	
+
 	/**
 	 * Set the NFS authentication type
-	 * 
+	 *
 	 * @param type int
-	 */	
+	 */
 	public final void setNFSAuthenticationType(int type) {
 		m_nfsAuthType = type;
 	}
-	
+
   /**
    * Display the client information as a string
    *
@@ -436,15 +436,15 @@ public class ClientInfo {
     str.append(getDomain());
     str.append(",");
     str.append(getOperatingSystem());
-    
+
     if ( hasClientAddress()) {
     	str.append(",");
     	str.append(getClientAddress());
     }
-    
+
     str.append( ",");
     str.append( getLogonTypeString());
-    
+
     if ( isGuest())
     	str.append(",Guest");
     str.append("]");
@@ -454,25 +454,25 @@ public class ClientInfo {
 
 	/**
 	 * Return the client information object factory
-	 * 
+	 *
 	 * @return ClientInfoFactory
-	 */  
+	 */
 	public static final ClientInfoFactory getFactory() {
 		return m_factory;
 	}
-	
+
   /**
    * Set the client information object factory
-   * 
+   *
    * @param factory ClientInfoFactory
    */
   public static final void setFactory(ClientInfoFactory factory) {
   	m_factory = factory;
   }
-  
+
   /**
    * Create a new client information instance
-   * 
+   *
    * @param user String
    * @param password byte[]
    * @return ClientInfo

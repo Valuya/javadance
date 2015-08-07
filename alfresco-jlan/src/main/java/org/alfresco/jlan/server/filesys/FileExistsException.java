@@ -35,10 +35,10 @@ public class FileExistsException extends java.io.IOException {
   public FileExistsException() {
     super();
   }
-  
+
   /**
    * FileExistsException constructor.
-   * 
+   *
    * @param s java.lang.String
    */
   public FileExistsException(String s) {

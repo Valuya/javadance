@@ -27,7 +27,7 @@ import org.alfresco.jlan.util.DataBuffer;
 
 /**
  * Find Information Packer Class
- * 
+ *
  * <p>Pack file information for a find first/find next information level.
  *
  * @author gkspencer
@@ -35,13 +35,13 @@ import org.alfresco.jlan.util.DataBuffer;
 class FindInfoPacker {
 
   //	Enable 8.3 name generation (required for Mac OS9)
-  
+
   private static final boolean Enable8Dot3Names	=	false;
-  
+
   //	Enable packing of file id
-  
+
   private static final boolean EnableFileIdPacking = false;
-  
+
   //	File information levels
 
   public static final int InfoStandard 		  = 1;
@@ -65,7 +65,7 @@ class FindInfoPacker {
   public static final int InfoDirectoryBothLen	= 94;
   public static final int InfoMacHfsLen			= 120;
   public static final int InfoFullDirectoryIdLen= 76;
-  
+
   /**
    * Pack a file information object into the specified buffer, using information level 1 format.
    *
@@ -95,39 +95,39 @@ class FindInfoPacker {
       case InfoQueryEASize :
         packInfoStandard(info, buf, true, uni);
         break;
-      
+
       //	File name information
-      
+
       case InfoNames:
       	packInfoFileName(info, buf, uni);
       	break;
-      	
+
       //	File/directory information
-      
+
       case InfoDirectory:
       	packInfoDirectory(info, buf, uni);
       	break;
-      	
+
       //	Full file/directory information
-      
+
       case InfoFullDirectory:
       	packInfoDirectoryFull(info, buf, uni);
       	break;
-      	
+
       //	Full file/directory information with short name
-      
+
       case InfoDirectoryBoth:
       	packInfoDirectoryBoth(info, buf, uni);
       	break;
-      	
+
       //	Full file/directory information with short name and file id
-        
+
       case InfoDirectoryBothId:
       	packInfoDirectoryBothId(info, buf, uni);
       	break;
-      	
+
       //	Pack Macintosh format file information
-      
+
       case InfoMacHfsInfo:
 		packInfoMacHfs(info, buf, uni);
 		break;
@@ -137,9 +137,9 @@ class FindInfoPacker {
 
     if (curPos == buf.getPosition())
       throw new UnsupportedInfoLevelException();
-      
+
     //	Return the length of the packed data
-    
+
     return buf.getPosition() - curPos;
   }
 
@@ -171,37 +171,37 @@ class FindInfoPacker {
         break;
 
 			//	File name information
-			
+
 			case InfoNames:
 				pos += InfoNamesLen;
 				break;
-				        
+
       //	File/directory information
-      
+
       case InfoDirectory:
       	pos += InfoDirectoryLen;
       	break;
 
 			//	File/directory information full
-			
+
 			case InfoFullDirectory:
 				pos += InfoFullDirectoryLen;
 				break;
-				
+
       //	Full file/directory information full plus short name
-      
+
       case InfoDirectoryBoth:
       	pos += InfoDirectoryBothLen;
       	break;
 
       //   Full directory information with file id
-        
+
       case InfoFullDirectoryId:
         pos += InfoFullDirectoryIdLen;
         break;
-        
+
       //  Full directory information with file id, and short file name
-      
+
       case InfoDirectoryBothId:
         pos += InfoFullDirectoryIdLen + 26;
         break;
@@ -244,45 +244,45 @@ class FindInfoPacker {
       case InfoQueryEASize :
         len = InfoQueryEASizeLen + nameLen;
         break;
-        
+
 			//	File name information
-			
+
 			case InfoNames:
 				len += InfoNamesLen + nameLen;
 				break;
-				        
+
       //	File/directory information
-      
+
       case InfoDirectory:
       	len = InfoDirectoryLen + nameLen;
       	break;
-      	
+
 			//	File/directory information full
-			
+
 			case InfoFullDirectory:
 				len += InfoFullDirectoryLen + nameLen;
 				break;
-				
+
       //	Full file/directory information plus short name
-      
+
       case InfoDirectoryBoth:
       	len = InfoDirectoryBothLen + nameLen;
       	break;
 
 			//	Maacintosh information level
-      
+
 			case InfoMacHfsInfo:
 				len = InfoMacHfsLen + nameLen;
 				break;
 
       //   Full directory information with file id
-        
+
       case InfoFullDirectoryId:
         len = InfoFullDirectoryIdLen + nameLen;
         break;
-        
+
       //  Full directory information with file id, and short file name
-      
+
       case InfoDirectoryBothId:
         len = InfoFullDirectoryIdLen + nameLen + 26;
         break;
@@ -300,26 +300,26 @@ class FindInfoPacker {
 
   /**
    * Clear the next structure offset
-   * 
+   *
    * @param buf DataBuffer
    * @param level int
    * @param offset int
    */
   public static final void clearNextOffset(DataBuffer buf, int level, int offset) {
-    
+
     //	Standard information level does not have a next entry offset
-    
+
     if ( level == InfoStandard)
       return;
 
     //	Clear the next entry offset
-    
+
     int curPos = buf.getPosition();
     buf.setPosition(offset);
     buf.putInt(0);
     buf.setPosition(curPos);
   }
-  
+
   /**
    * Pack a file information object into the specified buffer. Use the standard information level if the
    * EA size flag is false, else add the EA size field.
@@ -348,7 +348,7 @@ class FindInfoPacker {
     //  Pack the creation date/time
 
 		SMBDate date = new SMBDate(0);
-		
+
     if (info.hasCreationDateTime()) {
       date.setTime(info.getCreationDateTime());
       buf.putShort(date.asSMBDate());
@@ -399,22 +399,22 @@ class FindInfoPacker {
 		//	Pack the file name
 
     if ( uni == true) {
-    	
+
     	//	Pack the number of bytes followed by the Unicode name word aligned
-    	
+
     	buf.putByte(info.getFileName().length() * 2);
     	buf.wordAlign();
     	buf.putString(info.getFileName(), uni, true);
     }
     else {
-    	
+
     	//	Pack the number of bytes followed by the ASCII name
 
     	buf.putByte(info.getFileName().length());
   		buf.putString(info.getFileName(), uni, true);
     }
   }
-  
+
   /**
    * Pack the file name information
    *
@@ -423,7 +423,7 @@ class FindInfoPacker {
    * @param uni				Pack Unicode strings if true, else pack ASCII strings
    */
   protected final static void packInfoFileName(FileInfo info, DataBuffer buf, boolean uni) {
-  	
+
   	//	Information format :-
   	//		ULONG		NextEntryOffset
   	//		ULONG		FileIndex
@@ -435,19 +435,19 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		  	
+		
 		//	Pack the file name length
 
 		int nameLen = info.getFileName().length();
 		if ( uni)
 			nameLen *= 2;
-			
+
 		buf.putInt(nameLen);
-		
+
 		//	Pack the long file name string
 
 		buf.putString(info.getFileName(), uni, false);
-		
+
 		//	Align the buffer pointer and set the offset to the next file information entry
 
 		buf.longwordAlign();
@@ -466,7 +466,7 @@ class FindInfoPacker {
    * @param uni				Pack Unicode strings if true, else pack ASCII strings
    */
   protected final static void packInfoDirectory(FileInfo info, DataBuffer buf, boolean uni) {
-  	
+
   	//	Information format :-
   	//		ULONG	NextEntryOffset
   	//		ULONG	FileIndex
@@ -485,7 +485,7 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		  	
+		
     //  Pack the creation date/time
 
     if (info.hasCreationDateTime()) {
@@ -529,15 +529,15 @@ class FindInfoPacker {
 		int nameLen = info.getFileName().length();
 		if ( uni)
 			nameLen *= 2;
-			
-		buf.putInt(nameLen);		
-		
+
+		buf.putInt(nameLen);
+
 		//	Pack the long file name string
 
 		buf.putString(info.getFileName(), uni, false);
-		
+
 		//	Align the buffer pointer and set the offset to the next file information entry
-		
+
 		buf.longwordAlign();
 
 		int curPos = buf.getPosition();
@@ -554,7 +554,7 @@ class FindInfoPacker {
    * @param uni				Pack Unicode strings if true, else pack ASCII strings
    */
   protected final static void packInfoDirectoryFull(FileInfo info, DataBuffer buf, boolean uni) {
-  	
+
   	//	Information format :-
   	//		ULONG	NextEntryOffset
   	//		ULONG	FileIndex
@@ -574,7 +574,7 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		  	
+		
     //  Pack the creation date/time
 
     if (info.hasCreationDateTime()) {
@@ -618,20 +618,20 @@ class FindInfoPacker {
 		int nameLen = info.getFileName().length();
 		if ( uni)
 			nameLen *= 2;
-			
-		buf.putInt(nameLen);		
-		
+
+		buf.putInt(nameLen);
+
 		//	Pack the EA size, should always be 4.
 
-//		buf.putInt(4);		
-		buf.putInt(0);		
-		
+//		buf.putInt(4);
+		buf.putInt(0);
+
 		//	Pack the long file name string
 
-		buf.putString(info.getFileName(), uni, false);		
-		
+		buf.putString(info.getFileName(), uni, false);
+
 		//	Align the buffer pointer and set the offset to the next file information entry
-		
+
 		buf.longwordAlign();
 
 		int curPos = buf.getPosition();
@@ -648,7 +648,7 @@ class FindInfoPacker {
    * @param uni				Pack Unicode strings if true, else pack ASCII strings
    */
   protected final static void packInfoDirectoryBoth(FileInfo info, DataBuffer buf, boolean uni) {
-  	
+
   	//	Information format :-
   	//		ULONG	NextEntryOffset
   	//		ULONG	FileIndex
@@ -670,7 +670,7 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		  	
+		
     //  Pack the creation date/time
 
     if (info.hasCreationDateTime()) {
@@ -714,24 +714,24 @@ class FindInfoPacker {
 		int nameLen = info.getFileName().length();
 		if ( uni)
 			nameLen *= 2;
-			
-		buf.putInt(nameLen);		
-		
+
+		buf.putInt(nameLen);
+
 		//	Pack the EA size, should always be 4.
 
 //		buf.putInt(4);
 		buf.putInt(0);
-		
+
 		//	Pack the short file name length (8.3 name)
 
 		pack8Dot3Name(buf, info.getFileName(), uni);
-		
+
 		//	Pack the long file name string
 
-		buf.putString(info.getFileName(), uni, false);		
-		
+		buf.putString(info.getFileName(), uni, false);
+
 		//	Align the buffer pointer and set the offset to the next file information entry
-		
+
 		buf.longwordAlign();
 
 		int curPos = buf.getPosition();
@@ -748,7 +748,7 @@ class FindInfoPacker {
    * @param uni	  Pack Unicode strings if true, else pack ASCII strings
    */
   protected final static void packInfoDirectoryBothId(FileInfo info, DataBuffer buf, boolean uni) {
-  	
+
   	//	Information format :-
   	//		ULONG	NextEntryOffset
   	//		ULONG	FileIndex
@@ -772,7 +772,7 @@ class FindInfoPacker {
 	int startPos = buf.getPosition();
 	buf.putZeros(4);
 	buf.putZeros(4);
-		  	
+		
     //  Pack the creation date/time
 
     if (info.hasCreationDateTime()) {
@@ -816,32 +816,32 @@ class FindInfoPacker {
 	int nameLen = info.getFileName().length();
 	if ( uni)
 		nameLen *= 2;
-			
-	buf.putInt(nameLen);		
-		
+
+	buf.putInt(nameLen);
+
 	//	Pack the EA size, should always be 4 ?.
 
 //	buf.putInt(4);
 	buf.putInt(0);
-		
+
 	//	Pack the short file name length (8.3 name)
 
 	pack8Dot3Name(buf, info.getFileName(), uni);
 
 	// Pack reserved field
-	
+
 	buf.putShort( 0);
-	
+
 	// Pack the file id
-	
+
 	buf.putLong( info.getFileIdLong());
-	
+
 	//	Pack the long file name string
 
-	buf.putString(info.getFileName(), uni, false);		
-		
+	buf.putString(info.getFileName(), uni, false);
+
 	//	Align the buffer pointer and set the offset to the next file information entry
-		
+
 	buf.longwordAlign();
 
 	int curPos = buf.getPosition();
@@ -858,7 +858,7 @@ class FindInfoPacker {
 	 * @param uni				Pack Unicode strings if true, else pack ASCII strings
 	 */
 	protected final static void packInfoMacHfs(FileInfo info, DataBuffer buf, boolean uni) {
-  	
+
 		//	Information format :-
 		//		ULONG	NextEntryOffset
 		//		ULONG	FileIndex
@@ -887,7 +887,7 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		  	
+		
 		//  Pack the creation date/time
 
 		if (info.hasCreationDateTime()) {
@@ -909,7 +909,7 @@ class FindInfoPacker {
 
 		buf.putLong(info.getSize());
 		buf.putZeros(8);
-		
+
 		//	Pack the data stream allocation size and resource stream allocation size (always zero)
 
 		if (info.getAllocationSize() < info.getSize())
@@ -917,49 +917,49 @@ class FindInfoPacker {
 		else
 			buf.putLong(info.getAllocationSize());
 		buf.putZeros(8);
-		
+
 		//  Pack the file attributes
 
 		buf.putInt(info.getFileAttributes());
 
 		//	Pack the file lock and padding byte
-		
+
 		buf.putZeros(2);
 
 		//	Pack the number of items in a directory, always zero for now
-		
+
 		buf.putShort(0);
-		
+
 		//	Pack the access control
-		
+
 		buf.putInt(0);
-				
+
 		//	Pack the finder information
-		
+
 		buf.putZeros(32);
-		
+
 		//	Pack the file name length
 
 		int nameLen = info.getFileName().length();
 		if ( uni)
 			nameLen *= 2;
-			
-		buf.putInt(nameLen);		
-		
+
+		buf.putInt(nameLen);
+
 		//	Pack the short file name length (8.3 name) and name
 
 		pack8Dot3Name(buf, info.getFileName(), uni);
-		
+
 		//	Pack the long file name string
 
 		buf.putString(info.getFileName(), uni, false);
-		
+
 		//	Pack the unique id
-		
-		buf.putInt(0); 		
-		
+
+		buf.putInt(0);
+
 		//	Align the buffer pointer and set the offset to the next file information entry
-		
+
 		buf.longwordAlign();
 
 		int curPos = buf.getPosition();
@@ -967,98 +967,98 @@ class FindInfoPacker {
 		buf.putInt(curPos - startPos);
 		buf.setPosition(curPos);
 	}
-	
+
 	/**
 	 * Pack a file name as a short 8.3 DOS style name. Packs the short name length byte, reserved byte and
 	 * 8.3 file name string.
-	 * 
+	 *
 	 * @param buf DataBuffer
 	 * @param fileName String
-	 * @param uni boolean 
+	 * @param uni boolean
 	 */
 	private static final void pack8Dot3Name(DataBuffer buf, String fileName, boolean uni) {
 
 	  if ( Enable8Dot3Names == false) {
 
 	    //	Pack an emty 8.3 name structure
-	    
+
 	    buf.putZeros(26);
 	  }
 	  else {
-	    
+
 		  //	Split the file name string into name and extension
-		  
+
 		  int pos = fileName.lastIndexOf('.');
-		  
+
 		  String namePart = null;
 		  String extPart  = null;
-		  
+
 		  if ( pos != -1) {
-		    
+
 		    //	Split the file name string
-		    
+
 		    namePart = fileName.substring(0, pos);
 		    extPart  = fileName.substring(pos+1);
 		  }
 		  else
 		    namePart = fileName;
-	
+
 		  //	If the name already fits into an 8.3 name we do not need to pack the short name
-		  
+
 		  if ( namePart.length() <= 8 &&
 		      (extPart == null || extPart.length() <= 3)) {
-	
+
 		    //	Pack an emty 8.3 name structure
-		    
+
 		    buf.putZeros(26);
 		    return;
 		  }
-		  
+
 		  //	Truncate the name and extension parts down to 8.3 sizes
-		  
+
 		  if ( namePart.length() > 8)
 		    namePart = namePart.substring(0, 6) + "~1";
-		  
+
 		  if ( extPart != null && extPart.length() > 3)
 		    extPart = extPart.substring(0, 3);
-		  
+
 		  //	Build the 8.3 format string
-		  
+
 		  StringBuffer str = new StringBuffer(16);
-		  
+
 		  str.append(namePart);
 		  while ( str.length() < 8)
 		    str.append(" ");
-		  
+
 		  if ( extPart != null) {
 		    str.append(".");
 		    str.append(extPart);
 		  }
 		  else
 		    str.append("    ");
-		  
+
 		  //	Space pad the string to 12 characters
-		  
+
 		  while ( str.length() < 12)
 		    	str.append(" ");
-		  
+
 		  //	Calculate the used length
-		  
+
 		  int len = namePart.length();
 		  if ( extPart != null)
 		    len = extPart.length() + 9;
-	
+
 	    len *= 2;
-		  
+
 		  //	Pack the 8.3 file name structure, always packed as Unicode
-		  
+
 		  buf.putByte(len);
 		  buf.putByte(0);
-		  
+
 		  buf.putString(str.toString(), true, false);
 		}
 	}
-	  
+
   /**
    * Pack the full file/directory information with file id
    *
@@ -1068,7 +1068,7 @@ class FindInfoPacker {
    * @param shortName true if the 8.3 name should be packed
    */
   protected final static void packInfoFullDirectoryId(FileInfo info, DataBuffer buf, boolean uni, boolean shortName) {
-    
+
     //  Information format :-
     //    ULONG NextEntryOffset
     //    ULONG FileIndex
@@ -1091,7 +1091,7 @@ class FindInfoPacker {
 
     int startPos = buf.getPosition();
     buf.putZeros(8);
-        
+
     //  Pack the creation date/time
 
     if (info.hasCreationDateTime()) {
@@ -1135,33 +1135,33 @@ class FindInfoPacker {
     int nameLen = info.getFileName().length();
     if ( uni)
       nameLen *= 2;
-      
-    buf.putInt(nameLen);    
-    
+
+    buf.putInt(nameLen);
+
     //  Pack the EA size
 
     buf.putInt(0);
 
     //  Reserved/unknown value
-    
+
     buf.putInt( 0);
-    
+
     //  Pack the file id
-    
+
     buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
     buf.putInt(0);
-    
+
     //  Pack the short file name length (8.3 name)
 
     if ( shortName == true)
       pack8Dot3Name(buf, info.getFileName(), uni);
-    
+
     //  Pack the long file name string
 
-    buf.putString(info.getFileName(), uni, false);    
-    
+    buf.putString(info.getFileName(), uni, false);
+
     //  Align the buffer pointer and set the offset to the next file information entry
-    
+
     buf.longwordAlign();
 
     int curPos = buf.getPosition();

@@ -21,11 +21,11 @@ package org.alfresco.jlan.server.config;
 
 /**
  * Server Configuration Variable Id Class
- * 
+ *
  * <p>
  * Contains the unique id and group id for configuration variables for the various JLAN Server
  * components.
- * 
+ *
  * @author gkspencer
  */
 public class ConfigId {
@@ -164,7 +164,7 @@ public class ConfigId {
 
 	/**
 	 * Extract the group id from a variable id
-	 * 
+	 *
 	 * @param id int
 	 * @return int
 	 */

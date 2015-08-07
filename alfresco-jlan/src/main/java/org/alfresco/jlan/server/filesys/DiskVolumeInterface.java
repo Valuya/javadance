@@ -21,7 +21,7 @@ package org.alfresco.jlan.server.filesys;
 
 /**
  * Disk Volume Interface
- * 
+ *
  * <p>Optional interface that a DiskInterface driver can implement to provide disk volume information. The disk volume
  * information may also be specified via the configuration.
  *

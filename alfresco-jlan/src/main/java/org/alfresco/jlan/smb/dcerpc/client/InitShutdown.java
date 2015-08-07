@@ -21,13 +21,13 @@ package org.alfresco.jlan.smb.dcerpc.client;
 
 /**
  * InitShutdown Operation Ids Class
- * 
+ *
  * @author gkspencer
  */
 public class InitShutdown {
 
 	// InitShutdown opcodes
-  
+
 	public static final int Init    = 0x00;
 	public static final int Abort   = 0x01;
 	public static final int InitEx  = 0x02;

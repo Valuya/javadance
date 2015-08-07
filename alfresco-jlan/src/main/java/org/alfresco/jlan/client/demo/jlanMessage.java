@@ -26,10 +26,10 @@ import org.alfresco.jlan.util.*;
 
 /**
  * jlanMessage Application
- * 
+ *
  * <p>
  * Send a message to a remote host, that is running the Messenger service or equivalent.
- * 
+ *
  * @author gkspencer
  */
 public class jlanMessage extends jlanApp {
@@ -51,7 +51,7 @@ public class jlanMessage extends jlanApp {
 
 	/**
 	 * Display the command usage
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
@@ -63,7 +63,7 @@ public class jlanMessage extends jlanApp {
 
 	/**
 	 * Perform the main command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @throws Exception
 	 */
@@ -81,7 +81,7 @@ public class jlanMessage extends jlanApp {
 
 	/**
 	 * Validate the command line parameters
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -136,7 +136,7 @@ public class jlanMessage extends jlanApp {
 
 	/**
 	 * Get the destination host name/address
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getHost() {
@@ -145,7 +145,7 @@ public class jlanMessage extends jlanApp {
 
 	/**
 	 * Get the message
-	 * 
+	 *
 	 * @return String
 	 */
 	protected final String getMessage() {
@@ -154,7 +154,7 @@ public class jlanMessage extends jlanApp {
 
 	/**
 	 * Set the destination host
-	 * 
+	 *
 	 * @param host String
 	 */
 	protected final void setHost(String host) {
@@ -163,7 +163,7 @@ public class jlanMessage extends jlanApp {
 
 	/**
 	 * Set the message to be sent
-	 * 
+	 *
 	 * @param msg String
 	 */
 	protected final void setMessage(String msg) {
@@ -172,7 +172,7 @@ public class jlanMessage extends jlanApp {
 
 	/**
 	 * Run the jlanMessage command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public static void main(String[] args) {

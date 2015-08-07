@@ -82,16 +82,16 @@ public class SMBMailslotPacket {
 
   private byte[] m_smbbuf;
   private int m_offset;
- 
+
   //	Define the number of standard parameters for a server response
 
   private static final int STD_PARAMS = 14;
 
 	//	SMB packet types we expect to receive in a mailslot
-	
+
   public static final int Transaction       = 0x25;
   public static final int Transaction2      = 0x32;
-  
+
 	/**
 	 * Default constructor
 	 */
@@ -102,9 +102,9 @@ public class SMBMailslotPacket {
 
  	/**
  	 * Class constructor
- 	 * 
+ 	 *
  	 * @param buf byte[]
- 	 */ 
+ 	 */
 	public SMBMailslotPacket(byte[] buf) {
 	  m_smbbuf = buf;
 	  m_offset = 0;
@@ -112,10 +112,10 @@ public class SMBMailslotPacket {
 
  	/**
  	 * Class constructor
- 	 * 
+ 	 *
  	 * @param buf byte[]
  	 * @param off int
- 	 */ 
+ 	 */
 	public SMBMailslotPacket(byte[] buf, int off) {
 	  m_smbbuf = buf;
 	  m_offset = off;
@@ -123,7 +123,7 @@ public class SMBMailslotPacket {
 
 	/**
 	 * Reset the mailslot packet to use the specified buffer and offset
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param offset int
 	 */
@@ -131,7 +131,7 @@ public class SMBMailslotPacket {
 	  m_smbbuf = buf;
 	  m_offset = offset;
 	}
-	
+
   /**
    * Get the secondary command code
    *
@@ -197,7 +197,7 @@ public class SMBMailslotPacket {
 
 	/**
 	 * Determine if normal or long error codes have been returned
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasLongErrorCode() {
@@ -205,7 +205,7 @@ public class SMBMailslotPacket {
 	  	return false;
 	  return true;
 	}
-	
+
   /**
    * Get the SMB error class
    *
@@ -341,7 +341,7 @@ public class SMBMailslotPacket {
       pos++;
     return pos;
   }
-  
+
   /**
    * Return the offset to the data block within the SMB packet. The data block is word aligned
    * within the byte buffer area of the SMB packet. This method must be called after the parameter
@@ -359,7 +359,7 @@ public class SMBMailslotPacket {
       pos++;
     return pos;
   }
-  
+
   /**
    * Return the parameter block offset where the parameter bytes should be placed.
    * This method must be called after the paramter count has been set. The parameter
@@ -376,7 +376,7 @@ public class SMBMailslotPacket {
       pos++;
     return pos;
   }
-  
+
   /**
    * Return the data block offset.
    *
@@ -385,7 +385,7 @@ public class SMBMailslotPacket {
   public final int getRxDataBlock() {
     return getParameter(12) + m_offset;
   }
-  
+
   /**
    * Return the received transaction data block length.
    *
@@ -394,7 +394,7 @@ public class SMBMailslotPacket {
   public final int getRxDataBlockLength() {
     return getParameter(11);
   }
-  
+
   /**
    * Get the required transact parameter word (16 bit).
    *
@@ -412,7 +412,7 @@ public class SMBMailslotPacket {
     pos += prmIdx * 2; // 16 bit words
     return DataPacker.getIntelShort(getBuffer(), pos);
   }
-  
+
   /**
    * Return the position of the parameter block within the received packet.
    *
@@ -424,7 +424,7 @@ public class SMBMailslotPacket {
 
     return getParameter(10) + m_offset;
   }
-  
+
   /**
    * Return the received transaction parameter block length.
    *
@@ -433,7 +433,7 @@ public class SMBMailslotPacket {
   public final int getRxParameterBlockLength() {
     return getParameter(9);
   }
-  
+
   /**
    * Return the received transaction setup parameter count.
    *
@@ -442,7 +442,7 @@ public class SMBMailslotPacket {
   public final int getRxParameterCount() {
     return getParameterCount() - STD_PARAMS;
   }
-  
+
   /**
    * Get the required transact parameter int value (32-bit).
    *
@@ -460,7 +460,7 @@ public class SMBMailslotPacket {
     pos += prmIdx * 2; // 16 bit words
     return DataPacker.getIntelInt(getBuffer(), pos);
   }
-  
+
   /**
    * Get the required transact parameter string.
    *
@@ -479,7 +479,7 @@ public class SMBMailslotPacket {
     int len = (buf[pos++] & 0x00FF);
     return DataPacker.getString(buf, pos, len);
   }
-  
+
   /**
    * Get the required transact parameter string.
    *
@@ -498,7 +498,7 @@ public class SMBMailslotPacket {
     byte[] buf = getBuffer();
     return DataPacker.getString(buf, pos, len);
   }
-  
+
   /**
    * Return the received transaction name.
    *
@@ -516,7 +516,7 @@ public class SMBMailslotPacket {
     int pos = getByteOffset();
     return DataPacker.getString(getBuffer(), pos, getByteCount());
   }
-  
+
   /**
    * Return the specified transaction setup parameter.
    *
@@ -534,10 +534,10 @@ public class SMBMailslotPacket {
 
     return getParameter(idx + STD_PARAMS);
   }
-  
+
   /**
    * Return the mailslot opcode
-   * 
+   *
    * @return int
    */
   public final int getMailslotOpcode() {
@@ -548,10 +548,10 @@ public class SMBMailslotPacket {
     }
     return -1;
   }
-  
+
   /**
    * Return the mailslot priority
-   * 
+   *
    * @return int
    */
   public final int getMailslotPriority() {
@@ -565,7 +565,7 @@ public class SMBMailslotPacket {
 
   /**
    * Return the mailslot class of service
-   * 
+   *
    * @return int
    */
   public final int getMailslotClass() {
@@ -579,55 +579,55 @@ public class SMBMailslotPacket {
 
 	/**
 	 * Return the mailslot sub-opcode, the first byte from the mailslot data
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMailslotSubOpcode() {
 	  return (int) (m_smbbuf[getMailslotDataOffset()] & 0xFF);
 	}
-	
+
   /**
    * Return the mailslot data offset
-   * 
+   *
    * @return int
    */
   public final int getMailslotDataOffset() {
     return getRxDataBlock();
   }
-  
+
   /**
    * Initialize a mailslot SMB
-   * 
+   *
    * @param name		Mailslot name
    * @param data		Request data bytes
    * @param dlen		Data length
    */
   public final void initializeMailslotSMB(String name, byte[] data, int dlen) {
-    
+
     //	Initialize the SMB packet header
-    
+
     initializeBuffer();
-    
+
     //	Clear header values
-    
+
     setFlags(0);
     setFlags2(0);
     setUserId(0);
     setMultiplexId(0);
     setTreeId(0);
     setProcessId(0);
-    
+
     //	Initialize the transaction
-    
+
     initializeTransact(name,17, null, 0, data, dlen);
-    
+
     //	Initialize the transactin setup parameters for a mailslot write
-    
+
     setSetupParameter(0, MailSlot.WRITE);
     setSetupParameter(1, 1);
     setSetupParameter(2, MailSlot.UNRELIABLE);
   }
-  
+
   /**
    * Initialize the transact SMB packet
    *

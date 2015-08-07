@@ -34,7 +34,7 @@ import org.alfresco.jlan.util.*;
 
 /**
  * jlanStat Application
- * 
+ *
  * @author gkspencer
  */
 public class jlanStat extends jlanApp {
@@ -56,7 +56,7 @@ public class jlanStat extends jlanApp {
 
 	/**
 	 * Output the command help
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
@@ -71,7 +71,7 @@ public class jlanStat extends jlanApp {
 
 	/**
 	 * Perform the main command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @exception Exception
 	 */
@@ -260,7 +260,7 @@ public class jlanStat extends jlanApp {
 
 	/**
 	 * Validate the command line arguments
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -312,7 +312,7 @@ public class jlanStat extends jlanApp {
 
 	/**
 	 * Format a date/time string
-	 * 
+	 *
 	 * @param date SMBDate
 	 * @return String
 	 */
@@ -335,7 +335,7 @@ public class jlanStat extends jlanApp {
 
 	/**
 	 * Run the jlanStat command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public static void main(String[] args) {

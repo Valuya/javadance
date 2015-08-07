@@ -55,10 +55,10 @@ public final class HexDump {
   public static final void Dump(byte[] byt, int len, int offset, PrintStream stream) {
 
 		//	Create buffers for the ASCII and Hex output
-		
+
 		StringBuffer ascBuf = new StringBuffer();
 		StringBuffer hexBuf = new StringBuffer();
-		
+
     //  Dump 16 byte blocks from the array until the length has been
     //  reached
 
@@ -69,18 +69,18 @@ public final class HexDump {
     while (dlen < len) {
 
 			//	Reset the ASCII/Hex buffers
-			
+
 			ascBuf.setLength(0);
 			hexBuf.setLength(0);
 
 			posStr = generatePositionString(doff);
-			
+
       //  Dump a block of data, update the data offset
 
       doff = generateLine(byt, doff, ascBuf, hexBuf);
-      
+
       //	Output the current record
-      
+
       stream.print(posStr);
       stream.print(hexBuf.toString());
       stream.println(ascBuf.toString());
@@ -104,10 +104,10 @@ public final class HexDump {
 
 
 		//	Create buffers for the ASCII and Hex output
-		
+
 		StringBuffer ascBuf = new StringBuffer();
 		StringBuffer hexBuf = new StringBuffer();
-		
+
     //  Dump 16 byte blocks from the array until the length has been
     //  reached
 
@@ -118,18 +118,18 @@ public final class HexDump {
     while (dlen < len) {
 
 			//	Reset the ASCII/Hex buffers
-			
+
 			ascBuf.setLength(0);
 			hexBuf.setLength(0);
 
 			posStr = generatePositionString(doff);
-			
+
       //  Dump a block of data, update the data offset
 
       doff = generateLine(byt, doff, ascBuf, hexBuf);
-      
+
       //	Output the current record
-      
+
       dbgDev.debugPrintln(posStr + hexBuf.toString() + ascBuf.toString());
 
       //  Update the dump length
@@ -140,7 +140,7 @@ public final class HexDump {
 
 	/**
 	 * Generate a hex string for the specified string
-	 * 
+	 *
 	 * @param str String
 	 * @return String
 	 */
@@ -149,10 +149,10 @@ public final class HexDump {
 			return hexString(str.getBytes());
 		return "";
 	}
-	
+
 	/**
 	 * Generate a hex string for the specified string
-	 * 
+	 *
 	 * @param str String
 	 * @param gap String
 	 * @return String
@@ -162,20 +162,20 @@ public final class HexDump {
 			return hexString(str.getBytes(), gap);
 		return "";
 	}
-	
+
 	/**
 	 * Generate a hex string for the specified bytes
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @return String
 	 */
 	public static final String hexString(byte[] buf) {
 		return hexString(buf, buf.length, null);
 	}
-	
+
 	/**
 	 * Generate a hex string for the specified bytes
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param gap String
 	 * @return String
@@ -183,32 +183,32 @@ public final class HexDump {
 	public static final String hexString(byte[] buf, String gap) {
 		return hexString(buf, buf.length, gap);
 	}
-	
+
 	/**
 	 * Generate a hex string for the specified bytes
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param len int
 	 * @param gap String
 	 * @return String
 	 */
 	public static final String hexString(byte[] buf, int len, String gap) {
-		
+
 		//	Check if the buffer is valid
-		
+
 		if ( buf == null)
 			return "";
-			
+
 		//	Create a string buffer for the hex string
 
 		int buflen = buf.length * 2;
 		if ( gap != null)
 			buflen += buf.length * gap.length();
-					
+
 		StringBuffer hex = new StringBuffer(buflen);
-		
+
 		//	Convert the bytes to hex-ASCII
-		
+
 		for ( int i = 0; i < len; i++) {
 
       //  Get the current byte
@@ -219,21 +219,21 @@ public final class HexDump {
 
       hex.append(Integer.toHexString((curbyt & 0xF0) >> 4));
       hex.append(Integer.toHexString(curbyt & 0x0F));
-      
+
       //	Add the gap string, if specified
-      
+
       if ( gap != null && i < (len - 1))
       	hex.append(gap);
 		}
-		
+
 		//	Return the hex-ASCII string
-		
+
 		return hex.toString();
 	}
-	
+
   /**
    * Generate a hex string for the specified bytes
-   * 
+   *
    * @param buf byte[]
    * @param off int
    * @param len int
@@ -278,10 +278,10 @@ public final class HexDump {
 
     return hex.toString();
   }
-  
+
 	/**
 	 * Generate a buffer position string
-	 * 
+	 *
 	 * @param off int
 	 * @return String
 	 */
@@ -292,12 +292,12 @@ public final class HexDump {
     StringBuffer posStr = new StringBuffer("" + off + " - ");
     while (posStr.length() < 8)
       posStr.insert(0, " ");
-      
+
     //	Return the string
-    
+
     return posStr.toString();
 	}
-	
+
   /**
    * Output a single line of the hex dump to a debug device
    *

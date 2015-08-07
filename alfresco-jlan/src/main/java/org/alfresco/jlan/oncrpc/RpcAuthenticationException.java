@@ -27,14 +27,14 @@ package org.alfresco.jlan.oncrpc;
 public class RpcAuthenticationException extends Exception {
 
   private static final long serialVersionUID = 8169939638737905039L;
-  
+
   //	Authentication failure error code
-  
+
   private int m_authError;
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param authError int
    */
   public RpcAuthenticationException(int authError) {
@@ -43,7 +43,7 @@ public class RpcAuthenticationException extends Exception {
 
   /**
    * Class constructor
-   * 
+   *
    * @param authError int
    * @param msg String
    */
@@ -51,10 +51,10 @@ public class RpcAuthenticationException extends Exception {
     super(msg);
     m_authError = authError;
   }
-  
+
   /**
    * Get the authentication error code
-   * 
+   *
    * @return int
    */
   public final int getAuthenticationErrorCode() {

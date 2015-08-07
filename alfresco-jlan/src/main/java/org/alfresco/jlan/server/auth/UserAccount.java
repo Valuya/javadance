@@ -37,14 +37,14 @@ public class UserAccount {
   private String m_password;
 
   // MD4 hashed password
-  
+
   private byte[] m_md4Password;
-  
+
 	//	Real user name and comment
-	
+
 	private String m_realName;
 	private String m_comment;
-	
+
   //	List of shares this user is allowed to use
 
   private StringList m_shares;
@@ -55,9 +55,9 @@ public class UserAccount {
   private boolean m_guest;
 
 	//	Home directory
-	
+
 	private String m_homeDir;
-	
+
   /**
    * Default constructor
    */
@@ -103,25 +103,25 @@ public class UserAccount {
 
 	/**
 	 * Check if the user has a home direectory configured
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasHomeDirectory() {
 		return m_homeDir != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the home directory for this user
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getHomeDirectory() {
 		return m_homeDir;
 	}
-	
+
   /**
    * Return the password
-   * 
+   *
    * @return java.lang.String
    */
   public final String getPassword() {
@@ -130,7 +130,7 @@ public class UserAccount {
 
   /**
    * Check if the MD4 hashed password is available
-   * 
+   *
    * @return boolean
    */
   public final boolean hasMD4Password() {
@@ -139,13 +139,13 @@ public class UserAccount {
 
   /**
    * Return the MD4 hashed password
-   * 
+   *
    * @return byte[]
    */
   public final byte[] getMD4Password() {
     return m_md4Password;
   }
-  
+
   /**
    * Return the user name.
    *
@@ -157,22 +157,22 @@ public class UserAccount {
 
 	/**
 	 * Return the real user name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getRealName() {
 		return m_realName;
 	}
-	
+
 	/**
 	 * Return the user comment
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getComment() {
 		return m_comment;
 	}
-	
+
   /**
    * Check if the specified share is listed in the users allowed list.
    *
@@ -196,13 +196,13 @@ public class UserAccount {
 
 	/**
 	 * Return the list of shares
-	 * 
+	 *
 	 * @return StringList
 	 */
 	public final StringList getShareList() {
 	  return m_shares;
 	}
-	
+
   /**
    * Determine if this user in an administrator.
    *
@@ -214,13 +214,13 @@ public class UserAccount {
 
   /**
    * Determine if the user is a guest user
-   * 
+   *
    * @return boolean
    */
   public final boolean isGuest() {
     return m_guest;
   }
-  
+
   /**
    * Remove all shares from the list of restricted shares.
    */
@@ -261,22 +261,22 @@ public class UserAccount {
 
   /**
    * Set the guest flag
-   * 
+   *
    * @param guest boolean
    */
   public final void setGuest( boolean guest) {
     m_guest = guest;
   }
-  
+
 	/**
 	 * Set the user home directory
-	 * 
+	 *
 	 * @param home String
 	 */
 	public final void setHomeDirectory(String home) {
 		m_homeDir = home;
 	}
-	
+
   /**
    * Set the password for this account.
    *
@@ -288,13 +288,13 @@ public class UserAccount {
 
   /**
    * Set the MD4 hashed password
-   * 
+   *
    * @param md4Pwd byte[]
    */
   public final void setMD4Password( byte[] md4Pwd) {
     m_md4Password = md4Pwd;
   }
-  
+
   /**
    * Set the user name.
    *
@@ -306,22 +306,22 @@ public class UserAccount {
 
 	/**
 	 * Set the real user name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setRealName(String name) {
 		m_realName = name;
 	}
-	
+
 	/**
 	 * Set the comment
-	 * 
+	 *
 	 * @param comment String
 	 */
 	public final void setComment(String comment) {
 		m_comment = comment;
 	}
-	
+
   /**
    * Return the user account as a string.
    *
@@ -334,25 +334,25 @@ public class UserAccount {
     str.append(getUserName());
     str.append(":");
     str.append(getPassword());
-    
+
     if ( hasMD4Password()) {
       str.append(",MD4=");
       str.append(HexDump.hexString(getMD4Password()));
     }
-    
+
     if (isAdministrator())
       str.append(" (ADMIN)");
 
     if (isGuest())
       str.append(" (GUEST)");
-    
+
     str.append(",Real=");
-    
+
     str.append(getRealName());
     str.append(",Comment=");
     str.append(getComment());
     str.append(",Allow=");
-    
+
     if (m_shares == null)
       str.append("<ALL>");
     else
@@ -364,7 +364,7 @@ public class UserAccount {
 			str.append(getHomeDirectory());
 		else
 			str.append("None");
-			
+
     return str.toString();
   }
 }

@@ -21,7 +21,7 @@ package org.alfresco.jlan.server;
 
 /**
  * Server Versions Class
- * 
+ *
  * <p>Holds the version strings for various server implementations.
  *
  * @author gkspencer
@@ -29,17 +29,17 @@ package org.alfresco.jlan.server;
 public class Version {
 
   // Top level version
-  
+
   public static String ReleaseVersion = "6.0.0";
-  
+
   // Server version strings
-  
+
   public static String SMBServerVersion       = ReleaseVersion;
   public static String NetBIOSServerVersion   = ReleaseVersion;
-  
+
   public static String NFSServerVersion       = ReleaseVersion;
   public static String MountServerVersion     = ReleaseVersion;
   public static String PortMapServerVersion   = ReleaseVersion;
-  
+
   public static String FTPServerVersion       = ReleaseVersion;
 }

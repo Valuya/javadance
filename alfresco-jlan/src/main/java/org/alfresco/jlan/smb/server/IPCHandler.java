@@ -45,14 +45,14 @@ import org.alfresco.jlan.util.DataPacker;
  * <p>
  * The IPCHandler class processes requests made on the IPC$ remote admin pipe. The code is shared
  * amongst different SMB protocol handlers.
- * 
+ *
  * @author gkspencer
  */
 class IPCHandler {
 
 	/**
 	 * Process a request made on the IPC$ remote admin named pipe.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -81,50 +81,50 @@ class IPCHandler {
 		switch (smbPkt.getCommand()) {
 
 			// Open file request
-	
+
 			case PacketType.OpenAndX:
 			case PacketType.OpenFile:
 				procIPCFileOpen(sess, smbPkt);
 				break;
-	
+
 			// Read file request
-	
+
 			case PacketType.ReadFile:
 				procIPCFileRead(sess, smbPkt);
 				break;
-	
+
 			// Read AndX file request
-	
+
 			case PacketType.ReadAndX:
 				procIPCFileReadAndX(sess, smbPkt);
 				break;
-	
+
 			// Write file request
-	
+
 			case PacketType.WriteFile:
 				procIPCFileWrite(sess, smbPkt);
 				break;
-	
+
 			// Write AndX file request
-	
+
 			case PacketType.WriteAndX:
 				procIPCFileWriteAndX(sess, smbPkt);
 				break;
-	
+
 			// Close file request
-	
+
 			case PacketType.CloseFile:
 				procIPCFileClose(sess, smbPkt);
 				break;
-	
+
 			// NT create andX request
-	
+
 			case PacketType.NTCreateAndX:
 				procNTCreateAndX(sess, smbPkt);
 				break;
-	
+
 			// Default, respond with an unsupported function error.
-	
+
 			default:
 				sess.sendErrorResponseSMB( smbPkt, SMBStatus.SRVUnrecognizedCommand, SMBStatus.ErrSrv);
 				break;
@@ -133,7 +133,7 @@ class IPCHandler {
 
 	/**
 	 * Process an IPC$ transaction request.
-	 * 
+	 *
 	 * @param vc VirtualCircuit
 	 * @param tbuf SrvTransactBuffer
 	 * @param sess SMBSrvSession
@@ -181,11 +181,11 @@ class IPCHandler {
 			break;
 
 		// Wait for named pipe
-			
+
 		case NamedPipeTransaction.WaitNamedPipe:
 			sess.sendErrorResponseSMB( smbPkt, SMBStatus.NTNotSupported, SMBStatus.SRVNotSupported, SMBStatus.ErrSrv);
 			break;
-			
+
 		// Unknown command
 
 		default:
@@ -196,7 +196,7 @@ class IPCHandler {
 
 	/**
 	 * Process a special IPC$ file open request.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -286,7 +286,7 @@ class IPCHandler {
 
 	/**
 	 * Process an IPC pipe file read request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -317,7 +317,7 @@ class IPCHandler {
 
 	/**
 	 * Process an IPC pipe file read andX request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -348,7 +348,7 @@ class IPCHandler {
 
 	/**
 	 * Process an IPC pipe file write request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -379,7 +379,7 @@ class IPCHandler {
 
 	/**
 	 * Process an IPC pipe file write andX request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -410,7 +410,7 @@ class IPCHandler {
 
 	/**
 	 * Process a special IPC$ file close request.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -467,7 +467,7 @@ class IPCHandler {
 
 	/**
 	 * Process a set named pipe handle state request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param vc VirtualCircuit
 	 * @param tbuf SrvTransactBuffer
@@ -519,7 +519,7 @@ class IPCHandler {
 
 	/**
 	 * Process an NT create andX request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param smbPkt SMBSrvPacket
 	 * @exception IOException
@@ -634,35 +634,35 @@ class IPCHandler {
 
 		prms.packByte(0); // directory flag
 		prms.packWord(0); // byte count = 0
-		
+
 		// Pack the extra extended response area, if requested
-		
+
 		if ( extendedResponse == true) {
-			
+
 			// 22 byte block of zeroes
-			
+
 			prms.packLong( 0);
 			prms.packLong( 0);
 			prms.packInt( 0);
 			prms.packWord( 0);
-			
+
 			// Pack the permissions
-			
+
 			prms.packInt( 0x1F01FF);
-			
+
 			// 8 byte block, from network trace observed values
-			
+
 			prms.packInt( 0x12019B);
 			prms.packInt( 0);
 		}
-		
+
 		// Set the AndX offset
 
 		int endPos = prms.getPosition();
 		smbPkt.setParameter(1, endPos - RFCNetBIOSProtocol.HEADER_LEN);
 
 		// Set the status
-		
+
 		smbPkt.setLongErrorCode( SMBStatus.NTSuccess);
 
 		// Send the response packet
@@ -672,7 +672,7 @@ class IPCHandler {
 
 	/**
 	 * Process a transact2 query file information (via handle) request.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param vc VirtualCircuit
 	 * @param tbuf Transaction request details
@@ -762,9 +762,9 @@ class IPCHandler {
 			fileInfo.setFileId(netFile.getFileId());
 
 			// Set the file allocation size, looks like it is used as the pipe buffer size
-			
+
 			fileInfo.setAllocationSize( 4096L);
-			
+
 			// Pack the file information into the return data packet
 
 			int dataLen = QueryInfoPacker.packInfo(fileInfo, replyBuf, infoLevl, true);

@@ -21,9 +21,9 @@ package org.alfresco.jlan.server.auth;
 
 /**
  * Challenge Authentication Context Class
- * 
+ *
  * <p>Contains a challenge to be sent to a client for password hashing.
- * 
+ *
  * @author gkspencer
  */
 public class ChallengeAuthContext extends AuthContext {
@@ -37,10 +37,10 @@ public class ChallengeAuthContext extends AuthContext {
    */
   public ChallengeAuthContext() {
   }
-  
+
   /**
    * Get the challenge
-   * 
+   *
    * return byte[]
    */
   public byte[] getChallenge() {

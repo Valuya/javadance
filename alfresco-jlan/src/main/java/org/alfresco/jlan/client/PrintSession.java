@@ -35,9 +35,9 @@ import org.alfresco.jlan.smb.SMBException;
  *  <p>A print session is created using the SessionFactory.OpenPrinter() method. The
  *  SessionFactory negotiates the appropriate SMB dialect and creates the appropriate
  *  PrintSession derived object.
- * 
+ *
  * @see SessionFactory
- * 
+ *
  * @author gkspencer
  */
 public abstract class PrintSession extends Session {
@@ -50,10 +50,10 @@ public abstract class PrintSession extends Session {
 	//	Default number of print queue entries to return
 
 	public static final int DefaultEntryCount = 20;
-  
+
 	/**
 	 * Construct an SMB print session
-	 * 
+	 *
 	 * @param shr Remote server details
 	 * @param dialect SMB dialect that this session is using
 	 */
@@ -67,7 +67,7 @@ public abstract class PrintSession extends Session {
 
 	/**
 	 * Determine if the print session has been closed.
-	 * 
+	 *
 	 * @return true if the print session has been closed, else false.
 	 */
 	protected final boolean isClosed() {
@@ -76,7 +76,7 @@ public abstract class PrintSession extends Session {
 
 	/**
 	 * Open a spool file on the remote print server.
-	 * 
+	 *
 	 * @param id Identifier string for this print request.
 	 * @param mode Print mode, either TextMode or GraphicsMode.
 	 * @param setuplen Length of data in the start of the spool file that is printer setup code.
@@ -89,7 +89,7 @@ public abstract class PrintSession extends Session {
 
 	/**
 	 * Open a spool file as an output stream.
-	 * 
+	 *
 	 * @param id Identifier string for this print request.
 	 * @param mode Print mode, either TextMode or GraphicsMode.
 	 * @param setuplen Length of data in the start of the spool file that is printer setup code.

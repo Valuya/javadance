@@ -23,28 +23,28 @@ package org.alfresco.jlan.smb.dcerpc.client;
  * NetLogon Operation Ids Class
  *
  * <p>Contains constants for requests to the netlogon DCE/RPC service on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class NetLogon {
 
 	//	NetLogon opcodes
-	
+
 	public static final int NetrSamLogon				= 0x02;
 	public static final int NetrSamLogoff				= 0x03;
 	public static final int NetrServerRequestChallenge	= 0x04;
 	public static final int NetrServerAuthenticate		= 0x05;
 	public static final int NetrServerPasswordSet		= 0x06;
 	public static final int NetrServerAuthenticate2		= 0x0F;
-	
+
 	/**
 	 * Convert an opcode to a function name
-	 * 
+	 *
 	 * @param opCode int
 	 * @return String
 	 */
 	public final static String getOpcodeName(int opCode) {
-	  
+
 		String ret = "";
 		switch ( opCode) {
 			case NetrSamLogon:
@@ -66,7 +66,7 @@ public class NetLogon {
 				ret = "NetrServerAuthenticate2";
 				break;
 		}
-		
+
 		return ret;
 	}
 }

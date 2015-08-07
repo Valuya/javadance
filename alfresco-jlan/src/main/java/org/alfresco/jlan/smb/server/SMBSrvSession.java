@@ -62,11 +62,11 @@ import org.alfresco.jlan.util.StringList;
 /**
  * <p>
  * The SMB server creates a server session object for each incoming session request.
- * 
+ *
  * <p>
  * The server session holds the context of a particular session, including the list of open files
  * and active searches.
- * 
+ *
  * @author gkspencer
  */
 public class SMBSrvSession extends SrvSession implements Runnable {
@@ -183,16 +183,16 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 	private Hashtable<Integer, Object> m_setupObjects;
 
 	// Flag to indicate an asynchronous read has been queued/is being processed
-	
+
 	private boolean m_asyncRead;
-	
+
 	// Client used this hostname or ip address to mount the network drive
 
     private String m_shareHostName;
 
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param handler Packet handler used to send/receive SMBs
 	 * @param srv Server that this session is associated with.
 	 * @param maxVC Maximum virtual circuits allowed on this session.
@@ -218,15 +218,15 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 			if ( handler.hasClientName())
 				m_callerNBName = handler.getClientName();
 		}
-		
+
 		// Initialize the virtual circuit list
-		
+
 		setMaximumVirtualCircuits( maxVC);
 	}
 
 	/**
 	 * Return the session protocol type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int isProtocol() {
@@ -235,7 +235,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Find the tree connection for the request
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @return TreeConnection
 	 */
@@ -260,17 +260,17 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Add a new virtual circuit, return the allocated UID
-	 * 
+	 *
 	 * @param vc VirtualCircuit
 	 * @return int
 	 */
 	public synchronized final int addVirtualCircuit(VirtualCircuit vc) {
 
 		// Check if the virtual circuit list has been allocated
-		
+
 		if ( m_vcircuits == null)
 			m_vcircuits = new VirtualCircuitList();
-		
+
 		// Add the new virtual circuit
 
 		return m_vcircuits.addCircuit(vc);
@@ -278,17 +278,17 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Find a virtual circuit with the allocated UID
-	 * 
+	 *
 	 * @param uid int
 	 * @return VirtualCircuit
 	 */
 	public final VirtualCircuit findVirtualCircuit(int uid) {
 
 		// Check if the virtual circuit list has been allocated
-		
+
 		if ( m_vcircuits == null)
 			m_vcircuits = new VirtualCircuitList();
-		
+
 		// Find the virtual circuit with the specified UID
 
 		VirtualCircuit vc = m_vcircuits.findCircuit(uid);
@@ -297,9 +297,9 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 			// Set the session client information from the virtual circuit
 
 			setClientInformation(vc.getClientInformation());
-			
+
 			// Setup any authentication context
-			
+
 			getSMBServer().getCifsAuthenticator().setCurrentUser( getClientInformation());
 		}
 
@@ -310,7 +310,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Remove a virtual circuit
-	 * 
+	 *
 	 * @param uid int
 	 */
 	public final void removeVirtualCircuit(int uid) {
@@ -323,13 +323,13 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the active virtual circuit count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfVirtualCircuits() {
 		return (m_vcircuits != null ? m_vcircuits.getCircuitCount() : 0);
 	}
-	
+
 	/**
 	 * Cleanup any resources owned by this session, close virtual circuits and change notification
 	 * requests.
@@ -340,13 +340,13 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 	    try
 	    {
 	    	// DEBUG
-	    	
+	
 	        if ( Debug.EnableInfo && hasDebug(DBG_STATE))
 	            debugPrintln("Cleanup session, vcircuits=" + m_vcircuits.getCircuitCount() + ", changeNotify="
 	                    + getNotifyChangeCount());
 
 			// Clear the virtual circuit list
-	  
+
 	        m_vcircuits.clearCircuitList(this);
 
 	        // Check if there are active change notification requests
@@ -370,9 +370,9 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	        getSMBServer().deleteTemporaryShares(this);
 
-	     
-	    } 
-	    finally 
+
+	    }
+	    finally
 	    {
 	        // Commit any outstanding transaction that may have been started during cleanup
 	        if ( hasTransaction())
@@ -405,9 +405,9 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 	public final void closeSession() {
 
 		// Cleanup the session (open files/virtual circuits/searches)
-		
+
 		cleanupSession();
-		
+
 		// Call the base class
 
 		super.closeSession();
@@ -419,7 +419,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 			setState(SMBSrvSessionState.NBHANGUP);
 
 			// Close the socket
-			
+
 			closeSocket();
 		}
 		catch (Exception ex) {
@@ -443,7 +443,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the default flags SMB header value
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDefaultFlags() {
@@ -452,7 +452,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the default flags2 SMB header value
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDefaultFlags2() {
@@ -461,7 +461,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the count of active change notification requests
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNotifyChangeCount() {
@@ -472,7 +472,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the client maximum buffer size
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getClientMaximumBufferSize() {
@@ -481,7 +481,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the client maximum muliplexed requests
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getClientMaximumMultiplex() {
@@ -490,7 +490,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the client capability flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getClientCapabilities() {
@@ -499,7 +499,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Determine if the client has the specified capability enabled
-	 * 
+	 *
 	 * @param cap int
 	 * @return boolean
 	 */
@@ -511,7 +511,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the SMB dialect type that the server/client have negotiated.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNegotiatedSMBDialect() {
@@ -520,7 +520,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the packet handler used by the session
-	 * 
+	 *
 	 * @return PacketHandler
 	 */
 	public final PacketHandler getPacketHandler() {
@@ -529,25 +529,25 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the CIFS packet pool from the packet handler
-	 * 
+	 *
 	 * @return CIFSPacketPool
 	 */
 	public final CIFSPacketPool getPacketPool() {
 		return m_pktHandler.getPacketPool();
 	}
-	
+
 	/**
 	 * Return the thread pool
-	 * 
+	 *
 	 * @return ThreadRequestPool
 	 */
 	public final ThreadRequestPool getThreadPool() {
 		return getSMBServer().getThreadPool();
 	}
-	
+
 	/**
 	 * Return the remote NetBIOS name that was used to create the session.
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getRemoteNetBIOSName() {
@@ -556,7 +556,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Check if the session has a target NetBIOS name
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasTargetNetBIOSName() {
@@ -565,7 +565,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the target NetBIOS name that was used to create the session
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTargetNetBIOSName() {
@@ -574,7 +574,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Cehck if the clients remote address is available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasRemoteAddress() {
@@ -583,7 +583,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the client network address
-	 * 
+	 *
 	 * @return InetAddress
 	 */
 	public final InetAddress getRemoteAddress() {
@@ -592,7 +592,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the server that this session is associated with.
-	 * 
+	 *
 	 * @return SMBServer
 	 */
 	public final SMBServer getSMBServer() {
@@ -601,7 +601,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the server name that this session is associated with.
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getServerName() {
@@ -610,25 +610,25 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the session state
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getState() {
 		return m_state;
 	}
-	
+
 	/**
 	 * Return the maximum virtual circuits allowed on this session
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumVirtualCircuits() {
 		return (m_vcircuits != null) ? m_vcircuits.getMaximumVirtualCircuits() : 0;
 	}
-	
+
 	/**
 	 * Hangup the session.
-	 * 
+	 *
 	 * @param reason java.lang.String Reason the session is being closed.
 	 */
 	public void hangupSession(String reason) {
@@ -647,7 +647,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Check if the Macintosh exteniosn SMBs are enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasMacintoshExtensions() {
@@ -656,7 +656,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Check if there is a change notification update pending
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasNotifyPending() {
@@ -665,7 +665,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Determine if the session has a setup object for the specified PID
-	 * 
+	 *
 	 * @param pid int
 	 * @return boolean
 	 */
@@ -677,7 +677,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the session setup object for the specified PID
-	 * 
+	 *
 	 * @param pid int
 	 * @return Object
 	 */
@@ -689,7 +689,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Store the setup object for the specified PID
-	 * 
+	 *
 	 * @param pid int
 	 * @param obj Object
 	 */
@@ -701,7 +701,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Remove the session setup object for the specified PID
-	 * 
+	 *
 	 * @param pid int
 	 * @return Object
 	 */
@@ -713,7 +713,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Set the change notify pending flag
-	 * 
+	 *
 	 * @param pend boolean
 	 */
 	public final void setNotifyPending(boolean pend) {
@@ -722,7 +722,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Set the client maximum buffer size
-	 * 
+	 *
 	 * @param maxBuf int
 	 */
 	public final void setClientMaximumBufferSize(int maxBuf) {
@@ -731,7 +731,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Set the client maximum multiplexed
-	 * 
+	 *
 	 * @param maxMpx int
 	 */
 	public final void setClientMaximumMultiplex(int maxMpx) {
@@ -740,7 +740,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Set the client capability flags
-	 * 
+	 *
 	 * @param flags int
 	 */
 	public final void setClientCapabilities(int flags) {
@@ -749,7 +749,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Set the default flags value to be ORed with outgoing response packet flags
-	 * 
+	 *
 	 * @param flags int
 	 */
 	public final void setDefaultFlags(int flags) {
@@ -758,7 +758,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Set the default flags2 value to be ORed with outgoing response packet flags2 field
-	 * 
+	 *
 	 * @param flags int
 	 */
 	public final void setDefaultFlags2(int flags) {
@@ -767,7 +767,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Set the session state.
-	 * 
+	 *
 	 * @param state int
 	 */
 	protected void setState(int state) {
@@ -784,26 +784,26 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Set the maximum virtual circuits allowed for this session
-	 * 
+	 *
 	 * @param maxVC int
 	 */
 	public synchronized final void setMaximumVirtualCircuits( int maxVC) {
-		
+
 		// Can only set the virtual circuit limit before the virtual circuit list has been allocated
 		// to the session
-		
+
 		if ( m_vcircuits != null)
 			throw new RuntimeException( "Virtual circuit list is already allocated");
-		
+
 		// Create the virtual circuit list with the required limit
-		
+
 		m_vcircuits = new VirtualCircuitList( maxVC);
 	}
-	
+
 	/**
 	 * Process the NetBIOS session request message, either accept the session request and send back
 	 * a NetBIOS accept or reject the session and send back a NetBIOS reject and hangup the session.
-	 * 
+	 *
 	 * 2param smbPkt SMBSrvPacket
 	 */
 	protected void procNetBIOSSessionRequest( SMBSrvPacket smbPkt)
@@ -812,21 +812,21 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 		// Check if the received packet contains enough data for a NetBIOS session request packet.
 
 		if ( smbPkt.getReceivedLength() < RFCNetBIOSProtocol.SESSREQ_LEN || smbPkt.getHeaderType() != RFCNetBIOSProtocol.SESSION_REQUEST) {
-			
+
 			// Debug
-			
+
 			if ( Debug.EnableInfo && hasDebug(DBG_NETBIOS)) {
 				Debug.println("NBREQ invalid packet len=" + smbPkt.getReceivedLength() + ", header=0x" + Integer.toHexString(smbPkt.getHeaderType()));
 				HexDump.Dump( smbPkt.getBuffer(), smbPkt.getReceivedLength(), 0, Debug.getDebugInterface());
 			}
-		
+
 			throw new NetBIOSException("NBREQ Invalid packet len=" + smbPkt.getReceivedLength());
 		}
 
 		// Do a few sanity checks on the received packet
 
 		byte[] buf = smbPkt.getBuffer();
-		
+
 		if ( buf[4] != (byte) 32 || buf[38] != (byte) 32)
 			throw new NetBIOSException("NBREQ Invalid NetBIOS name data");
 
@@ -835,14 +835,14 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 		StringBuffer nbName = new StringBuffer(32);
 		for (int i = 0; i < 32; i++)
 			nbName.append((char) buf[5 + i]);
-		
+
 		String toName = NetBIOSSession.DecodeName(nbName.toString());
 		toName = toName.trim();
 
 		nbName.setLength(0);
 		for (int i = 0; i < 32; i++)
 			nbName.append((char) buf[39 + i]);
-		
+
 		String fromName = NetBIOSSession.DecodeName(nbName.toString());
 		fromName = fromName.trim();
 
@@ -909,7 +909,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 		// Move the session to the SMB negotiate state
 
 		setState(SMBSrvSessionState.SMBNEGOTIATE);
-		
+
 		// Set the remote client name
 
 		setRemoteName(fromName);
@@ -927,7 +927,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Process an SMB dialect negotiate request.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 */
 	protected void procSMBNegotiate( SMBSrvPacket smbPkt)
@@ -959,7 +959,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 			diaStr = DataPacker.getDataString(DataType.Dialect, buf, dataPos, dataLen, false);
 			if ( diaStr != null) {
-				
+
 				// Add the dialect string to the list of requested dialects
 
 				dialects.addString(diaStr);
@@ -1150,10 +1150,10 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 			ICifsAuthenticator auth = getSMBServer().getCIFSConfiguration().getAuthenticator();
 
 			// Check if the authenticator supports extended security, override the client setting
-			
+
 			if ( auth.hasExtendedSecurity() == false)
 				extendedSecurity = false;
-			
+
 			// NT dialect negotiate response
 
 			NTParameterPacker nt = new NTParameterPacker( smbPkt.getBuffer());
@@ -1229,10 +1229,10 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 		}
 
 		// Tree and user id are not valid
-		
+
 		smbPkt.setTreeId(0xFFFF);
 		smbPkt.setUserId(0xFFFF);
-		
+
 		// Make sure the response flag is set
 
 		if ( smbPkt.isResponse() == false)
@@ -1264,9 +1264,9 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 	public void run() {
 
 		// Server packet allocated from the pool
-		
+
 		SMBSrvPacket smbPkt = null;
-		
+
 		try {
 
 			// Debug
@@ -1279,34 +1279,34 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 			while (m_state != SMBSrvSessionState.NBHANGUP) {
 
 				try {
-					
+
 					// Wait for a request packet
-	
+
 					smbPkt = m_pktHandler.readPacket();
 				}
 				catch (SocketTimeoutException ex) {
-					
+
 					// Debug
 
 					if ( Debug.EnableInfo && hasDebug(SMBSrvSession.DBG_SOCKET))
 						debugPrintln("Socket read timed out, closing session");
-					
+
 					// Socket read timed out
-					
+
 					hangupSession("Socket read timeout");
-					
+
 					// Clear the request packet
-					
+
 					smbPkt = null;
 				}
 				catch (IOException ex) {
-					
+
 					// Check if there is no more data, the other side has dropped the connection
 
 					hangupSession("Remote disconnect");
-					
+
 					// Clear the request packet
-					
+
 					smbPkt = null;
 				}
 
@@ -1345,13 +1345,13 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 				}
 
 				// Queue the request to the thread pool for processing
-				
+
 				getThreadPool().queueRequest( new CIFSThreadRequest( this, smbPkt));
 				smbPkt = null;
 			}
-			
+
 			// Cleanup the session, then close the session/socket
-			
+
 			closeSession();
 		}
 		catch (Exception ex) {
@@ -1370,9 +1370,9 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 			Debug.println( ex);
 		}
 		finally {
-			
+
 			// Release any allocated request packet back to the pool
-			
+
 			if ( smbPkt != null)
 				getSMBServer().getPacketPool().releasePacket( smbPkt);
 		}
@@ -1380,7 +1380,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Handle a session message, receive all data and run the SMB protocol handler.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 */
 	protected final void runHandler( SMBSrvPacket smbPkt)
@@ -1402,10 +1402,10 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 		}
 
 		// Commit/rollback any active transaction
-		
+
 		if ( hasTransaction())
 			endTransaction();
-		
+
         // Check if there are any pending asynchronous response packets
 
         SMBSrvPacket asynchPkt;
@@ -1429,68 +1429,68 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Process a CIFS request packet
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 */
 	public final void processPacket( SMBSrvPacket smbPkt) {
-		
+
 		// Process the packet, if valid
-		
+
 		if ( smbPkt != null) {
-			
+
 			try {
-	
+
 				// Start/end times if timing debug is enabled
-	
+
 				long startTime = 0L;
 				long endTime = 0L;
-	
+
 				// Debug
-	
+
 				if ( Debug.EnableInfo && hasDebug(DBG_TIMING))
 					startTime = System.currentTimeMillis();
-	
+
 				// Debug
-	
+
 				if ( Debug.EnableInfo && hasDebug(DBG_RXDATA)) {
 					debugPrintln("Rx Data len=" + smbPkt.getReceivedLength());
 					HexDump.Dump( smbPkt.getBuffer(), smbPkt.getReceivedLength(), 0, Debug.getDebugInterface());
 				}
-	
+
 				// Process the received packet
-				
+
 				if ( smbPkt.getReceivedLength() > 0) {
-					
+
 					switch (m_state) {
-		
+
 						// NetBIOS session request pending
-		
+
 						case SMBSrvSessionState.NBSESSREQ:
 							procNetBIOSSessionRequest( smbPkt);
 							break;
-		
+
 						// SMB dialect negotiate
-		
+
 						case SMBSrvSessionState.SMBNEGOTIATE:
 							procSMBNegotiate( smbPkt);
 							break;
-		
+
 						// SMB session setup
-		
+
 						case SMBSrvSessionState.SMBSESSSETUP:
 							m_handler.runProtocol( smbPkt);
 							break;
-		
+
 						// SMB session main request processing
-		
+
 						case SMBSrvSessionState.SMBSESSION:
-		
+
 							// Run the main protocol handler
-		
+
 							runHandler( smbPkt);
-		
+
 							// Debug
-		
+
 							if ( Debug.EnableInfo && hasDebug(DBG_TIMING)) {
 								endTime = System.currentTimeMillis();
 								long duration = endTime - startTime;
@@ -1501,36 +1501,36 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 							break;
 					}
 				}
-				
+
 				// Release the current packet back to the pool
-				
+
 				getPacketPool().releasePacket( smbPkt);
 				smbPkt = null;
-				
+
 				// DEBUG
-				
+
 				if ( Debug.EnableInfo && hasDebug(DBG_PKTSTATS))
 					Debug.println("[SMB] Packet pool stats: " + getPacketPool());
-	
+
 			}
 			catch ( DeferredPacketException ex) {
-				
+
 				// Packet processing has been deferred, waiting on completion of some other processing
 				// Make sure the request packet is not released yet
-				
+
 				smbPkt = null;
 			}
 			catch (SocketException ex) {
-	
+
 				// DEBUG
-	
+
 				if ( Debug.EnableInfo && hasDebug(DBG_STATE))
 					debugPrintln("Socket closed by remote client");
 			}
 			catch (Exception ex) {
-	
+
 				// Output the exception details
-	
+
 				if ( isShutdown() == false) {
 					debugPrintln("Closing session due to exception");
 					debugPrintln(ex);
@@ -1543,59 +1543,59 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 				Debug.println( ex);
 			}
 			finally {
-				
+
 				// Release any allocated request packet back to the pool
-				
+
 				if ( smbPkt != null)
 					getSMBServer().getPacketPool().releasePacket( smbPkt);
 			}
 		}
-		
+
 		// Check if there is an active transaction
-		
+
 		if ( hasTransaction()) {
-		
+
 			// DEBUG
-			
+
 			if ( Debug.EnableError)
 				debugPrintln("** Active transaction after packet processing, cleaning up **");
-			
+
 			// Close the active transaction
-			
+
 			endTransaction();
 		}
-		
+
 		// Check if the session has been closed, either cleanly or due to an exception
-		
+
 		if ( m_state == SMBSrvSessionState.NBHANGUP) {
-			
+
 			// Cleanup the session, make sure all resources are released
-	
+
 			cleanupSession();
-	
+
 			// Debug
-	
+
 			if ( Debug.EnableInfo && hasDebug(DBG_STATE))
 				debugPrintln("Server session closed");
-	
+
 			// Close the session
-	
+
 			closeSocket();
-	
+
 			// Notify the server that the session has closed
-	
+
 			getSMBServer().sessionClosed(this);
 		}
-		
+
 		// Clear any user context
-		
+
 		if ( hasClientInformation())
 			getSMBServer().getCifsAuthenticator().setCurrentUser( null);
 	}
-	
+
 	/**
 	 * Send an SMB response
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 * @exception IOException
 	 */
@@ -1606,7 +1606,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Send an SMB response
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 * @param len int
 	 * @exception IOException
@@ -1615,29 +1615,29 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 		throws IOException {
 
 		// Commit/rollback any active transactions before sending the response
-		
+
 		if ( hasTransaction()) {
-			
+
 			// DEBUG
-			
+
 			long startTime = 0L;
-			
+
 			if ( Debug.EnableInfo && hasDebug( DBG_BENCHMARK))
 				startTime = System.currentTimeMillis();
-		
+
 			// Commit or rollback the transaction
-			
+
 			endTransaction();
-			
+
 			// DEBUG
-			
+
 			if ( Debug.EnableInfo && hasDebug( DBG_BENCHMARK)) {
 				long elapsedTime = System.currentTimeMillis() - startTime;
 				if ( elapsedTime > 5L)
 					Debug.println("Benchmark: End transaction took " + elapsedTime + "ms");
 			}
-		}			
-		
+		}
+
 		// Make sure the response flag is set
 
 		if ( pkt.isRequestPacket() == false && pkt.isResponse() == false)
@@ -1711,8 +1711,8 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 	/**
 	 * Send an error response SMB. The returned code depends on the client long error code flag
 	 * setting.
-	 * 
-	 * @param smbPkt SMBSrvPacket 
+	 *
+	 * @param smbPkt SMBSrvPacket
 	 * @param ntCode 32bit error code
 	 * @param stdCode Standard error code
 	 * @param stdClass Standard error class
@@ -1749,7 +1749,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Send an error response SMB.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @param errCode int Error code.
 	 * @param errClass int Error class.
@@ -1810,7 +1810,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Send an asynchonous error response SMB.
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 * @param errCode int Error code.
 	 * @param errClass int Error class.
@@ -1868,15 +1868,15 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 		if ( Debug.EnableInfo && hasDebug(DBG_ERROR))
 			debugPrintln("Async Error : Cmd = " + smbPkt.getPacketTypeString() + " - " + SMBErrorText.ErrorString(errClass, errCode) + ", sent=" + sentOK);
-		
+
 		// Return the send status
-		
+
 		return sentOK;
 	}
 
 	/**
 	 * Send, or queue, an asynchronous response SMB
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 * @param len int
 	 * @return true if the packet was sent, or false if it was queued
@@ -1914,7 +1914,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Queue an asynchronous response SMB for sending when current SMB requests have been processed.
-	 * 
+	 *
 	 * @param pkt SMBSrvPacket
 	 */
 	protected final synchronized void queueAsynchResponseSMB(SMBSrvPacket pkt) {
@@ -1935,7 +1935,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Remove an asynchronous response packet from the head of the list
-	 * 
+	 *
 	 * @return SMBSrvPacket
 	 */
 	protected final synchronized SMBSrvPacket removeFirstAsynchResponse() {
@@ -1953,7 +1953,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Check if this session has any asynchrnous responses queued
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final synchronized boolean hasAsyncResponseQueued() {
@@ -1961,33 +1961,33 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * Send queued asynchronous responses
-	 * 
+	 *
 	 * @return int
 	 */
 	public final synchronized int sendQueuedAsyncResponses() {
-		
+
         // Check if there are any pending asynchronous response packets
 
 		int asyncCnt = 0;
         SMBSrvPacket asynchPkt;
-        
+
 		while ((asynchPkt = removeFirstAsynchResponse()) != null) {
 
 			try {
-				
+
 				// Update the asynchronous pacekt count
-				
+
 				asyncCnt++;
-				
+
 				// Send the current asynchronous response to the client
-	
+
 				sendResponseSMB(asynchPkt, asynchPkt.getLength());
 
 				// DEBUG
-	
+
 				if ( Debug.EnableInfo && (hasDebug(DBG_NOTIFY) || hasDebug(DBG_OPLOCK))) {
 					debugPrintln("Sent queued asynch response type=" + asynchPkt.getPacketTypeString() + ", mid="
 							+ asynchPkt.getMultiplexId() + ", pid=" + asynchPkt.getProcessId());
@@ -1997,21 +1997,21 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 			catch (Exception ex) {
 
 				// DEBUG
-				
+
 				if ( Debug.EnableError && (hasDebug(DBG_NOTIFY) || hasDebug(DBG_OPLOCK)))
 					debugPrintln("Failed to send queued asynch response type=" + asynchPkt.getPacketTypeString() + ", mid="
 							+ asynchPkt.getMultiplexId() + ", pid=" + asynchPkt.getProcessId() + ", ex=" + ex);
 			}
 		}
-		
+
 		// Return the count of asynchrnous packets processed
-		
+
 		return asyncCnt;
 	}
-	
+
 	/**
 	 * Find the notify request with the specified ids
-	 * 
+	 *
 	 * @param mid int
 	 * @param tid int
 	 * @param uid int
@@ -2032,7 +2032,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Find an existing notify request for the specified directory and filter
-	 * 
+	 *
 	 * @param dir NetworkFile
 	 * @param filter int
 	 * @param watchTree boolean
@@ -2052,7 +2052,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Add a change notification request
-	 * 
+	 *
 	 * @param req NotifyRequest
 	 * @param ctx DiskDeviceContext
 	 */
@@ -2071,7 +2071,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Remove a change notification request
-	 * 
+	 *
 	 * @param req NotifyRequest
 	 */
 	public final void removeNotifyRequest(NotifyRequest req) {
@@ -2090,7 +2090,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Return the server session object factory
-	 * 
+	 *
 	 * @return SrvSessionFactory
 	 */
 	public static final SrvSessionFactory getFactory() {
@@ -2099,7 +2099,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Set the server session object factory
-	 * 
+	 *
 	 * @param factory SrvSessionFactory
 	 */
 	public static final void setFactory(SrvSessionFactory factory) {
@@ -2108,7 +2108,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Create a new server session instance
-	 * 
+	 *
 	 * @param handler PacketHandler
 	 * @param server SMBServer
 	 * @param sessId int
@@ -2117,34 +2117,34 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 	public static final SMBSrvSession createSession(PacketHandler handler, SMBServer server, int sessId) {
 		return m_factory.createSession(handler, server, sessId);
 	}
-	
+
 	/**
 	 * Check if an asynchronous read is queued/being processed by this session
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasReadInProgress() {
 		return m_asyncRead;
 	}
-	
+
 	/**
 	 * Set/clear the read in progress flag
-	 * 
+	 *
 	 * @param inProgress boolean
 	 */
 	public final void setReadInProgress(boolean inProgress) {
 		m_asyncRead = inProgress;
 	}
-	
+
 	/**
 	 * Indicate that CIFS filesystem searches are not case sensitive
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean useCaseSensitiveSearch() {
 		return false;
 	}
-	
+
 	/**
      * Are pseudo files enabled for this session?
      * @return true
@@ -2156,51 +2156,51 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 	/**
 	 * Disconnect other client sessions from the same address/client
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int disconnectClientSessions() {
-		
+
 		// Check the session list for other sessions from this client address
-		
+
 		SrvSessionList sessList = getSMBServer().getSessions();
 		int discCnt = 0;
-		
+
 		if ( sessList != null) {
-			
+
 			// Search for sessions matching the clients address/name
-			
+
 			Enumeration<SrvSession> enumSess = sessList.enumerateSessions();
 			boolean addrMatch = false;
 			String addrStr = null;
-			
+
 			while ( enumSess.hasMoreElements()) {
-				
+
 				// Get the current session
-				
+
 				SMBSrvSession curSess = (SMBSrvSession) enumSess.nextElement();
 				addrMatch = false;
-				
+
 				// Check for an address/client name match
 				// MNT-12291 CLONE - disconnectClientSessions assumptions don't work on Terminal Servers
 				InetAddress address = curSess.getRemoteAddress();
 				List<String> terminalServerList = getSMBServer().getCIFSConfiguration().getTerminalServerList();
 				List<String> loadBalancerList = getSMBServer().getCIFSConfiguration().getLoadBalancerList();
-				
+
 				boolean disableCheckLoadBalancer = true;
 				if(loadBalancerList != null && loadBalancerList.size() > 0)
 				{
 				    disableCheckLoadBalancer = !loadBalancerList.contains(address.getHostAddress());
 				}
-				
+
 				boolean disableCheckTerminalServer = true;
 				if(terminalServerList != null && terminalServerList.size() > 0)
                                 {
 				    disableCheckTerminalServer = !terminalServerList.contains(address.getHostAddress());
                                 }
-				
+
 				if ( curSess.getSessionId() != getSessionId() && disableCheckLoadBalancer && disableCheckTerminalServer) {
-					
+
                                         // Check the IP address and userName
                                         boolean userNameIsTheSame = false;
                                         if (hasClientInformation() && curSess.hasClientInformation())
@@ -2213,55 +2213,55 @@ public class SMBSrvSession extends SrvSession implements Runnable {
                                                       userNameIsTheSame = true;
                                                }
                                         }
-					
+
 					if ( hasRemoteAddress() && curSess.hasRemoteAddress()) {
-						
+
 						// Check if the IP addresses match
-						
+
 						if ( getRemoteAddress().equals( curSess.getRemoteAddress()) && userNameIsTheSame) {
 							addrMatch = true;
 							addrStr = getRemoteAddress().getHostAddress();
 						}
 					}
 					else if ( hasRemoteName() && curSess.hasRemoteName()) {
-						
+
 						// Check if the remote NetBIOS names match
-						
+
 						if ( getRemoteName().equals( curSess.getRemoteName()) && userNameIsTheSame) {
 							addrMatch = true;
 							addrStr = getRemoteName();
 						}
 					}
 				}
-				
+
 				// Check if the session matches the current session address/client name
-				
+
 				if ( addrMatch == true) {
-					
+
 					// DEBUG
-					
+
 					if ( Debug.EnableInfo && hasDebug(DBG_NEGOTIATE))
 						debugPrintln("Disconnect existing session from " + addrStr + ", sess=" + curSess);
-						
+
 					// Disconnect the existing session
-					
+
 					curSess.closeSession();
-					
+
 					// Update the disconnected session count
-					
+
 					discCnt++;
 				}
 			}
 		}
-		
+
 		// Return the count of sessions disconnected
-		
+
 		return discCnt;
 	}
 
 	/**
 	 * Set the hostname the client used to mount a network drive
-	 * 
+	 *
 	 * @param hostName String
 	 */
 	public void setShareHostName(String hostName) {

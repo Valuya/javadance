@@ -21,10 +21,10 @@ package org.alfresco.jlan.client.info;
 
 /**
  * File Stream Information Class
- * 
+ *
  * <p>
  * Contains the details of a file stream.
- * 
+ *
  * @author gkspencer
  */
 public class StreamInfo {
@@ -56,7 +56,7 @@ public class StreamInfo {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param path String
 	 */
 	public StreamInfo(String path) {
@@ -68,7 +68,7 @@ public class StreamInfo {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fid int
 	 * @param stid int
@@ -81,7 +81,7 @@ public class StreamInfo {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fid int
 	 * @param stid int
@@ -98,7 +98,7 @@ public class StreamInfo {
 
 	/**
 	 * Return the file path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPath() {
@@ -107,7 +107,7 @@ public class StreamInfo {
 
 	/**
 	 * Return the stream name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
@@ -116,7 +116,7 @@ public class StreamInfo {
 
 	/**
 	 * Return the stream file id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -125,7 +125,7 @@ public class StreamInfo {
 
 	/**
 	 * Return the stream id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getStreamId() {
@@ -134,7 +134,7 @@ public class StreamInfo {
 
 	/**
 	 * Return the stream size
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getSize() {
@@ -143,7 +143,7 @@ public class StreamInfo {
 
 	/**
 	 * Return the stream allocation size
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getAllocationSize() {
@@ -153,7 +153,7 @@ public class StreamInfo {
 	/**
 	 * Set the path, if it contains the stream name the path will be split into file name and stream
 	 * name components.
-	 * 
+	 *
 	 * @param path String
 	 */
 	public final void setPath(String path) {
@@ -162,7 +162,7 @@ public class StreamInfo {
 
 	/**
 	 * Set the stream name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setName(String name) {
@@ -171,7 +171,7 @@ public class StreamInfo {
 
 	/**
 	 * Set the file id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setFileId(int id) {
@@ -180,7 +180,7 @@ public class StreamInfo {
 
 	/**
 	 * Set the stream id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setStreamId(int id) {
@@ -189,7 +189,7 @@ public class StreamInfo {
 
 	/**
 	 * Set the stream size
-	 * 
+	 *
 	 * @param size long
 	 */
 	public final void setSize(long size) {
@@ -198,7 +198,7 @@ public class StreamInfo {
 
 	/**
 	 * Set the stream allocation size
-	 * 
+	 *
 	 * @param alloc long
 	 */
 	public final void setAllocationSize(long alloc) {
@@ -207,7 +207,7 @@ public class StreamInfo {
 
 	/**
 	 * Parse a path to split into file name and stream name components
-	 * 
+	 *
 	 * @param path String
 	 */
 	protected final void parsePath(String path) {
@@ -228,7 +228,7 @@ public class StreamInfo {
 
 	/**
 	 * Return the stream information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

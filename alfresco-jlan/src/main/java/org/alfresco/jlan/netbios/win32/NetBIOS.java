@@ -27,7 +27,7 @@ package org.alfresco.jlan.netbios.win32;
 public class NetBIOS {
 
   //	NetBIOS command codes
-  
+
   public final static int NCBCall				= 0x10;
   public final static int NCBListen			= 0x11;
   public final static int NCBHangup			= 0x12;
@@ -54,11 +54,11 @@ public class NetBIOS {
   public final static int NCBAction			= 0x77;
   public final static int NCBFindName		= 0x78;
   public final static int NCBTrace			= 0x79;
-  
+
   public final static int Asynch				= 0x80;
-  
+
   //	Status codes
-  
+
   public final static int NRC_GoodRet		= 0x00;
   public final static int NRC_BufLen		= 0x01;
   public final static int NRC_IllCmd		= 0x03;
@@ -98,14 +98,14 @@ public class NetBIOS {
   public final static int NRC_OpenErr		= 0x3F;
   public final static int NRC_System		= 0x40;
   public final static int NRC_Pending		= 0xFF;
-  
+
   //	Various constants
-  
+
   public final static int NCBNameSize		= 16;
   public final static int MaxLANA				= 254;
-  
+
   public final static int NameFlagsMask	= 0x87;
-  
+
   public final static int GroupName					= 0x80;
   public final static int UniqueName				= 0x00;
   public final static int Registering				= 0x00;
@@ -119,25 +119,25 @@ public class NetBIOS {
   public final static int HangupPending			= 0x04;
   public final static int HangupComplete		= 0x05;
   public final static int SessionAborted		= 0x06;
-  
+
   public final static String AllTransports	= "M\0\0\0";
 
   //	Maximum receive size (16bits)
   //
   //	Multiple receives must be issued to receive data packets over this size
-  
+
   public final static int MaxReceiveSize		= 0xFFFF;
-  
+
   /**
    * Return the status string for a NetBIOS error code
-   * 
+   *
    * @param nbError int
    * @return String
    */
   public final static String getErrorString(int nbError) {
-    
+
     String str = "";
-    
+
     switch ( nbError) {
     	case NRC_GoodRet:
     	  str = "Success status";
@@ -257,7 +257,7 @@ public class NetBIOS {
     	  str = "Asyncrhonous command pending";
     	  break;
     }
-    
+
     return str;
   }
 }

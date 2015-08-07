@@ -26,7 +26,7 @@ import org.alfresco.jlan.server.filesys.cache.cluster.FileStatePostProcessor;
 
 /**
  * File State Update Post Processor Class
- * 
+ *
  * <p>Low priority file state updates are sent out at the end of request processing.
  *
  * @author gkspencer
@@ -34,64 +34,64 @@ import org.alfresco.jlan.server.filesys.cache.cluster.FileStatePostProcessor;
 public class StateUpdatePostProcessor extends FileStatePostProcessor {
 
 	// Update mask
-	
+
 	private int m_updateMask;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param stateCache HazelCastClusterFileStateCache
 	 * @param state HazelCastClusterFileState
 	 * @param updateMask int
 	 */
 	public StateUpdatePostProcessor( ClusterFileStateCache stateCache, HazelCastClusterFileState state, int updateMask) {
 		super ( stateCache, state);
-		
+
 		m_updateMask = updateMask;
 	}
-	
+
 	/**
 	 * Return the update mask
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getUpdateMask() {
 		return m_updateMask;
 	}
-	
+
 	/**
 	 * Add another state update to the existing update mask
-	 * 
+	 *
 	 * @param updateMask int
 	 */
 	public final void addToUpdateMask( int updateMask) {
 		m_updateMask |= updateMask;
 	}
-	
+
 	/**
 	 * Remove updates from the mask
-	 * 
+	 *
 	 * @param updateMask int
 	 */
 	public final void removeFromUpdateMask( int updateMask) {
 		m_updateMask &= ~updateMask;
 	}
-	
+
 	/**
 	 * Run the post processor
 	 */
 	public void runProcessor() {
 
 		try {
-			
+
 			// Send the state updated message to the cluster
-		
-			getStateCache().updateFileState( getState(), m_updateMask);	
+
+			getStateCache().updateFileState( getState(), m_updateMask);
 		}
 		catch ( Exception ex) {
-			
+
 			// DEBUG
-			
+
 			if ( hasDebug()) {
 				Debug.println( "State update post processor failed to update state=" + getState() + ", updates=" + ClusterFileState.getUpdateMaskAsString( m_updateMask));
 				Debug.println( ex);

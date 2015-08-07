@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb.server.ntfs;
 
 /**
  * File Stream Information Class
- * 
+ *
  * <p>Contains the details of a file stream.
  *
  * @author gkspencer
@@ -29,32 +29,32 @@ package org.alfresco.jlan.smb.server.ntfs;
 public class StreamInfo {
 
 	//	Constants
-	
+
 	public static final String StreamSeparator	= ":";
 
   //	Set stream information flags
-  
+
   public static final int SetStreamSize			= 0x0001;
   public static final int SetAllocationSize	= 0x0002;
   public static final int SetModifyDate			= 0x0004;
   public static final int SetCreationDate		= 0x0008;
   public static final int SetAccessDate			= 0x0010;
-	
+
 	//	File path and stream name
 
-	private String m_path;	
+	private String m_path;
 	private String m_name;
-	
+
 	//	Parent file id and stream id
-	
+
 	private int m_fid;
 	private int m_stid;
 
 	//	Stream size/allocation size
-	
+
 	private long m_size;
 	private long m_allocSize;
-	
+
 	//	Stream creation, modification and access date/times
 
 	private long m_createDate;
@@ -62,30 +62,30 @@ public class StreamInfo {
 	private long m_accessDate;
 
 	//	Set stream information setter flags
-	
+
 	private int m_setFlags;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public StreamInfo() {
 	}
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param path String
 	 */
 	public StreamInfo(String path) {
-		
+
 		//	Parse the path to split into path and stream components
-		
+
 		parsePath(path);
 	}
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fid int
 	 * @param stid int
@@ -98,7 +98,7 @@ public class StreamInfo {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fid int
 	 * @param stid int
@@ -115,16 +115,16 @@ public class StreamInfo {
 
 	/**
 	 * Return the file path
-	 * 
+	 *
 	 * @return String
-	 */	
+	 */
 	public final String getPath() {
 		return m_path;
 	}
-	
+
 	/**
 	 * Return the stream name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
@@ -133,7 +133,7 @@ public class StreamInfo {
 
 	/**
 	 * Return the stream file id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -142,9 +142,9 @@ public class StreamInfo {
 
 	/**
 	 * Return the stream id
-	 * 
+	 *
 	 * @return int
-	 */	
+	 */
 	public final int getStreamId() {
 		return m_stid;
 	}
@@ -157,7 +157,7 @@ public class StreamInfo {
   public long getAccessDateTime() {
     return m_accessDate;
   }
-  
+
   /**
    * Return the stream creation date/time.
    *
@@ -166,16 +166,16 @@ public class StreamInfo {
   public long getCreationDateTime() {
     return m_createDate;
   }
-  
+
 	/**
 	 * Return the modification date/time
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getModifyDateTime() {
 	  return m_modifyDate;
 	}
-	
+
 	/**
 	 * Return the stream size
 	 *
@@ -184,7 +184,7 @@ public class StreamInfo {
 	public final long getSize() {
 		return m_size;
 	}
-	
+
 	/**
 	 * Return the stream allocation size
 	 *
@@ -202,7 +202,7 @@ public class StreamInfo {
   public boolean hasAccessDateTime() {
     return m_accessDate == 0L ? false : true;
   }
-  
+
   /**
    * Determine if the creation date/time details are available.
    *
@@ -211,7 +211,7 @@ public class StreamInfo {
   public boolean hasCreationDateTime() {
     return m_createDate == 0L ? false : true;
   }
-  
+
   /**
    * Determine if the modify date/time details are available.
    *
@@ -223,7 +223,7 @@ public class StreamInfo {
 
   /**
 	 * Determine if the specified set stream information flags is enabled
-	 * 
+	 *
 	 * @param flag int
 	 * @return boolean
 	 */
@@ -232,30 +232,30 @@ public class StreamInfo {
 	    return true;
 	  return false;
 	}
-	
+
 	/**
 	 * Return the set stream information flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSetStreamInformationFlags() {
 	  return m_setFlags;
 	}
-	
-	
+
+
 	/**
 	 * Set the path, if it contains the stream name the path will be split into file name
 	 * and stream name components.
-	 * 
+	 *
 	 * @param path String
 	 */
 	public final void setPath(String path) {
-		parsePath(path);	
+		parsePath(path);
 	}
-	
+
 	/**
 	 * Set the stream name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setName(String name) {
@@ -285,7 +285,7 @@ public class StreamInfo {
 
 		m_createDate = timesec;
 	}
-	
+
 	/**
 	 * Set the modifucation date/time for the stream.
 	 *
@@ -297,7 +297,7 @@ public class StreamInfo {
 
 		m_modifyDate = timesec;
 	}
-	
+
 	/**
 	 * Set the file id
 	 *
@@ -306,25 +306,25 @@ public class StreamInfo {
 	public final void setFileId(int id) {
 		m_fid = id;
 	}
-	
+
 	/**
 	 * Set the stream id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setStreamId(int id) {
 		m_stid = id;
 	}
-	
+
 	/**
 	 * Set the stream size
-	 * 
+	 *
 	 * @param size long
 	 */
 	public final void setSize(long size) {
 		m_size = size;
 	}
-	
+
 	/**
 	 * Set the stream allocation size
 	 *
@@ -336,42 +336,42 @@ public class StreamInfo {
 
 	/**
 	 * Set the set stream information flags to indicated which values are to be set
-	 * 
+	 *
 	 * @param setFlags int
 	 */
 	public final void setStreamInformationFlags(int setFlags) {
 	  m_setFlags = setFlags;
 	}
-	
+
 	/**
 	 * Parse a path to split into file name and stream name components
 	 *
 	 * @param path String
 	 */
 	protected final void parsePath(String path) {
-		
+
 		//	Check if the file name contains a stream name
-		
+
 		int pos = path.indexOf(StreamSeparator);
 		if ( pos == -1) {
 			m_path = path;
 			return;
 		}
-		
+
 		//	Split the main file name and stream name
-		
+
 		m_path = path.substring(0,pos);
 		m_name = path.substring(pos+1);
 	}
-	
+
 	/**
 	 * Return the stream information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		
+
 		str.append("[");
 		str.append(getName());
 		str.append(",");
@@ -383,7 +383,7 @@ public class StreamInfo {
 		str.append("/");
 		str.append(getAllocationSize());
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

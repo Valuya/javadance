@@ -33,10 +33,10 @@ public class DomainAccessControlParser extends AccessControlParser {
 	 */
 	public DomainAccessControlParser() {
 	}
-	
+
 	/**
 	 * Return the parser type
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getType() {
@@ -45,30 +45,30 @@ public class DomainAccessControlParser extends AccessControlParser {
 
 	/**
 	 * Validate the parameters and create a user access control
-	 * 
+	 *
 	 * @param params ConfigElement
 	 * @return AccessControl
 	 * @throws ACLParseException
 	 */
 	public AccessControl createAccessControl(ConfigElement params)
 		throws ACLParseException {
-			
+
 		//	Get the access type
-		
+
 		int access = parseAccessType(params);
-		
+
 		//	Get the domain name to check for
-		
+
 		String val = params.getAttribute("name");
 		if ( val == null || val.length() == 0)
 			throw new ACLParseException("Domain name not specified");
-			
+
 		String domainName = val.trim();
 		if ( domainName.length() == 0)
 			throw new ACLParseException("Domain name not valid");
-			
+
 		//	Create the domain access control
-		
+
 		return new DomainAccessControl(domainName, getType(), access);
 	}
 }

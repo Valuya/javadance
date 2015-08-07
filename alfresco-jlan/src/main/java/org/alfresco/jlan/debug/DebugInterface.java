@@ -43,12 +43,12 @@ public interface DebugInterface {
 
 	/**
 	 * Output a debug string with a specific logging level
-	 * 
+	 *
 	 * @param str String
 	 * @param level int
 	 */
 	public void debugPrint(String str, int level);
-	
+
 	/**
 	 * Output a debug string, and a newline.
 	 *
@@ -65,12 +65,12 @@ public interface DebugInterface {
 
 	/**
 	 * Output an exception
-	 * 
+	 *
 	 * @param ex Exception
 	 * @param level int
 	 */
 	public void debugPrintln( Exception ex, int level);
-	
+
 	/**
 	 * Initialize the debug interface using the specified named parameters.
 	 *
@@ -80,10 +80,10 @@ public interface DebugInterface {
 	 */
 	public void initialize(ConfigElement params, ServerConfiguration config)
 		throws Exception;
-	
+
 	/**
 	 * Return the debug interface logging level
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getLogLevel();

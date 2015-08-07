@@ -23,9 +23,9 @@ import java.io.IOException;
 
 /**
  * Exiting OpLock Exception Class
- * 
+ *
  * <p>Thrown when trying to set an oplock on a file that already has an active oplock.
- * 
+ *
  * @author gkspencer
  */
 public class ExistingOpLockException extends IOException {
@@ -38,10 +38,10 @@ public class ExistingOpLockException extends IOException {
 	public ExistingOpLockException() {
 		super();
 	}
-	  
+
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s String
 	 */
 	public ExistingOpLockException(String s) {
@@ -50,7 +50,7 @@ public class ExistingOpLockException extends IOException {
 
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s String
 	 * @param ex Exception
 	 */

@@ -26,7 +26,7 @@ import org.alfresco.jlan.util.HexDump;
 
 /**
  * NTLM1/LanMan CIFS Authentication Context Class
- * 
+ *
  * <p>Holds the challenge sent to the client during the negotiate phase that is used to verify the
  * hashed password in the session setup phase.
  *
@@ -51,7 +51,7 @@ public class NTLanManAuthContext extends ChallengeAuthContext {
 
   /**
    * Class constructor
-   * 
+   *
    * @param challenge byte[]
    */
   public NTLanManAuthContext(byte[] challenge) {
@@ -60,7 +60,7 @@ public class NTLanManAuthContext extends ChallengeAuthContext {
 
   /**
    * Return the CIFS authentication context as a string
-   * 
+   *
    * @return String
    */
   public String toString() {

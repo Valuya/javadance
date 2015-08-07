@@ -23,7 +23,7 @@ import java.util.BitSet;
 
 /**
  *  SMB dialect selector class.
- *  
+ *
  *  <p>Used to select the SMB/CIFS dialects that a client can use when communicating with a remote server. The dialect list is used by
  *  the client/server to agree the protocol level during the initial SMB/CIFS negotiation phase.
  *
@@ -74,7 +74,7 @@ public class DialectSelector {
   public void EnableAll() {
     for (int i = 0; i < Dialect.Max; m_dialects.set(i++));
   }
-  
+
   /**
    * Copy the SMB dialect selector settings.
    *
@@ -113,18 +113,18 @@ public class DialectSelector {
 	/**
 	 * Determine if the core SMB dialect is enabled
 	 *
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public boolean hasCore() {
 		if ( hasDialect(Dialect.Core) || hasDialect(Dialect.CorePlus))
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Determine if the LanMan SMB dialect is enabled
 	 *
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public boolean hasLanMan() {
 		if ( hasDialect(Dialect.DOSLanMan1) || hasDialect(Dialect.DOSLanMan2) ||
@@ -133,11 +133,11 @@ public class DialectSelector {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Determine if the NT SMB dialect is enabled
 	 *
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public boolean hasNT() {
 		if ( hasDialect(Dialect.NT))

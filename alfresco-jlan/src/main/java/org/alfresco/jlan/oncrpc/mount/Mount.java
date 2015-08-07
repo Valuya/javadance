@@ -27,13 +27,13 @@ package org.alfresco.jlan.oncrpc.mount;
 public final class Mount {
 
   //	Program and version id
-  
+
   public static final int ProgramId				= 100005;
   public static final int VersionId1			= 1;
   public static final int VersionId3			= 3;
-    
+
   //	RPC procedure ids (version 1)
-  
+
   public static final int ProcNull1				= 0;
   public static final int ProcMnt1				= 1;
   public static final int ProcDump1				= 2;
@@ -41,22 +41,22 @@ public final class Mount {
   public static final int ProcUMntAll1		= 4;
   public static final int ProcExport1			= 5;
   public static final int ProcExportAll1	= 6;
-  
+
   public static final int ProcMax1				= 6;
-  
+
   //	RPC procedure ids (version 3)
-  
+
   public static final int ProcNull3				= 0;
   public static final int ProcMnt3				= 1;
   public static final int ProcDump3				= 2;
   public static final int ProcUMnt3   		= 3;
   public static final int ProcUMntAll3		= 4;
   public static final int ProcExport3			= 5;
-  
+
   public static final int ProcMax3				= 5;
-  
+
   //	Mount server status codes
-  
+
   public static final int StsSuccess			= 0;
   public static final int StsPerm					= 1;
   public static final int StsNoEnt				= 2;
@@ -67,16 +67,16 @@ public final class Mount {
   public static final int StsNameTooLong	= 63;
   public static final int StsNotSupp			= 10004;
   public static final int StsServerFault	= 10006;
-  
+
   //	Data structure limits
-  
+
   public static final int FileHandleSize1	= 32;
   public static final int FileHandleSize3	= 32;		//	can be 64 for v3
-  
+
   //	RPC procedure names
-  
+
   private static final String[] _procNames = { "Null", "Mount", "Dump", "UnMount", "UnMountAll", "Export", "ExportAll" };
-  
+
   /**
    * Return a procedure id as a name
    *

@@ -30,10 +30,10 @@ import org.alfresco.jlan.util.StringList;
 
 /**
  * Service Configuration Information Class
- * 
+ *
  * <p>
  * Contains the details of a remote NT service.
- * 
+ *
  * @author gkspencer
  */
 public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
@@ -82,7 +82,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the service type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getServiceType() {
@@ -91,7 +91,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the service start type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getStartType() {
@@ -100,7 +100,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the service error control
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getErrorControl() {
@@ -109,7 +109,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the service executable path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getBinaryPath() {
@@ -118,7 +118,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the service load order group
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getLoadOrderGroup() {
@@ -127,7 +127,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the load order group tag id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLoadOrderTag() {
@@ -136,7 +136,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Determine if the service has a dependency list
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDependencies() {
@@ -145,7 +145,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the service dependency list
-	 * 
+	 *
 	 * @return StringList
 	 */
 	public final StringList getDependencies() {
@@ -154,7 +154,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the service start name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getStartName() {
@@ -163,7 +163,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the service display name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getDisplayName() {
@@ -172,7 +172,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Set the service type
-	 * 
+	 *
 	 * @param typ int
 	 */
 	public final void setServiceType(int typ) {
@@ -181,7 +181,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Set the start type
-	 * 
+	 *
 	 * @param typ int
 	 */
 	public final void setStartType(int typ) {
@@ -190,7 +190,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Set the error control
-	 * 
+	 *
 	 * @param errCtrl int
 	 */
 	public final void setErrorControl(int errCtrl) {
@@ -199,7 +199,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Set the binary path
-	 * 
+	 *
 	 * @param path String
 	 */
 	public final void setBinaryPath(String path) {
@@ -208,7 +208,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Set the load order group
-	 * 
+	 *
 	 * @param group String
 	 */
 	public final void setLoadOrderGroup(String group) {
@@ -217,7 +217,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Set the dependent service name list
-	 * 
+	 *
 	 * @param depList StringList
 	 */
 	public final void setDependencies(StringList depList) {
@@ -226,7 +226,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Set the startup name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setStartName(String name) {
@@ -235,7 +235,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Set the service display name
-	 * 
+	 *
 	 * @param dispName String
 	 */
 	public final void setDisplayName(String dispName) {
@@ -244,7 +244,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Read the service configuration information from the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 * @see DCEReadable#readObject(DCEBuffer)
@@ -300,7 +300,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Read the strings for this object from the DCE/RPC buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -312,7 +312,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Write the service configuration to the DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @param strBuf DCEBuffer
 	 * @throws DCEBufferException
@@ -419,7 +419,7 @@ public class ServiceConfigInfo implements DCEReadable, DCEWriteable {
 
 	/**
 	 * Return the service configuration information as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

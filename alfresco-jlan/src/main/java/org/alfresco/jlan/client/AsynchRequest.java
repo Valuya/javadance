@@ -21,33 +21,33 @@ package org.alfresco.jlan.client;
 
 /**
  * Asynchronous Request Class
- * 
+ *
  * <p>Abstract class used to track the details of an asynchronous SMB/CIFS request where the request is sent to the server but no
  * reply is received until a particular event occurs on the server, such as a directory change notification.
- * 
+ *
  * @author gkspencer
  */
 public abstract class AsynchRequest {
 
 	//	Multiplex id that uniquely identifies this request
-	
+
 	private int m_id;
-	
+
 	//	Request name
-	
+
 	private String m_name;
-	
+
 	//	Asynchronous request completed flag
-	
+
 	private boolean m_completed;
-	
+
 	//	Auto-reset flag, used for asynchronous requests that need to be setup again each they have completed
-	
+
 	private boolean m_autoReset;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mid int
 	 */
 	protected AsynchRequest(int mid) {
@@ -56,7 +56,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mid int
 	 * @param name String
 	 */
@@ -67,7 +67,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Get the request id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getId() {
@@ -76,7 +76,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Return the request name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
@@ -85,7 +85,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Check if the asynchronous request has completed
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasCompleted() {
@@ -94,7 +94,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Check if the request should be automatically reset
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasAutoReset() {
@@ -103,7 +103,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Enable/disable auto-reset of the request
-	 * 
+	 *
 	 * @param auto boolean
 	 */
 	public final void setAutoReset(boolean auto) {
@@ -112,7 +112,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Process the asynchronous response packet for this request
-	 * 
+	 *
 	 * @param sess Session
 	 * @param pkt SMBPacket
 	 */
@@ -120,7 +120,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Resubmit the request to the server
-	 * 
+	 *
 	 * @param sess Session
 	 * @param pkt SMBPacket
 	 * @return boolean
@@ -129,7 +129,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Set the asynchronous request completion status
-	 * 
+	 *
 	 * @param sts boolean
 	 */
 	protected final void setCompleted(boolean sts) {
@@ -138,7 +138,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Set the request id
-	 * 
+	 *
 	 * @param id int
 	 */
 	protected final void setId(int id) {
@@ -147,7 +147,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Set the request name
-	 * 
+	 *
 	 * @param name String
 	 */
 	protected final void setName(String name) {
@@ -156,7 +156,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Return the request as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
@@ -177,7 +177,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Compare objects for equality
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean equals(Object obj) {
@@ -199,7 +199,7 @@ public abstract class AsynchRequest {
 
 	/**
 	 * Return a hashcode for the request
-	 * 
+	 *
 	 * @return int
 	 */
 	public int hashCode() {

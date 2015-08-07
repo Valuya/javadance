@@ -213,7 +213,7 @@ public interface DiskInterface extends DeviceInterface {
 
 	/**
 	 * Truncate a file to the specified size
-	 * 
+	 *
    * @param sess	 Server session
    * @param tree   Tree connection
    * @param file   Network file details
@@ -222,7 +222,7 @@ public interface DiskInterface extends DeviceInterface {
    */
   public void truncateFile(SrvSession sess, TreeConnection tree, NetworkFile file, long siz)
     throws java.io.IOException;
-    
+
   /**
    * Write a block of data to the file.
    *

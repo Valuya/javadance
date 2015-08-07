@@ -30,14 +30,14 @@ public class PseudoFileInfo extends FileInfo {
 
     /**
      * Construct an SMB file information object.
-     * 
+     *
      * @param fname File name string.
      * @param fsize File size, in bytes.
      * @param fattr File attributes.
      */
     public PseudoFileInfo(String fname, long fsize, int fattr) {
         super( fname, fsize, fattr);
-        
+
         setPseudoFile( true);
     }
 }

@@ -26,7 +26,7 @@ import com.hazelcast.core.IMap;
 
 /**
  * Add OpLock Remote Task Class
- * 
+ *
  * <p>Used to synchronize adding an oplock to a file state by executing on the remote node
  * that owns the file state/key.
  *
@@ -35,22 +35,22 @@ import com.hazelcast.core.IMap;
 public class AddOpLockTask extends RemoteStateTask<Boolean> {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
 
 	// Remote oplock details
-	
+
 	private RemoteOpLockDetails m_oplock;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public AddOpLockTask() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mapName String
 	 * @param key String
 	 * @param oplock RemoteOpLockDetails
@@ -59,13 +59,13 @@ public class AddOpLockTask extends RemoteStateTask<Boolean> {
 	 */
 	public AddOpLockTask( String mapName, String key, RemoteOpLockDetails oplock, boolean debug, boolean timingDebug) {
 		super( mapName, key, true, false, debug, timingDebug);
-		
+
 		m_oplock = oplock;
 	}
-	
+
 	/**
 	 * Run a remote task against a file state
-	 * 
+	 *
 	 * @param stateCache IMap<String, ClusterFileState>
 	 * @param fState ClusterFileState
 	 * @return Boolean
@@ -73,18 +73,18 @@ public class AddOpLockTask extends RemoteStateTask<Boolean> {
 	 */
 	protected Boolean runRemoteTaskAgainstState( IMap<String, ClusterFileState> stateCache, ClusterFileState fState)
 		throws Exception {
-	
+
 		// DEBUG
-		
+
 		if ( hasDebug())
 			Debug.println( "AddOpLockTask: Add oplock=" + m_oplock + " to " + fState);
-		
+
 		// May throw an exception if there is an existing oplock on the file
-		
+
 		fState.setOpLock( m_oplock);
-		
+
 		// Return a success status
-		
-		return new Boolean( true); 
+
+		return new Boolean( true);
 	}
 }

@@ -31,10 +31,10 @@ import org.alfresco.jlan.smb.dcerpc.info.EventlogRecordList;
 
 /**
  * Eventlog Pipe File Class
- * 
+ *
  * <p>
  * Contains methods to access a remote eventlog service.
- * 
+ *
  * @author gkspencer
  */
 public class EventlogPipeFile extends IPCPipeFile {
@@ -45,7 +45,7 @@ public class EventlogPipeFile extends IPCPipeFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param pkt DCEPacket
 	 * @param handle int
@@ -59,7 +59,7 @@ public class EventlogPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open the specified event log
-	 * 
+	 *
 	 * @param name String
 	 * @return EventlogHandle
 	 * @exception IOException
@@ -116,7 +116,7 @@ public class EventlogPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the number of available event log records for the specified log
-	 * 
+	 *
 	 * @param handle EventlogHandle
 	 * @return int
 	 * @exception IOException
@@ -164,7 +164,7 @@ public class EventlogPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the oldest record number for the specified log
-	 * 
+	 *
 	 * @param handle EventlogHandle
 	 * @return int
 	 * @exception IOException
@@ -212,7 +212,7 @@ public class EventlogPipeFile extends IPCPipeFile {
 
 	/**
 	 * Continue reading event log records
-	 * 
+	 *
 	 * @param handle EventlogHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -227,7 +227,7 @@ public class EventlogPipeFile extends IPCPipeFile {
 
 	/**
 	 * Read event log records
-	 * 
+	 *
 	 * @param handle EventlogHandle
 	 * @param flags int
 	 * @param recoff int
@@ -279,7 +279,7 @@ public class EventlogPipeFile extends IPCPipeFile {
 
 	/**
 	 * Close the event log
-	 * 
+	 *
 	 * @param handle EventlogHandle
 	 * @exception IOException
 	 * @exception SMBException

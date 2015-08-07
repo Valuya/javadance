@@ -28,32 +28,32 @@ import org.bouncycastle.crypto.params.*;
 
 /**
  * Password Encryptor Class
- * 
+ *
  * <p>Generates LanMan and NTLMv1 encrypted passwords from the plain text password and challenge key.
- * 
+ *
  * <p>Uses the BouncyCastle encryption APIs that allow the class to work in a J2ME environment.
- * 
+ *
  * @author gkspencer
  */
 public class J2MEPasswordEncryptor extends PasswordEncryptor {
 
 	//	Encryption algorithm types
-	
+
 	public static final int LANMAN		= 0;
 	public static final int NTLM1		= 1;
 	public static final int NTLM2		= 2;
 	public static final int MD4			= 3;
 
 	//	Encrpytion algorithm names
-	
+
 	private final static String[] _algNames = {"LanMan", "NTLMv1", "NTLMv2", "MD4" };
-	
+
 	/**
 	 * Default constructor
 	 */
 	public J2MEPasswordEncryptor() {
 	}
-	
+
   /**
    * Encrypt the plain text password with the specified encryption key using the specified
    * encryption algorithm.
@@ -68,34 +68,34 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
   	throws NoSuchAlgorithmException {
 
 		//	Get the password
-    
+
     String pwd = plainPwd;
     if ( pwd == null)
       pwd = "";
-		
+
 		//	Determine the encryption algorithm
-		
+
 		byte[] encPwd = null;
 		MD4Digest md4 = null;
 		int len = 0;
 		byte[] pwdBytes = null;
-		
+
 		switch ( alg) {
-			
+
 			//	LanMan DES encryption
-			
+
 			case LANMAN:
 				encPwd = P24(pwd, encryptKey);
 				break;
-				
+
 			//	NTLM v1 encryption
-			
+
 			case NTLM1:
-			
+
 				//	Create the MD4 hash
-				
+
 				md4 = new MD4Digest();
-        
+
         try {
           pwdBytes = pwd.getBytes("UnicodeLittleUnmarked");
         }
@@ -107,39 +107,39 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
         md4.doFinal( p21, 0);
 
 				//	Now use the LM encryption
-								
+
 				encPwd = P24(p21,encryptKey);
 				break;
-				
+
 			//	NTLM v2 encryption
-			
+
 			case NTLM2:
 				break;
 
 			//	MD4 encryption
-			
+
 			case MD4:
-			
+
 				//	Create the MD4 hash
-					
+
 				md4 = new MD4Digest();
 				len = pwd.length();
 				pwdBytes = new byte[len * 2];
-					
+
 				for(int i = 0; i < len; i++) {
 					char ch = pwd.charAt(i);
 					pwdBytes[i*2]   = (byte) ch;
 					pwdBytes[i*2+1] = (byte) (( ch >> 8) & 0xFF);
-				} 
-					
+				}
+
 				md4.update(pwdBytes, 0, pwdBytes.length);
 				encPwd = new byte[16];
         md4.doFinal( encPwd, 0);
 				break;
 		}
-		
+
 		//	Return the encrypted password
-		
+
 		return encPwd;
   }
 
@@ -154,34 +154,34 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
    */
   public byte[] generateSessionKey(String plainPwd, byte[] encryptKey, int alg)
   	throws NoSuchAlgorithmException {
-  
+
     //	Create the session key for the specified algorithm
 
     byte[] sessKey = null;
     MD4Digest md4 = null;
-    
+
     String pwd = plainPwd;
     if ( pwd == null)
       pwd = "";
-    
+
     switch ( alg) {
 
     	//	NTLM session key
-    
+
     	case NTLM1:
 
     	  //	Get the password bytes
-    	  
+
     	  byte[] pwdBytes = new byte[ pwd.length() * 2];
-    	  
+
 				for(int i = 0; i < pwd.length(); i++) {
 					char ch = plainPwd.charAt(i);
 					pwdBytes[i*2]   = (byte) ch;
 					pwdBytes[i*2+1] = (byte) (( ch >> 8) & 0xFF);
-				} 
-    	  
+				}
+
     	  //	Create the MD4 hash
-				
+
 				md4 = new MD4Digest();
 				md4.update(pwdBytes, 0, pwdBytes.length);
         byte[] pt1 = new byte[16];
@@ -189,22 +189,22 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
 				md4.update( pt1, 0, pt1.length);
 				sessKey = new byte[40];
         md4.doFinal( sessKey, 0);
-				
+
 				//	Second part of the session key contains the NTLM hashed password
-				
+
 				byte[] ntlmHash = generateEncryptedPassword( plainPwd, encryptKey, NTLM1);
 				System.arraycopy( ntlmHash, 0, sessKey, 16, 24);
 				break;
     }
-    
+
     //	Return the session key
-    
+
     return sessKey;
   }
-  
+
 	/**
 	 * P16 encryption
-	 * 
+	 *
 	 * @param pwd java.lang.String
 	 * @param s8 byte[]
 	 * @return byte[]
@@ -230,24 +230,24 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
 		byte [] p16 = new byte [ 16];
 
     try {
-      
+
 			//	DES encrypt the password bytes using the challenge key
-		
+
 			DESEngine des = new DESEngine();
-      
+
 			//	Set the encryption seed using the first 7 bytes of the password string.
 			//	Generate the first 8 bytes of the return value.
-	
+
 			byte[] key = generateKey( p14, 0);
 
       KeyParameter chKey = new KeyParameter( key);
 			des.init( true, chKey);
 			des.processBlock( s8, 0, p16, 0);
-	
+
 			//	Encrypt the second block
-			
+
 			key = generateKey( p14, 7);
-			
+
 			chKey = new KeyParameter( key);
 			des.init( true, chKey);
 			des.processBlock( s8, 0, p16, 8);
@@ -255,15 +255,15 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
     catch ( Exception ex) {
       p16 = null;
     }
-    
+
 		//	Return the 16 byte encrypted value
 
 		return p16;
 	}
-  
+
 	/**
 	 * P24 DES encryption
-	 * 
+	 *
 	 * @param pwd java.lang.String
 	 * @param c8 byte[]
 	 * @return byte[]
@@ -282,10 +282,10 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
 
 		return P24 ( p16, c8);
 	}
-  
+
   /**
    * P24 DES encryption
-   * 
+   *
    * @param p21		Plain password or hashed password bytes
    * @param ch		Challenge bytes
    * @return			Encrypted password
@@ -295,37 +295,37 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
   	throws NoSuchAlgorithmException {
 
     byte[] enc = null;
-    
+
     try {
-      
+
 			//	DES encrypt the password bytes using the challenge key
-			
+
 			DESEngine des = new DESEngine();
-	
+
 			//	Allocate the output bytes
-			
+
 			enc = new byte[24];
-			
+
 			//	Encrypt the first block
-			
+
 			byte[] key = generateKey( p21, 0);
 
       KeyParameter chKey = new KeyParameter( key);
 			des.init( true, chKey);
       des.processBlock( ch, 0, enc, 0);
-	
+
 			//	Encrypt the second block
-			
+
 			key = generateKey( p21, 7);
-			
+
       chKey = new KeyParameter( key);
       des.init( true, chKey);
       des.processBlock( ch, 0, enc, 8);
-	
+
 			//	Encrypt the last block
-			
+
 			key = generateKey( p21, 14);
-			
+
       chKey = new KeyParameter( key);
       des.init( true, chKey);
       des.processBlock( ch, 0, enc, 16);
@@ -334,15 +334,15 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
       ex.printStackTrace();
       enc = null;
     }
-    
+
     //	Return the encrypted password, or null if an error occurred
-    
+
     return enc;
   }
-  
+
   /**
    * Return the encryption algorithm as a string
-   * 
+   *
    * @param alg int
    * @return String
    */
@@ -351,7 +351,7 @@ public class J2MEPasswordEncryptor extends PasswordEncryptor {
   		return _algNames[alg];
   	return "Unknown";
   }
-  
+
 	/**
 	 * Make a 7-byte string into a 64 bit/8 byte/longword key.
 	 *

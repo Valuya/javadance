@@ -32,7 +32,7 @@ import org.ietf.jgss.GSSName;
 
 /**
  * Session Setup Privileged Action Class
- * 
+ *
  * <p>
  * Handle the processing of a received SPNEGO packet in the context of the CIFS server.
  *
@@ -52,7 +52,7 @@ public class SessionSetupPrivilegedAction implements PrivilegedAction {
 
   /**
    * Class constructor
-   * 
+   *
    * @param accountName String
    * @param secBlob byte[]
    */
@@ -67,7 +67,7 @@ public class SessionSetupPrivilegedAction implements PrivilegedAction {
 
   /**
    * Class constructor
-   * 
+   *
    * @param accountName String
    * @param secBlob byte[]
    * @param secOffset int

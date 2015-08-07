@@ -65,16 +65,16 @@ public class JavaNetworkFile extends NetworkFile {
 
     setFileSize(m_file.length());
     m_eof = false;
-    
+
     //	Set the modification date/time, if available. Fake the creation date/time as it's not
     //	available from the File class
-    
-    long modDate = m_file.lastModified(); 
+
+    long modDate = m_file.lastModified();
     setModifyDate(modDate);
     setCreationDate(modDate);
-    
+
     //	Set the file id
-    
+
     setFileId(netPath.hashCode());
   }
 
@@ -133,16 +133,16 @@ public class JavaNetworkFile extends NetworkFile {
 
     setFileSize(m_file.length());
     m_eof = false;
-    
+
 		//	Set the modification date/time, if available. Fake the creation date/time as it's not
 		//	available from the File class
-    
-		long modDate = m_file.lastModified(); 
+
+		long modDate = m_file.lastModified();
 		setModifyDate(modDate);
 		setCreationDate(modDate);
-    
+
 		//	Set the file id
-    
+
 		setFileId(netPath.hashCode());
   }
 
@@ -200,11 +200,11 @@ public class JavaNetworkFile extends NetworkFile {
 
     setFileSize(m_file.length());
     m_eof = false;
-    
+
 		//	Set the modification date/time, if available. Fake the creation date/time as it's not
 		//	available from the File class
-    
-		long modDate = m_file.lastModified(); 
+
+		long modDate = m_file.lastModified();
 		setModifyDate(modDate);
 		setCreationDate(modDate);
   }
@@ -217,19 +217,19 @@ public class JavaNetworkFile extends NetworkFile {
     //  Close the file, if used
 
     if (m_io != null) {
-    	
+
     	//	Close the file
-    	
+
       m_io.close();
       m_io = null;
-      
+
       //	Set the last modified date/time for the file
 
-			if ( this.getWriteCount() > 0)      
+			if ( this.getWriteCount() > 0)
       	m_file.setLastModified(System.currentTimeMillis());
-      	
+
       //	Indicate that the file is closed
-      
+
       setClosed(true);
     }
   }
@@ -254,14 +254,14 @@ public class JavaNetworkFile extends NetworkFile {
 
   /**
    * Flush the file.
-   * 
+   *
    * @exception IOException
    */
   public void flushFile()
   	throws IOException {
-  	
+
   	//	Flush all buffered data
-  	
+
   	if ( m_io != null)
   		m_io.getFD().sync();
   }
@@ -282,7 +282,7 @@ public class JavaNetworkFile extends NetworkFile {
 
   /**
    * Open the file.
-   * 
+   *
    * @param createFlag boolean
    * @exception IOException
    */
@@ -292,15 +292,15 @@ public class JavaNetworkFile extends NetworkFile {
 		synchronized ( m_file) {
 
 			//	Check if the file is open
-			
+
 			if (m_io == null) {
 
 		    //  Open the file
-		
+
 				m_io = new RandomAccessFile( m_file, getGrantedAccess() == NetworkFile.READWRITE ? "rw" : "r");
-				
+
 				//	Indicate that the file is open
-		
+
 				setClosed(false);
 			}
 		}
@@ -325,16 +325,16 @@ public class JavaNetworkFile extends NetworkFile {
       openFile(false);
 
     //	Seek to the required file position
-    
+
     if ( currentPosition() != fileOff)
       seekFile(fileOff, SeekType.StartOfFile);
-    
+
     //  Read from the file
 
     int rdlen = m_io.read(buf, pos, len);
-    
+
     //	Return the actual length of data read
-    
+
     return rdlen;
   }
 
@@ -387,7 +387,7 @@ public class JavaNetworkFile extends NetworkFile {
 
 	/**
 	 * Truncate the file
-	 * 
+	 *
 	 * @param siz long
    * @exception IOException
 	 */
@@ -402,33 +402,33 @@ public class JavaNetworkFile extends NetworkFile {
   		m_io.getFD().sync();
 
 		//	Check if the file length is being truncated or extended
-		
+
 		boolean extendFile = siz > getFileSize() ? true : false;
-		
+
     //  Set the file length
 
 		try {
 			m_io.setLength(siz);
-			
+
 			//	Update the file size
-			
+
 			setFileSize(siz);
 		}
 		catch (IOException ex) {
-			
+
 			//	Error during file extend, assume it's a disk full type error
-			
+
 			if ( extendFile == true)
 				throw new DiskFullException("Failed to extend file, " + getFullName());
 			else {
-				
+
 				//	Rethrow the original I/O exception
-			  
+
 				throw ex;
 			}
 		}
 	}
-	
+
   /**
    * Write a block of data to the file.
    *
@@ -447,9 +447,9 @@ public class JavaNetworkFile extends NetworkFile {
     //  Write to the file
 
     m_io.write(buf, pos, len);
-    
+
 		//	Update the write count for the file
-    
+
 		incrementWriteCount();
   }
 
@@ -476,27 +476,27 @@ public class JavaNetworkFile extends NetworkFile {
     long fileLen = m_io.length();
 
 		if ( offset > fileLen) {
-			
+
 			//	Extend the file
-			
+
 			m_io.setLength(offset + len);
 		}
 
 		//	Check for a zero length write
-		
-		if ( len == 0)	
+
+		if ( len == 0)
 			return;
-			
+
 	  //	Seek to the write position
-	
+
 	  m_io.seek(offset);
-	  
+
     //  Write to the file
 
     m_io.write(buf, pos, len);
-    
+
 		//	Update the write count for the file
-    
+
 		incrementWriteCount();
   }
 }

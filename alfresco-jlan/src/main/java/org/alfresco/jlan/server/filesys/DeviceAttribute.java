@@ -29,7 +29,7 @@ package org.alfresco.jlan.server.filesys;
 public final class DeviceAttribute {
 
   //	Device attributes
-  
+
   public static final int Removable		=	0x0001;
   public static final int ReadOnly		= 0x0002;
   public static final int FloppyDisk	= 0x0004;

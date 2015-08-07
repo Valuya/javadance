@@ -32,10 +32,10 @@ import org.alfresco.jlan.util.DataBuffer;
 
 /**
  * Query File Information Packer Class
- * 
+ *
  * <p>
  * Packs file/directory information for the specified information level.
- * 
+ *
  * @author gkspencer
  */
 public class QueryInfoPacker {
@@ -43,7 +43,7 @@ public class QueryInfoPacker {
 	/**
 	 * Pack a file information object into the specified buffer, using the specified information
 	 * level.
-	 * 
+	 *
 	 * @param info File information to be packed.
 	 * @param buf Buffer to pack the data into.
 	 * @param infoLevel File information level.
@@ -175,7 +175,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the standard file information
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 * @param eaFlag Return EA size
@@ -249,7 +249,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the basic file information (level 0x101)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */
@@ -302,7 +302,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the standard file information (level 0x102)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */
@@ -339,7 +339,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the extended attribute information (level 0x103)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */
@@ -355,7 +355,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the file name information (level 0x104)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 * @param uni Pack unicode strings
@@ -378,7 +378,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the all file information (level 0x107)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 * @param uni Pack unicode strings
@@ -447,9 +447,9 @@ public class QueryInfoPacker {
 		buf.putLong(info.getSize());
 
 		// Number of links
-		
+
 		buf.putInt( 1);
-		
+
 		// Pack the delete pending and directory flags
 
 		buf.putByte(0);
@@ -472,7 +472,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the alternate name information (level 0x108)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */
@@ -481,7 +481,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the stream information (level 0x109)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 * @param uni Pack unicode strings
@@ -522,7 +522,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the stream information (level 0x109)
-	 * 
+	 *
 	 * @param streams List of streams
 	 * @param buf Buffer to pack data into
 	 * @param uni Pack unicode strings
@@ -554,11 +554,11 @@ public class QueryInfoPacker {
 			buf.putInt(0);
 
 			// Get the stream name
-			
+
 			String sName = sinfo.getName();
 			if ( sName.endsWith( FileName.DataStreamName) == false)
 				sName = sName + FileName.DataStreamName;
-			
+
 			// Set the stream name length
 
 			int nameLen = sName.length();
@@ -604,7 +604,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the compression information (level 0x10B)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */
@@ -620,7 +620,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the file internal information (level 1006)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */
@@ -636,7 +636,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the file position information (level 1014)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */
@@ -652,7 +652,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the network open information (level 1034)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */
@@ -714,7 +714,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the attribute tag information (level 1035)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */
@@ -730,7 +730,7 @@ public class QueryInfoPacker {
 
 	/**
 	 * Pack the extended attributes (level 1035)
-	 * 
+	 *
 	 * @param info File information
 	 * @param buf Buffer to pack data into
 	 */

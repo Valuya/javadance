@@ -27,7 +27,7 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * Share Mapper Interface
- * 
+ *
  * <p>The share mapper interface is used to allocate a share of the specified name and type. It is called by
  * the SMB server to allocate disk and print type shares.
  *
@@ -37,18 +37,18 @@ public interface ShareMapper {
 
 	/**
 	 * Initialize the share mapper
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @param params ConfigElement
 	 * @exception InvalidConfigurationException
 	 */
 	public void initializeMapper(ServerConfiguration config, ConfigElement params)
 		throws InvalidConfigurationException;
-	
+
 	/**
 	 * Return the share list for the specified host. The host name can be used to implement virtual
 	 * hosts.
-	 * 
+	 *
 	 * @param host String
 	 * @param sess SrvSession
 	 * @param allShares boolean
@@ -58,7 +58,7 @@ public interface ShareMapper {
 
 	/**
 	 * Find the share of the specified name/type
-	 * 
+	 *
 	 * @param tohost String
 	 * @param name String
 	 * @param typ int
@@ -69,14 +69,14 @@ public interface ShareMapper {
 	 */
 	public SharedDevice findShare(String tohost, String name, int typ, SrvSession sess, boolean create)
 		throws Exception;
-	
+
 	/**
 	 * Delete any temporary shares created for the specified session
-	 * 
+	 *
 	 * @param sess SrvSession
 	 */
 	public void deleteShares(SrvSession sess);
-	
+
 	/**
 	 * Close the share mapper, release any resources. Called when the server is shutting down.
 	 */

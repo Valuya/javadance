@@ -21,17 +21,17 @@ package org.alfresco.jlan.util;
 
 /**
  * X64 Class
- * 
+ *
  * <p>
  * Check if the platform is a 64bit operating system.
  *
  * @author gkspencer
  */
 public class X64 {
-  
+
   /**
    * Check if we are running on a Windows 64bit system
-   * 
+   *
    * @return boolean
    */
   public static boolean isWindows64() {

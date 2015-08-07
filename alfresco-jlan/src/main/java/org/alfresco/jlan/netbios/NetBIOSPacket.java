@@ -25,11 +25,11 @@ import org.alfresco.jlan.util.HexDump;
 
 /**
  * NetBIOS Packet Class
- * 
+ *
  * <p>
  * A NetBIOSPacket holds a single NetBIOS request or response. Contains methods for building the
  * main NetBIOS request types (add name, delete name, name query, refresh and session setup).
- * 
+ *
  * @author gkspencer
  */
 public class NetBIOSPacket {
@@ -147,7 +147,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Create a NetBIOS packet with the specified buffer.
-	 * 
+	 *
 	 * @param buf byte[]
 	 */
 	public NetBIOSPacket(byte[] buf) {
@@ -157,7 +157,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Create a NetBIOS packet with the specified buffer size.
-	 * 
+	 *
 	 * @param siz int
 	 */
 	public NetBIOSPacket(int siz) {
@@ -167,7 +167,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Dump the packet structure to the console.
-	 * 
+	 *
 	 * @param sessPkt True if this is a NetBIOS session packet, else false.
 	 */
 	public void DumpPacket(boolean sessPkt) {
@@ -270,7 +270,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Get the additional byte count.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAdditionalCount() {
@@ -279,7 +279,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Get the answer name details
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getAnswerName() {
@@ -291,7 +291,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Get the answer count.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAnswerCount() {
@@ -300,7 +300,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Get the answer name list
-	 * 
+	 *
 	 * @return NetBIOSNameList
 	 */
 	public final NetBIOSNameList getAnswerNameList() {
@@ -369,7 +369,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Get the answer name list from an adapter status reply
-	 * 
+	 *
 	 * @return NetBIOSNameList
 	 */
 	public final NetBIOSNameList getAdapterStatusNameList() {
@@ -438,7 +438,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the MAC address of the server
-	 * 
+	 *
 	 * @param nameList NetBIOSNameList
 	 * @param pos int
 	 */
@@ -453,7 +453,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the NetBIOS buffer.
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getBuffer() {
@@ -462,7 +462,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Get the flags from the received NetBIOS packet.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFlags() {
@@ -473,7 +473,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the NetBIOS header flags value.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getHeaderFlags() {
@@ -482,7 +482,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the NetBIOS header data length value.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getHeaderLength() {
@@ -491,7 +491,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the NetBIOS header message type.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getHeaderType() {
@@ -500,7 +500,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the received packet length.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLength() {
@@ -509,7 +509,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the name service count.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNameServiceCount() {
@@ -518,7 +518,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the NetBIOS opcode.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getOpcode() {
@@ -529,7 +529,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the NetBIOS packet type.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPacketType() {
@@ -538,7 +538,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the question count.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getQuestionCount() {
@@ -557,7 +557,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Get the question name length.
-	 * 
+	 *
 	 */
 	public final int getQuestionNameLength() {
 
@@ -568,7 +568,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the result code for the received packet.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getResultCode() {
@@ -578,7 +578,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return the NetBIOS transaction id.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getTransactionId() {
@@ -587,7 +587,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Determine if the received packet is a repsonse packet.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isResponse() {
@@ -598,7 +598,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the additional byte count.
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setAdditionalCount(int cnt) {
@@ -607,7 +607,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the answer byte count.
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setAnswerCount(int cnt) {
@@ -616,7 +616,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the answer name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 * @param qtyp int
 	 * @param qcls int
@@ -654,7 +654,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the flags.
-	 * 
+	 *
 	 * @param flg int
 	 */
 	public final void setFlags(int flg) {
@@ -665,7 +665,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the NetBIOS packet header flags value.
-	 * 
+	 *
 	 * @param flg int
 	 */
 	public final void setHeaderFlags(int flg) {
@@ -674,7 +674,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the NetBIOS packet data length in the packet header.
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setHeaderLength(int len) {
@@ -683,7 +683,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the NetBIOS packet type in the packet header.
-	 * 
+	 *
 	 * @param typ int
 	 */
 	public final void setHeaderType(int typ) {
@@ -692,7 +692,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the IP address.
-	 * 
+	 *
 	 * @return int
 	 * @param off int
 	 * @param ipaddr byte[]
@@ -717,7 +717,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the packet data length.
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setLength(int len) {
@@ -726,7 +726,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the name registration flags.
-	 * 
+	 *
 	 * @return int
 	 * @param off int
 	 * @param flg int
@@ -751,7 +751,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the name service count.
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setNameServiceCount(int cnt) {
@@ -760,7 +760,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the NetBIOS opcode.
-	 * 
+	 *
 	 * @param op int
 	 */
 	public final void setOpcode(int op) {
@@ -771,7 +771,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the question count.
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setQuestionCount(int cnt) {
@@ -780,7 +780,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the question name.
-	 * 
+	 *
 	 * @param name NetBIOSName
 	 * @param qtyp int
 	 * @param qcls int
@@ -815,7 +815,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the question name.
-	 * 
+	 *
 	 * @param name java.lang.String
 	 * @param qtyp int
 	 * @param qcls int
@@ -853,7 +853,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Pack the resource data into the packet.
-	 * 
+	 *
 	 * @return int
 	 * @param off int
 	 * @param flg int
@@ -881,7 +881,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the resource data length in the NetBIOS packet.
-	 * 
+	 *
 	 * @return int
 	 * @param off int
 	 * @param len int
@@ -905,7 +905,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the resource record.
-	 * 
+	 *
 	 * @param pktoff Packet offset to pack the resource record.
 	 * @param rroff Offset to name.
 	 * @param qtyp int
@@ -932,7 +932,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the transaction id.
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setTransactionId(int id) {
@@ -941,7 +941,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Set the time to live for the packet.
-	 * 
+	 *
 	 * @return int
 	 * @param off int
 	 * @param ttl int
@@ -965,7 +965,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Return a packet type as a string
-	 * 
+	 *
 	 * @param typ int
 	 * @return String
 	 */
@@ -1006,7 +1006,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Build a name query response packet for the specified NetBIOS name
-	 * 
+	 *
 	 * @param name NetBIOSName
 	 * @return int
 	 */
@@ -1051,7 +1051,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Build an add name request packet for the specified NetBIOS name
-	 * 
+	 *
 	 * @param name NetBIOSName
 	 * @param addrIdx int
 	 * @param tranId int
@@ -1092,7 +1092,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Build a refresh name request packet for the specified NetBIOS name
-	 * 
+	 *
 	 * @param name NetBIOSName
 	 * @param addrIdx int
 	 * @param tranId int
@@ -1133,7 +1133,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Build a delete name request packet for the specified NetBIOS name
-	 * 
+	 *
 	 * @param name NetBIOSName
 	 * @param addrIdx int
 	 * @param tranId int
@@ -1170,7 +1170,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Build a name query request packet for the specified NetBIOS name
-	 * 
+	 *
 	 * @param name NetBIOSName
 	 * @param tranId int
 	 * @param wins boolean
@@ -1194,7 +1194,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Build a session setup request packet
-	 * 
+	 *
 	 * @param fromName NetBIOSName
 	 * @param toName NetBIOSName
 	 * @return int
@@ -1234,7 +1234,7 @@ public class NetBIOSPacket {
 
 	/**
 	 * Build an adapter status response
-	 * 
+	 *
 	 * @param nameList NetBIOSNameList
 	 * @param nodeType int
 	 * @return int

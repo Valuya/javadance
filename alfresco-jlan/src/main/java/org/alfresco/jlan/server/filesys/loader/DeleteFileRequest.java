@@ -23,7 +23,7 @@ import org.alfresco.jlan.server.filesys.cache.FileState;
 
 /**
  * Delete File Request Class
- * 
+ *
  * <p>Contains the details of a file that has been marked for delete when the database is offline.
  *
  * @author gkspencer
@@ -31,25 +31,25 @@ import org.alfresco.jlan.server.filesys.cache.FileState;
 public class DeleteFileRequest extends FileRequest {
 
   //  File id and stream id
-  
+
   private int m_fid;
   private int m_stid;
-  
+
   //  Temporary file path
-  
+
   private String m_tempPath;
-    
+
   //  Virtual path of file
-  
+
   private String m_virtPath;
 
   //  Associated file state
-  
+
   private FileState m_state;
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param fid int
    * @param stid int
    * @param tempPath String
@@ -65,10 +65,10 @@ public class DeleteFileRequest extends FileRequest {
     m_virtPath = virtPath;
     m_state    = state;
   }
-  
+
   /**
    * Return the file identifier
-   * 
+   *
    * @return int
    */
   public final int getFileId() {
@@ -77,25 +77,25 @@ public class DeleteFileRequest extends FileRequest {
 
   /**
    * Return the stream identifier, zero for the main file stream
-   * 
+   *
    * @return int
    */
   public final int getStreamId() {
     return m_stid;
   }
-  
+
   /**
    * Return the files virtual path
-   * 
+   *
    * @return String
    */
   public final String getVirtualPath() {
     return m_virtPath;
   }
-  
+
   /**
    * Return the temporary file path
-   * 
+   *
    * @return String
    */
   public final String getTemporaryFile() {
@@ -104,7 +104,7 @@ public class DeleteFileRequest extends FileRequest {
 
   /**
    * Check if the request has an associated file state
-   * 
+   *
    * @return boolean
    */
   public final boolean hasFileState () {
@@ -113,25 +113,25 @@ public class DeleteFileRequest extends FileRequest {
 
   /**
    * Return the associated file state
-   * 
+   *
    * @return FileState
    */
   public final FileState getFileState() {
     return m_state;
   }
-    
+
   /**
    * Set the associated file state for the request
-   * 
+   *
    * @param state FileState
    */
   public final void setFileState(FileState state) {
     m_state = state;
   }
-    
+
   /**
    * Set the files virtual path
-   * 
+   *
    * @param path String
    */
   public final void setVirtualPath(String path) {
@@ -140,33 +140,33 @@ public class DeleteFileRequest extends FileRequest {
 
   /**
    * Return the file request as a string
-   * 
+   *
    * @return String
    */
   public String toString() {
     StringBuffer str = new StringBuffer();
-    
+
     str.append("[FID=");
     str.append(getFileId());
     str.append(",STID=");
     str.append(getStreamId());
-        
+
     str.append(",DELETE:");
 
     str.append(getTemporaryFile());
     str.append(",");
     str.append(getVirtualPath());
-    
+
     str.append(",State=");
     str.append(getFileState());
-    
+
     if ( hasAttributes()) {
       str.append(",Attr=");
       str.append( getAttributes());
     }
-    
+
     str.append("]");
-    
+
     return str.toString();
   }
 }

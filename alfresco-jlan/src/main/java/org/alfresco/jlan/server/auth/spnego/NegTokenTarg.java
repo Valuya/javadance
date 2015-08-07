@@ -32,7 +32,7 @@ import org.ietf.jgss.Oid;
 
 /**
  * NegTokenTarg Class
- * 
+ *
  * <p>
  * Contains the details of an SPNEGO NegTokenTarg blob for use with CIFS.
  *
@@ -60,7 +60,7 @@ public class NegTokenTarg {
 
   /**
    * Class constructor
-   * 
+   *
    * @param result int
    * @param mech Oid
    * @param response byte[]
@@ -74,7 +74,7 @@ public class NegTokenTarg {
 
   /**
    * Return the result
-   * 
+   *
    * @return int
    */
   public final int getResult() {
@@ -83,7 +83,7 @@ public class NegTokenTarg {
 
   /**
    * Return the supported mech type Oid
-   * 
+   *
    * @return Oid
    */
   public final Oid getSupportedMech() {
@@ -92,7 +92,7 @@ public class NegTokenTarg {
 
   /**
    * Determine if there is a valid response token
-   * 
+   *
    * @return boolean
    */
   public final boolean hasResponseToken() {
@@ -101,7 +101,7 @@ public class NegTokenTarg {
 
   /**
    * Return the response token
-   * 
+   *
    * @return byte[]
    */
   public final byte[] getResponseToken() {
@@ -110,7 +110,7 @@ public class NegTokenTarg {
 
   /**
    * Decode an SPNEGO NegTokenTarg blob
-   * 
+   *
    * @param buf byte[]
    * @param off int
    * @param len int
@@ -118,43 +118,43 @@ public class NegTokenTarg {
    */
   public void decode(byte[] buf, int off, int len)
     throws IOException {
-	  
+
     // Create a DER buffer to decode the blob
-    
+
     DERBuffer derBuf = new DERBuffer(buf, off, len);
-    
+
     // Get the first object from the blob
-    
+
     DERObject derObj = derBuf.unpackObject();
-    
+
     if ( derObj instanceof DERSequence) {
-      
+
       // Access the sequence
-      
+
       DERSequence derSeq = (DERSequence) derObj;
-      
+
       // Get the status
-      
+
       derObj = derSeq.getTaggedObject( 0);
       if ( derObj != null) {
-      
+
 	      if ( derObj instanceof DEREnumerated == false)
 	        throw new IOException( "Invalid status object");
-	      
+
 	      DEREnumerated derEnum = (DEREnumerated) derObj;
 	      m_result = derEnum.getValue();
       }
-      
+
       // Get the supportedMech (optional)
-      
+
       derObj = derSeq.getTaggedObject( 1);
       if ( derObj != null) {
-        
+
         // Check the object type
-        
+
         if ( derObj instanceof DEROid == false)
           throw new IOException( "Invalid supportedMech object");
-        
+
         DEROid derMech = (DEROid) derObj;
         try {
           m_supportedMech = new Oid( derMech.getOid());
@@ -165,33 +165,33 @@ public class NegTokenTarg {
       }
       else
         m_supportedMech = null;
-      
+
       // Get the responseToken (optional)
-      
+
       derObj = derSeq.getTaggedObject( 2);
       if ( derObj != null) {
-        
+
         // Check the object type
-        
+
         if ( derObj instanceof DEROctetString == false)
           throw new IOException( "Invalid responseToken object");
-        
+
         DEROctetString derResp = (DEROctetString) derObj;
         m_responseToken = derResp.getValue();
       }
       else
         m_responseToken = null;
-      
+
       // Get the mecListMIC (optional)
-      
+
       derObj = derSeq.getTaggedObject( 3);
       if ( derObj != null) {
-        
+
         // Check the object type
-        
+
         if ( derObj instanceof DEROctetString == false)
           throw new IOException( "Invalid mecListMIC object");
-        
+
         DEROctetString derMec = (DEROctetString) derObj;
       }
     }
@@ -201,7 +201,7 @@ public class NegTokenTarg {
 
   /**
    * Encode an SPNEGO NegTokenTarg blob
-   * 
+   *
    * @return byte[]
    * @exception IOException
    */
@@ -209,45 +209,45 @@ public class NegTokenTarg {
     throws IOException {
 
     // Build the sequence of tagged objects
-	    
+
     DERSequence derSeq = new DERSequence();
     derSeq.setTagNo( 1);
-	    
+
     // Add the result
-    
+
     DEREnumerated derEnum = new DEREnumerated( m_result);
     derEnum.setTagNo( 0);
     derSeq.addObject( derEnum);
-    
+
     // Pack the supportedMech, if valid
-    
+
     if ( m_supportedMech != null) {
       DEROid derOid = new DEROid( m_supportedMech.toString());
       derOid.setTagNo( 1);
       derSeq.addObject( derOid);
     }
-    
+
     // Pack the response token, if valid
-    
+
     if ( m_responseToken != null) {
       DEROctetString derResp = new DEROctetString( m_responseToken);
       derResp.setTagNo( 2);
       derSeq.addObject( derResp);
     }
-    
+
     // Pack the objects
-    
+
     DERBuffer derBuf = new DERBuffer();
     derBuf.packObject( derSeq);
-    
+
     // Return the packed negTokenInit blob
-    
+
     return derBuf.getBytes();
   }
 
   /**
    * Return the NegtokenTarg object as a string
-   * 
+   *
    * @return String
    */
   public String toString() {

@@ -26,7 +26,7 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Connection Information List Class
- * 
+ *
  * @author gkspencer
  */
 public class ConnectionInfoList extends DCEList {
@@ -40,7 +40,7 @@ public class ConnectionInfoList extends DCEList {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -50,7 +50,7 @@ public class ConnectionInfoList extends DCEList {
 
 	/**
 	 * Create a new connection information object
-	 * 
+	 *
 	 * @return DCEReadable
 	 */
 	protected DCEReadable getNewObject() {

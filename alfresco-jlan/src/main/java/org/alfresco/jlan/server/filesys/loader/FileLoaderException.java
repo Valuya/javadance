@@ -34,10 +34,10 @@ public class FileLoaderException extends Exception {
 	public FileLoaderException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public FileLoaderException(String msg) {

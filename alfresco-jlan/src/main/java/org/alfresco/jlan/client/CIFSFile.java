@@ -45,7 +45,7 @@ import org.alfresco.jlan.smb.SeekType;
  *
  *  <p>A remote file may also be opened as an InputStream or OutputStream using the
  *  DiskSession.OpenInputStream () and DiskSession.OpenOutputStream () methods.
- * 
+ *
  * @author gkspencer
  */
 public final class CIFSFile extends SMBFile {
@@ -60,23 +60,23 @@ public final class CIFSFile extends SMBFile {
 
 	private static final int WriteDataOffset  = 64;
 	private static final int WriteDataPadding = 1;
-  
+
 	//	Maximum file offset for 32bit files
-  
+
 	private static final long Maximum32BitOffset	= 0x0FFFFFFFFL;
-  
+
 	//	Flag to indicate we are using NT dialect SMBs
-  
+
 	private boolean m_NTdialect;
-  
+
 	// Oplock type and callback
-	
+
 	private int m_oplockType = OpLock.TypeNone;
 	private OplockInterface m_oplockIface;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess Session that this file is associated with
 	 * @param finfo File information for the new file
 	 * @param fid File identifier for this file
@@ -94,7 +94,7 @@ public final class CIFSFile extends SMBFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess Session that this file is associated with
 	 * @param finfo File information for the new file
 	 * @param fid File identifier for this file
@@ -109,15 +109,15 @@ public final class CIFSFile extends SMBFile {
 			m_NTdialect = true;
 		else
 			m_NTdialect = false;
-		
+
 		// Set the granted oplock type
-		
+
 		m_oplockType = oplockTyp;
 	}
 
 	/**
 	 * Close the remote file.
-	 * 
+	 *
 	 * @param wrDateTime Set the last write date/time, or null to let the server set the date/time
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
@@ -177,16 +177,16 @@ public final class CIFSFile extends SMBFile {
 
 		m_rxpkt = null;
 		m_txpkt = null;
-		
+
 		// Inform the session that the file has been closed
-		
+
 		CIFSDiskSession diskSess = (CIFSDiskSession) m_sess;
 		diskSess.fileClosed( this);
 	}
 
 	/**
 	 * Flush data to the remote file.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
@@ -201,7 +201,7 @@ public final class CIFSFile extends SMBFile {
 
 	/**
 	 * Read a block of data from the file.
-	 * 
+	 *
 	 * @param buf Byte buffer to receive the data.
 	 * @param siz Maximum length of data to receive.
 	 * @param offset Offset within buffer to place received data.
@@ -264,7 +264,7 @@ public final class CIFSFile extends SMBFile {
 
 	/**
 	 * Read a packet of data from the remote file.
-	 * 
+	 *
 	 * @return true if a valid data packet has been received, else false
 	 * @exception SMBException If an SMB level error occurs
 	 * @exception IOException If an I/O error occurs
@@ -364,7 +364,7 @@ public final class CIFSFile extends SMBFile {
 
 	/**
 	 * Write a block of data to the file.
-	 * 
+	 *
 	 * @param buf Byte buffer containing data to be written.
 	 * @param siz Length of data to be written.
 	 * @param offset Offset within buffer to start writing data from.
@@ -447,7 +447,7 @@ public final class CIFSFile extends SMBFile {
 
 	/**
 	 * Write a packet of data to the remote file.
-	 * 
+	 *
 	 * @return true if the write was successful, else false
 	 * @exception SMBException If an SMB level error occurs
 	 * @exception IOException If an I/O error occurs
@@ -556,7 +556,7 @@ public final class CIFSFile extends SMBFile {
 	/**
 	 * Seek to the specified point in the file. The seek may be relative to the start of file,
 	 * current file position or end of file.
-	 * 
+	 *
 	 * @param pos Relative offset
 	 * @param typ Seek type (@see org.alfresco.jlan.smb.SeekType)
 	 * @return New file offset from start of file
@@ -611,7 +611,7 @@ public final class CIFSFile extends SMBFile {
 
 	/**
 	 * Lock a range of bytes within the file
-	 * 
+	 *
 	 * @param offset Offset within the file to start lock
 	 * @param len Number of bytes to lock
 	 * @exception IOException
@@ -681,7 +681,7 @@ public final class CIFSFile extends SMBFile {
 
 	/**
 	 * Unlock a range of bytes within the file
-	 * 
+	 *
 	 * @param offset Offset within the file to unlock
 	 * @param len Number of bytes to unlock
 	 * @exception IOException
@@ -751,7 +751,7 @@ public final class CIFSFile extends SMBFile {
 
 	/**
 	 * Check if NT dialect SMBs should be used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected final boolean isNTDialect() {
@@ -760,43 +760,43 @@ public final class CIFSFile extends SMBFile {
 
 	/**
 	 * Check if the file is a repars point
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isReparsePoint() {
 		return (getAttributes() & FileAttribute.NTReparsePoint) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if the file has an associated oplock
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getOplockType() {
 		return m_oplockType;
 	}
-	
+
 	/**
 	 * Set the oplock type
-	 * 
+	 *
 	 * @param oplockTyp int
 	 */
 	protected void setOplockType( int oplockTyp) {
 		m_oplockType = oplockTyp;
 	}
-	
+
 	/**
 	 * Set the oplock interface
-	 * 
+	 *
 	 * @param oplockIface OplockInterface
 	 */
 	protected void setOplockInterface( OplockInterface oplockIface) {
 		m_oplockIface = oplockIface;
 	}
-	
+
 	/**
 	 * Return the oplock interface
-	 * 
+	 *
 	 * @return OplockInterface
 	 */
 	protected OplockInterface getOplockInterface() {

@@ -28,15 +28,15 @@ public interface OplockInterface {
 
 	/**
 	 * Oplock break requested on a file
-	 * 
+	 *
 	 * @param file CIFSFile
 	 * @return int
 	 */
 	public int oplockBreak( CIFSFile file);
-	
+
 	/**
 	 * Send an automatic oplock break response, or not
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean sendAutomaticBreakResponse();

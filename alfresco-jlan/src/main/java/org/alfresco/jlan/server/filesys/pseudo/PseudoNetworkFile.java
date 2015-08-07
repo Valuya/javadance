@@ -31,14 +31,14 @@ import org.alfresco.jlan.smb.SeekType;
 
 /**
  * Pseudo File Network File Class
- * 
+ *
  * <p>
  * Represents an open pseudo file and provides access to the file data.
- * 
+ *
  * @author gkspencer
  */
 public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateInterface {
-  
+
   // File details
 
   protected File m_file;
@@ -52,12 +52,12 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
   protected boolean m_eof;
 
   // Dummy file state, required to implement byte range locking
-  
+
   private FileState m_state;
-  
+
   /**
    * Class constructor.
-   * 
+   *
    * @param name String
    * @param localPath String
    * @param netPath String
@@ -114,15 +114,15 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
       setClosed(true);
     }
-    
+
     // Clear the file state
-    
+
     m_state = null;
   }
 
   /**
    * Return the current file position.
-   * 
+   *
    * @return long
    */
   public long currentPosition() {
@@ -140,7 +140,7 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Flush the file.
-   * 
+   *
    * @exception IOException
    */
   public void flushFile()
@@ -154,7 +154,7 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Determine if the end of file has been reached.
-   * 
+   *
    * @return boolean
    */
   public boolean isEndOfFile()
@@ -169,7 +169,7 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Open the file.
-   * 
+   *
    * @param createFlag boolean
    * @exception IOException
    */
@@ -195,7 +195,7 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Read from the file.
-   * 
+   *
    * @param buf byte[]
    * @param len int
    * @param pos int
@@ -227,7 +227,7 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Seek to the specified file position.
-   * 
+   *
    * @param pos long
    * @param typ int
    * @return long
@@ -274,7 +274,7 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Truncate the file
-   * 
+   *
    * @param siz long
    * @exception IOException
    */
@@ -286,7 +286,7 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Write a block of data to the file.
-   * 
+   *
    * @param buf byte[]
    * @param len int
    * @exception IOException
@@ -299,7 +299,7 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Write a block of data to the file.
-   * 
+   *
    * @param buf byte[]
    * @param len int
    * @param pos int
@@ -314,13 +314,13 @@ public class PseudoNetworkFile extends NetworkFile implements NetworkFileStateIn
 
   /**
    * Return a dummy file state for this file
-   * 
+   *
    * @return FileState
    */
   public FileState getFileState() {
-        
+
     // Create a dummy file state
-        
+
     if ( m_state == null)
       m_state = new LocalFileState(getFullName(), false);
     return m_state;

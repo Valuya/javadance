@@ -68,7 +68,7 @@ import org.alfresco.jlan.util.HexDump;
  * <p>
  * Authenticate users accessing the CIFS server by validating the user against a domain controller
  * or other server on the network.
- * 
+ *
  * @author GKSpencer
  */
 public class PassthruAuthenticator extends CifsAuthenticator implements SessionListener {
@@ -105,7 +105,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * Default Constructor
-	 * 
+	 *
 	 * <p>Default to user mode security with encrypted password support.
 	 */
 	public PassthruAuthenticator() {
@@ -122,7 +122,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 	/**
 	 * Authenticate the connection to a particular share, called when the SMB server is in share
 	 * security mode
-	 * 
+	 *
 	 * @param client ClientInfo
 	 * @param share SharedDevice
 	 * @param sharePwd String
@@ -169,7 +169,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * Authenticate a session setup by a user
-	 * 
+	 *
 	 * @param client ClientInfo
 	 * @param sess SrvSession
 	 * @param alg int
@@ -315,7 +315,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * Return an authentication context for the new session
-	 * 
+	 *
 	 * @return AuthContext
 	 */
 	public AuthContext getAuthContext(SMBSrvSession sess) {
@@ -371,7 +371,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 	/**
 	 * Generate the CIFS negotiate response packet, the authenticator should add authentication
 	 * specific fields to the response.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param respPkt SMBSrvPacket
 	 * @param extendedSecurity boolean
@@ -413,7 +413,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * Process the CIFS session setup request packet and build the session setup response
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param reqPkt SMBSrvPacket
 	 * @exception SMBSrvException
@@ -639,9 +639,9 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 					throw new SMBSrvException(SMBStatus.NTInvalidParameter, SMBStatus.SRVNoBuffers, SMBStatus.ErrSrv);
 				}
 			}
-			
+
 			// Fill in the rest of the packet header
-			
+
 			respPkt.setParameter(0, 0xFF); 	// No chained response
 			respPkt.setParameter(1, 0); 	// Offset to chained response
 
@@ -680,11 +680,11 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 		if ( loggedOn == true) {
 
 			// Check for virtual circuit zero, disconnect any other sessions from this client
-			
+
 			if ( vcNum == 0 && hasSessionCleanup()) {
-			
+
 				// Disconnect other sessions from this client, cleanup any open files/locks/oplocks
-				
+
 				int discCnt = sess.disconnectClientSessions();
 
 				// DEBUG
@@ -692,7 +692,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 				if ( discCnt > 0 && Debug.EnableInfo && sess.hasDebug(SMBSrvSession.DBG_NEGOTIATE))
 					Debug.println("[SMB] Disconnected " + discCnt + " existing sessions from client, sess=" + sess);
 			}
-			
+
 			// Clear any stored session setup object for the logon
 
 			sess.removeSetupObject(client.getProcessId());
@@ -764,7 +764,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * Process an NTLMSSP security blob
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @param secbuf byte[]
@@ -898,7 +898,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * Perform an NTLMv1 logon using the NTLMSSP type3 message
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @param type3Msg Type3NTLMMessage
@@ -1032,7 +1032,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * Process an SPNEGO security blob
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param client ClientInfo
 	 * @param secbuf byte[]
@@ -1201,7 +1201,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * Initialzie the authenticator
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 * @param params ConfigElement
 	 * @exception InvalidConfigurationException
@@ -1215,11 +1215,11 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 		// Check if session cleanup should be disabled, when a session setup request is received
 		// on virtual circuit zero
-		
+
 		if ( params.getChild("disableSessionCleanup") != null) {
-			
+
 			// Disable session cleanup
-			
+
 			setSessionCleanup( false);
 
 			// Debug
@@ -1227,7 +1227,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 			if ( Debug.EnableInfo && hasDebug())
 				Debug.println("[SMB] Disabled session cleanup (for virtual circuit zero logons)");
 		}
-		
+
 		// Check if the passthru session protocol order has been specified
 
 		ConfigElement protoOrder = params.getChild("protocolOrder");
@@ -1423,7 +1423,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * Return the server capability flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getServerCapabilities() {
@@ -1446,7 +1446,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * SMB server session closed notification
-	 * 
+	 *
 	 * @param sess SrvSession
 	 */
 	public void sessionClosed(SrvSession sess) {
@@ -1488,7 +1488,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * SMB server session created notification
-	 * 
+	 *
 	 * @param sess SrvSession
 	 */
 	public void sessionCreated(SrvSession sess) {
@@ -1497,7 +1497,7 @@ public class PassthruAuthenticator extends CifsAuthenticator implements SessionL
 
 	/**
 	 * User successfully logged on notification
-	 * 
+	 *
 	 * @param sess SrvSession
 	 */
 	public void sessionLoggedOn(SrvSession sess) {

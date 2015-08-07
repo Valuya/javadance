@@ -25,10 +25,10 @@ import java.util.Queue;
 
 /**
  * Thread Request Queue Class
- * 
+ *
  * <p>
  * Provides a request queue for a thread pool of worker threads.
- * 
+ *
  * @author gkspencer
  */
 public class ThreadRequestQueue {
@@ -46,7 +46,7 @@ public class ThreadRequestQueue {
 
 	/**
 	 * Return the number of requests in the queue
-	 * 
+	 *
 	 * @return int
 	 */
     public final int numberOfRequests() {
@@ -57,32 +57,32 @@ public class ThreadRequestQueue {
 
 	/**
 	 * Add a request to the queue
-	 * 
+	 *
 	 * @param req ThreadRequest
 	 */
 	public final void addRequest(ThreadRequest req) {
 
 		synchronized ( m_queue) {
-			
+
 			// Add the request to the queue
-	
+
 			m_queue.add(req);
-	
+
 			// Notify a worker that there is a request to process
-	
+
 			m_queue.notify();
 		}
 	}
 
 	/**
 	 * Add requests to the queue
-	 * 
+	 *
 	 * @param reqList List<ThreadRequest>
 	 */
 	public final void addRequests(List<ThreadRequest> reqList) {
 
         synchronized ( m_queue) {
-    
+
              // Add the requests to the queue
              m_queue.addAll(reqList);
              m_queue.notify();
@@ -91,7 +91,7 @@ public class ThreadRequestQueue {
 
 	/**
 	 * Remove a request from the head of the queue
-	 * 
+	 *
 	 * @return ThreadRequest
 	 * @exception InterruptedException
 	 */
@@ -99,30 +99,30 @@ public class ThreadRequestQueue {
 		throws InterruptedException {
 
 		synchronized ( m_queue) {
-			
+
 			// Wait until there is a request
-	
+
 			while ( m_queue.size() == 0)
 				m_queue.wait();
-	
+
 			// Get the request from the head of the queue
-	
+
 			return m_queue.poll();
 		}
 	}
 
 	/**
 	 * Wait for a request to be added to the queue
-	 * 
+	 *
 	 * @exception InterruptedException
 	 */
 	public final void waitWhileEmpty()
 		throws InterruptedException {
 
 		synchronized ( m_queue) {
-			
+
 			// Wait until some work arrives on the queue
-	
+
 			while (m_queue.size() == 0)
 				m_queue.wait();
 		}
@@ -130,16 +130,16 @@ public class ThreadRequestQueue {
 
 	/**
 	 * Wait for the request queue to be emptied
-	 * 
+	 *
 	 * @exception InterruptedException
 	 */
 	public final void waitUntilEmpty()
 		throws InterruptedException {
 
 		synchronized ( m_queue) {
-			
+
 			// Wait until the request queue is empty
-	
+
 			while (m_queue.size() != 0)
 				m_queue.wait();
 		}

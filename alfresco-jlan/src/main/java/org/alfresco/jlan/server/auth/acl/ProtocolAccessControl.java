@@ -27,7 +27,7 @@ import org.alfresco.jlan.server.core.SharedDevice;
 
 /**
  * Protocol Access Control Class
- * 
+ *
  * <p>Allow/disallow access to a share based on the protocol type.
  *
  * @author gkspencer
@@ -35,43 +35,43 @@ import org.alfresco.jlan.server.core.SharedDevice;
 public class ProtocolAccessControl extends AccessControl {
 
 	//	Available protocol type names
-	
+
 	private static final String[] _protoTypes = {"SMB", "CIFS", "NFS", "FTP"};
 
 	//	Parsed list of protocol types
-	
+
 	private String[] m_checkList;
-			
+
 	/**
 	 * Class constructor
 	 *
 	 * @param protList String
 	 * @param type String
-	 * @param access int 
-	 */	
+	 * @param access int
+	 */
 	public ProtocolAccessControl(String protList, String type, int access) {
 		super(protList, type, access);
-		
+
 		//	Parse the protocol list
-		
+
 		m_checkList = listFromString(protList);
 	}
-	
+
 	/**
 	 * Check if the protocol matches the access control protocol list and return the allowed access.
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param share SharedDevice
 	 * @param mgr AccessControlManager
 	 * @return int
 	 */
 	public int allowsAccess(SrvSession sess, SharedDevice share, AccessControlManager mgr) {
-		
+
 		//	Determine the session protocol type
-		
+
 		String sessProto = null;
 		String sessName = sess.getClass().getName();
-		
+
 		if ( sessName.endsWith(".SMBSrvSession"))
 			sessProto = "CIFS";
 		else if ( sessName.endsWith(".FTPSrvSession"))
@@ -80,40 +80,40 @@ public class ProtocolAccessControl extends AccessControl {
 			sessProto = "NFS";
 
 		//	Check if the session protocol type is in the protocols to be checked
-		
+
 		if ( sessProto != null && indexFromList( sessProto, m_checkList, false) != -1)
-			return getAccess();			
+			return getAccess();
 		return Default;
 	}
-	
+
 	/**
 	 * Validate the protocol list
-	 * 
+	 *
 	 * @param protList String
 	 * @return boolean
 	 */
 	public static final boolean validateProtocolList(String protList) {
-		
+
 		//	Check if the protocol list string is valid
-		
+
 		if ( protList == null || protList.length() == 0)
 			return false;
-			
+
 		//	Split the protocol list and validate each protocol name
-		
+
 		StringTokenizer tokens = new StringTokenizer(protList, ",");
-		
+
 		while ( tokens.hasMoreTokens()) {
-			
+
 			//	Get the current protocol name and validate
-			
+
 			String name = tokens.nextToken().toUpperCase();
 			if ( indexFromList(name, _protoTypes, false) == -1)
 				return false;
 		}
-		
+
 		//	Protocol list is valid
-		
+
 		return true;
 	}
 }

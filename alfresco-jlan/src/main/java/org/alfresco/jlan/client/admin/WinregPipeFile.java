@@ -35,11 +35,11 @@ import org.alfresco.jlan.smb.dcerpc.info.RegistryValue;
 
 /**
  * Windows Registry Pipe File Class
- * 
+ *
  * <p>
  * Pipe file connected to a remote Windows registry DCE/RPC service that can be used to retrieve,
  * update and create values and keys in the remote registry.
- * 
+ *
  * @author gkspencer
  */
 public class WinregPipeFile extends IPCPipeFile {
@@ -50,7 +50,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param pkt DCEPacket
 	 * @param handle int
@@ -65,7 +65,7 @@ public class WinregPipeFile extends IPCPipeFile {
 	/**
 	 * Open the HIVE_KEY_LOCAL_MACHINE (HKLM) registry key on the remote server. The returned policy
 	 * handle is used to access the keys/values.
-	 * 
+	 *
 	 * @return RegistryKey
 	 * @exception IOException
 	 * @exception SMBException
@@ -81,7 +81,7 @@ public class WinregPipeFile extends IPCPipeFile {
 	/**
 	 * Open the HIVE_KEY_USERS (HKU) registry key on the remote server. The returned policy handle
 	 * is used to access the keys/values.
-	 * 
+	 *
 	 * @return RegistryKey
 	 * @exception IOException
 	 * @exception SMBException
@@ -97,7 +97,7 @@ public class WinregPipeFile extends IPCPipeFile {
 	/**
 	 * Open the HKEY_CLASSES_ROOT registry key on the remote server. The returned policy handle is
 	 * used to access the keys/values.
-	 * 
+	 *
 	 * @return RegistryKey
 	 * @exception IOException
 	 * @exception SMBException
@@ -113,7 +113,7 @@ public class WinregPipeFile extends IPCPipeFile {
 	/**
 	 * Open the HKEY_CURRENT_USER registry key on the remote server. The returned policy handle is
 	 * used to access the keys/values.
-	 * 
+	 *
 	 * @return RegistryKey
 	 * @exception IOException
 	 * @exception SMBException
@@ -129,7 +129,7 @@ public class WinregPipeFile extends IPCPipeFile {
 	/**
 	 * Open the HKEY_PERFORMANCE_DATA registry key on the remote server. The returned policy handle
 	 * is used to access the keys/values.
-	 * 
+	 *
 	 * @return RegistryKey
 	 * @exception IOException
 	 * @exception SMBException
@@ -144,7 +144,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a registry key.
-	 * 
+	 *
 	 * @param root RegistryKey
 	 * @param key String
 	 * @return RegistryKey
@@ -198,7 +198,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a registry key.
-	 * 
+	 *
 	 * @param root RegistryKey
 	 * @param key RegistryKey
 	 * @return RegistryKey
@@ -528,7 +528,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the values for the specified registry key
-	 * 
+	 *
 	 * @param key RegistryKey
 	 * @return List<RegistryValue>
 	 * @exception IOException
@@ -633,7 +633,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the sub-keys for the specified registry key
-	 * 
+	 *
 	 * @param parentKey RegistryKey
 	 * @return List<RegistryKey>
 	 * @exception IOException
@@ -733,7 +733,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Create a new key
-	 * 
+	 *
 	 * @param parent RegistryKey
 	 * @param keyName String
 	 * @throws IOException
@@ -793,7 +793,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Delete a registry key
-	 * 
+	 *
 	 * @param parent RegistryKey
 	 * @param keyName String
 	 * @throws IOException
@@ -838,7 +838,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Create a new registry value
-	 * 
+	 *
 	 * @param parent RegistryKey
 	 * @param value RegistryValue
 	 * @throws IOException
@@ -907,7 +907,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Delete a registry value
-	 * 
+	 *
 	 * @param parent RegistryKey
 	 * @param valueName String
 	 * @throws IOException
@@ -952,7 +952,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Shutdown a remote system, and optionally reboot the system
-	 * 
+	 *
 	 * @param msg String
 	 * @param tmo int
 	 * @param reboot boolean
@@ -1006,7 +1006,7 @@ public class WinregPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a root key on the remote server
-	 * 
+	 *
 	 * @param keyid int
 	 * @return RegistryKey
 	 * @exception IOException

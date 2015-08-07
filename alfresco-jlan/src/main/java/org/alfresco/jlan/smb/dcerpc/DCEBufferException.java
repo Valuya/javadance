@@ -34,10 +34,10 @@ public class DCEBufferException extends Exception {
 	public DCEBufferException() {
 	  super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param str String
 	 */
 	public DCEBufferException(String str) {

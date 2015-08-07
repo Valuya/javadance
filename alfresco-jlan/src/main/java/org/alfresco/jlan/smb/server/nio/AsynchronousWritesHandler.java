@@ -23,21 +23,21 @@ import org.alfresco.jlan.smb.server.SMBSrvPacketQueue;
 
 /**
  * Asynchronous Writes Handler Interface
- * 
+ *
  * @author gkspencer
  */
 public interface AsynchronousWritesHandler {
 
 	/**
 	 * Return the count of queued writes
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getQueuedWriteCount();
-	
+
 	/**
 	 * Process the write queue and send pending data until outgoing buffers are full
-	 * 
+	 *
 	 * @return int Number of requests that were removed from the queue
 	 */
 	public int processQueuedWrites();

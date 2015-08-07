@@ -37,10 +37,10 @@ public class FileNameException extends IOException {
   public FileNameException() {
     super();
   }
-  
+
   /**
    * Class constructor.
-   * 
+   *
    * @param s java.lang.String
    */
   public FileNameException(String s) {

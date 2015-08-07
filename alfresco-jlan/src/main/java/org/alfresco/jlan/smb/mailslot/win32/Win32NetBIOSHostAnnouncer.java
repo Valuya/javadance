@@ -27,7 +27,7 @@ import org.alfresco.jlan.smb.server.win32.Win32NetBIOSSessionSocketHandler;
 /**
  * <p>The host announcer class periodically broadcasts a host announcement datagram to inform other
  * Windows networking hosts of the local hosts existence and capabilities.
- * 
+ *
  * <p>The Win32 NetBIOS host announcer sends out the announcements using datagrams sent via the Win32
  * Netbios() Netapi32 call.
  *
@@ -36,9 +36,9 @@ import org.alfresco.jlan.smb.server.win32.Win32NetBIOSSessionSocketHandler;
 public class Win32NetBIOSHostAnnouncer extends HostAnnouncer {
 
   //	Associated session handler
-  
+
   Win32NetBIOSSessionSocketHandler m_handler;
-  
+
   /**
    * Create a host announcer.
    *
@@ -49,11 +49,11 @@ public class Win32NetBIOSHostAnnouncer extends HostAnnouncer {
   public Win32NetBIOSHostAnnouncer(Win32NetBIOSSessionSocketHandler handler, String domain, int intval) {
 
     //	Save the handler
-    
+
     m_handler = handler;
-    
+
 		//	Add the host to the list of names to announce
-		
+
     addHostName(handler.getServerName());
     setDomain(domain);
     setInterval(intval);
@@ -61,16 +61,16 @@ public class Win32NetBIOSHostAnnouncer extends HostAnnouncer {
 
   /**
    * Return the LANA
-   * 
+   *
    * @return int
    */
   public final int getLana() {
     return m_handler.getLANANumber();
   }
-  
+
   /**
    * Return the host name NetBIOS number
-   * 
+   *
    * @return int
    */
   public final int getNameNumber() {
@@ -79,26 +79,26 @@ public class Win32NetBIOSHostAnnouncer extends HostAnnouncer {
 
   /**
    * Initialize the host announcer.
-   * 
+   *
    * @exception Exception
    */
   protected void initialize()
   	throws Exception {
-    
+
     //	Set the thread name
-    
+
     setName("Win32HostAnnouncer_L" + getLana());
   }
 
   /**
    * Determine if the network connection used for the host announcement is valid
-   * 
+   *
    * @return boolean
    */
   public boolean isNetworkEnabled() {
     return m_handler.isLANAValid();
   }
-  
+
   /**
    * Send an announcement broadcast.
    *
@@ -109,14 +109,14 @@ public class Win32NetBIOSHostAnnouncer extends HostAnnouncer {
    */
   protected void sendAnnouncement( String hostName, byte[] buf, int offset, int len)
   	throws Exception {
-    
+
     //	Build the destination NetBIOS name using the domain/workgroup name
-    
+
     NetBIOSName destNbName = new NetBIOSName(getDomain(), NetBIOSName.MasterBrowser, false);
     byte[] destName = destNbName.getNetBIOSName();
-    
+
     //  Send the host announce datagram via the Win32 Netbios() API call
-    
+
     Win32NetBIOS.SendDatagram( getLana(), getNameNumber(), destName, buf, 0, len);
   }
 }

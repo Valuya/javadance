@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * Console IO Class
- * 
+ *
  * <p>Provides a wrapper class for conole I/O functions to allow Java and J#/.NET versions.
  *
  * @author gkspencer
@@ -32,7 +32,7 @@ public class ConsoleIO {
 
   /**
    * Check if the console input is connected to a valid stream
-   * 
+   *
    * @return boolean
    */
   public final static boolean isValid() {
@@ -44,7 +44,7 @@ public class ConsoleIO {
     }
     return false;
   }
-  
+
   /**
    * Check if there is input available
    *
@@ -58,7 +58,7 @@ public class ConsoleIO {
     }
     return -1;
   }
-  
+
   /**
    * Read a character from the console
    *

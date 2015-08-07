@@ -23,7 +23,7 @@ import org.alfresco.jlan.server.filesys.cache.cluster.ClusterNode;
 
 /**
  * File State Rename Message Class
- * 
+ *
  * <p>Used to informa cluster members of a state rename. If a folder has been renamed any cached states
  * on the local node that are below the changed path will need to be updated, or deleted.
  *
@@ -32,27 +32,27 @@ import org.alfresco.jlan.server.filesys.cache.cluster.ClusterNode;
 public class StateRenameMessage extends ClusterMessage {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// Original and new path
-	
+
 	private String m_oldPath;
 	private String m_newPath;
-	
+
 	// Indicate is path is to a folder
-	
+
 	private boolean m_isFolder;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public StateRenameMessage() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param targetNode String
 	 * @param fromNode ClusterNode
 	 * @param oldPath String
@@ -63,34 +63,34 @@ public class StateRenameMessage extends ClusterMessage {
 		super ( targetNode, fromNode, ClusterMessageType.RenameState);
 
 		// save the rename details
-		
+
 		m_oldPath = oldPath;
 		m_newPath = newPath;
-		
+
 		m_isFolder = isFolder;
 	}
-	
+
 	/**
 	 * Return the old state path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getOldPath() {
 		return m_oldPath;
 	}
-	
+
 	/**
 	 * Return the new state path
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getNewPath() {
 		return m_newPath;
 	}
-	
+
 	/**
 	 * Check if the path is to a folder state
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isFolderPath() {
@@ -99,12 +99,12 @@ public class StateRenameMessage extends ClusterMessage {
 
 	/**
 	 * Return the rename state message as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[");
 		str.append( super.toString());
 		str.append("fromPath=");
@@ -114,7 +114,7 @@ public class StateRenameMessage extends ClusterMessage {
 		str.append(",folder=");
 		str.append( isFolderPath());
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

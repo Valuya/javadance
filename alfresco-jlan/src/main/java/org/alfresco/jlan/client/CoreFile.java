@@ -30,7 +30,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * SMB core file class
- * 
+ *
  * @author gkspencer
  */
 public class CoreFile extends SMBFile {
@@ -46,7 +46,7 @@ public class CoreFile extends SMBFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess Session that this file is associated with
 	 * @param finfo File information for the new file
 	 * @param fid File identifier for this file
@@ -57,7 +57,7 @@ public class CoreFile extends SMBFile {
 
 	/**
 	 * Close the remote file.
-	 * 
+	 *
 	 * @param wrDateTime Set the last write date/time, or null to let the server set the date/time
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
@@ -121,7 +121,7 @@ public class CoreFile extends SMBFile {
 
 	/**
 	 * Flush data to the remote file.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
@@ -136,7 +136,7 @@ public class CoreFile extends SMBFile {
 
 	/**
 	 * Read a block of data from the file.
-	 * 
+	 *
 	 * @param buf Byte buffer to receive the data.
 	 * @param siz Maximum length of data to receive.
 	 * @param offset Offset within buffer to place received data.
@@ -200,7 +200,7 @@ public class CoreFile extends SMBFile {
 
 	/**
 	 * Read a packet of data from the remote file.
-	 * 
+	 *
 	 * @return true if a valid data packet has been received, else false
 	 */
 	private final boolean ReadData() {
@@ -285,7 +285,7 @@ public class CoreFile extends SMBFile {
 
 	/**
 	 * Write a block of data to the file.
-	 * 
+	 *
 	 * @param buf Byte buffer containing data to be written.
 	 * @param siz Length of data to be written.
 	 * @param offset Offset within buffer to start writing data from.
@@ -363,7 +363,7 @@ public class CoreFile extends SMBFile {
 
 	/**
 	 * Write a packet of data to the remote file.
-	 * 
+	 *
 	 * @return true if the write was successful, else false
 	 */
 	private final boolean WriteData() {
@@ -433,7 +433,7 @@ public class CoreFile extends SMBFile {
 	/**
 	 * Seek to the specified point in the file. The seek may be relative to the start of file,
 	 * current file position or end of file.
-	 * 
+	 *
 	 * @param pos Relative offset
 	 * @param typ Seek type (@see org.alfresco.jlan.smb.SeekType)
 	 * @return New file offset from start of file
@@ -497,7 +497,7 @@ public class CoreFile extends SMBFile {
 
 	/**
 	 * Lock a range of bytes within the file
-	 * 
+	 *
 	 * @param offset Offset within the file to start lock
 	 * @param len Number of bytes to lock
 	 * @exception IOException
@@ -509,7 +509,7 @@ public class CoreFile extends SMBFile {
 
 	/**
 	 * Unlock a range of bytes within the file
-	 * 
+	 *
 	 * @param offset Offset within the file to unlock
 	 * @param len Number of bytes to unlock
 	 * @exception IOException

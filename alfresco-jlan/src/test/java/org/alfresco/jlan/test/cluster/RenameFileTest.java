@@ -33,18 +33,18 @@ import org.alfresco.jlan.debug.Debug;
 public class RenameFileTest extends Test {
 
 	// Constants
-	
+
 	private static final String TestFileName 	= "renameFile";
 	private static final String TestFileExt	 	= ".txt";
 	private static final String TestFileNewExt	= ".renamed";
-	
+
 	/**
 	 * Default constructor
 	 */
 	public RenameFileTest() {
 		super( "RenameFile");
 	}
-	
+
 	/**
 	 * Run the rename file test
 	 *
@@ -55,50 +55,50 @@ public class RenameFileTest extends Test {
 	 * @return TestResult
 	 */
 	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-		
+
 		TestResult result = null;
-		
+
 		try {
 
 			// Create a test file name for this iteration
-			
+
 			String testFileName = TestFileName + "_" + threadId + "_" + iteration + TestFileExt;
 			String newFileName  = TestFileName + "_" + threadId + "_" + iteration + TestFileNewExt;
-			
+
 			// DEBUG
-			
+
 			testLog( log, "RenameFile Test");
-			
+
 			// Check if the test file exists
-			
+
 			if ( sess.FileExists( testFileName)) {
 				testLog( log, "File " + testFileName + " exists");
-				
+
 				// Set a failure status
-				
+
 				result = new BooleanTestResult( false, "File already exists, " + testFileName);
 			}
 			else {
-				
+
 				// Create a new file
-				
+
 				testLog( log, "Creating file " + testFileName + " via " + sess.getServer());
 				SMBFile testFile = sess.CreateFile( testFileName);
 				if ( testFile != null)
 					testFile.Close();
-				
+
 				// Check the file exists
-				
+
 				if ( sess.FileExists( testFileName)) {
-					
+
 					// Rename the file
-					
+
 					sess.RenameFile( testFileName, newFileName);
-					
+
 					// Check that the new file exists
-					
+
 					if ( sess.FileExists( newFileName)) {
-						
+
 						// Check that the old file name does not exist
 
 						if ( sess.FileExists( testFileName) == false)
@@ -114,26 +114,26 @@ public class RenameFileTest extends Test {
 					result = new BooleanTestResult( false, "File does not exist, " + testFileName);
 				}
 			}
-			
+
 			// Finished
-			
+
 			testLog( log, "Test completed");
-				
+
 		}
 		catch ( Exception ex) {
 			Debug.println(ex);
-			
+
 			result = new ExceptionTestResult(ex);
 		}
-		
+
 		// Return the test result
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Cleanup the test
-	 * 
+	 *
 	 * @param threadId int
 	 * @param iter int
 	 * @param sess DiskSession
@@ -144,7 +144,7 @@ public class RenameFileTest extends Test {
 		throws Exception {
 
 		// Delete the test file
-		
+
 		String fName = TestFileName + "_" + threadId + "_" + iter + TestFileNewExt;
 		sess.DeleteFile( fName);
 	}

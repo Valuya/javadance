@@ -23,7 +23,7 @@ import org.alfresco.jlan.server.filesys.FileStatus;
 
 /**
  * File Status Update Message Class
- * 
+ *
  * <p>Contains the details of a file status update.
  *
  * @author gkspencer
@@ -31,23 +31,23 @@ import org.alfresco.jlan.server.filesys.FileStatus;
 public class FileStatusMessage extends ClusterMessage {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// Updated path and file status
-	
+
 	private String m_path;
 	private int m_fileStatus;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public FileStatusMessage() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param targetNode String
 	 * @param path String
 	 * @param fileSts int
@@ -57,10 +57,10 @@ public class FileStatusMessage extends ClusterMessage {
 		m_path = path;
 		m_fileStatus = fileSts;
 	}
-	
+
 	/**
 	 * Return the normalized path of the file/folder
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPath() {
@@ -69,21 +69,21 @@ public class FileStatusMessage extends ClusterMessage {
 
 	/**
 	 * Return the new file status
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileStatus() {
 		return m_fileStatus;
 	}
-	
+
 	/**
 	 * Return the file status message as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[");
 		str.append( super.toString());
 		str.append( ",path=");
@@ -91,7 +91,7 @@ public class FileStatusMessage extends ClusterMessage {
 		str.append( ",fileSts=");
 		str.append( FileStatus.asString( getFileStatus()));
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 

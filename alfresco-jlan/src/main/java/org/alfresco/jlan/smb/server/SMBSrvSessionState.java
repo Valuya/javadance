@@ -61,7 +61,7 @@ public class SMBSrvSessionState  {
 	  																						"SMBCLOSED",
 	  																						"NBHANGUP"
   };
-  
+
 	/**
 	 * Return the specified SMB state as a string.
 	 */

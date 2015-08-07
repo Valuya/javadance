@@ -29,18 +29,18 @@ import java.io.IOException;
 public class DERGeneralizedTime extends DERObject {
 
   // Time value
-  
+
   private String m_string;
-  
+
   /**
    * Default constructor
    */
   public DERGeneralizedTime() {
   }
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param str String
    */
   public DERGeneralizedTime(String str) {
@@ -49,16 +49,16 @@ public class DERGeneralizedTime extends DERObject {
 
   /**
    * Return the string value
-   * 
+   *
    * @return String
    */
   public final String getValue() {
     return m_string;
   }
-  
+
   /**
    * Decode the object
-   * 
+   *
    * @param buf DERBuffer
    * @throws IOException
    */
@@ -66,16 +66,16 @@ public class DERGeneralizedTime extends DERObject {
     throws IOException {
 
     // Decode the type
-    
+
     if ( buf.unpackType() == DER.GeneralizedTime) {
-      
+
       // Unpack the length and bytes
-      
+
       int len = buf.unpackLength();
       if ( len > 0) {
-        
+
         // Get the string bytes
-        
+
         byte[] byts = buf.unpackBytes( len);
         m_string = new String( byts);
       }
@@ -88,7 +88,7 @@ public class DERGeneralizedTime extends DERObject {
 
   /**
    * Encode the object
-   * 
+   *
    * @param buf DERBuffer
    * @throws IOException
    */
@@ -96,7 +96,7 @@ public class DERGeneralizedTime extends DERObject {
     throws IOException {
 
     // Pack the type, length and bytes
-    
+
     buf.packByte( DER.GeneralizedTime);
 
     if ( m_string != null) {
@@ -107,19 +107,19 @@ public class DERGeneralizedTime extends DERObject {
     else
       buf.packLength( 0);
   }
-  
+
   /**
    * Return as a string
-   * 
+   *
    * @return String
    */
   public String toString() {
     StringBuffer str = new StringBuffer();
-    
+
     str.append("[GeneralizedTime:");
     str.append(m_string);
     str.append("]");
-    
+
     return str.toString();
   }
 }

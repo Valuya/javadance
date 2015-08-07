@@ -25,27 +25,27 @@ import java.util.Map;
 
 /**
  * Configuration Element Class
- * 
+ *
  * <p>The methods must match the methods of the ConfigElement interface in the Alfresco code.
  */
 public class ConfigElement {
 
   //  Element name and value
-  
+
   private String m_name;
   private String m_value;
-  
+
   //  Attributes
-  
+
   private Map<String, String> m_attributes;
 
   //  Children
-  
+
   private List<ConfigElement> m_children;
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param name String
    * @param value String
    */
@@ -53,10 +53,10 @@ public class ConfigElement {
     m_name  = name;
     m_value = value;
   }
-  
+
   /**
    * Returns the name of this config element
-   * 
+   *
    * @return Name of this config element
    */
   public String getName() {
@@ -65,7 +65,7 @@ public class ConfigElement {
 
   /**
    * Gets the value of the attribute with the given name
-   * 
+   *
    * @param name
    *            The name of the attribute to get the value for
    * @return The value of the attrbiute or null if the attribute doesn't exist
@@ -78,7 +78,7 @@ public class ConfigElement {
 
   /**
    * Returns the list of attributes held by this config element
-   * 
+   *
    * @return The list of attributes
    */
   public Map<String, String> getAttributes() {
@@ -87,7 +87,7 @@ public class ConfigElement {
 
   /**
    * Determines whether the config element has the named attribute
-   * 
+   *
    * @param name
    *            Name of the attribute to check existence for
    * @return true if it exists, false otherwise
@@ -100,7 +100,7 @@ public class ConfigElement {
 
   /**
    * Returns the number of attributes this config element has
-   * 
+   *
    * @return The number of attributes
    */
   public int getAttributeCount() {
@@ -108,11 +108,11 @@ public class ConfigElement {
       return m_attributes.size();
     return 0;
   }
-  
+
   /**
    * Gets the value of this config element. If this config element has
    * children then this method may return null
-   * 
+   *
    * @return Value of this config element or null if there is no value
    */
   public String getValue() {
@@ -120,8 +120,8 @@ public class ConfigElement {
   }
 
   /**
-   * Returns a child config element of the given name 
-   * 
+   * Returns a child config element of the given name
+   *
    * @param name The name of the config element to retrieve
    * @return The ConfigElement or null if it does not exist
    */
@@ -134,10 +134,10 @@ public class ConfigElement {
     }
     return null;
   }
-  
+
   /**
    * Returns a list of children held by this ConfigElement
-   * 
+   *
    * @return The list of children.
    */
   public List<ConfigElement> getChildren() {
@@ -148,7 +148,7 @@ public class ConfigElement {
    * Determines whether this config element has any children. It is more
    * effecient to call this method rather than getChildren().size() as a
    * collection is not created if it is not required
-   * 
+   *
    * @return true if it has children, false otherwise
    */
   public boolean hasChildren() {
@@ -159,7 +159,7 @@ public class ConfigElement {
 
   /**
    * Returns the number of children this config element has
-   * 
+   *
    * @return The number of children
    */
   public int getChildCount() {
@@ -167,12 +167,12 @@ public class ConfigElement {
       return m_children.size();
     return 0;
   }
-  
+
   /**
    * Combines the given config element with this config element and returns a
    * new instance containing the resulting combination. The combination of the
    * two objects MUST NOT change this instance.
-   * 
+   *
    * @param configElement
    *            The config element to combine into this one
    * @return The combined ConfigElement
@@ -180,28 +180,28 @@ public class ConfigElement {
   public ConfigElement combine(ConfigElement configElement) {
     return null;
   }
-  
+
   /**
    * Set the element name
-   * 
+   *
    * @param name String
    */
   public void setName( String name) {
     m_name = name;
   }
-  
+
   /**
    * Set the value
-   * 
+   *
    * @param value String
    */
   public void setValue( String value) {
     m_value = value;
   }
-  
+
   /**
    * Add an attribute
-   * 
+   *
    * @param attrName String
    * @param attrVal String
    */
@@ -210,10 +210,10 @@ public class ConfigElement {
       m_attributes = new HashMap<String, String>();
     m_attributes.put( attrName, attrVal);
   }
-  
+
   /**
    * Add a child element
-   * 
+   *
    * @param child ConfigElement
    */
   public void addChild( ConfigElement child) {
@@ -221,15 +221,15 @@ public class ConfigElement {
       m_children = new ArrayList<ConfigElement>();
     m_children.add( child);
   }
-  
+
   /**
    * Return the configuration element as a string
-   * 
+   *
    * @return String
    */
   public String toString() {
     StringBuilder str = new StringBuilder();
-    
+
     str.append( "[");
     str.append( getName());
     str.append( "=");
@@ -239,7 +239,7 @@ public class ConfigElement {
     str.append( ",Children=");
     str.append( getChildCount());
     str.append( "]");
-    
+
     return str.toString();
   }
 }

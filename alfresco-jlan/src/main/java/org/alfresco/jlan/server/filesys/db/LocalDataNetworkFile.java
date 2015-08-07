@@ -28,7 +28,7 @@ import org.alfresco.jlan.smb.SeekType;
 
 /**
  * Local Data Network File Class
- * 
+ *
  * <p>Maps a file in a virtual filesystem to a file in the local filesystem.
  *
  * @author gkspencer
@@ -46,10 +46,10 @@ public class LocalDataNetworkFile extends DBNetworkFile {
   //	End of file flag
 
   protected boolean m_eof;
-  
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param fid int
 	 * @param did int
@@ -57,24 +57,24 @@ public class LocalDataNetworkFile extends DBNetworkFile {
 	 */
 	public LocalDataNetworkFile(String name, int fid, int did, File file) {
 		super(name,fid,0,did);
-		
+
 		//	Set the file details
-		
+
 		m_file = file;
 
     //  Set the file size
 
     setFileSize(m_file.length());
     m_eof = false;
-    
+
     //	Set the modification date/time, if available
-    
+
     setModifyDate(m_file.lastModified());
 	}
-	
+
 	/**
 	 * Open the file
-	 * 
+	 *
 	 * @param createFlag boolean
 	 * @exception IOException
 	 */
@@ -105,9 +105,9 @@ public class LocalDataNetworkFile extends DBNetworkFile {
       openFile(false);
 
 		//	Seek to the read position
-		
+
 		m_io.seek(fileOff);
-		
+
     //  Read from the file
 
     int rdlen = m_io.read(buf, pos, len);
@@ -138,21 +138,21 @@ public class LocalDataNetworkFile extends DBNetworkFile {
     long endpos  = offset + (long) len;
 
 		if ( endpos > fileLen) {
-			
+
 			//	Extend the file
-			
+
 			m_io.setLength(endpos);
 		}
 
 		//	Check for a zero length write
-		
-		if ( len == 0)	
+
+		if ( len == 0)
 			return ;
-			
+
 	  //	Seek to the write position
-	
+
 	  m_io.seek(offset);
-	  
+
     //  Write to the file
 
     m_io.write(buf, pos, len);
@@ -162,18 +162,18 @@ public class LocalDataNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Flush any buffered output to the file
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public final void flushFile()
 		throws IOException {
 
 		//	Flush any buffered data
-		
+
 		if ( m_io != null)
-			m_io.getFD().sync();			
+			m_io.getFD().sync();
 	}
-		
+
 	/**
    * Seek to the specified file position.
    *
@@ -193,7 +193,7 @@ public class LocalDataNetworkFile extends DBNetworkFile {
     //  Check if the current file position is the required file position
 
 		long curPos = m_io.getFilePointer();
-		
+
     switch (typ) {
 
       //  From start of file
@@ -226,7 +226,7 @@ public class LocalDataNetworkFile extends DBNetworkFile {
 
 	/**
 	 * Truncate the file to the specified file size
-	 * 
+	 *
 	 * @param siz long
 	 * @exception IOException
 	 */
@@ -241,9 +241,9 @@ public class LocalDataNetworkFile extends DBNetworkFile {
     //  Set the file length
 
     m_io.setLength(siz);
-    
+
     //	Indicate that the file data has changed
-    
+
     incrementWriteCount();
 	}
 
@@ -255,23 +255,23 @@ public class LocalDataNetworkFile extends DBNetworkFile {
     //  Close the file, if used
 
     if (m_io != null) {
-    	
+
     	//	Close the file
-    	
+
 			try {
 	      m_io.close();
 			}
 			catch (Exception ex) {
 			}
       m_io = null;
-      
+
       //	Set the last modified date/time for the file
 
-			if ( this.getWriteCount() > 0)      
+			if ( this.getWriteCount() > 0)
       	m_file.setLastModified(System.currentTimeMillis());
-      	
+
       //	Set the new file size
-      
+
       setFileSize(m_file.length());
     }
 	}

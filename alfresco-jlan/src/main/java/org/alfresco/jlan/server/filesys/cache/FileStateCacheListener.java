@@ -30,12 +30,12 @@ public interface FileStateCacheListener {
 	 * Cache initializing
 	 */
 	public void stateCacheInitializing();
-	
+
 	/**
 	 * Cache running
 	 */
 	public void stateCacheRunning();
-	
+
 	/**
 	 * Cache shutting down
 	 */

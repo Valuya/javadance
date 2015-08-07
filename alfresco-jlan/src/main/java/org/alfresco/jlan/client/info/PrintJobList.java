@@ -24,14 +24,14 @@ import java.util.List;
 
 /**
  * SMB print job list class
- * 
+ *
  * <p>
  * The PrintJobList class contains a list of PrintJob objects.
- * 
+ *
  * <p>
  * The AdminSession.getPrintJobs () method returns an PrintJobList containing the active/pending
  * print jobs for the specified remote print queue.
- * 
+ *
  * @author gkspencer
  */
 public final class PrintJobList implements java.io.Serializable {
@@ -49,7 +49,7 @@ public final class PrintJobList implements java.io.Serializable {
 
 	/**
 	 * Add a print job object to the list.
-	 * 
+	 *
 	 * @param prnjob PrintJob to add to the list.
 	 */
 	public final void addPrintJob(PrintJob prnjob) {
@@ -58,7 +58,7 @@ public final class PrintJobList implements java.io.Serializable {
 
 	/**
 	 * Clear all print jobs from the list
-	 * 
+	 *
 	 */
 	public final void clearList() {
 		m_list.clear();
@@ -66,7 +66,7 @@ public final class PrintJobList implements java.io.Serializable {
 
 	/**
 	 * Get a print job object from the list
-	 * 
+	 *
 	 * @param idx Index of the print job to return
 	 * @return PrintJob for the required printer.
 	 * @exception java.lang.ArrayIndexOutOfBoundsException If the index is invalid
@@ -86,7 +86,7 @@ public final class PrintJobList implements java.io.Serializable {
 
 	/**
 	 * Get the number of print jobs in the list
-	 * 
+	 *
 	 * @return Number of PrintJob objects in the list.
 	 */
 	public final int NumberOfJobs() {

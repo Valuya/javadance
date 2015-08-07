@@ -24,7 +24,7 @@ import java.net.Socket;
 
 /**
  * Multi-Threaded Tcp Rpc Packet Handler Class
- * 
+ *
  * <p>Adds multi-threaded processing of RPC requests to the standard TCP RPC handler.
  *
  * @author gkspencer
@@ -35,8 +35,8 @@ public class MultiThreadedTcpRpcPacketHandler extends TcpRpcPacketHandler implem
    * Class constructor to create a TCP RPC handler for a server.
    *
    * @param handler TcpRpcSessionHandler
-   * @param sessId int 
-   * @param server RpcProcessor 
+   * @param sessId int
+   * @param server RpcProcessor
    * @param socket Socket
    * @param maxRpcSize int
    * @throws IOException
@@ -49,7 +49,7 @@ public class MultiThreadedTcpRpcPacketHandler extends TcpRpcPacketHandler implem
 
   /**
    * Return the multi-threaded RPC session handler
-   * 
+   *
    * @return MultiThreadedTcpRpcSessionHandler
    */
   protected final MultiThreadedTcpRpcSessionHandler getSessionHandler() {
@@ -57,59 +57,59 @@ public class MultiThreadedTcpRpcPacketHandler extends TcpRpcPacketHandler implem
   }
   /**
    * Allocate an RPC packet from the packet pool
-   * 
+   *
    * @param maxSize int
    * @return RpcPacket
    */
   protected RpcPacket allocateRpcPacket(int maxSize) {
-    
+
     //	Use the session handler to allocate the RPC packet
-    
+
     return getSessionHandler().allocateRpcPacket(maxSize);
   }
 
   /**
    * Deallocate an RPC packet, return the packet to the pool.
-   * 
+   *
    * @param pkt RpcPacket
    */
   protected void deallocateRpcPacket( RpcPacket pkt) {
-    
+
     // Return the packet to the pool
-    
+
     if ( pkt.isAllocatedFromPool())
       pkt.getOwnerPacketPool().releasePacket( pkt);
   }
-  
+
   /**
    * Process an RPC request by passing the request to a pool of worker threads.
-   * 
+   *
    * @param rpc RpcPacket
    * @throws IOException
    */
   protected void processRpc(RpcPacket rpc)
   	throws IOException {
-    
+
     //	Link the RPC request to this handler
-    
+
     rpc.setPacketHandler(this);
-    
+
     //	Queue the RPC request to the session handlers thread pool for processing
-    
+
     getSessionHandler().queueRpcRequest(rpc);
   }
-  
+
   /**
    * Send an RPC response using the TCP socket connection
-   * 
+   *
    * @param rpc RpcPacket
    * @throws IOException
    */
   public void sendRpcResponse(RpcPacket rpc)
   	throws IOException {
-    
+
     //	Send the RPC response
-    
+
     sendRpc(rpc);
   }
 }

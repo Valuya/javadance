@@ -30,14 +30,14 @@ import org.alfresco.jlan.smb.dcerpc.client.InitShutdown;
 
 /**
  * InitShutodwn Pipe File Class
- * 
+ *
  * @author gkspencer
  */
 public class InitShutPipeFile extends IPCPipeFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param pkt DCEPacket
 	 * @param handle int
@@ -51,7 +51,7 @@ public class InitShutPipeFile extends IPCPipeFile {
 
 	/**
 	 * Shutdown a remote system, and optionally reboot the system
-	 * 
+	 *
 	 * @param msg String
 	 * @param tmo int
 	 * @param reboot boolean
@@ -111,7 +111,7 @@ public class InitShutPipeFile extends IPCPipeFile {
 
 	/**
 	 * Abort a shutdown
-	 * 
+	 *
 	 * @exception IOException
 	 * @exception SMBException
 	 */

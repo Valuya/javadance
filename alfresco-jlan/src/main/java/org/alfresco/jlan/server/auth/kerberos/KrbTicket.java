@@ -32,32 +32,32 @@ import org.alfresco.jlan.server.auth.asn.DERSequence;
 
 /**
  * Kerberos ticket Class
- * 
+ *
  * @author gkspencer
  */
 public class KrbTicket {
 
 	// Realm and principal name
-	
+
 	private String m_realm;
 	private PrincipalName m_principalName;
-	
+
 	// Encrypted part
-	
+
 	private int m_encType;
 	private byte[] m_encPart;
 	private int m_encKvno = -1;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public KrbTicket()
 	{
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param blob byte[]
 	 * @exception IOException
 	 */
@@ -74,20 +74,20 @@ public class KrbTicket {
 	{
 		return m_realm;
 	}
-	
+
 	/**
 	 * Return the principal name
-	 * 
+	 *
 	 * @return PrincipalName
 	 */
 	public final PrincipalName getPrincipalName()
 	{
 		return m_principalName;
 	}
-	
+
 	/**
 	 * Return the encrypted part of the ticket
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getEncryptedPart()
@@ -97,7 +97,7 @@ public class KrbTicket {
 
 	/**
 	 * Return the encrypted part type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getEncryptedType()
@@ -107,17 +107,17 @@ public class KrbTicket {
 
 	/**
 	 * Return the encrypted part key version number
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getEncryptedPartKeyVersion()
 	{
 		return m_encKvno;
 	}
-	
+
 	/**
 	 * Parse a Kerberos ticket blob
-	 * 
+	 *
 	 * @param blob byte[]
 	 * @exception IOException
 	 */
@@ -125,29 +125,29 @@ public class KrbTicket {
 		throws IOException
 	{
 		// Create a stream to parse the ASN.1 encoded Kerberos ticket blob
-		
+
 		DERBuffer derBuf = new DERBuffer( blob);
-		
+
 		DERObject derObj = derBuf.unpackObject();
 		if ( derObj instanceof DERSequence)
 		{
 			// Enumerate the Kerberos ticket objects
-			
+
 			DERSequence derSeq = (DERSequence) derObj;
 			Iterator<DERObject> iterObj = derSeq.getObjects();
-			
+
 			while ( iterObj.hasNext())
 			{
 				// Read an object
-			
+
 				derObj = iterObj.next();
-				
+
 				if ( derObj != null && derObj.isTagged())
 				{
 					switch ( derObj.getTagNo())
 					{
 						// Tkt-vno
-						
+
 						case 0:
 							if ( derObj instanceof DERInteger)
 							{
@@ -156,9 +156,9 @@ public class KrbTicket {
 									throw new IOException("Unexpected VNO value in Kerberos ticket");
 							}
 							break;
-							
+
 						// Realm
-						
+
 						case 1:
 							if ( derObj instanceof DERGeneralString)
 							{
@@ -166,9 +166,9 @@ public class KrbTicket {
 								m_realm = derStr.getValue();
 							}
 							break;
-							
+
 						// Principal name
-							
+
 						case 2:
 							if ( derObj instanceof DERSequence)
 							{
@@ -177,30 +177,30 @@ public class KrbTicket {
 								m_principalName.parsePrincipalName( derPrincSeq);
 							}
 							break;
-							
+
 						// Encrypted part of the ticket
-							
+
 						case 3:
 							if ( derObj instanceof DERSequence)
 							{
 								DERSequence derEncSeq = (DERSequence) derObj;
-								
+
 								// Enumerate the sequence
-								
+
 								Iterator<DERObject> iterEncSeq = derEncSeq.getObjects();
-								
+
 								while ( iterEncSeq.hasNext())
 								{
 									// Get the current sequence element
-									
+
 									derObj = iterEncSeq.next();
-									
+
 									if ( derObj != null && derObj.isTagged())
 									{
 										switch ( derObj.getTagNo())
 										{
 											// Encryption type
-										
+
 											case 0:
 												if ( derObj instanceof DERInteger)
 												{
@@ -208,9 +208,9 @@ public class KrbTicket {
 													m_encType = derInt.intValue();
 												}
 												break;
-												
+
 											// Kvno
-												
+
 											case 1:
 												if ( derObj instanceof DERInteger)
 												{
@@ -218,9 +218,9 @@ public class KrbTicket {
 													m_encKvno = derInt.intValue();
 												}
 												break;
-												
+
 											// Cipher
-												
+
 											case 2:
 												if ( derObj instanceof DEROctetString)
 												{
@@ -238,16 +238,16 @@ public class KrbTicket {
 			}
 		}
 	}
-	
+
 	/**
 	 * Return the Kerberos ticket as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString()
 	{
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[KrbTkt Realm=");
 		str.append(getRealm());
 		str.append(",Principal=");
@@ -259,7 +259,7 @@ public class KrbTicket {
 		str.append(",Len=");
 		str.append(getEncryptedPart() != null ? getEncryptedPart().length : 0);
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

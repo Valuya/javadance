@@ -34,10 +34,10 @@ public class FileSharingException extends java.io.IOException {
 	public FileSharingException() {
 		super();
 	}
-  
+
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s java.lang.String
 	 */
 	public FileSharingException(String s) {

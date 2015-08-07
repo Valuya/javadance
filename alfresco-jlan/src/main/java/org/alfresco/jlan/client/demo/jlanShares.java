@@ -29,10 +29,10 @@ import org.alfresco.jlan.util.*;
 
 /**
  * jlanShares Application
- * 
+ *
  * <p>
  * Display a list of the shares available on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class jlanShares extends jlanApp {
@@ -46,7 +46,7 @@ public class jlanShares extends jlanApp {
 
 	/**
 	 * Display the usage information for the command
-	 * 
+	 *
 	 * @param out PrintStream
 	 */
 	protected void outputCommandHelp(PrintStream out) {
@@ -59,7 +59,7 @@ public class jlanShares extends jlanApp {
 
 	/**
 	 * Perform the main command processing
-	 * 
+	 *
 	 * @param out PrintStream
 	 * @throws Exception
 	 */
@@ -107,7 +107,7 @@ public class jlanShares extends jlanApp {
 
 	/**
 	 * Validate the command line parameters
-	 * 
+	 *
 	 * @param cmdLine NameValueList
 	 * @param out PrintStream
 	 * @return boolean
@@ -148,7 +148,7 @@ public class jlanShares extends jlanApp {
 
 	/**
 	 * Run the jlanShares command
-	 * 
+	 *
 	 * @param args String[]
 	 */
 	public static void main(String[] args) {

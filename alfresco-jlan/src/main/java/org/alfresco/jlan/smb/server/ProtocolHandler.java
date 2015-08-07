@@ -36,7 +36,7 @@ import org.alfresco.jlan.smb.PacketType;
  * Protocol handler abstract base class.
  *
  * <p>The protocol handler class is the base of all SMB protocol/dialect handler classes.
- * 
+ *
  * @author gkspencer
  */
 abstract class ProtocolHandler {
@@ -44,13 +44,13 @@ abstract class ProtocolHandler {
   // Server session that this protocol handler is associated with.
 
   protected SMBSrvSession m_sess;
-  
+
   /**
    * Create a protocol handler for the specified session.
    */
   protected ProtocolHandler() {
   }
-  
+
   /**
    * Create a protocol handler for the specified session.
    *
@@ -59,14 +59,14 @@ abstract class ProtocolHandler {
   protected ProtocolHandler(SMBSrvSession sess) {
     m_sess = sess;
   }
-  
+
   /**
    * Return the protocol handler name.
    *
    * @return java.lang.String
    */
   public abstract String getName();
-  
+
   /**
    * Run the SMB protocol handler for this server session.
    *
@@ -77,7 +77,7 @@ abstract class ProtocolHandler {
    */
   public abstract boolean runProtocol( SMBSrvPacket smbPkt)
     throws IOException, SMBSrvException, TooManyConnectionsException;
-    
+
   /**
    * Get the server session that this protocol handler is associated with.
    *
@@ -86,7 +86,7 @@ abstract class ProtocolHandler {
   protected final SMBSrvSession getSession() {
     return m_sess;
   }
-  
+
   /**
    * Set the server session that this protocol handler is associated with.
    *
@@ -130,7 +130,7 @@ abstract class ProtocolHandler {
 
 	/**
 	 * Get disk sizing information from the specified driver and context.
-	 * 
+	 *
 	 * @param disk DiskInterface
 	 * @param ctx DiskDeviceContext
 	 * @return SrvDiskInfo
@@ -138,81 +138,81 @@ abstract class ProtocolHandler {
 	 */
 	protected final SrvDiskInfo getDiskInformation(DiskInterface disk, DiskDeviceContext ctx)
 		throws IOException {
-	
+
 		//	Get the static disk information from the context, if available
-		
+
 		SrvDiskInfo diskInfo = ctx.getDiskInformation();
-		
+
 		//	If we did not get valid disk information from the device context check if the driver implements the
 		//	disk sizing interface
-		
+
 		if ( diskInfo == null)
 			diskInfo = new SrvDiskInfo();
-			
+
 		//	Check if the driver implements the dynamic sizing interface to get realtime disk size information
-		
+
 		if ( disk instanceof DiskSizeInterface) {
-			
+
 			//	Get the dynamic disk sizing information
-			
+
 			DiskSizeInterface sizeInterface = (DiskSizeInterface) disk;
 			sizeInterface.getDiskInformation(ctx, diskInfo);
 		}
-		
+
 		//	Return the disk information
-		
+
 		return diskInfo;
 	}
-	
+
 	/**
 	 * Get disk volume information from the specified driver and context
-	 * 
+	 *
 	 * @param disk DiskInterface
 	 * @param ctx DiskDeviceContext
 	 * @return VolumeInfo
 	 */
 	protected final VolumeInfo getVolumeInformation(DiskInterface disk, DiskDeviceContext ctx) {
-	
+
 		//	Get the static volume information from the context, if available
-		
+
 		VolumeInfo volInfo = ctx.getVolumeInformation();
-		
+
 		//	If we did not get valid volume information from the device context check if the driver implements the
 		//	disk volume interface
-		
+
 		if ( disk instanceof DiskVolumeInterface) {
-			
+
 			//	Get the dynamic disk volume information
-			
+
 			DiskVolumeInterface volInterface = (DiskVolumeInterface) disk;
 			volInfo = volInterface.getVolumeInformation(ctx);
 		}
 
 		//	If we still have not got  valid volume information then create empty volume information
-		
+
 		if ( volInfo == null)
 			volInfo = new VolumeInfo("");
-					
+
 		//	Return the volume information
-		
+
 		return volInfo;
 	}
-	
+
 	/**
 	 * Run any request post processors that are queued for a session
-	 * 
+	 *
 	 * @param sess SrvSession
 	 */
 	protected final void runRequestPostProcessors( SrvSession sess) {
-		
+
 		// Run the request post processor(s)
-		
+
 		while ( sess.hasPostProcessorRequests()) {
-			
+
 			try {
-				
+
 				// Dequeue the current request post processor and run it
-				
+
 				RequestPostProcessor postProc = sess.getNextPostProcessor();
 				postProc.runProcessor();
 			}

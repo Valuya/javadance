@@ -23,7 +23,7 @@ import org.alfresco.jlan.server.filesys.cache.cluster.ClusterNode;
 
 /**
  * File Data Update Message Class
- * 
+ *
  * <p>Contains the details of a file data update start or completion.
  *
  * @author gkspencer
@@ -31,23 +31,23 @@ import org.alfresco.jlan.server.filesys.cache.cluster.ClusterNode;
 public class DataUpdateMessage extends ClusterMessage {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// Updated path and start/completion flag
-	
+
 	private String m_path;
 	private boolean m_startUpdate;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public DataUpdateMessage() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param targetNode String
 	 * @param fromNode ClusterNode
 	 * @param path String
@@ -58,10 +58,10 @@ public class DataUpdateMessage extends ClusterMessage {
 		m_path = path;
 		m_startUpdate = startUpdate;
 	}
-	
+
 	/**
 	 * Return the normalized path of the file/folder
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getPath() {
@@ -70,21 +70,21 @@ public class DataUpdateMessage extends ClusterMessage {
 
 	/**
 	 * Return the start of update flag
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isStartOfUpdate() {
 		return m_startUpdate;
 	}
-	
+
 	/**
 	 * Return the file status message as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[");
 		str.append( super.toString());
 		str.append( ",path=");
@@ -92,7 +92,7 @@ public class DataUpdateMessage extends ClusterMessage {
 		str.append( ",startUpdate=");
 		str.append( isStartOfUpdate());
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 

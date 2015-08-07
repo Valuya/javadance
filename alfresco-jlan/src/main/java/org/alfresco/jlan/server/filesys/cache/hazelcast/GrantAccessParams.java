@@ -31,7 +31,7 @@ import org.alfresco.jlan.smb.WinNT;
 
 /**
  * Grant Access Params Class
- * 
+ *
  * <p>Contains a subset of the parameters from a FileOpenParams object that are sent to a grant file access
  * remote task on the cluster.
  *
@@ -40,33 +40,33 @@ import org.alfresco.jlan.smb.WinNT;
 public class GrantAccessParams implements Serializable {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 2L;
-	
+
 	//	Cluster node that owns the token
-	
+
 	private String m_ownerName;
-	
+
 	// Process id that owns the file
-	
+
 	private int m_pid;
 
 	// File status, if FileStatus.Unknown then do not set on file state
-	
+
 	private int m_fileSts;
-	
+
 	// File open parameter value required by the access check
-	
+
 	private int m_accessMode;
 	private int m_sharedAccess;
 	private int m_secLevel;
 	private int m_createOptions;
 	private int m_openAction;
-	
+
 	// Oplock requested/type
-	
+
 	private int m_oplock = OpLock.TypeNone;
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -75,56 +75,56 @@ public class GrantAccessParams implements Serializable {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param clNode ClusterNode
 	 * @param openParams FileOpenParams
 	 * @param fileSts int
 	 */
 	public GrantAccessParams( ClusterNode clNode, FileOpenParams openParams, int fileSts) {
 		m_ownerName = clNode.getName();
-		
+
 		// New file status, or unknown to not set
-		
+
 		m_fileSts = fileSts;
-		
+
 		// Copy required file open params
-		
+
 		m_pid = openParams.getProcessId();
 		m_accessMode = openParams.getAccessMode();
 		m_sharedAccess = openParams.getSharedAccess();
 		m_secLevel = openParams.getSecurityLevel();
 		m_createOptions = openParams.getCreateOptions();
 		m_openAction = openParams.getOpenAction();
-		
+
 		// Check if an oplock has been requested
-		
+
 		if ( openParams.requestBatchOpLock())
 			m_oplock = OpLock.TypeBatch;
 		else if ( openParams.requestExclusiveOpLock())
 			m_oplock = OpLock.TypeExclusive;
 	}
-	
+
 	/**
 	 * Return the owner name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getOwnerName() {
 		return m_ownerName;
 	}
-	
+
 	/**
 	 * Return the file status
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileStatus() {
 		return m_fileSts;
 	}
-	
+
 	/**
 	 * Return the process id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getProcessId() {
@@ -133,43 +133,43 @@ public class GrantAccessParams implements Serializable {
 
 	/**
 	 * Return the shared access mode, zero equals allow any shared access
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSharedAccess() {
 		return m_sharedAccess;
 	}
-	
+
 	/**
 	 * Return the open action
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getOpenAction() {
 		return m_openAction;
 	}
-	
+
 	/**
 	 * Determine if security impersonation is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasSecurityLevel() {
 		return m_secLevel != -1 ? true : false;
 	}
-	
+
 	/**
 	 * Return the security impersonation level. Levels are defined in the WinNT class.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSecurityLevel() {
 		return m_secLevel;
 	}
-	
+
 	/**
 	 * Determine if the file is to be opened read-only
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isReadOnlyAccess() {
@@ -177,10 +177,10 @@ public class GrantAccessParams implements Serializable {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Determine if the file is to be opened write-only
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isWriteOnlyAccess() {
@@ -188,10 +188,10 @@ public class GrantAccessParams implements Serializable {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Determine if the file is to be opened read/write
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isReadWriteAccess() {
@@ -199,10 +199,10 @@ public class GrantAccessParams implements Serializable {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Determine if the file open is to access the file attributes/metadata only
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isAttributesOnlyAccess() {
@@ -211,46 +211,46 @@ public class GrantAccessParams implements Serializable {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Return the access mode flags
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAccessMode() {
 		return m_accessMode;
 	}
-	
+
 	/**
 	 * Check if an oplock has been requested
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasOpLockRequest() {
 		return m_oplock != OpLock.TypeNone ? true : false;
 	}
-	
+
 	/**
 	 * Return the oplock type requested (batch or exclusive)
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getOpLockType() {
 		return m_oplock;
 	}
-	
+
 	/**
 	 * Check if the file being creasted/opened must be a directory
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isDirectory() {
 		return hasCreateOption(WinNT.CreateDirectory) || getFileStatus() == FileStatus.DirectoryExists;
 	}
-	
+
 	/**
 	 * Check if the specified create option is enabled, specified in the WinNT class.
-	 * 
+	 *
 	 * @param flag int
 	 * @return boolean
 	 */
@@ -260,12 +260,12 @@ public class GrantAccessParams implements Serializable {
 
 	/**
 	 * Return the access parameters as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append( "[Owner=");
 		str.append( getOwnerName());
 		str.append( ",pid=");
@@ -287,11 +287,11 @@ public class GrantAccessParams implements Serializable {
 		str.append( getSecurityLevel());
 		str.append( ",oplock=");
 		str.append( OpLock.getTypeAsString( getOpLockType()));
-		
+
 		if ( isDirectory())
 			str.append( " DIR");
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

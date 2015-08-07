@@ -21,14 +21,14 @@ package org.alfresco.jlan.smb.server.nio;
 
 /**
  * Request Handler Listener Interface
- * 
+ *
  * @author gkspencer
  */
 public interface RequestHandlerListener {
 
 	/**
 	 * Request handler no longer has any sessions registered
-	 * 
+	 *
 	 * @param reqHandler RequestHandler
 	 */
 	public void requestHandlerEmpty( RequestHandler reqHandler);

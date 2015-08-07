@@ -28,7 +28,7 @@ import com.hazelcast.core.IMap;
 
 /**
  * Update File State Task Class
- * 
+ *
  * <p>Update a file state using a synchronous update.
  *
  * @author gkspencer
@@ -36,22 +36,22 @@ import com.hazelcast.core.IMap;
 public class UpdateStateTask extends RemoteStateTask<Boolean> {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
 
 	// File status
-	
+
 	private int m_fileStatus;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public UpdateStateTask() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mapName String
 	 * @param key String
 	 * @param fileSts int
@@ -60,13 +60,13 @@ public class UpdateStateTask extends RemoteStateTask<Boolean> {
 	 */
 	public UpdateStateTask( String mapName, String key, int fileSts, boolean debug, boolean timingDebug) {
 		super( mapName, key, true, false, debug, timingDebug);
-		
+
 		m_fileStatus = fileSts;
 	}
-	
+
 	/**
 	 * Run a remote task against a file state
-	 * 
+	 *
 	 * @param stateCache IMap<String, ClusterFileState>
 	 * @param fState ClusterFileState
 	 * @return Boolean
@@ -74,44 +74,44 @@ public class UpdateStateTask extends RemoteStateTask<Boolean> {
 	 */
 	protected Boolean runRemoteTaskAgainstState( IMap<String, ClusterFileState> stateCache, ClusterFileState fState)
 		throws Exception {
-	
+
 		// DEBUG
-		
+
 		if ( hasDebug())
 			Debug.println( "UpdateStateTask: Update file status=" + FileStatus.asString( m_fileStatus) + ", state=" + fState);
 
 		// Check if the file status has changed
-		
+
 		boolean changedSts = false;
-		
+
 		if ( fState.getFileStatus() != m_fileStatus) {
-			
+
 			// Update the file status
-		
+
 			fState.setFileStatusInternal( m_fileStatus, FileState.ReasonNone);
 			changedSts = true;
 
 			// If the status indicates the file/folder no longer exists then clear the file id, state attributes
-			
+
 			if ( fState.getFileStatus() == FileStatus.NotExist) {
-				
+
 				// Reset the file id
-			
+
 				fState.setFileId( FileState.UnknownFileId);
-				
+
 				// Clear out any state attributes
-				
+
 				fState.removeAllAttributes();
 			}
-			
+
 			// DEBUG
-			
+
 			if ( hasDebug())
 				Debug.println( "UpdateStateTask: Status updated, state=" + fState);
 		}
-		
+
 		// Return a status
-		
+
 		return new Boolean( changedSts);
 	}
 }

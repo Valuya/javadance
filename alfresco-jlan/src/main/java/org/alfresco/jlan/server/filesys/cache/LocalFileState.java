@@ -31,32 +31,32 @@ import org.alfresco.jlan.server.filesys.pseudo.PseudoFileList;
 public class LocalFileState extends FileState {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
 
 	//	File identifier
-	
+
 	private int m_fileId = UnknownFileId;
-	
+
 	//	File data status
-	
+
 	private int m_dataStatus = FILE_AVAILABLE;
-	
+
 	//	Cache of various file information
-	
+
 	private HashMap<String, Object> m_cache;
-	
+
     // Pseudo file list
-    
+
     private PseudoFileList m_pseudoFiles;
-    
+
     // Filesystem specific object
-    
+
     private Object m_filesysObj;
-    
+
     /**
      * Class constructor
-     * 
+     *
 	 * @param fname String
 	 * @param caseSensitive boolean
 	 */
@@ -66,7 +66,7 @@ public class LocalFileState extends FileState {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param fname String
 	 * @param status int
      * @param caseSensitive boolean
@@ -77,7 +77,7 @@ public class LocalFileState extends FileState {
 
 	/**
 	 * Get the file id
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getFileId() {
@@ -86,7 +86,7 @@ public class LocalFileState extends FileState {
 
 	/**
 	 * Return the file data status
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getDataStatus() {
@@ -95,16 +95,16 @@ public class LocalFileState extends FileState {
 
 	/**
 	 * Set the file identifier
-	 * 
+	 *
 	 * @param id int
 	 */
 	public void setFileId(int id) {
 		m_fileId = id;
 	}
-	
+
 	/**
 	 * Set the file data status
-	 * 
+	 *
 	 * @param sts int
 	 */
 	public void setDataStatus(int sts) {
@@ -113,7 +113,7 @@ public class LocalFileState extends FileState {
 
     /**
      * Determine if a folder has pseudo files associated with it
-     * 
+     *
      * @return boolean
      */
     public boolean hasPseudoFiles() {
@@ -121,10 +121,10 @@ public class LocalFileState extends FileState {
             return m_pseudoFiles.numberOfFiles() > 0;
         return false;
     }
-    
+
     /**
      * Return the pseudo file list
-     * 
+     *
      * @param createList boolean
      * @return PseudoFileList
      */
@@ -133,38 +133,38 @@ public class LocalFileState extends FileState {
     		m_pseudoFiles = new PseudoFileList();
         return m_pseudoFiles;
     }
-    
+
     /**
      * Check if this is a copy file state, or the master file state object
-     * 
+     *
      * @return boolean
      */
     public final boolean isCopyState() {
     	return false;
     }
-    
+
     /**
      * Return the filesystem object
-     * 
+     *
      * @return Object
      */
     public Object getFilesystemObject() {
     	return m_filesysObj;
     }
-    
+
     /**
      * Set the filesystem object
-     * 
+     *
      * @param filesysObj Object
      */
     public void setFilesystemObject( Object filesysObj) {
     	m_filesysObj = filesysObj;
     }
-    
+
 	/**
 	 * Return the map of additional attribute objects attached to this file state, and
 	 * optionally create the map if it does not exist
-	 * 
+	 *
 	 * @param createMap boolean
 	 * @return HashMap
 	 */

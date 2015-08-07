@@ -29,7 +29,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * SMB server transact packet class
- * 
+ *
  * @author gkspencer
  */
 class SMBSrvTransPacket extends SMBTransPacket {
@@ -44,7 +44,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Construct an SMB transaction packet
-	 * 
+	 *
 	 * @param buf Buffer that contains the SMB transaction packet.
 	 */
 
@@ -54,7 +54,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Construct an SMB transaction packet
-	 * 
+	 *
 	 * @param smbPkt SMBSrvPacket
 	 */
 
@@ -64,7 +64,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Construct an SMB transaction packet
-	 * 
+	 *
 	 * @param siz Size of packet to allocate.
 	 */
 
@@ -78,7 +78,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Initialize the transact reply parameters.
-	 * 
+	 *
 	 * @param pkt Reply SMB packet.
 	 * @param prmCnt Count of returned parameter bytes.
 	 * @param prmPos Starting offset to the parameter block.
@@ -125,7 +125,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Calculate the data item size from the data descriptor string.
-	 * 
+	 *
 	 * @param desc java.lang.String
 	 * @return int
 	 */
@@ -216,7 +216,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 	 * Return the offset to the data block within the SMB packet. The data block is word aligned
 	 * within the byte buffer area of the SMB packet. This method must be called after the parameter
 	 * count has been set.
-	 * 
+	 *
 	 * @param prmLen Parameter block length, in bytes.
 	 * @return int Offset to the data block area.
 	 */
@@ -232,7 +232,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the data block offset.
-	 * 
+	 *
 	 * @return int Offset to data block within packet.
 	 */
 	public final int getRxDataBlock() {
@@ -241,7 +241,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the received transaction data block length.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getRxDataBlockLength() {
@@ -250,7 +250,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Get the required transact parameter word (16 bit).
-	 * 
+	 *
 	 * @param prmIdx int
 	 * @return int
 	 */
@@ -280,7 +280,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the received transaction parameter block length.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getRxParameterBlockLength() {
@@ -289,7 +289,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the received transaction setup parameter count.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getRxParameterCount() {
@@ -298,7 +298,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Get the required transact parameter int value (32-bit).
-	 * 
+	 *
 	 * @param prmIdx int
 	 * @return int
 	 */
@@ -316,7 +316,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Get the required transact parameter string.
-	 * 
+	 *
 	 * @param pos Offset to the string within the parameter block.
 	 * @param uni Unicode if true, else ASCII
 	 * @return int
@@ -336,7 +336,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Get the required transact parameter string.
-	 * 
+	 *
 	 * @param pos Offset to the string within the parameter block.
 	 * @param len Length of the string.
 	 * @param uni Unicode if true, else ASCII
@@ -356,7 +356,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the received transaction name.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public final String getRxTransactName() {
@@ -374,7 +374,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the setup parameter count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSetupCount() {
@@ -383,7 +383,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the buffer offset to the setup parameters
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSetupOffset() {
@@ -392,7 +392,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the specified transaction setup parameter.
-	 * 
+	 *
 	 * @param idx Setup parameter index.
 	 * @return int
 	 */
@@ -411,7 +411,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the maximum return paramater byte count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumReturnParameterCount() {
@@ -420,7 +420,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the maximum return data byte count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumReturnDataCount() {
@@ -429,7 +429,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the maximum return setup count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumReturnSetupCount() {
@@ -438,7 +438,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Return the specified transaction setup parameter 32bit value.
-	 * 
+	 *
 	 * @param idx Setup parameter index.
 	 * @return int
 	 */
@@ -457,7 +457,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Set the total parameter block length, in bytes
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setTotalParameterCount(int cnt) {
@@ -466,7 +466,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Set the total data block length, in bytes
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setTotalDataCount(int cnt) {
@@ -475,7 +475,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Set the parameter block count for this packet
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setParameterBlockCount(int len) {
@@ -484,7 +484,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Set the parameter block offset
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setParameterBlockOffset(int off) {
@@ -493,7 +493,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Set the parameter block displacement within the total parameter block
-	 * 
+	 *
 	 * @param disp int
 	 */
 	public final void setParameterBlockDisplacement(int disp) {
@@ -502,7 +502,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Set the data block count for this packet
-	 * 
+	 *
 	 * @param len int
 	 */
 	public final void setDataBlockCount(int len) {
@@ -511,7 +511,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Set the data block offset, from the start of the packet
-	 * 
+	 *
 	 * @param off int
 	 */
 	public final void setDataBlockOffset(int off) {
@@ -520,7 +520,7 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Set the data block displacement within the total data block
-	 * 
+	 *
 	 * @param disp int
 	 */
 	public final void setDataBlockDisplacement(int disp) {
@@ -529,22 +529,22 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 	/**
 	 * Send one or more transaction response SMBs to the client
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param tbuf TransactBuffer
 	 * @exception java.io.IOException If an I/O error occurs.
 	 */
 	protected final void doTransactionResponse(SMBSrvSession sess, TransactBuffer tbuf)
 		throws IOException {
-		
+
 		// Call the main trnasaction method
-		
+
 		doTransactionResponse(sess, tbuf, this);
 	}
-	
+
 	/**
 	 * Send one or more transaction response SMBs to the client
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param tbuf TransactBuffer
 	 * @param smbPkt SMBSrvPacket
@@ -581,22 +581,22 @@ class SMBSrvTransPacket extends SMBTransPacket {
 
 		int availBuf = getAvailableLength();
 		int clientLen = getAvailableLength(sess.getClientMaximumBufferSize());
-		
+
 		// Check if a new buffer should be allocated for the response
-		
+
 		if ( clientLen > availBuf) {
-			
+
 			// Allocate a larger buffer for the response
-			
+
 			SMBSrvPacket respPkt = sess.getPacketPool().allocatePacket( sess.getClientMaximumBufferSize(), smbPkt, getByteOffset());
 
 			// Reset the packet buffer to use the newly allocated buffer. Existing packet header was copied
 			// when the new packet was allocated from the pool.
-			
+
 			setBuffer( respPkt.getBuffer());
-			
+
 			// Recalcualte the available length
-			
+
 			availBuf = getAvailableLength() - 4;  // allow for some padding/alignment
 		}
 		else if ( availBuf > clientLen)

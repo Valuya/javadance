@@ -28,31 +28,31 @@ import com.hazelcast.core.IMap;
 
 /**
  * Change OpLock Type Remote Task Class
- * 
+ *
  * <p>Used to synchronize changing an oplock type on a file state by executing on the remote
  * node that owns the file state/key.
- * 
+ *
  * @author gkspencer
  */
 public class ChangeOpLockTypeTask extends RemoteStateTask<Integer> {
 
 	// Serialization id
-	
+
 	private static final long serialVersionUID = 1L;
 
 	// New oplock type
-	
+
 	private int m_oplockType;
-	
+
 	/**
 	 * Default constructor
 	 */
 	public ChangeOpLockTypeTask() {
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mapName String
 	 * @param key String
 	 * @param newLockType int
@@ -64,10 +64,10 @@ public class ChangeOpLockTypeTask extends RemoteStateTask<Integer> {
 
 		m_oplockType = newLockType;
 	}
-	
+
 	/**
 	 * Run a remote task against a file state
-	 * 
+	 *
 	 * @param stateCache IMap<String, ClusterFileState>
 	 * @param fState ClusterFileState
 	 * @return Integer
@@ -77,31 +77,31 @@ public class ChangeOpLockTypeTask extends RemoteStateTask<Integer> {
 		throws Exception {
 
 		// DEBUG
-		
+
 		if ( hasDebug())
 			Debug.println( "ChangeOpLockTypeTask: New type=" + OpLock.getTypeAsString( m_oplockType) + " for state " + fState);
 
 		// Get the oplock
-		
+
 		OpLockDetails oplock = fState.getOpLock();
 		int newType = -1;
-		
+
 		if ( oplock != null) {
-			
+
 			// Update the oplock type
 
 			int oldOpLockType = oplock.getLockType();
 			oplock.setLockType( m_oplockType);
 			newType = m_oplockType;
-			
+
 			// DEBUG
-			
+
 			if ( hasDebug())
 				Debug.println("ChangeOpLockTypeTask: Changed type from=" + OpLock.getTypeAsString( oldOpLockType) + " to=" + OpLock.getTypeAsString( m_oplockType));
 		}
 
 		// Return the new oplock type, or -1 if no oplock to update
-		
+
 		return new Integer( newType);
 	}
 }

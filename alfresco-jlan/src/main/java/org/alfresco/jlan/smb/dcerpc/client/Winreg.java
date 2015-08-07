@@ -21,15 +21,15 @@ package org.alfresco.jlan.smb.dcerpc.client;
 
 /**
  * Windows Registry Operation Ids Class
- * 
+ *
  * <p>Contains constants for requests to the remote registry DCE/RPC service on a remote server.
- * 
+ *
  * @author gkspencer
  */
 public class Winreg {
 
 	//	Winreg opcodes
-	
+
 	public static final int RegOpenHKR			= 0x00;	//	HKEY_ROOT
 	public static final int RegOpenHKCU			= 0x01;	//	HKEY_CURRENT_USER
 	public static final int RegOpenHKLM			= 0x02;	//	HKEY_LOCAL_MACHINE
@@ -51,9 +51,9 @@ public class Winreg {
 	public static final int RegShutdown			= 0x18;
 	public static final int RegShutdownAbort	= 0x19;
 	public static final int RegGetVersion		= 0x9999;
-	
+
 	//	Root key ids
-	
+
 	public static final int HKEYLocalMachine	= 0;
 	public static final int HKEYClassesRoot		= 1;
 	public static final int HKEYCurrentUser		= 2;
@@ -63,7 +63,7 @@ public class Winreg {
 	public static final int HKEYDynData			= 6;
 
 	//	Root key long names
-	
+
 	private static final String[] _rootLongNames = { "HKEY_LOCAL_MACHINE",
 	    											 "HKEY_CLASSES_ROOT",
 	    											 "HKEY_CURRENT_USER",
@@ -72,21 +72,21 @@ public class Winreg {
 	    											 "HKEY_CURRENT_CONFIG",
 	    											 "HKEY_DYN_DATA"
 	};
-	
+
 	//	Root key short names
-	
+
 	private static final String[] _rootShortNames = { "HKLM", "HKCR", "HKCU", "HKU", "HKPD", "HKCC", "HKDD" };
-	
+
 	/**
 	 * Return a root key id as a long name
-	 * 
+	 *
 	 * @param id int
 	 * @return String
 	 */
 	public final static String getRootIdAsLongName(int id) {
-	  
+
 	  //	Validate the id
-	  
+
 	  if ( id < 0 || id >= _rootLongNames.length)
 	    return null;
 	  return _rootLongNames[id];
@@ -94,14 +94,14 @@ public class Winreg {
 
 	/**
 	 * Return a root key id as a short name
-	 * 
+	 *
 	 * @param id int
 	 * @return String
 	 */
 	public final static String getRootIdAsShortName(int id) {
-	  
+
 	  //	Validate the id
-	  
+
 	  if ( id < 0 || id >= _rootShortNames.length)
 	    return null;
 	  return _rootShortNames[id];

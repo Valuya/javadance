@@ -37,14 +37,14 @@ import org.alfresco.jlan.smb.server.SMBSrvSession;
 
 /**
  * Wkssvc DCE/RPC Handler Class
- * 
+ *
  * @author gkspencer
  */
 public class WkssvcDCEHandler implements DCEHandler {
 
 	/**
 	 * Process a WksSvc DCE/RPC request
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param inBuf DCEBuffer
 	 * @param pipeFile DCEPipeFile
@@ -110,7 +110,7 @@ public class WkssvcDCEHandler implements DCEHandler {
 
 	/**
 	 * Get workstation infomation
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 * @param inBuf DCEPacket
 	 * @param outBuf DCEPacket

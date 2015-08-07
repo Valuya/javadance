@@ -59,9 +59,9 @@ public class JavaFileDiskDriver implements DiskInterface {
   private static final String DOS_SEPERATOR = "\\";
 
 	//	SMB date used as the creation date/time for all files
-	
+
 	protected static long _globalCreateDate = System.currentTimeMillis();
-	
+
   /**
    * Class constructor
    */
@@ -96,22 +96,22 @@ public class JavaFileDiskDriver implements DiskInterface {
         long flen = file.length();
         long alloc = (flen + 512L) & 0xFFFFFFFFFFFFFE00L;
         int fattr = 0;
-        				
+
         if (file.isDirectory())
           fattr = FileAttribute.Directory;
-          
+
         if ( file.canWrite() == false)
         	fattr += FileAttribute.ReadOnly;
 
         //	Check for common hidden files
-        
+
         if ( pathStr[1].equalsIgnoreCase("Desktop.ini") ||
         		 pathStr[1].equalsIgnoreCase("Thumbs.db") ||
         		 pathStr[1].charAt(0) == '.')
         	fattr += FileAttribute.Hidden;
 
 				//	Create the file information
-				        	
+				
         FileInfo finfo = new FileInfo(pathStr[1], flen, fattr);
         long fdate = file.lastModified();
         finfo.setModifyDateTime(fdate);
@@ -180,7 +180,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Close the specified file
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param file	Network file details
@@ -190,15 +190,15 @@ public class JavaFileDiskDriver implements DiskInterface {
   	throws java.io.IOException {
 
     //	Close the file
-    
+
     file.closeFile();
 
     //	Check if the file/directory is marked for delete
-  	
+
   	if ( file.hasDeleteOnClose()) {
-  		
+
   		//	Check for a file or directory
-  		
+
   		if ( file.isDirectory())
   			deleteDirectory(sess, tree, file.getFullName());
   		else
@@ -208,7 +208,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Create a new directory
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param params Directory parameters
@@ -230,7 +230,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Create a new file
-   * 
+   *
    * @param sess		Session details
    * @param tree		Tree connection
    * @param params	File open parameters
@@ -262,7 +262,7 @@ public class JavaFileDiskDriver implements DiskInterface {
     JavaNetworkFile netFile = new JavaNetworkFile(file, params.getPath());
     netFile.setGrantedAccess(NetworkFile.READWRITE);
 		netFile.setFullName(params.getPath());
-    
+
     //  Return the network file
 
     return netFile;
@@ -270,7 +270,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Delete a directory
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param dir		Path of directory to delete
@@ -288,15 +288,15 @@ public class JavaFileDiskDriver implements DiskInterface {
 
     File delDir = new File(dirname);
     if (delDir.exists() && delDir.isDirectory()) {
-        	
+
     	//	Check if the directory contains any files
-    	
+
     	String[] fileList = delDir.list();
     	if ( fileList != null && fileList.length > 0)
     		throw new AccessDeniedException("Directory not empty");
 
 			//	Delete the directory
-			        		
+			
       delDir.delete();
   	}
 
@@ -313,15 +313,15 @@ public class JavaFileDiskDriver implements DiskInterface {
 
         delDir = new File(mappedPath);
         if (delDir.isDirectory()) {
-        	
+
         	//	Check if the directory contains any files
-        	
+
         	String[] fileList = delDir.list();
         	if ( fileList != null && fileList.length > 0)
         		throw new AccessDeniedException("Directory not empty");
-        		
+
         	//	Delete the directory
-        	
+
           delDir.delete();
         }
       }
@@ -330,7 +330,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Delete a file
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param name	Name of file to delete
@@ -387,9 +387,9 @@ public class JavaFileDiskDriver implements DiskInterface {
 
     File chkFile = new File(filename);
     if (chkFile.exists()) {
-    	
+
     	//	Check if the path is a file or directory
-    	
+
     	if ( chkFile.isFile())
       	return FileStatus.FileExists;
       else
@@ -430,7 +430,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Flush buffered data for the specified file
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param file	Network file
@@ -440,13 +440,13 @@ public class JavaFileDiskDriver implements DiskInterface {
   	throws java.io.IOException {
 
     //	Flush the file
-    
+
     file.flushFile();
   }
 
   /**
    * Return file information about the specified file
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param name	File name
@@ -464,7 +464,7 @@ public class JavaFileDiskDriver implements DiskInterface {
     //  Build the file information for the file/directory
 
     FileInfo info = buildFileInformation(path, name);
-    
+
     if (info != null)
       return info;
 
@@ -738,9 +738,9 @@ public class JavaFileDiskDriver implements DiskInterface {
       //  Set the new path string
 
       mappedPath = pathStr.toString();
-      
+
       // Check for a Netware style path and remove the leading slash
-      
+
       if (File.separator.equals(DOS_SEPERATOR) && mappedPath.startsWith(DOS_SEPERATOR) && mappedPath.indexOf(':') > 1)
         mappedPath = mappedPath.substring(1);
     }
@@ -752,7 +752,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Open a file
-   * 
+   *
    * @param sess		Session details
    * @param tree		Tree connection
    * @param params	File open parameters
@@ -783,23 +783,23 @@ public class JavaFileDiskDriver implements DiskInterface {
     }
 
     //	Check if the file is read-only and write access has been requested
-    
+
     if ( file.canWrite() == false && ( params.isReadWriteAccess() || params.isWriteOnlyAccess()))
       throw new AccessDeniedException("File " + fname + " is read-only");
-    
+
     //	Create the network file object for the opened file/folder
-    
+
     NetworkFile netFile = new JavaNetworkFile(file, params.getPath());
-    
+
     if ( params.isReadOnlyAccess())
     	netFile.setGrantedAccess(NetworkFile.READONLY);
 		else
     	netFile.setGrantedAccess(NetworkFile.READWRITE);
-    	
+
     netFile.setFullName(params.getPath());
-    
+
     //  Check if the file is actually a directory
-    
+
     if ( file.isDirectory() || file.list() != null)
     	netFile.setAttributes(FileAttribute.Directory);
 
@@ -810,7 +810,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Read a block of data from a file
-   * 
+   *
    * @param sess		Session details
    * @param tree		Tree connection
    * @param file		Network file
@@ -825,10 +825,10 @@ public class JavaFileDiskDriver implements DiskInterface {
     throws java.io.IOException {
 
 	  //	Check if the file is a directory
-	
+
 		if ( file.isDirectory())
 			throw new AccessDeniedException();
-      
+
     //  Read the file
 
     int rdlen = file.readFile(buf, siz, bufPos, filePos);
@@ -845,7 +845,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Rename a file
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param oldName	Existing file name
@@ -862,27 +862,27 @@ public class JavaFileDiskDriver implements DiskInterface {
     String newPath = FileName.buildPath(ctx.getDeviceName(), newName, null, java.io.File.separatorChar);
 
 		//	Check if the current file/directory exists
-		
+
 		if ( fileExists(sess, tree, oldName) == FileStatus.NotExist)
 			throw new FileNotFoundException("Rename file, does not exist " + oldName);
-			
+
 		//	Check if the new file/directory exists
-		
+
 		if ( fileExists(sess, tree, newName) != FileStatus.NotExist)
 			throw new FileExistsException("Rename file, path exists " + newName);
-			
+
     //  Rename the file
 
     File oldFile = new File(oldPath);
     File newFile = new File(newPath);
-    
+
     if ( oldFile.renameTo(newFile) == false)
     	throw new IOException ("Rename " + oldPath + " to " + newPath + " failed");
   }
 
   /**
    * Seek to the specified point within a file
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param file	Network file
@@ -901,7 +901,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Set file information
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param name	File name
@@ -910,18 +910,18 @@ public class JavaFileDiskDriver implements DiskInterface {
    */
   public void setFileInformation(SrvSession sess, TreeConnection tree, String name, FileInfo info)
     throws java.io.IOException {
-    
+
     //	Check if the modify date/time should be updated
-    
+
     if ( info.hasSetFlag( FileInfo.SetModifyDate)) {
 
       //	Build the path to the file
-      
+
 			DeviceContext ctx = tree.getContext();
 	    String fname = FileName.buildPath( ctx.getDeviceName(), name, null, java.io.File.separatorChar);
 
 	    //	Update the file/folder modify date/time
-	    
+
 	    File file = new File(fname);
 	    file.setLastModified( info.getModifyDateTime());
     }
@@ -929,7 +929,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Start a file search
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param searchPath	Search path, may include wildcards
@@ -949,25 +949,25 @@ public class JavaFileDiskDriver implements DiskInterface {
     String path = FileName.buildPath(tree.getContext().getDeviceName(), null, searchPath, java.io.File.separatorChar);
 
     try {
-      
+
 			//	Map the path, this may require changing the case on some or all path components
-			
+
 			path = mapPath(path);
-			
+
       // Split the search path to get the share relative path
-      
+
       String[] paths = FileName.splitPath( searchPath);
-      
+
 			//	DEBUG
-			
+
 			if ( Debug.EnableInfo && sess != null && sess.hasDebug(SMBSrvSession.DBG_SEARCH))
 				sess.debugPrintln("  Start search path=" + path + ", relPath=" + paths[0]);
-				
+
 	    //  Initialize the search
-	
+
 	    srch.initSearch(path, attrib);
       srch.setRelativePath( paths[0]);
-      
+
 	    return srch;
     }
     catch ( PathNotFoundException ex) {
@@ -977,7 +977,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
 	/**
 	 * Truncate a file to the specified size
-	 * 
+	 *
    * @param sess	 Server session
    * @param tree   Tree connection
    * @param file   Network file details
@@ -988,14 +988,14 @@ public class JavaFileDiskDriver implements DiskInterface {
 		throws IOException {
 
 	  //	Truncate or extend the file
-	  
+
 	  file.truncateFile(siz);
 	  file.flushFile();
 	}
 
   /**
    * Write a block of data to a file
-   * 
+   *
    * @param sess	Session details
    * @param tree	Tree connection
    * @param file	Network file
@@ -1013,7 +1013,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 			throw new AccessDeniedException();
 
 		//	Write the data to the file
-		      
+
     file.writeFile(buf, siz, bufoff, fileoff);
 
     //  Return the actual write length
@@ -1023,7 +1023,7 @@ public class JavaFileDiskDriver implements DiskInterface {
 
   /**
    * Parse and validate the parameter string and create a device context for this share
-   * 
+   *
    * @param shareName String
    * @param args ConfigElement
    * @return DeviceContext
@@ -1031,66 +1031,66 @@ public class JavaFileDiskDriver implements DiskInterface {
    */
   public DeviceContext createContext(String shareName, ConfigElement args)
   	throws DeviceContextException {
-  	
+
   	//	Get the device name argument
-  	
+
   	ConfigElement path = args.getChild("LocalPath");
   	DiskDeviceContext ctx = null;
-  	
+
   	if ( path != null) {
-  		
+
   		//	Validate the path and convert to an absolute path
-  		
+
   		File rootDir = new File(path.getValue());
 
   		//	Create a device context using the absolute path
 
 			ctx = new DiskDeviceContext(rootDir.getAbsolutePath());
-			
+
 			//	Set filesystem flags
-			
+
 			ctx.setFilesystemAttributes( FileSystem.CasePreservedNames + FileSystem.UnicodeOnDisk);
-			
+
 			//	If the path is not valid then set the filesystem as unavailable
-			
+
   		if ( rootDir.exists() == false || rootDir.isDirectory() == false || rootDir.list() == null) {
-  		  
+
   		  //	Mark the filesystem as unavailable
 
   		  ctx.setAvailable(false);
   		}
-  		
+
   		//	Return the context
-  		
+
   		return ctx;
   	}
-  		
+
   	//	Required parameters not specified
-  	
+
   	throw new DeviceContextException("LocalPath parameter not specified");
   }
 
   /**
    * Connection opened to this disk device
-   * 
+   *
    * @param sess					Server session
    * @param tree         	Tree connection
    */
   public void treeOpened(SrvSession sess, TreeConnection tree) {
   }
-  
+
   /**
    * Connection closed to this device
-   * 
+   *
    * @param sess					Server session
    * @param tree         	Tree connection
    */
   public void treeClosed(SrvSession sess, TreeConnection tree) {
   }
-  
+
   /**
    * Return the global file creation date/time
-   * 
+   *
    * @return long
    */
   public final static long getGlobalCreateDateTime() {

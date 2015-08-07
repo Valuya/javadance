@@ -35,107 +35,107 @@ public interface ClusterInterface {
 	 */
 	public void startCluster()
 		throws Exception;
-	
+
 	/**
 	 * Shutdown the cluster
 	 */
 	public void shutdownCluster()
 		throws Exception;
-	
+
 	/**
 	 * Return the cluster name
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getClusterName();
-	
+
 	/**
 	 * Return the list of nodes
-	 * 
+	 *
 	 * @return ClusterNodeList
 	 */
 	public ClusterNodeList getNodeList();
-	
+
 	/**
 	 * Return the local node details
-	 * 
+	 *
 	 * @return ClusterNode
 	 */
 	public ClusterNode getLocalNode();
-	
+
 	/**
 	 * Return the associated cluster state cache
-	 * 
+	 *
 	 * @return ClusterFileStateCache
 	 */
 	public ClusterFileStateCache getStateCache();
-	
+
 	/**
 	 * Return the thread pool
-	 * 
+	 *
 	 * @return ThreadRequestPool
 	 */
 	public ThreadRequestPool getThreadPool();
-	
+
 	/**
 	 * Check if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasDebug();
-	
+
 	/**
 	 * Check if none existent file/folder states should be sent to the cluster
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasSendNotExistStates();
-	
+
 	/**
 	 * Return the oplock manager
-	 * 
+	 *
 	 * @return OpLockManager
 	 */
 	public OpLockManager getOpLockManager();
-	
+
 	/**
 	 * Return the change notification handler, if configured for the filesystem
-	 * 
+	 *
 	 * @return NotifyChangeHandler
 	 */
 	public NotifyChangeHandler getNotifyChangeHandler();
-	
+
 	/**
 	 * Set the send none existent file/folder states to the cluster
-	 * 
+	 *
 	 * @param notExist boolean
 	 */
 	public void setSendNotExistStates( boolean notExist);
-	
+
 	/**
 	 * Set the oplock manager
-	 * 
+	 *
 	 * @param oplockMgr OpLockManager
 	 */
 	public void setOpLockManager( OpLockManager oplockMgr);
-	
+
 	/**
 	 * Set the change notification handler
-	 * 
+	 *
 	 * @param notifyHandler NotifyChangeHandler
 	 */
 	public void setNotifyChangeHandler( NotifyChangeHandler notifyHandler);
-	
+
 	/**
 	 * Set the cluster node list
-	 * 
+	 *
 	 * @param nodeList ClusterNodeList
 	 */
 	public void setNodeList( ClusterNodeList nodeList);
-	
+
 	/**
 	 * Set the local cluster node
-	 * 
+	 *
 	 * @param localNode ClusterNode
 	 */
 	public void setLocalNode( ClusterNode localNode);

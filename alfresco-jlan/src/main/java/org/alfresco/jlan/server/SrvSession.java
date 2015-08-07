@@ -30,10 +30,10 @@ import org.alfresco.jlan.server.filesys.TransactionalFilesystemInterface;
 
 /**
  * Server Session Base Class
- * 
+ *
  * <p>
  * Base class for server session implementations for different protocols.
- * 
+ *
  * @author gkspencer
  */
 public abstract class SrvSession {
@@ -93,11 +93,11 @@ public abstract class SrvSession {
 	private static ThreadLocal<TransactionalFilesystemInterface> m_txInterface = new ThreadLocal<TransactionalFilesystemInterface>();
 
 	// Time of last I/O on this session
-	
+
 	private long m_lastIO;
-	
+
 	// Request post-processing hook
-	
+
 	private RequestPostProcessor m_reqPostProcessor;
 
 	// Place for the driver to store state
@@ -105,7 +105,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sessId int
 	 * @param srv NetworkServer
 	 * @param proto String
@@ -121,7 +121,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Output a string to the debug device
-	 * 
+	 *
 	 * @param str String
 	 */
 	public final void debugPrint(String str) {
@@ -130,7 +130,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Output a string and a newline to the debug device
-	 * 
+	 *
 	 * @param str String
 	 */
 	public final void debugPrintln(String str) {
@@ -140,7 +140,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Output an exception stack trace to the debug device
-	 * 
+	 *
 	 * @param ex Exception
 	 */
 	public final void debugPrintln(Exception ex) {
@@ -149,7 +149,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Check if the session has an authentication context
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasAuthenticationContext() {
@@ -158,7 +158,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the authentication context for this sesion
-	 * 
+	 *
 	 * @return AuthContext
 	 */
 	public final AuthContext getAuthenticationContext() {
@@ -167,7 +167,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Add a dynamic share to the list of shares created for this session
-	 * 
+	 *
 	 * @param shrDev SharedDevice
 	 */
 	public final void addDynamicShare(SharedDevice shrDev) {
@@ -184,7 +184,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Determine if the session has any dynamic shares
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDynamicShares() {
@@ -193,7 +193,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the list of dynamic shares created for this session
-	 * 
+	 *
 	 * @return SharedDeviceList
 	 */
 	public final SharedDeviceList getDynamicShareList() {
@@ -202,7 +202,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the process id
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getProcessId() {
@@ -211,14 +211,14 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the remote client network address
-	 * 
+	 *
 	 * @return InetAddress
 	 */
 	public abstract InetAddress getRemoteAddress();
 
 	/**
 	 * Return the session id for this session.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSessionId() {
@@ -227,7 +227,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the server this session is associated with
-	 * 
+	 *
 	 * @return NetworkServer
 	 */
 	public final NetworkServer getServer() {
@@ -236,7 +236,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Check if the session has valid client information
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasClientInformation() {
@@ -245,7 +245,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the client information
-	 * 
+	 *
 	 * @return ClientInfo
 	 */
 	public final ClientInfo getClientInformation() {
@@ -254,7 +254,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Determine if the protocol type has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasProtocolName() {
@@ -263,7 +263,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the protocol name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getProtocolName() {
@@ -272,7 +272,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Determine if the remote client name has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasRemoteName() {
@@ -281,7 +281,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the remote client name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getRemoteName() {
@@ -290,7 +290,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Determine if the session is logged on/validated
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLoggedOn() {
@@ -299,7 +299,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Determine if the session has been shut down
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isShutdown() {
@@ -308,7 +308,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the unique session id
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getUniqueId() {
@@ -317,7 +317,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Determine if the specified debug flag is enabled.
-	 * 
+	 *
 	 * @param dbgFlag int
 	 * @return boolean
 	 */
@@ -329,42 +329,42 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the time of the last I/o on this session
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getLastIOTime() {
 		return m_lastIO;
 	}
-	
+
 	/**
 	 * Check if there are post processor requests queued
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasPostProcessorRequests() {
 		return RequestPostProcessor.hasPostProcessor();
 	}
-	
+
 	/**
 	 * Return the post processor at the head of the queue, or null if there are no more post processors
 	 * queued.
-	 * 
+	 *
 	 * @return RequestPostProcessor
 	 */
 	public final RequestPostProcessor getNextPostProcessor() {
 		return RequestPostProcessor.dequeuePostProcessor();
 	}
-	
+
 	/**
 	 * Determine if the protocol uses case sensitive filesystem searches
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public abstract boolean useCaseSensitiveSearch();
-	
+
 	/**
 	 * Set the authentication context, used during the initial session setup phase
-	 * 
+	 *
 	 * @param ctx AuthContext
 	 */
 	public final void setAuthenticationContext(AuthContext ctx) {
@@ -373,7 +373,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the client information
-	 * 
+	 *
 	 * @param client ClientInfo
 	 */
 	public final void setClientInformation(ClientInfo client) {
@@ -382,7 +382,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the debug output interface.
-	 * 
+	 *
 	 * @param flgs int
 	 */
 	public final void setDebug(int flgs) {
@@ -391,7 +391,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the debug output prefix for this session
-	 * 
+	 *
 	 * @param prefix String
 	 */
 	public final void setDebugPrefix(String prefix) {
@@ -400,7 +400,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the logged on/validated status for the session
-	 * 
+	 *
 	 * @param loggedOn boolean
 	 */
 	public final void setLoggedOn(boolean loggedOn) {
@@ -409,7 +409,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the process id
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setProcessId(int id) {
@@ -418,7 +418,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the protocol name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setProtocolName(String name) {
@@ -427,7 +427,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the remote client name
-	 * 
+	 *
 	 * @param name String
 	 */
 	public final void setRemoteName(String name) {
@@ -436,7 +436,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the session id for this session.
-	 * 
+	 *
 	 * @param id int
 	 */
 	public final void setSessionId(int id) {
@@ -445,7 +445,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the unique session id
-	 * 
+	 *
 	 * @param unid String
 	 */
 	public final void setUniqueId(String unid) {
@@ -454,16 +454,16 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the time of hte last I/O on this session
-	 * 
+	 *
 	 * @param ioTime long
 	 */
 	public final void setLastIOTime(long ioTime) {
 		m_lastIO = ioTime;
 	}
-	
+
 	/**
 	 * Set the shutdown flag
-	 * 
+	 *
 	 * @param flg boolean
 	 */
 	protected final void setShutdown(boolean flg) {
@@ -497,7 +497,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Return the transaction context
-	 * 
+	 *
 	 * @return ThreadLocal<Object>
 	 */
 	public final ThreadLocal<Object> getTransactionObject() {
@@ -506,7 +506,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the active transaction and transaction interface
-	 * 
+	 *
 	 * @param tx Object
 	 * @param txIface TransactionalFilesystemInterface
 	 */
@@ -517,7 +517,7 @@ public abstract class SrvSession {
 
 	/**
 	 * Set the active transaction interface
-	 * 
+	 *
 	 * @param txIface TransactionalFilesystemInterface
 	 */
 	public final void setTransaction(TransactionalFilesystemInterface txIface) {
@@ -546,10 +546,10 @@ public abstract class SrvSession {
 			m_txInterface.get().endTransaction(this, m_tx.get());
 		}
 	}
-	
+
 	/**
 	 * Check if there is an active transaction
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasTransaction() {
@@ -557,7 +557,7 @@ public abstract class SrvSession {
 			return false;
 		return m_tx.get() != null ? true : false;
 	}
-	
+
 	/**
 	 * Are pseudo files enabled for this session?
 	 * @return boolean
@@ -566,7 +566,7 @@ public abstract class SrvSession {
 	{
 	    return false;
 	}
-	
+
 	/**
 	 * Get the Driver State.  A place for the content driver to
 	 * store state in the session.
@@ -576,9 +576,9 @@ public abstract class SrvSession {
 	{
 	    return driverState;
 	}
-	
+
 	/**
-	 * Set the Driver State.   A place for the content driver to 
+	 * Set the Driver State.   A place for the content driver to
 	 * store state in the session.
 	 * @param driverState Object
 	 */
@@ -588,12 +588,12 @@ public abstract class SrvSession {
 	}
 
 	/**
-	 * Set the Driver State.   A place for the content driver to 
+	 * Set the Driver State.   A place for the content driver to
 	 * store state in the session.
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[Session id=");
 		str.append( getSessionId());
 		str.append( ",unique=");
@@ -601,7 +601,7 @@ public abstract class SrvSession {
 		str.append(",proto=");
 		str.append( getProtocolName());
 		str.append( "]");
-		
+
 		return str.toString();
 	}
 }

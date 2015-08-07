@@ -27,6 +27,6 @@ package org.alfresco.jlan.smb;
 public class TcpipSMB {
 
 	//	Default port for native TCP SMB
-	
+
 	public static final int PORT	= 445;
 }

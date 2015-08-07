@@ -21,30 +21,30 @@ package org.alfresco.jlan.client.info;
 
 /**
  * Extended File Information Class
- * 
+ *
  * <p>Adds extra file information available under NT to the standard file information, such as compression
  * details and extended attributes.
- * 
+ *
  * @author gkspencer
  */
 public class ExtendedFileInfo extends FileInfo {
 
 	//	Extended attributes size and raw data
-	
+
 	private int m_eaSize = -1;
 	private byte[] m_eadata;
-	
+
 	//	Compression details
-	
+
 	private long m_compSize = -1L;
 	private int m_compFormat = -1;
-	
+
 	//	NTFS Stream list
-	
+
 	private StreamInfoList m_streams;
 
 	//	Various flags
-	
+
 	private boolean m_deletePending;
 	private int m_links;
 
@@ -57,7 +57,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param size long
 	 * @param attr int
@@ -68,7 +68,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Construct an SMB file information object.
-	 * 
+	 *
 	 * @param fname File name string.
 	 * @param fsize File size, in bytes.
 	 * @param fattr File attributes.
@@ -81,7 +81,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Return the extended attributes size
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getExtendedAttributesSize() {
@@ -90,7 +90,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Check if the extended attribute raw data is available
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasExtendedAttributeData() {
@@ -99,7 +99,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Return the extended attribute raw data block
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getExtendedAttrbuteData() {
@@ -108,7 +108,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Return the compressed file size
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long getCompressedSize() {
@@ -117,7 +117,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Return the compression format
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getCompressionFormat() {
@@ -126,7 +126,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Check if the streams list is valid
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasNTFSStreams() {
@@ -135,7 +135,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Return the NTFS stream count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int numberOfNTFSStreams() {
@@ -144,7 +144,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Return the NTFS streams list
-	 * 
+	 *
 	 * @return StreamInfoList
 	 */
 	public final StreamInfoList getNTFSStreams() {
@@ -153,7 +153,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Check if a file delete is pending for this file
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDeletePending() {
@@ -162,7 +162,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Return the link count
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLinkCount() {
@@ -171,7 +171,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Set the extended attribute size
-	 * 
+	 *
 	 * @param siz int
 	 */
 	public final void setExtendedAttributesSize(int siz) {
@@ -180,7 +180,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Set the extended attribute raw data
-	 * 
+	 *
 	 * @param eadata byte[]
 	 */
 	public final void setExtendedAttributeData(byte[] eadata) {
@@ -189,7 +189,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Set the compressed file size and compression format
-	 * 
+	 *
 	 * @param siz long
 	 * @param fmt int
 	 */
@@ -200,7 +200,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Add the details of an NTFS stream to the streams list for this file
-	 * 
+	 *
 	 * @param stream StreamInfo
 	 */
 	public final void addNTFSStreamInfo(StreamInfo stream) {
@@ -217,7 +217,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Set the delete pending flag
-	 * 
+	 *
 	 * @param del boolean
 	 */
 	public final void setDeletePending(boolean del) {
@@ -226,7 +226,7 @@ public class ExtendedFileInfo extends FileInfo {
 
 	/**
 	 * Set the link count
-	 * 
+	 *
 	 * @param cnt int
 	 */
 	public final void setLinkCount(int cnt) {

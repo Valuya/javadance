@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * Filesystem Pending Exception Class
- * 
+ *
  * <p>Used to indicate that an SMB/CIFS request will be dealt with by the filesystem driver out of sequence.
  *
  * @author gkspencer
@@ -38,10 +38,10 @@ public class FilesystemPendingException extends IOException {
 	public FilesystemPendingException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public FilesystemPendingException(String msg) {

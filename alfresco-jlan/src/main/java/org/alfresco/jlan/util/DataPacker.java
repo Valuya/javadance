@@ -154,9 +154,9 @@ public final class DataPacker {
     long lVal = 0L;
 
 		for ( int i = 0; i < 8; i++) {
-			
+
 			//	Get the current byte, shift the value and add to the return value
-			
+
 			long curVal = (long) buf[pos + i] & 0xFF;
 			curVal = curVal << (( 7 - i) * 8);
 			lVal += curVal;
@@ -187,9 +187,9 @@ public final class DataPacker {
     long lVal = 0L;
 
 		for ( int i = 0; i < 8; i++) {
-			
+
 			//	Get the current byte, shift the value and add to the return value
-			
+
 			long curVal = (long) bytarray[pos + i] & 0xFF;
 			curVal = curVal << (i * 8);
 			lVal += curVal;
@@ -301,16 +301,16 @@ public final class DataPacker {
   public final static String getString(byte[] bytarray, int pos, int maxlen, boolean isUni) {
 
 		//	Get a string from the buffer
-		
+
 		String str = null;
-		
+
 		if ( isUni)
 			str = getUnicodeString(bytarray,pos,maxlen);
 		else
 			str = getString(bytarray,pos,maxlen);
-			
+
 		//	return the string
-		
+
 		return str;
   }
 
@@ -326,10 +326,10 @@ public final class DataPacker {
   public final static String getUnicodeString(byte[] byt, int pos, int maxlen) {
 
 		//	Check for an empty string
-		
+
 		if ( maxlen == 0)
 			return "";
-			
+
     //  Search for the trailing null
 
     int maxpos = pos + (maxlen * 2);
@@ -351,7 +351,7 @@ public final class DataPacker {
       //  Update the buffer pointer
 
       endpos += 2;
-      
+
     } while (curChar != 0 && endpos < maxpos);
 
     //  Check if we reached the end of the buffer
@@ -617,14 +617,14 @@ public final class DataPacker {
 		//	Pack the string
 
 		int newpos = -1;
-				
+
 		if ( isUni)
 			newpos = putUnicodeString(str,bytarray,pos,nullterm);
 		else
 			newpos = putString(str,bytarray,pos,nullterm);
-			
+
 		//	Return the end of string buffer position
-		
+
 		return newpos;
   }
 
@@ -644,13 +644,13 @@ public final class DataPacker {
     int bufpos = pos;
 
     for (int i = 0; i < str.length(); i++) {
-      
+
       //	Get the current character from the string
-      
+
       char ch = str.charAt(i);
-      
+
       //	Pack the unicode character
-      
+
       bytarray[bufpos++] = (byte) (ch & 0xFF);
       bytarray[bufpos++] = (byte) ((ch & 0xFF00) >> 8);
     }
@@ -690,17 +690,17 @@ public final class DataPacker {
 
 	/**
 	 * Align a buffer offset on a word boundary
-	 * 
+	 *
 	 * @param pos int
 	 * @return int
 	 */
 	public final static int wordAlign(int pos) {
 	  return ( pos + 1) & 0xFFFFFFFE;
 	}
-	
+
 	/**
 	 * Align a buffer offset on a longword boundary
-	 * 
+	 *
 	 * @param pos int
 	 * @return int
 	 */
@@ -710,28 +710,28 @@ public final class DataPacker {
 
 	/**
 	 * Calculate the string length in bytes
-	 * 
+	 *
 	 * @param str String
 	 * @param uni boolean
 	 * @param nul boolean
 	 * @return int
 	 */
 	public final static int getStringLength(String str, boolean uni, boolean nul) {
-	  
+
 	  //	Calculate the string length in bytes
-	  
+
 		int len = str.length();
 		if ( nul)
 			len += 1;
 		if ( uni)
 			len *= 2;
 
-		return len;		
+		return len;
 	}
-	
+
 	/**
 	 * Calculate the new buffer position after the specified string and encoding (ASCII or Unicode)
-	 * 
+	 *
 	 * @param pos int
 	 * @param str String
 	 * @param uni boolean
@@ -739,15 +739,15 @@ public final class DataPacker {
 	 * @return int
 	 */
 	public final static int getBufferPosition(int pos, String str, boolean uni, boolean nul) {
-	
+
 		//	Calculate the new buffer position
-		
+
 		int len = str.length();
 		if ( nul)
 			len += 1;
 		if ( uni)
 			len *= 2;
 
-		return pos + len;		
+		return pos + len;
 	}
 }

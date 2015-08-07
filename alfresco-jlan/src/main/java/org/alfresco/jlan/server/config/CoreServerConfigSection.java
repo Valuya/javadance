@@ -24,7 +24,7 @@ import org.alfresco.jlan.server.thread.ThreadRequestPool;
 
 /**
  * Core Server Configuration section Class
- * 
+ *
  * @author gkspencer
  */
 public class CoreServerConfigSection extends ConfigSection {
@@ -34,16 +34,16 @@ public class CoreServerConfigSection extends ConfigSection {
 	public static final String SectionName = "CoreServer";
 
 	// Thread pool
-	
+
 	private ThreadRequestPool m_threadPool;
-	
+
 	// Memory pool
-	
+
 	private ByteBufferPool m_memoryPool;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param config ServerConfiguration
 	 */
 	public CoreServerConfigSection(ServerConfiguration config) {
@@ -52,25 +52,25 @@ public class CoreServerConfigSection extends ConfigSection {
 
 	/**
 	 * Return the global thread request pool
-	 * 
+	 *
 	 * @return ThreadRequestPool
 	 */
 	public final ThreadRequestPool getThreadPool() {
 		return m_threadPool;
 	}
-	
+
 	/**
 	 * Return the global memory pool
-	 * 
+	 *
 	 * @return ByteBufferPool
 	 */
 	public final ByteBufferPool getMemoryPool() {
 		return m_memoryPool;
 	}
-	
+
 	/**
 	 * Set the thread pool initial and maximum size
-	 * 
+	 *
 	 * @param initSize int
 	 * @param maxSize int
 	 * @exception InvalidConfigurationException
@@ -79,26 +79,26 @@ public class CoreServerConfigSection extends ConfigSection {
 		throws InvalidConfigurationException {
 
 		// Range check the initial and maximum thread counts
-		
+
 		if ( initSize <= 0 || maxSize <= 0)
 			throw new InvalidConfigurationException("Invalid initial or maximum thread count, " + initSize + "/" + maxSize);
-		
+
 		if ( initSize > maxSize)
 			throw new InvalidConfigurationException("Invalid initial thread count, higher than maximum count, " + initSize + "/" + maxSize);
-		
+
 		// Check if the thread pool has already been configured
-		
+
 		if ( m_threadPool != null)
 			throw new InvalidConfigurationException("Thread pool already configured");
-		
+
 		// Create the thread pool
-		
+
 		m_threadPool = new ThreadRequestPool( "AlfJLANWorker", initSize);
 	}
-	
+
 	/**
 	 * Set the memory pool packet sizes/allocations
-	 * 
+	 *
 	 * @param pktSizes Buffer sizes int[]
 	 * @param initAlloc Initial allocations for each size int[]
 	 * @param maxAlloc Maximim allocations for each size int[]
@@ -108,25 +108,25 @@ public class CoreServerConfigSection extends ConfigSection {
 		throws InvalidConfigurationException {
 
 		// Make sure the buffer size and allocation lists are the same length
-		
+
 		if (( pktSizes.length != initAlloc.length) || (pktSizes.length != maxAlloc.length))
 			throw new InvalidConfigurationException("Invalid packet size/allocation lists, lengths do not match");
-		
+
 		// Make sure the packet size list is in ascending order
-		
+
 		if ( pktSizes.length > 1) {
 			for ( int i = 1; i <= pktSizes.length - 1; i++)
 				if ( pktSizes[i] < pktSizes[i - 1])
 					throw new InvalidConfigurationException("Packet size list is not in ascending order");
 		}
-		
+
 		// check if the memory pool has already been configured
-		
+
 		if ( m_memoryPool != null)
 			throw new InvalidConfigurationException("Memory pool already configured");
-		
+
 		// Create the memory pool
-		
+
 		m_memoryPool = new ByteBufferPool( pktSizes, initAlloc, maxAlloc);
 	}
 }

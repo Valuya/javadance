@@ -43,11 +43,11 @@ import org.alfresco.jlan.util.StringList;
 
 /**
  *  NetBIOS session class.
- *  
+ *
  *  <p>Holds the details of a TCP/IP NetBIOS session connection to a remote NetBIOS service.
- *  
+ *
  *  <p>The session is usually used to send higher level requests such as SMB/CIFS requests to a file server service.
- *  
+ *
  *  <p>Contains a number of static methods for performing name lookups of remote servers/services.
  *
  * @author gkspencer
@@ -57,9 +57,9 @@ public final class NetBIOSSession extends NetworkSession {
 	//	Constants
 	//
 	// Protocol name
-  
+
 	private static final String ProtocolName = "TCP/IP NetBIOS";
-  
+
 	//  Name lookup types
 
 	public static final int DNSOnly     = 1;
@@ -67,40 +67,40 @@ public final class NetBIOSSession extends NetworkSession {
 	public static final int WINSAndDNS  = 3;
 
 	//	Caller name template
-	
+
 	public static final int MaxCallerNameTemplateLength	= 8;
 	public static final char SessionIdChar 				= '#';
 	public static final char JVMIdChar     				= '@';
 	public static final String ValidTemplateChars 		= "@#_";
-	
+
 	//	Default find name buffer size
-	
+
 	private static final int FindNameBufferSize			= 2048;
-	
+
 	//  Per session overrides
 	//
 	//  Remote socket to connect to, default is 139, and name port
 
 	private int m_remotePort = RFCNetBIOSProtocol.PORT;
   	private int m_namePort   = RFCNetBIOSProtocol.NAME_PORT;
-  
+
   	//  Subnet mask override
-  
+
   	private String m_subnetMask = _subnetMask;
-  
+
   	//  WINS server address override
-  
+
   	private InetAddress m_winsServer = _winsServer;
-  
+
   	//  Name lookup type and timeout overrides
-  
+
   	private int m_lookupType = _lookupType;
   	private int m_lookupTmo  = _lookupTmo;
-  
+
   	//  Use wildcard server name in session connection override
-  
+
   	private boolean m_useWildcardServerName = _useWildcardFileServer;
-  
+
   	//  Socket used to connect and read/write to remote host
 
   	private Socket m_nbSocket;
@@ -121,9 +121,9 @@ public final class NetBIOSSession extends NetworkSession {
 
 	//	Unique JVM id, used to generate a unique caller name when multiple JVMs may be running on the same
 	//	host
-	
+
 	private static int m_jvmIdx = 0;
-	
+
 	//	Caller name template string. The template is used to create a unique caller name when opening a new session.
 	//	The template is appended to the local host name, which may be truncated to allow room for the template to be
 	//	appended and still be within the 16 character NetBIOS name limit.
@@ -133,13 +133,13 @@ public final class NetBIOSSession extends NetworkSession {
 	//	field width. Any other characters in the template are passed through to the final caller name string.
 	//
 	//	The maximum template string length is 8 characters to allow for at least 8 characters from the host name.
-	
+
 	private static String m_callerTemplate = "_##";
-	
+
 	//	Truncated host name, caller name generation appends the caller template result to this string
-	
-	private static String m_localNamePart; 
-	
+
+	private static String m_localNamePart;
+
 	//  Transaction identifier, used for datagrams
 
 	private static short m_tranIdx = 1;
@@ -157,9 +157,9 @@ public final class NetBIOSSession extends NetworkSession {
 	private static String _subnetMask = null;
 
 	//	WINS server address
-	
+
 	private static InetAddress _winsServer;
-	
+
 	// 	Flag to control whether name lookups use WINS/NetBIOS lookup or DNS
 
   	private static int _lookupType = WINSAndDNS;
@@ -167,9 +167,9 @@ public final class NetBIOSSession extends NetworkSession {
   	// 	NetBIOS name lookup timeout value.
 
   	private static int _lookupTmo = 500;
-  
+
   	//	Flag to control use of the '*SMBSERVER' name when connecting to a file server
-  
+
   	private static boolean _useWildcardFileServer = true;
 
 	/**
@@ -208,7 +208,7 @@ public final class NetBIOSSession extends NetworkSession {
 
   /**
    * Get the NetBIOS session port to connect to
-   * 
+   *
    * @return int
    */
   public final int getSessionPort() {
@@ -217,91 +217,91 @@ public final class NetBIOSSession extends NetworkSession {
 
   /**
    * Return the name port
-   * 
+   *
    * @return int
    */
   public final int getNamePort() {
     return m_namePort;
   }
-  
+
   /**
    * Return the name lookup type(s) to use
-   * 
+   *
    * @return int
    */
   public final int getLookupType() {
     return m_lookupType;
   }
-  
+
   /**
    * Return the name lookup timeout, in milliseconds
-   * 
+   *
    * @return int
    */
   public final int getLookupTimeout() {
     return m_lookupTmo;
   }
-  
+
   /**
    * Check if WINS server is configured
-   * 
+   *
    * @return boolean
    */
   public final boolean hasWINSServer() {
     return m_winsServer != null ? true : false;
   }
-  
+
   /**
    * Return the WINS server address
-   * 
+   *
    * @return InetAddress
    */
   public final InetAddress getWINSServer() {
     return m_winsServer;
   }
-  
+
   /**
    * Return the subnet mask
-   * 
+   *
    * @return String
    */
   public final String getSubnetMask() {
     return m_subnetMask;
   }
-  
+
 	/**
 	 * Determine if the session is connected to a remote host
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isConnected() {
-		
+
 		//	Check if the socket is valid
-		
+
 		if ( m_nbSocket == null)
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * Check if there is data available on this network session
-	 * 
+	 *
 	 * @return boolean
 	 * @exception IOException
 	 */
 	public final boolean hasData()
 		throws IOException {
-	
+
 		//	Check if the connection is active
-		
+
 		if ( m_nbSocket == null || m_nbIn == null)
 			return false;
-			
+
 		//	Check if there is data available
-		
+
 		return m_nbIn.available() > 0 ? true : false;
 	}
-	
+
 	/**
 	 * Convert a host name string into RFC NetBIOS format.
 	 *
@@ -560,9 +560,9 @@ public final class NetBIOSSession extends NetworkSession {
    */
   public static NetBIOSName FindName ( String nbName, char nbType, int tmo, NetBIOSSession sess)
     throws java.io.IOException {
-      
+
     //  Call the main FindName method
-    
+
     return FindName(new NetBIOSName(nbName, nbType, false), tmo, sess);
   }
 
@@ -577,9 +577,9 @@ public final class NetBIOSSession extends NetworkSession {
 	 */
 	public static NetBIOSName FindName ( String nbName, char nbType, int tmo)
 		throws java.io.IOException {
-			
+
 		//	Call the main FindName method
-		
+
 		return FindName(new NetBIOSName(nbName, nbType, false), tmo, null);
 	}
 
@@ -593,12 +593,12 @@ public final class NetBIOSSession extends NetworkSession {
    */
   public static NetBIOSName FindName ( NetBIOSName nbName, int tmo)
     throws java.io.IOException {
-    
+
     // Call the main FindName method
-    
+
     return FindName( nbName, tmo, null);
   }
-  
+
 	/**
 	 * Find a NetBIOS name on the network
 	 *
@@ -612,21 +612,21 @@ public final class NetBIOSSession extends NetworkSession {
 		throws java.io.IOException {
 
     //  Get the name lookup type(s) to use
-    
+
     int lookupTypes = getDefaultLookupType();
     if ( sess != null)
       lookupTypes = sess.getLookupType();
-    
+
     //  Check if only DNS lookups should be used
-    
+
     if ( lookupTypes == DNSOnly) {
 
       // Convert the address to a name using a DNS lookup
-      
+
       InetAddress inetAddr = InetAddress.getByName(nbName.getFullName());
       return new NetBIOSName( inetAddr.getHostName(), nbName.getType(), nbName.isGroupName(), inetAddr.getAddress());
     }
-    
+
 		//  Get the local address details
 
 		InetAddress locAddr = InetAddress.getLocalHost ();
@@ -645,11 +645,11 @@ public final class NetBIOSSession extends NetworkSession {
 		m_dgramSock.setSoTimeout ( tmo);
 
     //  Check if the lookup should use WINS or a broadcast
-    
+
     boolean wins = false;
     if (( sess != null && sess.hasWINSServer()) || hasDefaultWINSServer())
       wins = true;
-    
+
 		//  Create a name lookup NetBIOS packet
 
 		NetBIOSPacket nbpkt = new NetBIOSPacket ();
@@ -663,29 +663,29 @@ public final class NetBIOSSession extends NetworkSession {
 			return null;
 
     //  Get the subnet mask addresses, using either the global settings or per session settings
-    
+
     String subnetMask = getDefaultSubnetMask();
     if ( sess != null)
       subnetMask = sess.getSubnetMask();
-    
+
 		//	If a WINS server has been configured the request is sent directly to the WINS server, if not then
 		//	a broadcast is done on the local subnet.
 
 		InetAddress destAddr = null;
-				
+
 		if ( hasDefaultWINSServer() == false || (sess != null && sess.hasWINSServer() == false)) {
 
 			//  Check if the subnet mask has been set, if not then generate a subnet mask
-	
+
 			if ( subnetMask == null)
 				subnetMask = GenerateSubnetMask ( null);
-	
+
 			//  Build a broadcast destination address
-	
+
 			destAddr = InetAddress.getByName ( subnetMask);
 		}
 		else {
-			
+
 			//	Use the WINS server address
 
       if ( sess != null)
@@ -693,9 +693,9 @@ public final class NetBIOSSession extends NetworkSession {
       else
         destAddr = getDefaultWINSServer();
 		}
-		
+
 		//	Build the name lookup request
-		
+
 		DatagramPacket dgram = new DatagramPacket ( nbpkt.getBuffer(), nbpkt.getLength(),
 													destAddr, RFCNetBIOSProtocol.NAME_PORT);
 
@@ -742,11 +742,11 @@ public final class NetBIOSSession extends NetworkSession {
 		} while ( ! rxOK);
 
 		//	Get the list of names from the response, should only be one name
-		
+
 		NetBIOSNameList nameList = rxpkt.getAnswerNameList();
 		if ( nameList != null && nameList.numberOfNames() > 0)
 			return nameList.getName(0);
-		return null;			
+		return null;
 	}
 
 	/**
@@ -891,7 +891,7 @@ public final class NetBIOSSession extends NetworkSession {
 		NetBIOSNameList nameList = rxpkt.getAnswerNameList();
 		if ( nameList != null && nameList.numberOfNames() > 0)
 			return nameList.getName(0);
-		return null;			
+		return null;
 	}
 
   /**
@@ -905,12 +905,12 @@ public final class NetBIOSSession extends NetworkSession {
    */
   public static StringList FindNameList ( String nbName, char nbType, int tmo)
     throws IOException {
-    
+
     // Call the main find name list method
-    
+
     return FindNameList( nbName, nbType, tmo, null);
   }
-  
+
 	/**
 	 * Build a list of nodes that own the specified NetBIOS name.
 	 *
@@ -962,26 +962,26 @@ public final class NetBIOSSession extends NetworkSession {
 		//	a broadcast is done on the local subnet.
 
 		InetAddress destAddr = null;
-				
+
     if ( hasDefaultWINSServer() == false || (sess != null && sess.hasWINSServer() == false)) {
 
       //  Get the subnet mask addresses, using either the global settings or per session settings
-      
+
       String subnetMask = getDefaultSubnetMask();
       if ( sess != null)
         subnetMask = sess.getSubnetMask();
-      
+
 			//  Check if the subnet mask has been set, if not then generate a subnet mask
-	
+
 			if ( subnetMask == null)
 				subnetMask = GenerateSubnetMask ( null);
-	
+
 			//  Build a broadcast destination address
-	
+
 			destAddr = InetAddress.getByName ( subnetMask);
 		}
 		else {
-      
+
       //  Use the WINS server address
 
       if ( sess != null)
@@ -1050,7 +1050,7 @@ public final class NetBIOSSession extends NetworkSession {
 		  catch ( java.io.IOException ex) {
 
 				//  DEBUG
-	
+
 				if ( Debug.EnableInfo && m_debug)
 				  Debug.println ( ex.toString ());
 		  }
@@ -1091,7 +1091,7 @@ public final class NetBIOSSession extends NetworkSession {
 
   /**
    * Get the NetBIOS name list for the specified IP address
-   * 
+   *
    * @param ipAddr String
    * @return NetBIOSNameList
    */
@@ -1099,13 +1099,13 @@ public final class NetBIOSSession extends NetworkSession {
     throws UnknownHostException, SocketException {
 
     // Find the names using the standard name port
-    
+
     return FindNamesForAddress( ipAddr, null);
   }
-  
+
 	/**
 	 * Get the NetBIOS name list for the specified IP address
-	 * 
+	 *
 	 * @param ipAddr String
    * @param sess NetBIOSSession
 	 * @return NetBIOSNameList
@@ -1137,11 +1137,11 @@ public final class NetBIOSSession extends NetworkSession {
 		nbpkt.setQuestionName( "*\0\0\0\0\0\0\0\0\0\0\0\0\0\0", NetBIOSName.WorkStation, NetBIOSPacket.NAME_TYPE_NBSTAT, NetBIOSPacket.NAME_CLASS_IN);
 
     //  Get the name port from the session settings, or use the default port
-    
+
     int namePort = RFCNetBIOSProtocol.NAME_PORT;
     if (sess != null)
       namePort = sess.getNamePort();
-    
+
 		//  Send the request to the specified address
 
 		InetAddress destAddr = InetAddress.getByName ( ipAddr);
@@ -1165,11 +1165,11 @@ public final class NetBIOSSession extends NetworkSession {
 		//  Create a vector to store the remote hosts NetBIOS names
 
 		NetBIOSNameList nameList = null;
-		
+
 	  try {
 
   		//  Send the name query datagram
-  
+
   		m_dgramSock.send ( dgram);
 
 		  //  Receive a datagram packet
@@ -1187,21 +1187,21 @@ public final class NetBIOSSession extends NetworkSession {
 
       if ( rxpkt.isResponse () && rxpkt.getOpcode () == NetBIOSPacket.RESP_QUERY &&
       		 rxpkt.getAnswerCount() >= 1) {
-      		   
+
       	//	Get the received name list
-      	
+
       	nameList = rxpkt.getAdapterStatusNameList();
-        
+
         // If the name list is valid set the TCP/IP address for each name in the list
-        
+
         if ( nameList != null) {
 
           // Convert the TCP/IP address to bytes
-          
+
           byte[] ipByts = IPAddress.asBytes(ipAddr);
-          
+
           // Set the TCP/IP address for each name in the list
-          
+
           for ( int i = 0; i < nameList.numberOfNames(); i++) {
             NetBIOSName nbName = nameList.getName(i);
             nbName.addIPAddress(ipByts);
@@ -1212,12 +1212,12 @@ public final class NetBIOSSession extends NetworkSession {
 	  catch ( java.io.IOException ex) {
 
   		//  DEBUG
-  
+
   		if ( Debug.EnableInfo && m_debug)
   		  Debug.println ( ex.toString ());
-  		  
+
   		//	Unknown host
-  		
+
   		throw new UnknownHostException(ipAddr);
 	  }
 
@@ -1225,10 +1225,10 @@ public final class NetBIOSSession extends NetworkSession {
 
 		return nameList;
 	}
-	
+
   /**
    * Convert a TCP/IP address to a NetBIOS or host name
-   * 
+   *
    * @param addr String
    * @param nbTyp char
    * @param isGroup boolean
@@ -1239,15 +1239,15 @@ public final class NetBIOSSession extends NetworkSession {
    */
   public final static NetBIOSName ConvertAddressToName(String addr, char nbTyp, boolean isGroup)
     throws UnknownHostException, SocketException, IOException {
-  
+
     // Call the main convert name method
-    
+
     return ConvertAddressToName( addr, nbTyp, isGroup, null);
   }
-  
+
   /**
    * Convert a TCP/IP address to a NetBIOS or host name
-   * 
+   *
    * @param addr String
    * @param nbTyp char
    * @param isGroup boolean
@@ -1261,30 +1261,30 @@ public final class NetBIOSSession extends NetworkSession {
     throws UnknownHostException, SocketException, IOException {
 
     //  Get the name lookup type(s) to use
-    
+
     int lookupTypes = getDefaultLookupType();
     if ( sess != null)
       lookupTypes = sess.getLookupType();
-    
+
     //  Check if the remote host is specified as a TCP/IP address
-    
+
     NetBIOSName nbName = null;
-    
+
     if ( IPAddress.isNumericAddress(addr)) {
-    
+
       // Convert the address to a name, using either DNS or WINS/NetBIOS broadcast type lookups
-      
+
       if ( lookupTypes != WINSOnly) {
-      
+
         try {
-          
+
           // Convert the address to a name using a DNS lookup
-          
+
           InetAddress inetAddr = InetAddress.getByName(addr);
           nbName = new NetBIOSName( addr, nbTyp, isGroup, inetAddr.getAddress());
 
           // DEBUG
-          
+
           if ( isDebug())
             Debug.println("Converted " + addr + " to NetBIOS name " + nbName + " [DNS]");
         }
@@ -1293,34 +1293,34 @@ public final class NetBIOSSession extends NetworkSession {
       }
 
       // If the address has not been converted try a WINS/NetBIOS name lookup
-      
+
       if ( nbName == null && lookupTypes != DNSOnly) {
-        
+
         //  Get a list of NetBIOS names from the remote host
-        
+
         NetBIOSNameList nameList = NetBIOSSession.FindNamesForAddress(addr);
-        
+
         //  Find the required service type
-        
+
         nbName = nameList.findName(nbTyp, isGroup);
-        
+
         // DEBUG
-        
+
         if ( isDebug())
           Debug.println("Converted " + addr + " to NetBIOS name " + nbName + " [WINS]");
       }
     }
-    
+
     // Check if the address has been converted to a name
-    
+
     if ( nbName == null)
       throw new IOException("NetBIOS service not running");
-    
+
     // Return the NetBIOS name
-    
+
     return nbName;
   }
-  
+
 	/**
 	 * Determine the subnet mask from the local hosts TCP/IP address
 	 *
@@ -1340,20 +1340,20 @@ public final class NetBIOSSession extends NetworkSession {
 			localIP = InetAddress.getLocalHost ().getHostAddress ();
 
 		// Get the network interface for the address
-		
+
 		boolean fromNI = false;
-		
+
 		try {
 			Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
 			while (nis.hasMoreElements())
 			{
 				NetworkInterface ni = nis.nextElement();
-				
+
 				if (ni.isLoopback())
 				{
 					continue;
 				}
-				
+
 				for ( InterfaceAddress iAddr : ni.getInterfaceAddresses()) {
 					InetAddress broadcast = iAddr.getBroadcast();
 					if ( broadcast != null) {
@@ -1365,61 +1365,61 @@ public final class NetBIOSSession extends NetworkSession {
 		}
 		catch ( SocketException ex) {
 		}
-		
+
 		// Try to generate the subnet mask from the address
-		
+
 		if ( _subnetMask == null) {
-			
+
 			//  Find the location of the first dot in the TCP/IP address
-	
+
 			int dotPos = localIP.indexOf ( '.');
 			if ( dotPos != -1) {
-	
+
 				//  Extract the leading IP address value
-	
+
 				String ipStr = localIP.substring ( 0, dotPos);
 				int ipVal = Integer.valueOf ( ipStr).intValue ();
-	
+
 				//  Determine the subnet mask to use
-	
+
 				if ( ipVal <= 127) {
-	
+
 					//  Class A address
-	
+
 					_subnetMask = "" + ipVal + ".255.255.255";
 				}
 				else if ( ipVal <= 191) {
-	
+
 					//  Class B adddress
-	
+
 					dotPos++;
 					while ( localIP.charAt ( dotPos) != '.' && dotPos < localIP.length ())
 						dotPos++;
-	
+
 					if ( dotPos < localIP.length ())
 						_subnetMask = localIP.substring ( 0, dotPos) + ".255.255";
 				}
 				else if ( ipVal <= 223) {
-	
+
 					//  Class C address
-	
+
 					dotPos++;
 					int dotCnt = 1;
-	
+
 					while ( dotCnt < 3 && dotPos < localIP.length ()) {
-	
+
 						//  Check if the current character is a dot
-	
+
 						if ( localIP.charAt ( dotPos++) == '.')
 							dotCnt++;
 					}
-	
+
 					if ( dotPos < localIP.length ())
 						_subnetMask = localIP.substring ( 0, dotPos - 1) + ".255";
 				}
 			}
 		}
-		
+
 		//  Check if the subnet mask has been set, if not then use a general
 		//  broadcast mask
 
@@ -1471,22 +1471,22 @@ public final class NetBIOSSession extends NetworkSession {
 
 	/**
 	 * Determine if the WINS server address is configured
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final static boolean hasDefaultWINSServer() {
 		return _winsServer != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the WINS server address
-	 * 
+	 *
 	 * @return InetAddress
 	 */
 	public final static InetAddress getDefaultWINSServer() {
 		return _winsServer;
 	}
-	
+
 	/**
 	 * Determine if SMB session debugging is enabled
 	 *
@@ -1496,25 +1496,25 @@ public final class NetBIOSSession extends NetworkSession {
 
 	/**
 	 * Return the next session index
-	 * 
+	 *
 	 * @return int
 	 */
 	private final static synchronized int getSessionId() {
 		return m_sessIdx++;
 	}
-	
+
 	/**
 	 * Return the JVM unique id, used when generating caller names
-	 * 
+	 *
 	 * @return int
 	 */
 	public final static int getJVMIndex() {
 		return m_jvmIdx;
 	}
-	
+
 	/**
 	 * Convert the TCP/IP host name to a NetBIOS name string.
-	 * 
+	 *
 	 * @return java.lang.String
 	 * @param hostName java.lang.String
 	 */
@@ -1539,49 +1539,49 @@ public final class NetBIOSSession extends NetworkSession {
 
   /**
    * Override the NetBIOS session port to connect to
-   * 
+   *
    * @param port int
    */
   public final void setSessionPort(int port) {
     m_remotePort = port;
   }
-  
+
   /**
    * Override the name lookup type(s) to use
-   * 
+   *
    * @param lookupTyp int
    */
   public final void setLookupType(int lookupTyp) {
     m_lookupType = lookupTyp;
   }
-  
+
   /**
    * Override the name lookup timeout, in milliseconds
-   * 
+   *
    * @param tmo int
    */
   public final void setLookupTimeout(int tmo) {
     m_lookupTmo = tmo;
   }
-  
+
   /**
    * Override the default WINS server address
-   * 
+   *
    * @param addr InetAddress
    */
   public final void setWINSServer(InetAddress addr) {
     m_winsServer = addr;
   }
-  
+
   /**
    * Override the default subnet mask
-   * 
+   *
    * @param mask String
    */
   public final void setSubnetMask(String mask) {
     m_subnetMask = mask;
   }
-  
+
 	/**
 	 * Enable/disable NetBIOS session debugging
 	 *
@@ -1627,7 +1627,7 @@ public final class NetBIOSSession extends NetworkSession {
 	public final static void setDefaultWINSServer(InetAddress addr) {
 		_winsServer = addr;
 	}
-	
+
 	/**
 	 * Get the NetBIOS adapter status for the specified node.
 	 *
@@ -1732,17 +1732,17 @@ public final class NetBIOSSession extends NetworkSession {
 	  InetAddress addr = null;
 
 		//	Set the remote address is specified
-		
+
 		if ( remAddr != null) {
-			
+
 			//	Use the specified remote address
-			
+
 			addr = InetAddress.getByName(remAddr);
 		}
 		else {
 
 		  //  Try a WINS/NetBIOS type name lookup, if enabled
-	
+
 		  if ( getLookupType() != DNSOnly) {
 		  	try {
 			  	NetBIOSName netName = FindName(remHost, NetBIOSName.FileServer, 500);
@@ -1752,15 +1752,15 @@ public final class NetBIOSSession extends NetworkSession {
 				catch ( Exception ex) {
 				}
 		  }
-	
+
 		  //  Try a DNS type name lookup, if enabled
-	
+
 		  if ( addr == null && getLookupType() != WINSOnly) {
 		    addr = InetAddress.getByName( remHost);
 		    dnsLookup = true;
 		  }
 		}
-		
+
 	  //  Check if we translated the remote host name to an address
 
 	  if ( addr == null)
@@ -1774,57 +1774,57 @@ public final class NetBIOSSession extends NetworkSession {
 		//	Determine the remote name to call
 
 		String remoteName = null;
-				
+
 		if ( getRemoteNameType() == NetBIOSName.FileServer && useWildcardFileServerName() == true)
 			remoteName = "*SMBSERVER";
 		else
 			remoteName = remHost;
 
 		//	Open a session to the remote server
-		
+
 		int resp = openSession(remoteName, addr);
 
 		//	Check the server response
-			
+
 		if ( resp == RFCNetBIOSProtocol.SESSION_ACK)
 		  return;
 		else if ( resp == RFCNetBIOSProtocol.SESSION_REJECT) {
-		  
+
       //  If the session was rejected (especially with the remotename "*SMBSERVER") we need to get a proper netbios name
       //  via WINS lookup, to be able to setup a NetBIOS session
-    
+
       if ( IPAddress.isNumericAddress(remHost)) {
         NetBIOSName nbName = null;
-   
+
         //  Convert the TCP/IP address to a NetBIOS name using WINS/NetBIOS name lookup
-   
+
         int tmpLookupType = getLookupType();
         setLookupType(NetBIOSSession.WINSOnly);
         nbName = NetBIOSSession.ConvertAddressToName(remHost, NetBIOSName.FileServer, false, this);
-   
+
         //  Set the lookuptype back to its intial state
-   
+
         setLookupType(tmpLookupType);
         remHost = nbName.getFullName();
       }
-    
+
 		  //	Try the connection again with the remote host name
-		  
+
 		  if ( remoteName.equals(remHost) == false)
 		    resp = openSession(remHost, addr);
-		  
+
 		  //	Check if we got a valid response this time
-		  
+
 		  if ( resp == RFCNetBIOSProtocol.SESSION_ACK)
 		    return;
-        
+
 		  //	Server rejected the connection
-		  
+
 	    throw new java.io.IOException ( "NetBIOS session reject");
 		}
 		else if ( resp == RFCNetBIOSProtocol.SESSION_RETARGET)
 			throw new java.io.IOException ( "NetBIOS ReTarget");
-		
+
 	  //  Invalid session response, hangup the session
 
 	  Close();
@@ -1833,7 +1833,7 @@ public final class NetBIOSSession extends NetworkSession {
 
 	/**
 	 * Open a NetBIOS session to a remote server
-	 * 
+	 *
 	 * @param remoteName String
 	 * @param addr InetAddress
 	 * @return int
@@ -1841,9 +1841,9 @@ public final class NetBIOSSession extends NetworkSession {
 	 */
 	private final int openSession(String remoteName, InetAddress addr)
 		throws IOException {
-	
+
     // Get starting timestamp, for timeout
-    
+
     long start = System.currentTimeMillis();
 
 	  //  Create the socket
@@ -1868,47 +1868,47 @@ public final class NetBIOSSession extends NetworkSession {
 	  m_nbOut = new DataOutputStream ( m_nbSocket.getOutputStream ());
 
 		//	Allocate a buffer to receive the session response
-		
+
 		byte [] inpkt = new byte [ RFCNetBIOSProtocol.SESSRESP_LEN];
-		
+
 		//	Create the from/to NetBIOS names
-		
+
 		NetBIOSName fromName = createUniqueCallerName();
 		NetBIOSName toName   = new NetBIOSName( remoteName, getRemoteNameType(), false);
-	
+
 		//	Debug
-		
+
 		if ( Debug.EnableInfo && m_debug)
 			Debug.println ( "NetBIOS: Call from " + fromName + " to " + toName);
-		
+
 		//	Build the session request packet
-		
+
 		NetBIOSPacket nbPkt = new NetBIOSPacket();
 		nbPkt.buildSessionSetupRequest(fromName, toName);
-	
+
 	  //  Send the session request packet
-	
+
 		m_nbOut.write(nbPkt.getBuffer(), 0, nbPkt.getLength());
 
     // Check for available bytes, so we don't hang in read()
-    
+
     while ( m_nbIn.available() < 1) {
-          
+
       if ((getTimeout() > 0) && (System.currentTimeMillis() - start) > getTimeout()) {
-              
+
         // Close socket and streams
-              
+
         m_nbIn.close();
         m_nbIn = null;
-                
+
         m_nbOut.close();
-        m_nbOut = null; 
-                
+        m_nbOut = null;
+
         m_nbSocket.close();
         m_nbSocket = null;
-                
+
         // Throw timeout exception
-                
+
         throw new IOException("NetBIOS session response timeout");
       }
       try {
@@ -1917,42 +1917,42 @@ public final class NetBIOSSession extends NetworkSession {
       catch (Exception e)
       {
       }
-    }                
-        
+    }
+
 	  //  Allocate a buffer for the session request response, and read the response
-	
+
 		int resp = -1;
-        
+
 	  if ( m_nbIn.read ( inpkt, 0, RFCNetBIOSProtocol.SESSRESP_LEN) >= RFCNetBIOSProtocol.HEADER_LEN) {
-	
+
 			//  Check the session request response
-	
+
 			resp = ( int) ( inpkt [ 0] & 0xFF);
-	
+
 			//  Debug mode
-	
+
 			if ( Debug.EnableInfo && m_debug)
 			  Debug.println ( "NetBIOS: Rx " + NetBIOSPacket.getTypeAsString(resp));
 	  }
 
 	  //	Check for a positive response
-	  
+
 	  if ( resp != RFCNetBIOSProtocol.SESSION_ACK) {
-	    
+
 	    //	Close the socket and streams
-	    
+
 	    m_nbIn.close();
 	    m_nbIn = null;
-	    
+
 	    m_nbOut.close();
 	    m_nbOut = null;
-	    
+
 	    m_nbSocket.close();
 	    m_nbSocket = null;
 	  }
 
 	  //	Return the response code
-		
+
 		return resp;
 	}
 
@@ -1976,7 +1976,7 @@ public final class NetBIOSSession extends NetworkSession {
 
 	/**
 	 * Close the NetBIOS session.
-	 * 
+	 *
 	 * @exception IOException	If an I/O error occurs
 	 */
 	public void Close()
@@ -2075,7 +2075,7 @@ public final class NetBIOSSession extends NetworkSession {
   	    Debug.println ( "NetBIOS: Rx Buf Too Small pkt=" + pktlen + " buflen=" + buf.length);
   	    HexDump.Dump ( buf, 16, 0);
       }
-      
+
 	    throw new java.io.IOException ( "NetBIOS Recv Buffer Too Small (pkt=" + pktlen + "/buf=" + buf.length + ")");
 	  }
 
@@ -2146,17 +2146,17 @@ public final class NetBIOSSession extends NetworkSession {
 
 	/**
    * Set the socket timeout
-   * 
+   *
    * @param tmo int
    */
   public void setTimeout(int tmo) {
-    
+
     // Call the base class to store the timeout
-    
+
     super.setTimeout(tmo);
-    
+
     // Set the socket timeout, if the socket is valid
-    
+
     if ( m_nbSocket != null) {
       try {
         m_nbSocket.setSoTimeout( getTimeout());
@@ -2183,7 +2183,7 @@ public final class NetBIOSSession extends NetworkSession {
 	/**
 	 * Set the caller session name template string that is appended to the local host name to create a unique caller
 	 * name.
-	 * 
+	 *
 	 * @param template String
 	 * @exception NameTemplateException
 	 */
@@ -2191,133 +2191,133 @@ public final class NetBIOSSession extends NetworkSession {
 		throws NameTemplateException {
 
 		//	Check if the template string is valid, is not too long
-		
+
 		if ( template == null || template.length() == 0 || template.length() > MaxCallerNameTemplateLength)
 			throw new NameTemplateException("Invalid template string, " + template);
-			
+
 		//	Template must contain at least one session id template character
-		
+
 		if ( template.indexOf(SessionIdChar) == -1)
 			throw new NameTemplateException("No session id character in template");
-			
+
 		//	Check if the template contains any invalid characters
-		
+
 		for ( int i = 0; i < template.length(); i++) {
 			if ( ValidTemplateChars.indexOf(template.charAt(i)) == -1)
 				throw new NameTemplateException("Invalid character in template, '" + template.charAt(i) + "'");
 		}
-		
+
 		//	Set the caller name template string
-		
+
 		m_callerTemplate = template;
-		
+
 		//	Clear the local name part string so that it will be regenerated to match the new template string
-		
+
 		m_localNamePart = null;
 	}
 
 	/**
 	 * Set the JVM index, used to generate unique caller names when multiple JVMs are run on the same host.
-	 * 
+	 *
 	 * @param jvmIdx int
 	 */
 	public final static void setJVMIndex(int jvmIdx) {
 		if ( jvmIdx >= 0)
 			m_jvmIdx = jvmIdx;
 	}
-	
+
 	/**
 	 * Create a unique caller name for a new NetBIOS session. The unique name contains the local host name plus
 	 * an index that is unique for this JVM, plus an optional JVM index.
-	 * 
+	 *
 	 * @return NetBIOSName
 	 */
 	private final NetBIOSName createUniqueCallerName() {
 
 		//	Check if the local name part has been set
-		
+
 		if ( m_localNamePart == null) {
-			
+
 			String localName = null;
-			
+
 			try {
 				localName = InetAddress.getLocalHost().getHostName();
 			}
 			catch (Exception ex) {
 			}
-			
+
 			//	Check if the name contains a domain
-			
+
 			int pos = localName.indexOf(".");
-			
+
 			if ( pos != -1)
 				localName = localName.substring(0, pos);
-				
+
 			//	Truncate the name if the host name plus the template is longer than 15 characters.
-			
+
 			int nameLen = 16 - m_callerTemplate.length();
-			
+
 			if ( localName.length() > nameLen)
 				localName = localName.substring(0, nameLen - 1);
 
 			//	Set the local host name part
-			
+
 			m_localNamePart = localName.toUpperCase();
 		}
 
 		//	Get a unique session id and the unique JVM id
-		
+
 		int sessId = getSessionId();
 		int jvmId  = getJVMIndex();
-		
+
 		//	Build the NetBIOS name string
-		
+
 		StringBuffer nameBuf = new StringBuffer(16);
-		
+
 		nameBuf.append(m_localNamePart);
-		
+
 		//	Process the caller name template string
-		
+
 		int idx = 0;
 		int len = -1;
-		
+
 		while ( idx < m_callerTemplate.length()) {
-			
+
 			//	Get the current template character
-			
+
 			char ch = m_callerTemplate.charAt(idx++);
-			
+
 			switch ( ch) {
-				
+
 				// Session id
-				
+
 				case SessionIdChar:
 					len = findRepeatLength(m_callerTemplate, idx, SessionIdChar);
 					appendZeroPaddedHexValue(sessId, len, nameBuf);
 					idx += len - 1;
 					break;
-					
+
 				//	JVM id
-				
+
 				case JVMIdChar:
 					len = findRepeatLength(m_callerTemplate, idx, JVMIdChar);
 					appendZeroPaddedHexValue(jvmId, len, nameBuf);
 					idx += len - 1;
 					break;
-					
+
 				//	Pass any other characters through to the name string
-				
+
 				default:
 					nameBuf.append(ch);
 					break;
 			}
 		}
-		
+
 		//	Create the NetBIOS name object
-		
+
 		return new NetBIOSName( nameBuf.toString(), getLocalNameType(), false);
 	}
-	
+
 	/**
 	 * Find the length of the character block in the specified string
 	 *
@@ -2328,7 +2328,7 @@ public final class NetBIOSSession extends NetworkSession {
 	 */
 	private final int findRepeatLength(String str, int pos, char ch) {
 		int len = 1;
-		
+
 		while ( pos < str.length() && str.charAt(pos++) == ch)
 			len++;
 		return len;
@@ -2336,24 +2336,24 @@ public final class NetBIOSSession extends NetworkSession {
 
 	/**
 	 * Append a zero filled hex string to the specified string
-	 * 
+	 *
 	 * @param val int
 	 * @param len int
 	 * @param str StringBuffer
 	 */
 	private final void appendZeroPaddedHexValue(int val, int len, StringBuffer str) {
-		
+
 		//	Create the hex string of the value
-		
+
 		String hex = Integer.toHexString(val);
-		
+
 		//	Pad the final string as required
-		
+
 		for ( int i = 0; i < len - hex.length(); i++)
 			str.append("0");
-		str.append(hex);	
+		str.append(hex);
 	}
-	
+
 	/**
 	 * Return the use wildcard file server name flag status. If true the target name when conencting
 	 * to a remote file server will be '*SMBSERVER', if false the remote name will be used.
@@ -2363,7 +2363,7 @@ public final class NetBIOSSession extends NetworkSession {
 	public final boolean useWildcardFileServerName() {
 	  return m_useWildcardServerName;
 	}
-	
+
 	/**
 	 * Set the use wildcard file server name flag. If true the target name when conencting
 	 * to a remote file server will be '*SMBSERVER', if false the remote name will be used.
@@ -2373,16 +2373,16 @@ public final class NetBIOSSession extends NetworkSession {
 	public final void setWildcardFileServerName(boolean useWildcard) {
 	  m_useWildcardServerName = useWildcard;
 	}
-	
+
   /**
    * Return the default setting for the use wildcard file server name setting
-   * 
+   *
    * @return boolean
    */
   public final static boolean getDefaultWildcardFileServerName() {
     return _useWildcardFileServer;
   }
-  
+
   /**
    * Set the default use wildcard file server name flag. If true the target name when conencting
    * to a remote file server will be '*SMBSERVER', if false the remote name will be used.
@@ -2392,7 +2392,7 @@ public final class NetBIOSSession extends NetworkSession {
   public final static void setDefaultWildcardFileServerName(boolean useWildcard) {
     _useWildcardFileServer = useWildcard;
   }
-  
+
 	/**
 	 * Finalize the NetBIOS session object
 	 */

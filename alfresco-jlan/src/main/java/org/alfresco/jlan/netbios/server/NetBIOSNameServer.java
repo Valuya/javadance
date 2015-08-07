@@ -54,9 +54,9 @@ import org.alfresco.jlan.util.StringList;
 public class NetBIOSNameServer extends NetworkServer implements Runnable, ConfigurationListener {
 
 	//	Server version
-	
+
 	private static final String ServerVersion = Version.NetBIOSServerVersion;
-	
+
   //	Various NetBIOS packet sizes
 
   public static final int AddNameSize 	 	= 256;
@@ -67,34 +67,34 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
   private static final int AddNameInterval 			= 2000; // ms between transmits
   private static final int AddNameRetries 			= 5; 		// number of broadcasts
-  
+
   private static final int AddNameWINSInterval	= 250;	//	ms between requests when using WINS
 
 	//	Delete name interval and retry count
-	
+
 	private static final int DeleteNameInterval 	= 200;	// ms between transmits
 	private static final int DeleteNameRetries 		= 1;		// number of broadcasts
 
 	//	Refresh name retry count
-	
+
 	public static final int RefreshNameRetries		= 2;		// number of broadcasts
-	
+
   // NetBIOS flags
 
   public static final int GroupName = 0x8000;
 
 	//	Default time to live value for names registered by this server, in seconds
-	
+
 	public static final int DefaultTTL	=	10800;	// 3 hours
-	
+
 	//	Name refresh thread wakeup interval
-	
+
 	public static final long NameRefreshWakeupInterval	= 180000L;	//	3 minutes
-	
+
   //  CIFS server configuration section
-  
+
   private CIFSConfigSection m_cifsConfig;
-  
+
   //	Name transaction id
 
   private static int m_tranId;
@@ -113,17 +113,17 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
 	//	Broadcast address, if not using WINS
 
-	private InetAddress m_bcastAddr;	
-	
+	private InetAddress m_bcastAddr;
+
   //	Port/socket to bind to
 
   private int m_port = RFCNetBIOSProtocol.NAME_PORT;
 
 	//	WINS server addresses
-	
+
 	private InetAddress m_winsPrimary;
 	private InetAddress m_winsSecondary;
-	
+
   //	Local add name listener list
 
   private Vector<AddNameListener> m_addListeners;
@@ -145,26 +145,26 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
   private Hashtable<NetBIOSName, byte[]> m_remoteNames;
 
 	//	List of active add name requests
-	
+
 	private Vector<NetBIOSRequest> m_reqList;
 
 	//	NetBIOS request handler and name refresh threads
-	
+
 	private NetBIOSRequestHandler m_reqHandler;
 	private NetBIOSNameRefresh m_refreshThread;
 
 	//	Server thread
-	
+
 	private Thread m_srvThread;
-		
+
 	//	NetBIOS request handler thread inner class
-	
+
 	class NetBIOSRequestHandler extends Thread {
-		
+
 		//	Shutdown request flag
-		
+
 		private boolean m_hshutdown = false;
-		
+
 		/**
 		 * Default constructor
 		 */
@@ -172,206 +172,206 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 	    setDaemon(true);
 	    setName("NetBIOSRequest");
 		}
-		
+
 		/**
 		 * Shutdown the request handler thread
 		 */
 		public final void shutdownRequest() {
 			m_hshutdown = true;
-			
+
 			synchronized ( m_reqList) {
 				m_reqList.notify();
 			}
 		}
-		
+
 		/**
 		 * Main thread code
 		 */
 		public void run() {
-			
+
 			//	Loop until shutdown requested
-			
+
 			while ( m_hshutdown == false) {
-				
+
 				try {
-					
+
 					//	Wait for something to do
 
 					NetBIOSRequest req = null;
-										
+
 					synchronized ( m_reqList) {
-						
+
 						//	Check if there are any requests in the queue
-						
+
 						if ( m_reqList.size() == 0) {
-							
+
 							//	Debug
-							
+
 							if ( Debug.EnableInfo && hasDebug())
 								Debug.println("NetBIOS handler waiting for request ...");
-								
+
 							//	Wait for some work ...
-							
+
 							m_reqList.wait();
 						}
-						
+
 						//	Remove a request from the queue
-						
+
 						if ( m_reqList.size() > 0)
 							req = m_reqList.elementAt(0);
 						else if ( m_hshutdown == true)
 							break;
 					}
-					
+
 					//	Get the request retry count, for WINS only send one request
-					
+
 					int reqRetry = req.getRetryCount();
 					if ( hasPrimaryWINSServer())
 						reqRetry = 1;
-						
+
 					//	Process the request
-					
+
 					boolean txsts = true;
 					int retry = 0;
-					
+
 					while ( req.hasErrorStatus() == false && retry++ < reqRetry) {
-						
+
 						//	Debug
-						
+
 						if (Debug.EnableInfo && hasDebug())
 							Debug.println("NetBIOS handler, processing " + req);
-						
+
 						//	Process the request
 
 						switch( req.isType()) {
-							
+
 							//	Add name request
-							
-							case NetBIOSRequest.AddName:						
-							
+
+							case NetBIOSRequest.AddName:
+
 								//	Check if a WINS server is configured
-								
+
 								if ( hasPrimaryWINSServer())
 									txsts = sendAddName(req, getPrimaryWINSServer(), false);
 								else
 									txsts = sendAddName(req, getBroadcastAddress(), true);
 								break;
-								
+
 							//	Delete name request
-							
+
 							case NetBIOSRequest.DeleteName:
-							
+
 								//	Check if a WINS server is configured
-								
+
 								if ( hasPrimaryWINSServer())
 									txsts = sendDeleteName(req, getPrimaryWINSServer(), false);
 								else
 									txsts = sendDeleteName(req, getBroadcastAddress(), true);
 								break;
-								
+
 							//	Refresh name request
-							
+
 							case NetBIOSRequest.RefreshName:
-							
+
 								//	Check if a WINS server is configured
-									
+
 								if ( hasPrimaryWINSServer())
 									txsts = sendRefreshName(req, getPrimaryWINSServer(), false);
 								else
 									txsts = sendRefreshName(req, getBroadcastAddress(), true);
 								break;
 						}
-						
+
 						//	Check if the request was successful
-						
+
 						if ( txsts == true && req.getRetryInterval() > 0) {
 
 							//	Sleep for a while
-							
-							sleep(req.getRetryInterval());							
+
+							sleep(req.getRetryInterval());
 						}
 					}
-					
+
 					//	Check if the request was successful
-					
+
 					if ( req.hasErrorStatus() == false) {
-						
+
 						//	Debug
-						
+
 						if (Debug.EnableInfo && hasDebug())
 							Debug.println("NetBIOS handler successful, " + req);
 
 						//	Update the name record
-						
+
 						NetBIOSName nbName = req.getNetBIOSName();
-						
+
 						switch ( req.isType()) {
 
 							//	Add name request
-							
+
 							case NetBIOSRequest.AddName:
 
 								//	Add the name to the list of local names
-								
+
 								if ( m_localNames.contains(nbName) == false)
 									m_localNames.add(nbName);
-								
+
 								//	Update the expiry time for the name
-								
+
 								nbName.setExpiryTime(System.currentTimeMillis() + ( nbName.getTimeToLive() * 1000L));
-	
+
 								//	Inform listeners that the request was successful
-	
+
 								fireAddNameEvent(nbName, NetBIOSNameEvent.ADD_SUCCESS);
 								break;
-							
+
 							//	Delete name request
-								
+
 							case NetBIOSRequest.DeleteName:
-							
+
 								//	Remove the name from the list of local names
-								
+
 								m_localNames.removeElement(req.getNetBIOSName());
 								break;
-								
+
 							//	Refresh name registration request
-							
+
 							case NetBIOSRequest.RefreshName:
 
 								//	Update the expiry time for the name
-									
+
 								nbName.setExpiryTime(System.currentTimeMillis() + ( nbName.getTimeToLive() * 1000L));
 								break;
 						}
 					}
 					else {
-						
+
 						//	Error occurred
-						
+
 						switch( req.isType()) {
-							
+
 							//	Add name request
-							
-							case NetBIOSRequest.AddName:						
+
+							case NetBIOSRequest.AddName:
 
 								//	Remove the name from the local name list
-								
-								m_localNames.removeElement(req.getNetBIOSName());							
+
+								m_localNames.removeElement(req.getNetBIOSName());
 								break;
 						}
 					}
 
 					//	Remove the request from the queue
 
-					synchronized( m_reqList) {						
+					synchronized( m_reqList) {
 						m_reqList.removeElementAt(0);
 					}
 				}
 				catch (InterruptedException ex) {
 				}
-				
+
 				//	Check if the request handler has been shutdown
-				
+
 				if ( m_hshutdown == true)
 					break;
 			}
@@ -379,7 +379,7 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
 		/**
 		 * Send an add name request
-		 * 
+		 *
 		 * @param req NetBIOSRequest
 		 * @param dest InetAddress
 		 * @param bcast boolean
@@ -388,33 +388,33 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 		private final boolean sendAddName(NetBIOSRequest req, InetAddress dest, boolean bcast) {
 
 			try {
-				
+
 				//  Allocate a buffer for the add name NetBIOS packet
-		
+
 				byte[] buf = new byte[AddNameSize];
 				NetBIOSPacket addPkt = new NetBIOSPacket(buf);
-		
+
 				//  Build an add name packet for each IP address
-		    
+
 				for ( int i = 0; i < req.getNetBIOSName().numberOfAddresses(); i++) {
-		    	
+		
 					//	Build an add name request for the current IP address
-		    	
+		
 					int len = addPkt.buildAddNameRequest(req.getNetBIOSName(), i, req.getTransactionId());
 					if ( bcast == false)
 						addPkt.setFlags(0);
 
 					//  Allocate the datagram packet, using the add name buffer
-		
+
 					DatagramPacket pkt = new DatagramPacket(buf, len, dest, getPort());
-		    
+
 					//	Send the add name request
-		    
+
 					if ( m_socket != null)
 						m_socket.send(pkt);
 
 					//	Debug
-						
+
 					if (Debug.EnableInfo && hasDebug())
 						Debug.println("  Add name " + ( bcast ? "broadcast" : "WINS") + ", " + req);
 				}
@@ -424,15 +424,15 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 				req.setErrorStatus(true);
 				return false;
 			}
-			
+
 			//	Add name broadcast successful
-			
+
 			return true;
 		}
 
 		/**
 		 * Send a refresh name request
-		 * 
+		 *
 		 * @param req NetBIOSRequest
 		 * @param dest InetAddress
 		 * @param bcast boolean
@@ -441,33 +441,33 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 		private final boolean sendRefreshName(NetBIOSRequest req, InetAddress dest, boolean bcast) {
 
 			try {
-				
+
 				//  Allocate a buffer for the refresh name NetBIOS packet
-		
+
 				byte[] buf = new byte[RefreshNameSize];
 				NetBIOSPacket refreshPkt = new NetBIOSPacket(buf);
-		
+
 				//  Build a refresh name packet for each IP address
-		    
+
 				for ( int i = 0; i < req.getNetBIOSName().numberOfAddresses(); i++) {
-		    	
+		
 					//	Build a refresh name request for the current IP address
-		    	
+		
 					int len = refreshPkt.buildRefreshNameRequest(req.getNetBIOSName(), i, req.getTransactionId());
 					if ( bcast == false)
 						refreshPkt.setFlags(0);
 
 					//  Allocate the datagram packet, using the refresh name buffer
-		
+
 					DatagramPacket pkt = new DatagramPacket(buf, len, dest, getPort());
-		    
+
 					//	Send the refresh name request
-		    
+
 					if ( m_socket != null)
 						m_socket.send(pkt);
 
 					//	Debug
-						
+
 					if (Debug.EnableInfo && hasDebug())
 						Debug.println("  Refresh name " + ( bcast ? "broadcast" : "WINS") + ", " + req);
 				}
@@ -476,15 +476,15 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 				req.setErrorStatus(true);
 				return false;
 			}
-			
+
 			//	Add name broadcast successful
-			
+
 			return true;
 		}
 
 		/**
 		 * Send a delete name request via a network broadcast
-		 * 
+		 *
 		 * @param req NetBIOSRequest
 		 * @param dest InetAddress
 		 * @param bcast boolean
@@ -493,33 +493,33 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 		private final boolean sendDeleteName(NetBIOSRequest req, InetAddress dest, boolean bcast) {
 
 			try {
-				
+
 				//  Allocate a buffer for the delete name NetBIOS packet
-		
+
 				byte[] buf = new byte[DeleteNameSize];
 				NetBIOSPacket delPkt = new NetBIOSPacket(buf);
-		
+
 				//  Build a delete name packet for each IP address
-		    
+
 				for ( int i = 0; i < req.getNetBIOSName().numberOfAddresses(); i++) {
-		    	
+		
 					//	Build an add name request for the current IP address
-		    	
+		
 					int len = delPkt.buildDeleteNameRequest(req.getNetBIOSName(), i, req.getTransactionId());
 					if ( bcast == false)
 						delPkt.setFlags(0);
-					
+
 					//  Allocate the datagram packet, using the add name buffer
-		
+
 					DatagramPacket pkt = new DatagramPacket(buf, len, dest, getPort());
-		    
+
 					//	Send the add name request
-		    
+
 					if ( m_socket != null)
 						m_socket.send(pkt);
 
 					//	Debug
-						
+
 					if (Debug.EnableInfo && hasDebug())
 						Debug.println("  Delete name " + ( bcast ? "broadcast" : "WINS") + ", " + req);
 				}
@@ -528,21 +528,21 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 				req.setErrorStatus(true);
 				return false;
 			}
-			
+
 			//	Delete name broadcast successful
-			
+
 			return true;
 		}
 	};
 
 	//	NetBIOS name refresh thread inner class
-	
+
 	class NetBIOSNameRefresh extends Thread {
-		
+
 		//	Shutdown request flag
-		
+
 		private boolean m_hshutdown = false;
-		
+
 		/**
 		 * Default constructor
 		 */
@@ -550,7 +550,7 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 			setDaemon(true);
 			setName("NetBIOSRefresh");
 		}
-		
+
 		/**
 		 * Shutdown the name refresh thread
 		 */
@@ -558,75 +558,75 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 			m_hshutdown = true;
 
 			//	Wakeup the thread
-			
-			this.interrupt();			
+
+			this.interrupt();
 		}
-		
+
 		/**
 		 * Main thread code
 		 */
 		public void run() {
-			
+
 			//	Loop for ever
-			
+
 			while ( m_hshutdown == false) {
-				
+
 				try {
 
 					//	Sleep for a while
-					
+
 					sleep(NameRefreshWakeupInterval);
-					
+
 					//	Check if there is a shutdown pending
-					
+
 					if ( m_hshutdown == true)
 						break;
-						
+
 					//	Debug
-							
+
 					if ( Debug.EnableInfo && hasDebug())
 						Debug.println("NetBIOS name refresh wakeup ...");
-						
+
 					//	Check if there are any registered names that will expire in the next interval
-										
+
 					synchronized ( m_localNames) {
 
 						//	Get the current time plus the wakeup interval
-						
+
 						long expireTime = System.currentTimeMillis() + NameRefreshWakeupInterval;
-						
+
 						//	Loop through the local name list
-						
+
 						for ( int i = 0; i < m_localNames.size(); i++) {
-							
+
 							//	Get a name from the list
-							
+
 							NetBIOSName nbName = (NetBIOSName) m_localNames.elementAt(i);
-							
+
 							//	Check if the name has expired, or will expire before the next wakeup event
-							
+
 							if ( nbName.getExpiryTime() < expireTime) {
-								
+
 								//	Debug
-							
+
 								if ( Debug.EnableInfo && hasDebug())
 									Debug.println("Queuing name refresh for " + nbName);
 
 								//	Queue a refresh request for the NetBIOS name
-								
+
 								NetBIOSRequest nbReq = new NetBIOSRequest(NetBIOSRequest.RefreshName, nbName, getNextTransactionId());
 								nbReq.setRetryCount(RefreshNameRetries);
-		
+
 								//	Queue the request
-		
+
 								synchronized (m_reqList) {
-			
+
 									//	Add the request to the list
-			
+
 									m_reqList.addElement(nbReq);
-			
+
 									//	Wakeup the processing thread
-			
+
 									m_reqList.notify();
 								}
 							}
@@ -636,7 +636,7 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 				catch (Exception ex) {
 
 					//	Debug
-							
+
 					if ( Debug.EnableError && hasDebug()) {
 						Debug.println("NetBIOS Name refresh thread exception");
 						Debug.println(ex);
@@ -645,10 +645,10 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 			}
 		}
 	};
-				
+
   /**
    * Default constructor
-   * 
+   *
    * @param config ServerConfiguration
    * @exception SocketException		If a network setup error occurs
    */
@@ -656,58 +656,58 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
   	throws SocketException {
 
 		super("NetBIOS", config);
-		
+
 		//	Perform common constructor code
-		
+
 		commonConstructor();
   }
 
 	/**
 	 * Common constructor code
-	 * 
+	 *
    * @exception SocketException		If a network setup error occurs
 	 */
 	private final void commonConstructor()
 		throws SocketException {
 
 		//	Add the NetBIOS name server as a configuration change listener of the server configuration
-	
+
 		getConfiguration().addListener(this);
-		
+
 		//	Set the server version
-		
+
 		setVersion(ServerVersion);
-		
+
     //  Find the CIFS server configuration
-    
+
     m_cifsConfig = (CIFSConfigSection) getConfiguration().getConfigSection( CIFSConfigSection.SectionName);
     if ( m_cifsConfig != null) {
-      
+
       //  Allocate the local and remote name tables
-  
+
       m_localNames = new Vector<NetBIOSName>();
       m_remoteNames = new Hashtable<NetBIOSName, byte[]>();
-  
+
   		//	Check if NetBIOS name server debug output is enabled
-  		
+
   		if ( getCIFSConfiguration().hasNetBIOSDebug())
   			setDebug(true);
-  			
+
   		//	Set the local address to bind the server to, and server port
-  		
+
   		setBindAddress(getCIFSConfiguration().getNetBIOSBindAddress());
   		setServerPort(getCIFSConfiguration().getNameServerPort());
-  		
+
   		//	Copy the WINS server addresses, if set
-  		
+
   		setPrimaryWINSServer(getCIFSConfiguration().getPrimaryWINSServer());
   		setSecondaryWINSServer(getCIFSConfiguration().getSecondaryWINSServer());
-  
+
   		//	Check if WINS is not enabled, use broadcasts instead
-  		
+
   		if ( hasPrimaryWINSServer() == false) {
-  			
-  			try {		
+
+  			try {
   				m_bcastAddr = InetAddress.getByName(getCIFSConfiguration().getBroadcastMask());
   			}
   			catch (Exception ex) {
@@ -717,7 +717,7 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
     else
       setEnabled( false);
 	}
-	
+
   /**
    * Return the local address the server binds to, or null if all local addresses
    * are used.
@@ -757,16 +757,16 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
   /**
    * Return the CIFS server configuration
-   * 
+   *
    * @return CIFSConfigSection
    */
   private final CIFSConfigSection getCIFSConfiguration() {
     return m_cifsConfig;
   }
-  
+
 	/**
 	 * Return the remote name table
-	 * 
+	 *
 	 * @return Hashtable
 	 */
 	public final Hashtable getNameTable() {
@@ -775,49 +775,49 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
 	/**
 	 * Return the broadcast address, if WINS is disabled
-	 * 
+	 *
 	 * @return InetAddress
 	 */
 	public final InetAddress getBroadcastAddress() {
 		return m_bcastAddr;
 	}
-	
+
 	/**
 	 * Determine if the primary WINS server address has been set
 	 *
-	 * @return boolean 
-	 */	
+	 * @return boolean
+	 */
 	public final boolean hasPrimaryWINSServer() {
 		return m_winsPrimary != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the primary WINS server address
-	 * 
+	 *
 	 * @return InetAddress
 	 */
 	public final InetAddress getPrimaryWINSServer() {
 		return m_winsPrimary;
 	}
-	
+
 	/**
 	 * Determine if the secondary WINS server address has been set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasSecondaryWINSServer() {
 		return m_winsSecondary != null ? true : false;
 	}
-	
+
 	/**
 	 * Return the secondary WINS server address
-	 * 
+	 *
 	 * @return InetAddress
 	 */
 	public final InetAddress getSecondaryWINSServer() {
 		return m_winsSecondary;
 	}
-	
+
   /**
    * Add a NetBIOS name.
    *
@@ -833,30 +833,30 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
       throw new IOException("NetBIOS name socket not initialized");
 
 		//	Create an add name request and add to the request list
-		
+
 		NetBIOSRequest nbReq = new NetBIOSRequest(NetBIOSRequest.AddName, name, getNextTransactionId());
-		
+
 		//	Set the retry interval
-		
+
 		if ( hasPrimaryWINSServer())
 			nbReq.setRetryInterval(AddNameWINSInterval);
 		else
 			nbReq.setRetryInterval(AddNameInterval);
 
 		//	Add the name to the local name list
-		
+
 		m_localNames.addElement(name);
-					
+
 		//	Queue the request
-		
+
 		synchronized (m_reqList) {
-			
+
 			//	Add the request to the list
-			
+
 			m_reqList.addElement(nbReq);
-			
+
 			//	Wakeup the processing thread
-			
+
 			m_reqList.notify();
 		}
   }
@@ -876,18 +876,18 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 			throw new IOException("NetBIOS name socket not initialized");
 
 		//	Create a delete name request and add to the request list
-		
+
 		NetBIOSRequest nbReq = new NetBIOSRequest(NetBIOSRequest.DeleteName, name, getNextTransactionId(), DeleteNameRetries);
 		nbReq.setRetryInterval(DeleteNameInterval);
-		
+
 		synchronized (m_reqList) {
-			
+
 			//	Add the request to the list
-			
+
 			m_reqList.addElement(nbReq);
-			
+
 			//	Wakeup the processing thread
-			
+
 			m_reqList.notify();
 		}
 	}
@@ -1036,7 +1036,7 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
   /**
    * Open the server socket
-   * 
+   *
    * @exception SocketException
    */
   private void openSocket()
@@ -1075,15 +1075,15 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
     searchName = searchName.substring(0, len);
 
     //  Check if this is an adapter status request
-    
+
     if ( searchName.equals( NetBIOSName.AdapterStatusName)) {
-      
+
       // Process the adapter status request
-      
+
       processAdapterStatus( pkt, fromAddr, fromPort);
       return;
     }
-    
+
     //  Debug
 
     if (Debug.EnableInfo && hasDebug())
@@ -1122,9 +1122,9 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
         Debug.println("%% Found name " + searchName + " in local name table : " + nbName.toString());
 
       //  Build the name query response
-      
+
       int pktLen = pkt.buildNameQueryResponse(nbName);
-      
+
       //  Debug
 
       if (Debug.EnableInfo && hasDebug()) {
@@ -1188,19 +1188,19 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
 		//	Create a NetBIOS name for the host
 
-		byte[] hostIP = fromAddr.getAddress();		
+		byte[] hostIP = fromAddr.getAddress();
 		NetBIOSName nbName = new NetBIOSName(regName, nameType, false, hostIP);
-		
+
 		//	Add the name to the remote host name table
-		
+
 		m_remoteNames.put(nbName, hostIP);
-		
+
 		//	Inform listeners that a new remote name has been added
-		
+
 		fireNameRegisterEvent(nbName,fromAddr);
-		
+
 		//	Debug
-		
+
 		if ( Debug.EnableInfo && hasDebug())
 			Debug.println("%% Added remote name " + nbName.toString() + " to remote names table");
   }
@@ -1236,19 +1236,19 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
 		//	Create a NetBIOS name for the host
 
-		byte[] hostIP = fromAddr.getAddress();		
+		byte[] hostIP = fromAddr.getAddress();
 		NetBIOSName nbName = new NetBIOSName(regName, nameType, false, hostIP);
-		
+
 		//	Remove the name from the remote host name table
-		
+
 		m_remoteNames.remove(nbName);
-		
+
 		//	Inform listeners that a remote name has been released
-		
+
 		fireNameReleaseEvent(nbName, fromAddr);
-		
+
 		//	Debug
-		
+
 		if ( Debug.EnableInfo && hasDebug())
 			Debug.println("%% Released remote name " + nbName.toString() + " from remote names table");
   }
@@ -1273,63 +1273,63 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
   protected final void processRegisterResponse(NetBIOSPacket pkt, InetAddress fromAddr, int fromPort) {
 
 		//	Check if there are any reply name details
-		
+
 		if ( pkt.getAnswerCount() == 0)
 			return;
-			  	
+			
   	//	Get the details from the response packet
-  	
+
   	int tranId = pkt.getTransactionId();
 
 		//	Find the matching request
-		
+
 		NetBIOSRequest req = findRequest(tranId);
 		if ( req == null)
 			return;
 
 		//	Get the error code from the response
-		
+
 		int errCode = pkt.getResultCode();
-		
+
 		if ( errCode != 0) {
 
 			//	Mark the request error
-			
+
 			req.setErrorStatus(true);
-			
+
 			//	Get the name details
-			
+
 	    String regName = pkt.getAnswerName();
 	    char nameType = regName.charAt(15);
-	
+
 	    int len = 0;
 	    while (len <= 14 && regName.charAt(len) != ' ')
 	      len++;
 	    regName = regName.substring(0, len);
-	
+
 			//	Create a NetBIOS name for the host
-	
-			byte[] hostIP = fromAddr.getAddress();		
+
+			byte[] hostIP = fromAddr.getAddress();
 			NetBIOSName nbName = new NetBIOSName(regName, nameType, false, hostIP);
-			
+
 	    //  Debug
-	
+
 	    if (Debug.EnableInfo && hasDebug())
 	      Debug.println("%% Negative Name Registration name=" + nbName);
-	
+
 			//	Inform listeners of the add name failure
-			
+
 			fireAddNameEvent(req.getNetBIOSName(), NetBIOSNameEvent.ADD_FAILED);
 		}
 		else {
-			
+
 			//  Debug
-	
+
 			if (Debug.EnableInfo && hasDebug())
 				Debug.println("%% Name Registration Successful name=" + req.getNetBIOSName().getName());
-	
+
 			//	Inform listeners that the add name was successful
-			
+
 			fireAddNameEvent(req.getNetBIOSName(), NetBIOSNameEvent.ADD_SUCCESS);
 		}
   }
@@ -1368,15 +1368,15 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
       Debug.println("%% Adapter status request");
 
     //  Build the local name list
-    
+
     NetBIOSNameList nameList = new NetBIOSNameList();
     for ( int i = 0; i < m_localNames.size(); i++)
       nameList.addName( m_localNames.get( i));
-    
+
     //  Build the name query response
-    
+
     int pktLen = pkt.buildAdapterStatusResponse( nameList, hasPrimaryWINSServer() ? NetBIOSPacket.NAME_TYPE_PNODE : NetBIOSPacket.NAME_TYPE_BNODE);
-    
+
     //  Debug
 
     if (Debug.EnableInfo && hasDebug()) {
@@ -1449,70 +1449,70 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 		NetBIOSPacket nbPkt = null;
 		DatagramPacket pkt = null;
 		byte[] buf = null;
-		
+
     try {
 
       //  Get a list of the local IP addresses
 
 			Vector ipList = new Vector();
-			
+
 			if ( hasBindAddress()) {
-				
+
 				//	Use the specified bind address
 
 				ipList.addElement(getBindAddress().getAddress());
 			}
 			else {
-				
+
 				//	Get a list of all the local addresses
-				
+
 				InetAddress[] addrs = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
 
-				for ( int i = 0; i < addrs.length; i++) {				
-				
+				for ( int i = 0; i < addrs.length; i++) {
+
 					//	Check for a valid address, filter out '127.0.0.1' and '0.0.0.0' addresses
-					
+
 					if ( addrs[i].getHostAddress().equals("127.0.0.1") == false &&
 							 addrs[i].getHostAddress().equals("0.0.0.0") == false)
 						ipList.addElement(addrs[i].getAddress());
 				}
-        
+
         // If no valid addresses were found use the network interface list to find the local server address(es)
-        
+
         if ( ipList.size() == 0) {
-        
+
           // Enumerate the network adapter list
-          
+
           Enumeration niEnum = NetworkInterface.getNetworkInterfaces();
-          
+
           if ( niEnum != null) {
-            
+
             while ( niEnum.hasMoreElements()) {
-              
+
               // Get the current network interface
-              
+
               NetworkInterface ni = (NetworkInterface) niEnum.nextElement();
-              
+
               // Enumerate the addresses for the network adapter
-              
+
               Enumeration niAddrs = ni.getInetAddresses();
               if ( niAddrs != null)
               {
                 // Check for any valid addresses
-                
+
                 while ( niAddrs.hasMoreElements())
                 {
                   InetAddress curAddr = (InetAddress) niAddrs.nextElement();
-                  
+
                   if ( curAddr.getHostAddress().equals("127.0.0.1") == false &&
                       curAddr.getHostAddress().equals("0.0.0.0") == false)
                     ipList.add( curAddr.getAddress());
                 }
               }
             }
-            
+
             // DEBUG
-            
+
             if ( Debug.EnableInfo && ipList.size() > 0 && hasDebug())
               Debug.println("Found " + ipList.size() + " addresses using interface list");
           }
@@ -1525,48 +1525,48 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
         openSocket();
 
 			//	Allocate the NetBIOS request queue, and add the server name/alias name requests
-		
+
 			m_reqList = new Vector<NetBIOSRequest>();
-		    
+
 			//	Add the server name requests to the queue
-    
+
 			AddName(new NetBIOSName(m_cifsConfig.getServerName(), NetBIOSName.FileServer, false, ipList, DefaultTTL));
 			AddName(new NetBIOSName(m_cifsConfig.getServerName(), NetBIOSName.WorkStation, false, ipList, DefaultTTL));
-			
+
 			if ( getCIFSConfiguration().getDomainName() != null)
 				AddName(new NetBIOSName(m_cifsConfig.getDomainName(), NetBIOSName.Domain, true, ipList, DefaultTTL));
 
 			//	Check if the server has alias names configured, if so then also add those names
-			
+
 			if ( getCIFSConfiguration().hasAliasNames()) {
-				
+
 				//	Add the alias names to the network
-				
+
 				StringList names = getCIFSConfiguration().getAliasNames();
-				
+
 				for ( int i = 0; i < names.numberOfStrings(); i++) {
-					
+
 					//	Get the current alias name
-					
+
 					String alias = (String) names.getStringAt(i);
-					
+
 					//	Add the name to the network
-					
+
 					AddName(new NetBIOSName(alias, NetBIOSName.FileServer, false, ipList, DefaultTTL));
 					AddName(new NetBIOSName(alias, NetBIOSName.WorkStation, false, ipList, DefaultTTL));
 				}
 			}
 
 			//	Create the request handler thread
-    
+
 			m_reqHandler = new NetBIOSRequestHandler();
 			m_reqHandler.start();
 
 			//	Create the name refresh thread
-			
+
 			m_refreshThread = new NetBIOSNameRefresh();
 			m_refreshThread.start();
-			
+
       //  Allocate a receive buffer, NetBIOS packet and datagram packet
 
       buf = new byte[1024];
@@ -1576,15 +1576,15 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
     catch ( Exception ex) {
     	if ( Debug.EnableError && hasDebug())
     		Debug.println("NetBIOSNameServer setup error:" + ex.toString());
-    		
+
     	//	Save the exception and inform listeners of the error
-    	
+
     	setException(ex);
     	fireServerEvent(ServerListener.ServerError);
     }
-    	
+
     //	If there are any pending requests in the queue then wakeup the request handler thread
-    
+
     if ( m_reqList != null && m_reqList.size() > 0) {
     	synchronized ( m_reqList) {
     		m_reqList.notify();
@@ -1592,107 +1592,107 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
     }
 
 		//	Indicate that the server is active
-		
+
 		setActive(true);
 		fireServerEvent(ServerListener.ServerActive);
-		    
+
     //  Loop
 
 		if ( hasException() == false) {
 
 			//	Clear the shutdown request flag
-			
+
 	    m_shutdown = false;
-	
+
 	    while (m_shutdown == false) {
-	
+
 				try {
-									
+
 	        //  Wait for an incoming packet ....
-	
+
 	        m_socket.receive(pkt);
-	
+
 	        //  Debug
-	
+
 	        if (Debug.EnableInfo && hasDebug()) {
-	
+
 	          //  Dump the received packet
-	
+
 	          Debug.println("%% NetBIOS Name Server Rx Datagram from " + pkt.getAddress().getHostAddress() + ", opCode=" + nbPkt.getOpcode());
-	
+
 	          //  Dump the raw packet details
-	
+
 	          HexDump.Dump(buf, pkt.getLength(), 0, Debug.getDebugInterface());
 	        }
 
 					//	Check for a zero length datagram
-					
+
 					if ( pkt.getLength() == 0)
 						continue;
-							
+
 	        //  Get the incoming NetBIOS packet opcode
-	
+
 	        InetAddress fromAddr = pkt.getAddress();
 	        int fromPort = pkt.getPort();
 
 	        switch (nbPkt.getOpcode()) {
-	
+
 	          //  Name query
-	
+
 	          case NetBIOSPacket.NAME_QUERY :
 	            processNameQuery(nbPkt, fromAddr, fromPort);
 	            break;
-	
+
 	          //  Name register
-	
+
 	          case NetBIOSPacket.NAME_REGISTER :
 	            processNameRegister(nbPkt, fromAddr, fromPort);
 	            break;
-	
+
 	          //  Name release
-	
+
 	          case NetBIOSPacket.NAME_RELEASE :
 	            processNameRelease(nbPkt, fromAddr, fromPort);
 	            break;
-	
+
 	          //  Name register response
-	
+
 	          case NetBIOSPacket.RESP_REGISTER :
 	            processRegisterResponse(nbPkt, fromAddr, fromPort);
 	            break;
-	
+
 	          //  Name query response
-	
+
 	          case NetBIOSPacket.RESP_QUERY :
 	            processQueryResponse(nbPkt, fromAddr, fromPort);
 	            break;
-	
+
 	          //  Name release response
-	
+
 	          case NetBIOSPacket.RESP_RELEASE :
 	            processReleaseResponse(nbPkt, fromAddr, fromPort);
 	            break;
-	
+
 	          //  WACK
-	
+
 	          case NetBIOSPacket.WACK :
 	            processWack(nbPkt, fromAddr, fromPort);
 	            break;
-	            
+
             // Refresh
-              
+
             case NetBIOSPacket.REFRESH:
               processNameRegister(nbPkt, fromAddr, fromPort);
               break;
-              
+
             // Multi-homed name registration
-              
+
             case NetBIOSPacket.NAME_REGISTER_MULTI:
               processNameRegister(nbPkt, fromAddr, fromPort);
               break;
-              
+
 	          //	Unknown opcode
-	          
+
 	          default:
 	          	if ( Debug.EnableError && hasDebug()) {
 	          	  int opCode = nbPkt.getOpcode();
@@ -1705,11 +1705,11 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 	    		if ( hasDebug()) {
 	    			Debug.println("NetBIOSNameServer error");    			Debug.println(ex);
 	    		}
-	    		
+	
 	    		//	Store the error and inform listeners of the server error. If the server is shutting down we expect a
 	    		//	socket error as the socket is closed by the shutdown thread and the pending read request generates an
 	    		//	exception.
-	    		
+	
 	    		if ( m_shutdown == false) {
 		    		setException(ex);
 		    		fireServerEvent(ServerListener.ServerError);
@@ -1717,9 +1717,9 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 	    	}
 	    }
 		}
-		
+
 		//	Indicate that the server is closed
-		
+
 		setActive(false);
 		fireServerEvent(ServerListener.ServerShutdown);
   }
@@ -1775,7 +1775,7 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
 	/**
 	 * Set the server port
-	 * 
+	 *
 	 * @param port int
 	 */
 	public final void setServerPort(int port) {
@@ -1785,48 +1785,48 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 	/**
 	 * Set the primary WINS server address
 	 *
-	 * @param addr InetAddress 
-	 */	
+	 * @param addr InetAddress
+	 */
 	public final void setPrimaryWINSServer(InetAddress addr) {
 		m_winsPrimary = addr;
 	}
-	
+
 	/**
 	 * Set the secondary WINS server address
 	 *
-	 * @param addr InetAddress 
-	 */	
+	 * @param addr InetAddress
+	 */
 	public final void setSecondaryWINSServer(InetAddress addr) {
 		m_winsSecondary = addr;
 	}
-	
+
 	/**
 	 * Find the NetBIOS request with the specified transation id
-	 * 
+	 *
 	 * @param id int
 	 * @return NetBIOSRequest
 	 */
 	private final NetBIOSRequest findRequest(int id) {
 
 		//	Check if the request list is valid
-		
+
 		if ( m_reqList == null)
 			return null;
-					
+
 		//	Need to lock access to the request list
 
 		NetBIOSRequest req = null;
-				
+
 		synchronized ( m_reqList) {
-			
+
 			//	Search for the required request
-			
+
 			int idx = 0;
-			
+
 			while ( req == null && idx < m_reqList.size()) {
-				
+
 				//	Get the current request and check if it is the required request
-				
+
 				NetBIOSRequest curReq = (NetBIOSRequest) m_reqList.elementAt(idx++);
 				if ( curReq.getTransactionId() == id)
 					req = curReq;
@@ -1834,57 +1834,57 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 		}
 
 		//	Return the request, or null if not found
-			
+
 		return req;
 	}
-	
+
 	/**
 	 * Shutdown the NetBIOS name server
-	 * 
+	 *
 	 * @param immediate boolean
 	 */
 	public void shutdownServer(boolean immediate) {
 
 		//	Close the name refresh thread
-		
+
 		try {
-			
+
 			if ( m_refreshThread != null) {
 				m_refreshThread.shutdownRequest();
 			}
 		}
 		catch (Exception ex) {
-			
+
 			//	Debug
-			
+
 			if ( Debug.EnableError)
 				Debug.println(ex);
 		}
-		
+
 		//	If the shutdown is not immediate then release all of the names registered by this server
-		
+
 		if ( isActive() && immediate == false) {
-		
+
 			//	Release all local names
-			
+
 			for ( int i = 0; i < m_localNames.size(); i++) {
-				
+
 				//	Get the current name details
-				
+
 				NetBIOSName nbName = (NetBIOSName) m_localNames.elementAt(i);
-				
+
 				//	Queue a delete name request
-				
+
 				try {
-					DeleteName(nbName);	
+					DeleteName(nbName);
 				}
 				catch (IOException ex) {
 					Debug.println(ex);
 				}
 			}
-			
+
 			//	Wait for the request handler thread to process the delete name requests
-			
+
 			while ( m_reqList.size() > 0) {
 				try {
 					Thread.sleep(100);
@@ -1893,9 +1893,9 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 				}
 			}
 		}
-		
+
 		//	Close the request handler thread
-		
+
 		try {
 
 			//	Close the request handler thread
@@ -1907,26 +1907,26 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 			}
 		}
 		catch (Exception ex) {
-			
+
 			//	Debug
-			
+
 			if ( Debug.EnableError)
 				Debug.println(ex);
 		}
-				
+
 		//	Indicate that the server is closing
 
 		m_shutdown = true;
 
 		try {
 
-			
+
 			//	Close the server socket so that any pending receive is cancelled
 
 			if (m_socket != null) {
-				
+
 				//	Send a dummy packet to release the receive on the datagram socket, then close the socket
-				
+
 //				m_socket.send(new DatagramPacket(new byte[0], 0, m_socket.getLocalAddress(), getPort()));
 				try {
 					m_socket.close();
@@ -1939,9 +1939,9 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 		catch (Exception ex) {
 			Debug.println(ex);
 		}
-    
+
     //	Fire a shutdown notification event
-    
+
     fireServerEvent(ServerListener.ServerShutdown);
 	}
 
@@ -1949,21 +1949,21 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 	 * Start the NetBIOS name server is a seperate thread
 	 */
 	public void startServer() {
-		
+
 		//	Create a seperate thread to run the NetBIOS name server
-		
+
 		m_srvThread = new Thread(this);
 		m_srvThread.setName("NetBIOS Name Server");
 		m_srvThread.setDaemon(true);
-		
+
 		m_srvThread.start();
-		
+
 		//	Fire a server startup event
-		
+
 		fireServerEvent(ServerListener.ServerStartup);
 	}
 
-	
+
 	/**
 	 *	Validate configuration changes that are relevant to the NetBIOS name server
 	 *
@@ -1971,59 +1971,59 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 	 * @param config ServerConfiguration
 	 * @param newVal Object
 	 * @return int
-	 * @throws InvalidConfigurationException 
+	 * @throws InvalidConfigurationException
 	 */
 	public int configurationChanged(int id, ServerConfiguration config, Object newVal)
 		throws InvalidConfigurationException {
 
 		int sts = StsIgnored;
-		
+
 		try {
 
 			//	Check if the configuration change affects the NetBIOS name server
-			
+
 			switch ( id) {
-				
+
 				//	Server enable/disable
-				
+
 				case ConfigId.SMBNetBIOSEnable:
-				
+
 					//	Check if the server is active
 
 					Boolean enaSMB = (Boolean) newVal;
-										
+
 					if ( isActive() && enaSMB.booleanValue() == false) {
-						
+
 						//	Shutdown the server
-						
+
 						shutdownServer(false);
 					}
 					else if ( isActive() == false && enaSMB.booleanValue() == true) {
-						
+
 						//	Start the server
-						
+
 						startServer();
 					}
-					
+
 					//	Indicate that the setting was accepted
-					
+
 					sts = StsAccepted;
 					break;
 
 				//	Debug enable
-				
+
 				case ConfigId.NetBIOSDebugEnable:
-				
+
 					//	Toggle the debug setting
-					
+
 					Boolean b = (Boolean) newVal;
 					setDebug(b.booleanValue());
-					
+
 					sts = StsAccepted;
 					break;
 
 				//	Settings that require a restart
-				
+
 				case ConfigId.NetBIOSNamePort:
 				case ConfigId.NetBIOSSessionPort:
 				case ConfigId.NetBIOSBindAddress:
@@ -2037,7 +2037,7 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 		}
 
 		//	Return the status
-		
+
 		return sts;
 	}
 }

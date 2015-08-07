@@ -29,24 +29,24 @@ import java.io.IOException;
 public class DERApplicationSpecific extends DERObject {
 
   // Application specific blob bytes
-  
+
   private byte[] m_bytes;
-  
+
   /**
    * Default constructor
    */
   public DERApplicationSpecific() {
   }
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param byts byte[]
    */
   public DERApplicationSpecific( byte[] byts) {
     m_bytes = byts;
   }
-  
+
   /**
    * Class constructor
    *
@@ -57,10 +57,10 @@ public class DERApplicationSpecific extends DERObject {
 	setTagNo( tagId);
     m_bytes = byts;
   }
-  
+
   /**
    * Return the bytes
-   * 
+   *
    * @return byte[]
    */
   public byte[] getValue() {
@@ -69,23 +69,23 @@ public class DERApplicationSpecific extends DERObject {
 
   /**
    * DER decode the object
-   * 
+   *
    * @param buf DERBuffer
    */
   public void derDecode(DERBuffer buf)
     throws IOException {
 
     // Decode the type
-    
+
     if (( buf.unpackType() & DER.Application) != 0) {
-      
+
       // Unpack the length and bytes
-      
+
       int len = buf.unpackLength();
       if ( len > 0) {
-        
+
         // Get the string bytes
-        
+
         m_bytes = buf.unpackBytes( len);
       }
       else
@@ -97,7 +97,7 @@ public class DERApplicationSpecific extends DERObject {
 
   /**
    * DER encode the object
-   * 
+   *
    * @param buf DERBuffer
    */
   public void derEncode(DERBuffer buf)
@@ -108,7 +108,7 @@ public class DERApplicationSpecific extends DERObject {
 	int tagNo = 0;
 	if ( isTagged())
 		tagNo = getTagNo();
-	
+
     buf.packByte( DER.Application + DER.Constructed + (tagNo & 0xFF));
 
     if ( m_bytes != null) {
@@ -118,19 +118,19 @@ public class DERApplicationSpecific extends DERObject {
     else
       buf.packLength( 0);
   }
-  
+
   /**
    * Return the string details as a string
-   * 
+   *
    * @return String
    */
   public String toString() {
     StringBuffer str = new StringBuffer();
-    
+
     str.append("[ApplicationSpecific:");
     str.append(m_bytes != null ? m_bytes.length : 0);
     str.append("]");
-    
+
     return str.toString();
   }
 }

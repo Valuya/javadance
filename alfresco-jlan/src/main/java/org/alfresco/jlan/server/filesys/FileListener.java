@@ -37,7 +37,7 @@ public interface FileListener {
 	 * @param file NetworkFile
 	 */
 	void fileClosed(SrvSession sess, NetworkFile file);
-	
+
 	/**
 	 * File has been opened.
 	 *

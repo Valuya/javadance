@@ -50,7 +50,7 @@ public class SMBTransPacket extends SMBSrvPacket {
   // Multiplex identifier, to identify each transaction request
 
   private static int m_nextMID = 1;
-  
+
   /**
    * Construct an SMB transaction packet
    *
@@ -59,7 +59,7 @@ public class SMBTransPacket extends SMBSrvPacket {
   public SMBTransPacket(byte[] buf) {
     super(buf);
   }
-  
+
   /**
    * Construct an SMB transaction packet
    *
@@ -72,7 +72,7 @@ public class SMBTransPacket extends SMBSrvPacket {
 
     setMultiplexId(getNextMultiplexId());
   }
-  
+
   /**
    * Get the next multiplex id to uniquely identify this transaction
    *
@@ -81,37 +81,37 @@ public class SMBTransPacket extends SMBSrvPacket {
   public final static int getNextMultiplexId() {
     return m_nextMID++;
   }
-  
+
   /**
    * Return the total parameter byte count
-   * 
+   *
    * @return int
    */
   public final int getTotalParameterCount() {
   	return getParameter(0);
   }
-  
+
   /**
    * Return the total data byte count
-   * 
+   *
    * @return int
    */
   public final int getTotalDataCount() {
   	return getParameter(1);
   }
-  
+
   /**
    * Return the parameter count size in bytes for this section
-   * 
+   *
    * @return int
    */
   public final int getParameterBlockCount() {
   	return getParameter(9);
   }
-  
+
 	/**
 	 * Return the parameter block offset
-	 * 
+	 *
 	 * @return	Paramter block offset within the SMB packet
 	 */
 	public final int getParameterBlockOffset() {
@@ -120,13 +120,13 @@ public class SMBTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the data block size in bytes for this section
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockCount() {
 		return getParameter(11);
 	}
-	
+
   /**
    * Return the data block offset
    *
@@ -138,67 +138,67 @@ public class SMBTransPacket extends SMBSrvPacket {
 
 	/**
 	 * Return the secondary parameter block size in bytes
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSecondaryParameterBlockCount() {
 		return getParameter(2);
 	}
-	
+
 	/**
 	 * Return the secondary parameter block offset
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSecondaryParameterBlockOffset() {
 		return getParameter(3) + RFCNetBIOSProtocol.HEADER_LEN;
 	}
-	
+
 	/**
 	 * Return the secondary parameter block displacement
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getParameterBlockDisplacement() {
 		return getParameter(4);
 	}
-	
+
 	/**
 	 * Return the secondary data block size in bytes
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSecondaryDataBlockCount() {
 		return getParameter(5);
 	}
-	
+
 	/**
 	 * Return the secondary data block offset
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSecondaryDataBlockOffset() {
 		return getParameter(6) + RFCNetBIOSProtocol.HEADER_LEN;
 	}
-	
+
 	/**
 	 * Return the secondary data block displacement
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataBlockDisplacement() {
 		return getParameter(7);
 	}
-	
+
 	/**
 	 * Return the transaction sub-command
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSubFunction() {
 		return getParameter(14);
 	}
-	
+
   /**
    * Unpack the parameter block into the supplied array.
    *
@@ -231,7 +231,7 @@ public class SMBTransPacket extends SMBSrvPacket {
       pos += 2;
     }
   }
-  
+
   /**
    * Initialize the transact SMB packet
    *
@@ -344,7 +344,7 @@ public class SMBTransPacket extends SMBSrvPacket {
 
     setByteCount(pos - startPos);
   }
-  
+
   /**
    * Set the specifiec setup parameter within the SMB packet.
    *
@@ -355,7 +355,7 @@ public class SMBTransPacket extends SMBSrvPacket {
   public final void setSetupParameter(int idx, int val) {
     setParameter(STD_PARAMS + idx, val);
   }
-  
+
   /**
    * Set the transaction name for normal transactions
    *

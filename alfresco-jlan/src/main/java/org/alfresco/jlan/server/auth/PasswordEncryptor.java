@@ -35,10 +35,10 @@ import org.alfresco.jlan.debug.Debug;
 
 /**
  * Password Encryptor Class
- * 
+ *
  * <p>
  * Generates LanMan and NTLMv1 encrypted passwords from the plain text password and challenge key.
- * 
+ *
  * @author GKSpencer
  */
 public class PasswordEncryptor {
@@ -62,7 +62,7 @@ public class PasswordEncryptor {
 
   /**
    * Check if the required algorithms are available
-   * 
+   *
    * @return boolean
    */
   public static final boolean checkEncryptionAlgorithms() {
@@ -100,7 +100,7 @@ public class PasswordEncryptor {
   /**
    * Encrypt the plain text password with the specified encryption key using the specified
    * encryption algorithm.
-   * 
+   *
    * @param plainPwd Plaintext password string
    * @param encryptKey byte[] Encryption key
    * @param alg int Encryption algorithm
@@ -224,7 +224,7 @@ public class PasswordEncryptor {
 
   /**
    * P16 encryption
-   * 
+   *
    * @param pwd java.lang.String
    * @param s8 byte[]
    * @return byte[]
@@ -295,7 +295,7 @@ public class PasswordEncryptor {
 
   /**
    * P24 DES encryption
-   * 
+   *
    * @param pwd String
    * @param c8 byte[]
    * @return byte[]
@@ -316,7 +316,7 @@ public class PasswordEncryptor {
 
   /**
    * P24 DES encryption
-   * 
+   *
    * @param p21 Plain password or hashed password bytes
    * @param ch Challenge bytes
    * @return Encrypted password
@@ -387,7 +387,7 @@ public class PasswordEncryptor {
 
   /**
    * Return the encryption algorithm as a string
-   * 
+   *
    * @param alg int
    * @return String
    */
@@ -400,7 +400,7 @@ public class PasswordEncryptor {
 
   /**
    * Make a 7-byte string into a 64 bit/8 byte/longword key.
-   * 
+   *
    * @param byt byte[]
    * @param off int
    * @return byte[]
@@ -431,7 +431,7 @@ public class PasswordEncryptor {
 
   /**
    * NTLM1 encryption of the MD4 hashed password
-   * 
+   *
    * @param p21 byte[]
    * @param c8 byte[]
    * @return byte[]
@@ -444,7 +444,7 @@ public class PasswordEncryptor {
 
   /**
    * NTLM2 encryption of the MD4 hashed password
-   * 
+   *
    * @param md4Hash byte[]
    * @param userName String
    * @param domain String
@@ -481,10 +481,10 @@ public class PasswordEncryptor {
 
     return hmacMd5.doFinal(dataByts);
   }
-  
+
   /**
    * LanMan first stage of the encryption
-   * 
+   *
    * @param pwd String
    * @return byte[]
    * @exception NoSuchAlgorithmException If a required encryption algorithm is not available
@@ -498,10 +498,10 @@ public class PasswordEncryptor {
     byte[] s8 = "KGS!@#$%".getBytes();
     return P16(pwd, s8);
   }
-  
+
   /**
    * LanMan encryption of a password previously encrypted with the well known value
-   * 
+   *
    * @param p21 byte[]
    * @param c8 byte[]
    * @return byte[]
@@ -515,7 +515,7 @@ public class PasswordEncryptor {
 
   /**
    * MD4 password hashinh
-   * 
+   *
    * @param pwdBytes byte[]
    * @return byte[]
    */
@@ -525,8 +525,8 @@ public class PasswordEncryptor {
     // Create the MD4 hash
 
     MessageDigest md4 = MessageDigest.getInstance("MD4");
-  
+
     md4.update(pwdBytes);
     return md4.digest();
-  }  
+  }
 }

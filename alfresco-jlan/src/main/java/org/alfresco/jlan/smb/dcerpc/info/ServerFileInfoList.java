@@ -26,7 +26,7 @@ import org.alfresco.jlan.smb.dcerpc.DCEReadable;
 
 /**
  * Server File Information List Class
- * 
+ *
  * @author gkspencer
  */
 public class ServerFileInfoList extends DCEList {
@@ -40,7 +40,7 @@ public class ServerFileInfoList extends DCEList {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @exception DCEBufferException
 	 */
@@ -50,7 +50,7 @@ public class ServerFileInfoList extends DCEList {
 
 	/**
 	 * Create a new connection information object
-	 * 
+	 *
 	 * @return DCEReadable
 	 */
 	protected DCEReadable getNewObject() {
@@ -59,45 +59,45 @@ public class ServerFileInfoList extends DCEList {
 
 	/**
 	 * Read a list of file information objects
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @throws DCEBufferException
 	 */
 	/**
 	 * public void readObject(DCEBuffer buf) throws DCEBufferException {
-	 * 
+	 *
 	 * // Check if the container is valid, if so the object list will be valid
-	 * 
+	 *
 	 * if ( containerIsValid() == false) return;
-	 * 
+	 *
 	 * // Read the container object count and array pointer
-	 * 
+	 *
 	 * int numEntries = buf.getInt(); if ( buf.getPointer() != 0) {
-	 * 
+	 *
 	 * // Get the array element count
-	 * 
+	 *
 	 * int elemCnt = buf.getInt();
-	 * 
+	 *
 	 * while ( elemCnt-- > 0) {
-	 * 
+	 *
 	 * // Create a server file information object and add to the list
-	 * 
+	 *
 	 * ServerFileInfo finfo = new ServerFileInfo(getInformationLevel()); addObject(finfo);
-	 * 
+	 *
 	 * // Load the main object details
-	 * 
+	 *
 	 * finfo.readObject(buf); }
-	 * 
+	 *
 	 * // Load the strings for the file information objects
-	 * 
+	 *
 	 * for ( int i = 0; i < numberOfEntries(); i++) {
-	 * 
+	 *
 	 * // Get a file information object
-	 * 
+	 *
 	 * ServerFileInfo finfo = (ServerFileInfo) getList().get(i);
-	 * 
+	 *
 	 * // Load the strings for the file information
-	 * 
+	 *
 	 * finfo.readStrings(buf); } } }
 	 **/
 }

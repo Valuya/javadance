@@ -43,26 +43,26 @@ import org.alfresco.jlan.smb.SMBException;
  *  <p>A disk session is created using the SessionFactory.OpenDiskSession() method. The
  *  SessionFactory negotiates the appropriate SMB dialect with the remote server and creates
  *  the appropriate DiskSession derived object.
- * 
+ *
  * @see SessionFactory
- * 
+ *
  * @author gkspencer
  */
 public abstract class DiskSession extends Session {
 
 	//	Default information level to be returned by a directory search
-	
+
 	public static final int DefaultInformationLevel	= 1;
-	
+
 	//	Flags for the setFileInformation() method
-	
+
 	public final static int Attributes 	= 0x0001;
 	public final static int WriteTime 	= 0x0002;
 	public final static int WriteDate 	= 0x0004;
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param shr PCShare
 	 * @param dialect int
 	 */
@@ -76,7 +76,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Close this connection with the remote server share.
-	 * 
+	 *
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
 	 */
@@ -90,7 +90,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Create a new directory on the remote file server.
-	 * 
+	 *
 	 * @param dir Directory name string. If the directory name does not have a leading '\' the
 	 *            current working directory for this session will be prepended to the string.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -101,7 +101,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Create and open a file on the remote file server.
-	 * 
+	 *
 	 * @param fname Remote file name string.
 	 * @return SMBFile for the opened file, else null.
 	 * @exception java.io.IOException If an I/O error occurs
@@ -112,7 +112,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Delete the specified directory on the remote file server.
-	 * 
+	 *
 	 * @param dir Directory name string. If the directory name does not have a leading '\' the
 	 *            current working directory for this session will be preprended to the string.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -123,7 +123,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Delete the specified file on the remote file server.
-	 * 
+	 *
 	 * @param fname File name of the remote file to delete. If the file name does not have a leading
 	 *            '\' the current working directory for this session will be prepended to the
 	 *            string. The string may contain wildcard characters to delete multiple files. '?'
@@ -141,7 +141,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Delete the specified file on the remote file server.
-	 * 
+	 *
 	 * @param fname File name of the remote file to delete. If the file name does not have a leading
 	 *            '\' the current working directory for this session will be prepended to the
 	 *            string. The string may contain wildcard characters to delete multiple files. '?'
@@ -155,7 +155,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Check if a file exists on the remote file server.
-	 * 
+	 *
 	 * @param fname File name to test for on the remote file server. If the file name does not start
 	 *            with a '\' then the working directory is prepended to the file name string.
 	 * @return true if the file exists, else false.
@@ -220,7 +220,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Get disk information for this remote disk.
-	 * 
+	 *
 	 * @return Disk information object, or null.
 	 * @exception java.io.IOException If an I/O error occurs.
 	 * @exception SMBException If an SMB level error occurs
@@ -230,7 +230,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Get file information for the specified file.
-	 * 
+	 *
 	 * @param fname File name of the file to return information for.
 	 * @param level Information level required
 	 * @return SMBFileInfo if the request was successful, else null.
@@ -243,7 +243,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Get file information for the specified file, returning the default information level
-	 * 
+	 *
 	 * @param fname File name of the file to return information for.
 	 * @return SMBFileInfo if the request was successful, else null.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -260,7 +260,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Get the disk volume information
-	 * 
+	 *
 	 * @return VolumeInfo, or null
 	 * @exception java.io.FileNotFoundException If the remote file does not exist.
 	 * @exception SMBException If an SMB level error occurs
@@ -270,7 +270,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Get the current working directory, relative to the share that is being accessed.
-	 * 
+	 *
 	 * @return Current working directory path string.
 	 */
 	public final String getWorkingDirectory() {
@@ -279,7 +279,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Detemine if the disk session has been closed.
-	 * 
+	 *
 	 * @return true if the disk session has been closed, else false.
 	 */
 	public final boolean isClosed() {
@@ -288,7 +288,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Check if the specified file name is a directory.
-	 * 
+	 *
 	 * @param dir Directory name string. If the directory name does not have a leading '\' the
 	 *            current working directory for this session will be prepended to the string.
 	 * @return true if the specified file name is a directory, else false.
@@ -300,7 +300,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Open a file on the remote file server.
-	 * 
+	 *
 	 * @param fname Remote file name string.
 	 * @param flags File open option flags.
 	 * @return SMBFile for the opened file, else null.
@@ -312,7 +312,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Open a file as an input stream.
-	 * 
+	 *
 	 * @param fname Remote file name string.
 	 * @param flags File open option flags.
 	 * @return SMBInputStream for the opened file, else null.
@@ -335,7 +335,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Open a file as an output stream.
-	 * 
+	 *
 	 * @param fname Remote file name string.
 	 * @param flags File open option flags.
 	 * @return SMBOutputStream for the opened file, else null.
@@ -358,7 +358,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Rename a file, or set of files, on the remote file server.
-	 * 
+	 *
 	 * @param curnam Current file name string, may contain wildcards.
 	 * @param newnam New file name.
 	 * @return true if the file(s) were renamed, else false
@@ -375,7 +375,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Rename a file, or set of files, on the remote file server.
-	 * 
+	 *
 	 * @param curnam Current file name string, may contain wildcards.
 	 * @param newnam New file name.
 	 * @param attr Search attributes, to determine which file(s) to rename.
@@ -389,7 +389,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Set file information for the specified file.
-	 * 
+	 *
 	 * @param fname File name of the file to set information for.
 	 * @param finfo File information containing the new values.
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -400,7 +400,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Set file information for the specified file, using the file id
-	 * 
+	 *
 	 * @param file File to set information for
 	 * @param finfo File information containing new values
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -411,7 +411,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Set file attributes for the specified file, using the file name
-	 * 
+	 *
 	 * @param fname File name of the file to set information for.
 	 * @param attrib File attributes mask. @see org.alfresco.jlan.server.filesys.FileAttribute
 	 * @exception java.io.IOException If an I/O error occurs.
@@ -422,7 +422,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Set the current working directory, relative to the share that is being accessed.
-	 * 
+	 *
 	 * @param wd Working directory path string.
 	 */
 	public final void setWorkingDirectory(String wd) {
@@ -432,7 +432,7 @@ public abstract class DiskSession extends Session {
 	/**
 	 * Start a search of the specified directory returning information for each file/directory
 	 * found.
-	 * 
+	 *
 	 * @param dir Directory/file name string, which may contain wildcards. If the directory string
 	 *            does not start with a '\' then the directory name is prepended with the current
 	 *            working directory.
@@ -448,7 +448,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Start a search of the specified directory returning the default information level
-	 * 
+	 *
 	 * @param dir Directory/file name string, which may contain wildcards. If the directory string
 	 *            does not start with a '\' then the directory name is prepended with the current
 	 *            working directory.
@@ -468,7 +468,7 @@ public abstract class DiskSession extends Session {
 
 	/**
 	 * Check if a path looks like a valid file path
-	 * 
+	 *
 	 * @param path String
 	 * @return boolean
 	 */

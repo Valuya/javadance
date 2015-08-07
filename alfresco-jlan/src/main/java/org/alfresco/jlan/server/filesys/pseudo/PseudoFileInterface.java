@@ -24,17 +24,17 @@ import org.alfresco.jlan.server.filesys.TreeConnection;
 
 /**
  * Pseudo File Interface
- * 
+ *
  * <p>
  * Provides the ability to add files into the file listing of a folder.
- * 
+ *
  * @author gkspencer
  */
 public interface PseudoFileInterface {
-  
+
   /**
    * Check if the specified path refers to a pseudo file
-   * 
+   *
    * @param sess SrvSession
    * @param tree TreeConnection
    * @param path String
@@ -44,7 +44,7 @@ public interface PseudoFileInterface {
 
   /**
    * Return the pseudo file for the specified path, or null if the path is not a pseudo file
-   * 
+   *
    * @param sess SrvSession
    * @param tree TreeConnection
    * @param path String
@@ -56,7 +56,7 @@ public interface PseudoFileInterface {
    * Add pseudo files to a folder so that they appear in a folder search
    * <p>
    * How to access the pseudo files is implementation specific.
-   * 
+   *
    * @param sess SrvSession
    * @param tree TreeConnection
    * @param path String
@@ -66,7 +66,7 @@ public interface PseudoFileInterface {
 
   /**
    * Delete a pseudo file
-   * 
+   *
    * @param sess SrvSession
    * @param tree TreeConnection
    * @param path String

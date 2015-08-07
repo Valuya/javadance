@@ -21,14 +21,14 @@ package org.alfresco.jlan.netbios.win32;
 
 /**
  * Winsock Error Codes Class
- * 
+ *
  * <p>Contains a list of the error codes that the Win32 Winsock calls may generate,
  * and a method to convert to an error text string.
  *
  * @author gkspencer
  */
 public class WinsockError {
-  
+
   // Winsock error code constants
 
   public static final int WsaEIntr        = 10004;
@@ -77,12 +77,12 @@ public class WinsockError {
 
   /**
    * Convert a Winsock error code to a text string
-   * 
+   *
    * @param sts int
    * @return String
    */
   public static final String asString(int sts) {
-    
+
     String errText = null;
 
     switch (sts) {

@@ -27,40 +27,40 @@ package org.alfresco.jlan.smb.nt;
 public class WellKnownSID {
 
 	//	Well known security IDs
-	
+
 	public static final SID SIDEveryone 			= new SID("Everyone", 1,1,0);
 	public static final SID SIDBuiltinDomain 		= new SID("Builtin", 1,5,32);
 	public static final SID SIDLocalSystem			= new SID("LocalSystem", 1,5,18);
-	
+
 	/**
 	 * Return a well known SID name, return null if the SID is not a well known SID
-	 * 
+	 *
 	 * @param sid SID
 	 * @return String
 	 */
 	public static final String getSIDName(SID sid) {
-	  
+
 	  //	Check the revision and identifier authority
-	  
+
 	  if ( sid.getRevision() != 1 ||
 	       sid.getSubauthorityCount() != 1)
 	    return null;
-	  
+
 	  //	Get the sub-authority value to determine the name
-	  
+
 	  String name = null;
 	  int identAuth = sid.getIdentifierAuthority()[5];
 	  int subAuth   = sid.getSubauthority(0);
-	  
+
 	  if ( identAuth == SID.IdentAuthWorld) {
-	    
+
 	    if ( subAuth == SID.SubAuthWorld)
 	      name = "Everyone";
 	  }
 	  else if ( identAuth == SID.IdentAuthNT) {
 
 	    //	Determine the well known SID name
-	    
+
 		  switch ( sid.getSubauthority(0)) {
 		  	case SID.SubAuthNTDialup:
 		  	  name = "Dialup";
@@ -109,14 +109,14 @@ public class WellKnownSID {
 		  		break;
 		  }
 	  }
-	  
+
 	  //	Set the SID name
-	  
+
 	  if ( name != null)
 	    sid.setName(name);
-	  
+
 	  //	Return the name
-	  
+
 	  return name;
 	}
 }

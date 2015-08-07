@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb;
 
 /**
  * Seek file position types.
- * 
+ *
  * <p>Defines constants used by the SeekFile SMB request to specify where the seek position is relative to.
  *
  * @author gkspencer

@@ -58,6 +58,6 @@ public final class RFCNetBIOSProtocol {
   public static final int SESSRESP_LEN		= 9;
 
   //	Maximum packet size that RFC NetBIOS can handle (17bit value)
-  
+
   public static final int MaxPacketSize		= 0x01FFFF + HEADER_LEN;
 }

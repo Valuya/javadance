@@ -27,10 +27,10 @@ import org.alfresco.jlan.smb.dcerpc.info.ShareInfo;
 
 /**
  * SMB share information class
- * 
+ *
  * <p>
  * Contains the details of a remote share.
- * 
+ *
  * @author gkspencer
  */
 public class RAPShareInfo extends ShareInfo implements RAPReadable, Serializable {
@@ -43,7 +43,7 @@ public class RAPShareInfo extends ShareInfo implements RAPReadable, Serializable
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */
@@ -53,7 +53,7 @@ public class RAPShareInfo extends ShareInfo implements RAPReadable, Serializable
 
 	/**
 	 * Load the share information from the vector of objects
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */

@@ -24,9 +24,9 @@ import java.util.ArrayList;
 
 /**
  * File Lock List Class
- * 
+ *
  * <p>Contains a list of the current locks on a file.
- * 
+ *
  * @author gkspencer
  */
 public class FileLockList implements Serializable {
@@ -48,7 +48,7 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Add a lock to the list
-	 * 
+	 *
 	 * @param lock Lock to be added to the list.
 	 */
 	public final void addLock(FileLock lock) {
@@ -57,24 +57,24 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Find the matching lock
-	 * 
+	 *
 	 * @param lock FileLock
 	 * @return FileLock
 	 */
 	public final FileLock findLock( FileLock lock) {
 		return findLock( lock.getOffset(), lock.getLength(), lock.getProcessId());
 	}
-	
+
 	/**
 	 * Find the matching lock
-	 * 
+	 *
 	 * @param offset long
 	 * @param len long
 	 * @param pid int
 	 * @return FileLock
 	 */
 	public final FileLock findLock( long offset, long len, int pid) {
-		
+
 		// Check if there are any locks in the list
 
 		if ( numberOfLocks() == 0)
@@ -83,7 +83,7 @@ public class FileLockList implements Serializable {
 		// Search for the required lock
 
 		FileLock fLock = null;
-		
+
 		for (int i = 0; i < numberOfLocks(); i++) {
 
 			// Get the current lock details
@@ -101,10 +101,10 @@ public class FileLockList implements Serializable {
 
 		return null;
 	}
-	
+
 	/**
 	 * Remove a lock from the list
-	 * 
+	 *
 	 * @param lock FileLock
 	 * @return FileLock
 	 */
@@ -114,7 +114,7 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Remove a lock from the list
-	 * 
+	 *
 	 * @param offset Starting offset of the lock
 	 * @param len Locked section length
 	 * @param pid Owner process id
@@ -157,7 +157,7 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Return the specified lock details
-	 * 
+	 *
 	 * @param idx Lock index
 	 * @return FileLock
 	 */
@@ -169,7 +169,7 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Remove the lock at the specified index in the list
-	 * 
+	 *
 	 * @param idx Lock index
 	 * @return FileLock
 	 */
@@ -181,7 +181,7 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Check if the new lock should be allowed by comparing with the locks in the list.
-	 * 
+	 *
 	 * @param lock FileLock
 	 * @return boolean true if the lock can be granted, else false.
 	 */
@@ -210,7 +210,7 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Check if the file is readable for the specified section of the file and process id
-	 * 
+	 *
 	 * @param lock FileLock
 	 * @return boolean
 	 */
@@ -220,7 +220,7 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Check if the file is readable for the specified section of the file and process id
-	 * 
+	 *
 	 * @param offset long
 	 * @param len long
 	 * @param pid int
@@ -259,7 +259,7 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Check if the file is writeable for the specified section of the file and process id
-	 * 
+	 *
 	 * @param lock FileLock
 	 * @return boolean
 	 */
@@ -269,7 +269,7 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Check if the file is writeable for the specified section of the file and process id
-	 * 
+	 *
 	 * @param offset long
 	 * @param len long
 	 * @param pid int
@@ -308,33 +308,33 @@ public class FileLockList implements Serializable {
 
 	/**
 	 * Return the count of locks in the list.
-	 * 
+	 *
 	 * @return int Number of locks in the list.
 	 */
 	public final int numberOfLocks() {
 		return m_lockList.size();
 	}
-	
+
 	/**
 	 * Return the lock list as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		
+
 		str.append("[Locklist:");
 		str.append( numberOfLocks());
-		
+
 		if ( numberOfLocks() > 0) {
 			for ( int i = 0; i < numberOfLocks(); i++) {
 				str.append( getLockAt( i));
 				str.append(",");
 			}
 		}
-		
+
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

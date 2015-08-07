@@ -54,7 +54,7 @@ import org.alfresco.jlan.smb.server.win32.Win32NetBIOSLanaMonitor;
 
 /**
  * CIFS Server Class
- * 
+ *
  * @author gkspencer
  */
 public class SMBServer extends NetworkFileServer implements Runnable, ConfigurationListener {
@@ -73,15 +73,15 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	private CIFSConfigSection m_cifsConfig;
 	private CoreServerConfigSection m_coreConfig;
-	
+
 	// Server thread
 
 	private Thread m_srvThread;
 
 	// Session connections handler
-	
+
 	private CifsConnectionsHandler m_connectionsHandler;
-	
+
 	// Active session list
 
 	private SrvSessionList m_sessions;
@@ -95,12 +95,12 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 	private UUID m_serverGUID;
 
 	// CIFS packet pool
-	
+
 	private CIFSPacketPool m_packetPool;
-	
+
 	/**
 	 * Create an SMB server using the specified configuration.
-	 * 
+	 *
 	 * @param cfg ServerConfiguration
 	 */
 	public SMBServer(ServerConfiguration cfg) throws IOException {
@@ -114,7 +114,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Add a new session to the server
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 */
 	public final void addSession(SMBSrvSession sess) {
@@ -135,7 +135,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Check if the disk share is read-only.
-	 * 
+	 *
 	 * @param shr SharedDevice
 	 */
 	protected final void checkReadOnly(SharedDevice shr) {
@@ -219,37 +219,37 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 			// Create the active session list
 
 			m_sessions = new SrvSessionList();
-			
+
 			// Set the maximum virtual circuits per session
-			
+
 			SMBSrvSession.getFactory().setMaximumVirtualCircuits( m_cifsConfig.getMaximumVirtualCircuits());
-			
+
 			// Get the core server configuration
-			
+
 			m_coreConfig = (CoreServerConfigSection) getConfiguration().getConfigSection( CoreServerConfigSection.SectionName);
 			if ( m_coreConfig != null) {
 
 				// Create the CIFS packet pool using the global memory pool
-				
+
 				m_packetPool = new CIFSPacketPool( m_coreConfig.getMemoryPool(), m_coreConfig.getThreadPool());
-				
+
 				// Check if packet pool debugging is enabled
-				
+
 				if (( m_cifsConfig.getSessionDebugFlags() & SMBSrvSession.DBG_PKTPOOL) != 0)
 					m_packetPool.setDebug( true);
-				
+
 				if (( m_cifsConfig.getSessionDebugFlags() & SMBSrvSession.DBG_PKTALLOC) != 0)
 					m_packetPool.setAllocateDebug( true);
 			}
 		}
 		else
 			setEnabled(false);
-		
+
 	}
 
 	/**
 	 * Delete temporary shares created by the share mapper for the specified session
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 */
 	public final void deleteTemporaryShares(SMBSrvSession sess) {
@@ -261,7 +261,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Return the CIFS server configuration
-	 * 
+	 *
 	 * @return CIFSConfigSection
 	 */
 	public final CIFSConfigSection getCIFSConfiguration() {
@@ -270,7 +270,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Return the server comment.
-	 * 
+	 *
 	 * @return java.lang.String
 	 */
 	public final String getComment() {
@@ -279,7 +279,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Return the CIFS server name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getServerName() {
@@ -288,7 +288,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Return the server type flags.
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getServerType() {
@@ -304,7 +304,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Return the list of SMB dialects that this server supports.
-	 * 
+	 *
 	 * @return DialectSelector
 	 */
 	public final DialectSelector getSMBDialects() {
@@ -313,7 +313,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Return the CIFS authenticator
-	 * 
+	 *
 	 * @return CifsAuthenticator
 	 */
 	public final ICifsAuthenticator getCifsAuthenticator() {
@@ -322,7 +322,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Return the active session list
-	 * 
+	 *
 	 * @return SrvSessionList
 	 */
 	public final SrvSessionList getSessions() {
@@ -331,22 +331,22 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Return the CIFS packet pool
-	 * 
+	 *
 	 * @return CIFSPacketPool
 	 */
 	public final CIFSPacketPool getPacketPool() {
 		return m_packetPool;
 	}
-	
+
 	/**
 	 * Return the thread pool
-	 * 
+	 *
 	 * @return ThreadRequestPool
 	 */
 	public final ThreadRequestPool getThreadPool() {
 		return m_coreConfig.getThreadPool();
 	}
-	
+
 	/**
 	 * Start the SMB server.
 	 */
@@ -451,34 +451,34 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 			// Note: The older thread per session/socket handler is used for Win32 NetBIOS connections
 
 			if ( getCIFSConfiguration().hasDisableNIOCode() || getCIFSConfiguration().hasWin32NetBIOS()) {
-				
+
 				// Use the older threaded connections handler (thread per session model)
-			
+
 				m_connectionsHandler = new ThreadedCifsConnectionsHandler();
 			}
 			else {
-				
+
 				// Check if the Java socket or JNI based connections handler should be used
-				
+
 				if ( getCIFSConfiguration().hasTcpipSMB() || getCIFSConfiguration().hasNetBIOSSMB()) {
-					
+
 					// Use the NIO based native SMB/NetBIOS SMB connections handler
-				
+
 					m_connectionsHandler = new NIOCifsConnectionsHandler();
 				}
 				else {
-					
+
 					// Use the JNI based Winsock NetBIOS connections handler
-					
+
 					m_connectionsHandler = new AsyncWinsockCifsConnectionsHandler();
 				}
 			}
-			
+
 			// Initialize the connections handler
-			
+
 			m_connectionsHandler.initializeHandler( this, getCIFSConfiguration());
 			m_connectionsHandler.startHandler();
-			
+
 			// Check if there are any session handlers installed, if not then close the server
 
 			if ( m_connectionsHandler.numberOfSessionHandlers() > 0 || getCIFSConfiguration().hasWin32NetBIOS()) {
@@ -545,16 +545,16 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 		setActive(false);
 		fireServerEvent(ServerListener.ServerShutdown);
-		
+
 		// DEBUG
-		
+
 		if ( Debug.EnableInfo && hasDebug())
 			Debug.println("[SMB] Packet pool at shutdown: " + getPacketPool());
 	}
 
 	/**
 	 * Notify the server that a session has been closed.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 */
 	protected final void sessionClosed(SMBSrvSession sess) {
@@ -564,7 +564,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 		m_sessions.removeSession(sess);
 
 		// DEBUG
-		
+
 		if ( hasDebug()) {
 			Debug.println("[SMB] Closed session " + sess.getSessionId() + ", sessions=" + m_sessions.numberOfSessions());
 			if ( m_sessions.numberOfSessions() > 0 && m_sessions.numberOfSessions() <= 10) {
@@ -578,7 +578,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 				Debug.println("]");
 			}
 		}
-		
+
 		// Notify session listeners that a session has been closed
 
 		fireSessionClosedEvent(sess);
@@ -586,7 +586,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Notify the server that a user has logged on.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 */
 	protected final void sessionLoggedOn(SMBSrvSession sess) {
@@ -598,7 +598,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Notify the server that a session has been closed.
-	 * 
+	 *
 	 * @param sess SMBSrvSession
 	 */
 	protected final void sessionOpened(SMBSrvSession sess) {
@@ -610,7 +610,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Shutdown the SMB server
-	 * 
+	 *
 	 * @param immediate boolean
 	 */
 	public final void shutdownServer(boolean immediate) {
@@ -678,7 +678,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Validate configuration changes that are relevant to the SMB server
-	 * 
+	 *
 	 * @param id int
 	 * @param config ServerConfiguration
 	 * @param newVal Object
@@ -752,7 +752,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 				break;
 
 			// Maximum virtual circuits per session
-				
+
 			case ConfigId.SMBMaxVirtualCircuit:
 				sts = ConfigurationListener.StsNewSessionsOnly;
 				if ( newVal instanceof Integer) {
@@ -760,7 +760,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 					SMBSrvSession.getFactory().setMaximumVirtualCircuits( maxVC);
 				}
 				break;
-				
+
 			// Changes that require a restart
 
 			case ConfigId.SMBHostName:
@@ -787,7 +787,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Determine if we are running under Windows NT onwards
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private final boolean isWindowsNTOnwards() {
@@ -816,7 +816,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Get the list of local IP addresses
-	 * 
+	 *
 	 */
 	private final void getServerIPAddresses() {
 
@@ -870,7 +870,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Return the server GUID
-	 * 
+	 *
 	 * @return UUID
 	 */
 	public final UUID getServerGUID() {
@@ -879,7 +879,7 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
 
 	/**
 	 * Send a NetBIOS names added event to server listeners
-	 * 
+	 *
 	 * @param lana int
 	 */
 	public final void fireNetBIOSNamesAddedEvent(int lana) {

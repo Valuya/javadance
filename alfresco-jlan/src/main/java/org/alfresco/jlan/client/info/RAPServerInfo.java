@@ -26,12 +26,12 @@ import org.alfresco.jlan.smb.dcerpc.info.ServerInfo;
 
 /**
  * SMB server info class
- * 
+ *
  * <p>
  * The ServerInfo class contains details of the remote server that an AdminSession is connected to.
  * The class is returned by the AdminSession.getServerInfo () method, or a list of the available
  * servers may be returned as an ServerList by the AdminSession.getServerList () method.
- * 
+ *
  * @author gkspencer
  */
 public final class RAPServerInfo extends ServerInfo implements RAPReadable, java.io.Serializable {
@@ -48,7 +48,7 @@ public final class RAPServerInfo extends ServerInfo implements RAPReadable, java
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 * @param domain boolean
@@ -61,7 +61,7 @@ public final class RAPServerInfo extends ServerInfo implements RAPReadable, java
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param name String
 	 * @param domain boolean
 	 */
@@ -72,7 +72,7 @@ public final class RAPServerInfo extends ServerInfo implements RAPReadable, java
 
 	/**
 	 * Determine if this object refers to a domain or server
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isDomain() {
@@ -81,7 +81,7 @@ public final class RAPServerInfo extends ServerInfo implements RAPReadable, java
 
 	/**
 	 * Load the server information from the vector of objects
-	 * 
+	 *
 	 * @param infoLevel int
 	 * @param objs Vector
 	 */

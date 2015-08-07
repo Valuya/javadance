@@ -29,7 +29,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * NetBIOS datagram class
- * 
+ *
  * <p>Used for sending/receiving NetBIOS broadcast datagrams that are used for name lookups and registration.
  *
  * @author gkspencer
@@ -178,13 +178,13 @@ public class NetBIOSDatagram {
 
 	/**
 	 * Return the user data length
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getDataLength() {
 	  return getLength() - NB_USERDATA;
 	}
-	
+
 	/**
 	 * Get the NetBIOS datagram message type.
 	 *
@@ -217,19 +217,19 @@ public class NetBIOSDatagram {
 
 	/**
 	 * Return the datagram source IP address, as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getSourceAddress() {
-		
+
 		//	Get the IP address
-		
+
 		byte[] addr = getSourceIPAddress();
-		
+
 		//	Build the IP address string
-		
+
 		StringBuffer addrStr = new StringBuffer();
-		
+
 		addrStr.append(addr[0]);
 		addrStr.append(".");
 		addrStr.append(addr[1]);
@@ -237,10 +237,10 @@ public class NetBIOSDatagram {
 		addrStr.append(addr[2]);
 		addrStr.append(".");
 		addrStr.append(addr[3]);
-		
+
 		return addrStr.toString();
 	}
-	
+
 	/**
 	 * Get the source NetBIOS name.
 	 *
@@ -275,7 +275,7 @@ public class NetBIOSDatagram {
 
 	/**
 	 * Check if the user data is an SMB packet
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isSMBData() {
@@ -287,7 +287,7 @@ public class NetBIOSDatagram {
 	  	return true;
 	  return false;
 	}
-	
+
 	/**
 	 * Return the message type as a string
 	 *
@@ -371,7 +371,7 @@ public class NetBIOSDatagram {
 	  setUserData ( userData, userLen, userOff);
 
 		//	Use the global NetBIOS datagram socket to sent the broadcast datagram
-		
+
 		NetBIOSDatagramSocket nbSocket = NetBIOSDatagramSocket.getInstance();
 		nbSocket.sendDatagram(this,addr,port);
 	}
@@ -413,7 +413,7 @@ public class NetBIOSDatagram {
 	  setUserData ( userData, userLen, userOff);
 
 		//	Use the global NetBIOS datagram socket to sent the broadcast datagram
-		
+
 		NetBIOSDatagramSocket nbSocket = NetBIOSDatagramSocket.getInstance();
 		nbSocket.sendBroadcastDatagram(this);
 	}

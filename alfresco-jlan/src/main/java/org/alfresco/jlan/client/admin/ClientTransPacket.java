@@ -27,17 +27,17 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * Client Transaction Packet Class
- * 
+ *
  * <p>
  * Provides methods for building client-side SMB transaction requests.
- * 
+ *
  * @author gkspencer
  */
 class ClientTransPacket extends TransPacket {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf Buffer that contains the SMB transaction packet.
 	 */
 	public ClientTransPacket(byte[] buf) {
@@ -46,7 +46,7 @@ class ClientTransPacket extends TransPacket {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param siz Size of packet to allocate.
 	 */
 	public ClientTransPacket(int siz) {
@@ -55,7 +55,7 @@ class ClientTransPacket extends TransPacket {
 
 	/**
 	 * Initialize the transact SMB packet
-	 * 
+	 *
 	 * @param sess Session to get the unique multiplex id for this transaction
 	 * @param pcnt Total parameter count for this transaction
 	 * @param paramblk Parameter block data bytes

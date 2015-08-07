@@ -21,10 +21,10 @@ package org.alfresco.jlan.smb;
 
 /**
  *  SMB packet type class
- *  
+ *
  *  <p>Contains definitions of the available SMB/CIFS request types, plus SMB transaction/transaction2 request types, remote admin protocol (RAP)
  *  requests and NT transaction request types.
- *  
+ *
  *  <p>There are also static methods for converting an SMB command type, transaction type or NT transaction type to a name.
  *
  * @author gkspencer
@@ -88,7 +88,7 @@ public class PacketType {
   public static final int SessionSetupAndX  = 0x73;
   public static final int LogoffAndX        = 0x74;
   public static final int TreeConnectAndX   = 0x75;
-  
+
   public static final int DiskInformation   = 0x80;
   public static final int Search						= 0x81;
   public static final int Find              = 0x82;
@@ -190,9 +190,9 @@ public class PacketType {
   //	Miscellaneous codes
 
   public static final int NetBIOSEnum					= 92;
-  
+
   //	NT transaction function codes
-  
+
   public static final int NTTransCreate							= 1;
   public static final int NTTransIOCtl							= 2;
   public static final int NTTransSetSecurityDesc		= 3;
@@ -201,13 +201,13 @@ public class PacketType {
   public static final int NTTransQuerySecurityDesc	= 6;
 	public static final int NTTransGetUserQuota				= 7;
 	public static final int NTTransSetUserQuota				= 8;
-  
+
   //	Flag to indicate no chained AndX command
-  
+
   public static final int NoChainedCommand					= 0xFF;
 
   //	SMB command names (block 1)
-  
+
   private static String[] _cmdNames1 = { "CreateDirectory",
 					  														 "DeleteDirectory",
 					  														 "OpenFile",
@@ -271,7 +271,7 @@ public class PacketType {
       																		"LogoffAndX",
       																		"TreeConnectAndX"
   };
-  
+
   private static String[] _cmdNames3 = { "DiskInformation",
       																	 "Search",
       																	 "Find",
@@ -316,7 +316,7 @@ public class PacketType {
   };
 
   //	NT transaction operation code names
-  
+
   private static String[] _ntTranNames = { "",		//	zero not used
       																		 "NTTransCreate",
       																		 "NTTransIOCtl",
@@ -327,29 +327,29 @@ public class PacketType {
       																		 "NTTransGetUserQuota",
       																		 "NTTransSetUserQuota"
   };
-  
+
   /**
    * Return an SMB command as a string
-   * 
+   *
    * @param cmd int
    * @return String
    */
   public static final String getCommandName(int cmd) {
-    
+
     //	Get the command name
-    
+
     String cmdName = "";
-    
+
     if ( cmd >= 0 && cmd < _cmdNames1.length) {
 
       //	Get the command name from the main name table
-      
+
       cmdName = _cmdNames1[cmd];
     }
     else {
-      
+
       //	Mask the command to determine the command table to index
-      
+
       switch ( cmd & 0x00F0) {
       	case 0x70:
       	  cmdName = _cmdNames2[cmd - 0x70];
@@ -371,41 +371,41 @@ public class PacketType {
       		break;
       }
     }
-    
+
     //	Return the command name string
-    
+
     return cmdName;
   }
-  
+
   /**
-   * Return a transaction code as a string 
-   * 
+   * Return a transaction code as a string
+   *
    * @param opcode int
    * @return String
    */
   public final static String getTransactionName(int opcode) {
-    
+
     //	Range check the opcode
-    
+
     String opcodeName = "";
-    
+
     if ( opcode >= 0 && opcode < _transNames.length)
       opcodeName = _transNames[opcode];
     return opcodeName;
   }
-  
+
   /**
    * Return an NT transation code as a string
-   * 
+   *
    * @param opcode int
    * @return String
    */
   public final static String getNTTransationName(int opcode) {
-    
+
     //	Range check the opcode
-    
+
     String opcodeName = "";
-    
+
     if ( opcode >= 0 && opcode < _ntTranNames.length)
       opcodeName = _ntTranNames[opcode];
     return opcodeName;

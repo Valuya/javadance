@@ -61,7 +61,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Class constructor
-   * 
+   *
    * @param buf byte[]
    */
   public Type3NTLMMessage(byte[] buf) {
@@ -70,7 +70,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Class constructor
-   * 
+   *
    * @param buf byte[]
    * @param offset int
    * @param len int
@@ -84,7 +84,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the flags value
-   * 
+   *
    * @return int
    */
   public int getFlags() {
@@ -93,7 +93,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the length of the LM hash
-   * 
+   *
    * @return int
    */
   public final int getLMHashLength() {
@@ -102,7 +102,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the LM password hash
-   * 
+   *
    * @return byte[]
    */
   public final byte[] getLMHash() {
@@ -111,7 +111,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the length of the NTLM hash
-   * 
+   *
    * @return int
    */
   public final int getNTLMHashLength() {
@@ -120,7 +120,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the NTLM password hash
-   * 
+   *
    * @return byte[]
    */
   public final byte[] getNTLMHash() {
@@ -129,7 +129,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the domain name
-   * 
+   *
    * @return String
    */
   public final String getDomain() {
@@ -138,7 +138,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the user name
-   * 
+   *
    * @return String
    */
   public final String getUserName() {
@@ -147,7 +147,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the workstation name
-   * 
+   *
    * @return String
    */
   public final String getWorkstation() {
@@ -156,7 +156,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Determine if the session key has been specified
-   * 
+   *
    * @return boolean
    */
   public final boolean hasSessionKey() {
@@ -165,7 +165,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the session key, or null if the session key is not present
-   * 
+   *
    * @return byte[]
    */
   public final byte[] getSessionKey() {
@@ -180,7 +180,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Build a type 3 message
-   * 
+   *
    * @param lmHash byte[]
    * @param ntlmHash byte[]
    * @param domain String
@@ -230,7 +230,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Set the message flags
-   * 
+   *
    * @param flags int
    */
   protected void setFlags(int flags) {
@@ -239,7 +239,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Find the data block offset
-   * 
+   *
    * @return int
    */
   private final int findDataBlockOffset() {
@@ -284,7 +284,7 @@ public class Type3NTLMMessage extends NTLMMessage {
 
   /**
    * Return the type 3 message as a string
-   * 
+   *
    * @return String
    */
   public String toString() {

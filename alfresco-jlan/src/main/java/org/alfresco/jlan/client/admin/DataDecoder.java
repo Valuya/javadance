@@ -25,7 +25,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * SMB data decoder class
- * 
+ *
  * @author gkspencer
  */
 final class DataDecoder {
@@ -33,7 +33,7 @@ final class DataDecoder {
 	/**
 	 * Decode a block of data according to the data descriptor string and return a vector of the
 	 * values converted to Java object types.
-	 * 
+	 *
 	 * @param buf Byte array containing the data to be unpacked
 	 * @param off Offset within the buffer that the data begins
 	 * @param desc Data descriptor string

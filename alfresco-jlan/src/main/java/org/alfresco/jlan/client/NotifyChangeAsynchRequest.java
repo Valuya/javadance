@@ -25,11 +25,11 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * Notify Change Asynchronous Request Class
- * 
+ *
  * <p>
  * Holds the details of a change notification asynchronous request that is used to receive details
  * of changes to files and/or folders on a remote file server.
- * 
+ *
  * @author gkspencer
  */
 public class NotifyChangeAsynchRequest extends AsynchRequest {
@@ -53,7 +53,7 @@ public class NotifyChangeAsynchRequest extends AsynchRequest {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param mid int
 	 * @param fid int
 	 * @param filter int
@@ -72,7 +72,7 @@ public class NotifyChangeAsynchRequest extends AsynchRequest {
 
 	/**
 	 * Return the file id being watched
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFileId() {
@@ -81,7 +81,7 @@ public class NotifyChangeAsynchRequest extends AsynchRequest {
 
 	/**
 	 * Return the watch filter
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getFilter() {
@@ -90,7 +90,7 @@ public class NotifyChangeAsynchRequest extends AsynchRequest {
 
 	/**
 	 * Return the watch tree flag
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasWatchTree() {
@@ -99,7 +99,7 @@ public class NotifyChangeAsynchRequest extends AsynchRequest {
 
 	/**
 	 * Process the notify change response
-	 * 
+	 *
 	 * @param sess Session
 	 * @param pkt SMBPacket
 	 */
@@ -173,7 +173,7 @@ public class NotifyChangeAsynchRequest extends AsynchRequest {
 
 	/**
 	 * Resubmit the request to the server
-	 * 
+	 *
 	 * @param sess Session
 	 * @param pkt SMBPacket
 	 * @return boolean
@@ -211,7 +211,7 @@ public class NotifyChangeAsynchRequest extends AsynchRequest {
 
 	/**
 	 * Return the request as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

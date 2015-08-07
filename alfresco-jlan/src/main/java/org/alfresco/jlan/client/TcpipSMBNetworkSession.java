@@ -30,35 +30,35 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * Native TCP/IP SMB Network Session Class
- * 
+ *
  * <p>Contains the details of a connection to a remote file server that has used the native SMB protocol
  * of port 445 to connect to the remote server.
- * 
+ *
  *  <p>Contains methods for sending/receiving SMB/CIFS requests/responses using native SMB.
- * 
+ *
  * @author gkspencer
  */
 public class TcpipSMBNetworkSession extends NetworkSession {
 
 	//  Define the protocol name
-	  
+
 	private static final String ProtocolName = "Native SMB (port 445)";
-	  
+
 	//  Socket used to connect and read/write to remote host
-	
+
 	private Socket m_socket;
-	
+
 	//  Input and output data streams, from the socket network connection
-	
+
 	private DataInputStream m_in;
 	private DataOutputStream m_out;
-	
+
 	//  Session port
-	  
+
 	private int m_sessPort = TcpipSMB.PORT;
-	  
+
 	//  Debug enable flag and debug output stream
-	
+
 	private static boolean m_debug = false;
 
 	/**
@@ -70,7 +70,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param tmo Socket timeout, in milliseconds
 	 */
 	public TcpipSMBNetworkSession(int tmo) {
@@ -80,7 +80,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param tmo Socket timeout, in milliseconds
 	 * @param port Session port to connect to on the server
 	 */
@@ -92,7 +92,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Open a connection to a remote host
-	 * 
+	 *
 	 * @param toName Host name/address being called
 	 * @param fromName Local host name/address
 	 * @param toAddr Optional address
@@ -119,7 +119,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Determine if the session is connected to a remote host
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isConnected() {
@@ -128,7 +128,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Check if there is data available on this network session
-	 * 
+	 *
 	 * @return boolean
 	 * @exception IOException
 	 */
@@ -147,7 +147,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Receive a data packet from the remote host.
-	 * 
+	 *
 	 * @param buf Byte buffer to receive the data into.
 	 * @return Length of the received data.
 	 * @exception java.io.IOException I/O error occurred.
@@ -209,7 +209,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Send a data packet to the remote host.
-	 * 
+	 *
 	 * @param data Byte array containing the data to be sent.
 	 * @param siz Length of the data to send.
 	 * @return true if the data was sent successfully, else false.
@@ -231,7 +231,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Close the network session
-	 * 
+	 *
 	 * @exception java.io.IOException I/O error occurred
 	 */
 	public void Close()
@@ -259,7 +259,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Set the socket timeout
-	 * 
+	 *
 	 * @param tmo int
 	 */
 	public void setTimeout(int tmo) {
@@ -281,7 +281,7 @@ public class TcpipSMBNetworkSession extends NetworkSession {
 
 	/**
 	 * Enable/disable session debugging output
-	 * 
+	 *
 	 * @param dbg true to enable debugging, else false
 	 */
 	public static void setDebug(boolean dbg) {

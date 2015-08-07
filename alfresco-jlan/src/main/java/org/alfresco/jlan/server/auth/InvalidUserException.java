@@ -37,7 +37,7 @@ public class InvalidUserException extends Exception {
 
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param s java.lang.String
 	 */
 	public InvalidUserException(String s) {

@@ -55,14 +55,14 @@ import org.springframework.extensions.config.ConfigElement;
 
 /**
  * Object Id File Loader Class
- * 
+ *
  * <p>
  * The object id file loader loads/saves file data to a repository/storage device using an associated object id.
- * 
+ *
  * <p>
  * This class relies on a seperate DBObjectIdInterface implementation to provide the methods to load and save the file
  * id/object id mappings to the database table.
- * 
+ *
  * @author gkspencer
  */
 public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLoader, FileStateListener {
@@ -175,7 +175,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 */
 	public ObjectIdFileLoader() {
 	}
@@ -183,7 +183,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 	/**
 	 * Return the database features required by this file loader. Return zero if no database features are required by
 	 * the loader.
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getRequiredDBFeatures() {
@@ -195,7 +195,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the database device context
-	 * 
+	 *
 	 * @return DBDeviceContext
 	 */
 	public final DBDeviceContext getContext() {
@@ -204,7 +204,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the file state cache
-	 * 
+	 *
 	 * @return FileStateCache
 	 */
 	protected final FileStateCache getStateCache() {
@@ -213,7 +213,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the temporary directory name
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTemporaryDirectoryPath() {
@@ -222,7 +222,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the temporary directory
-	 * 
+	 *
 	 * @return File
 	 */
 	public final File getTemporaryDirectory() {
@@ -231,7 +231,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the current temporry sub-directory
-	 * 
+	 *
 	 * @return File
 	 */
 	public final File getCurrentTempDirectory() {
@@ -240,7 +240,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the database object id interface
-	 * 
+	 *
 	 * @return DBObjectIdInterface
 	 */
 	public final DBObjectIdInterface getDBObjectIdInterface() {
@@ -249,7 +249,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Add a file processor to process files before storing and after loading.
-	 * 
+	 *
 	 * @param fileProc FileProcessor
 	 * @throws FileLoaderException
 	 */
@@ -268,7 +268,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Determine if there are any file processors configured
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasFileProcessors() {
@@ -277,7 +277,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Check if debug output is enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasDebug() {
@@ -286,7 +286,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the maximum in-memory file request queue size
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getMaximumQueueSize() {
@@ -295,7 +295,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the in-memory file request queue low water mark level
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLowQueueSize() {
@@ -304,7 +304,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the worker thread prefix
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getName() {
@@ -313,7 +313,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the shared device name that this loader is associated with
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getShareName() {
@@ -322,7 +322,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the temporary sub-directory prefix
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTempDirectoryPrefix() {
@@ -331,7 +331,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Return the temporary file prefix
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getTempFilePrefix() {
@@ -340,7 +340,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Set the worker thread name prefix
-	 * 
+	 *
 	 * @param name String
 	 */
 	protected final void setName(String name) {
@@ -349,7 +349,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Set the list of required attributes to be added to file requests
-	 * 
+	 *
 	 * @param attrNames StringList
 	 */
 	protected final void setRequiredAttributes(StringList attrNames) {
@@ -358,7 +358,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Check if there are any required attributes to be added to file requests
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected final boolean hasRequiredAttributes() {
@@ -367,7 +367,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Create a network file for the specified file
-	 * 
+	 *
 	 * @param params FileOpenParams
 	 * @param fid int
 	 * @param stid int
@@ -384,7 +384,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 		String[] paths = FileName.splitPath(params.getPath());
 		String name = paths[1];
-		
+
 		if ( params.isStream())
 			name = name + params.getStreamName();
 
@@ -456,7 +456,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Close the network file
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param netFile NetworkFile
 	 * @exception IOException
@@ -494,7 +494,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 					// Create a file save request for the updated file segment
 
-					SingleFileRequest fileReq = new SingleFileRequest(FileRequest.SAVE, cacheFile.getFileId(), cacheFile.getStreamId(), 
+					SingleFileRequest fileReq = new SingleFileRequest(FileRequest.SAVE, cacheFile.getFileId(), cacheFile.getStreamId(),
 							fileSeg.getInfo(), netFile.getFullName(), cacheFile.getFileState());
 
 					// Check if there are any attributes to be added to the file request
@@ -585,7 +585,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Delete the specified file data
-	 * 
+	 *
 	 * @param fname String
 	 * @param fid int
 	 * @param stid int
@@ -640,7 +640,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Request file data to be loaded/saved
-	 * 
+	 *
 	 * @param req FileRequest
 	 */
 	public void queueFileRequest(FileRequest req) {
@@ -652,7 +652,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Load a file
-	 * 
+	 *
 	 * @param req FileRequest
 	 * @return int
 	 * @exception Exception
@@ -689,10 +689,10 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 		}
 
 		// DEBUG
-		
+
 		if ( Debug.EnableInfo && hasDebug())
 			Debug.println("## ObjIdLoader fileSeg=" + fileSeg.getTemporaryFile() + ", virtPath=" + loadReq.getVirtualPath());
-		
+
 		// Load the file data
 
 		int loadSts = StsRequeue;
@@ -716,13 +716,13 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 				// Load the file data
 
 				loadFileData(fileId, strmId, objectId, fileSeg);
-	
+
 				// Set the load status
-	
+
 				loadSts = StsSuccess;
-	
+
 				// DEBUG
-	
+
 				if ( Debug.EnableInfo && hasDebug()) {
 					long endTime = System.currentTimeMillis();
 					Debug.println("## ObjIdLoader loaded fid=" + loadReq.getFileId() + ", stream=" + loadReq.getStreamId()
@@ -730,14 +730,14 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 				}
 			}
 			else {
-				
+
 				// DEBUG
-				
+
 				if ( Debug.EnableInfo && hasDebug())
 					Debug.println("## ObjIdLoader No object id mapping for fid=" + loadReq.getFileId() + ", stream=" + loadReq.getStreamId());
-				
+
 				// Indicate a load success
-				
+
 				loadSts = StsSuccess;
 			}
 		}
@@ -829,7 +829,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Store a file
-	 * 
+	 *
 	 * @param req FileRequest
 	 * @return int
 	 * @exception Exception
@@ -921,7 +921,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Load the file data
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param objectId String
@@ -933,7 +933,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Save file data
-	 * 
+	 *
 	 * @param fileId int
 	 * @param streamId int
 	 * @param fileSeg FileSegment
@@ -946,7 +946,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Initialize the file loader using the specified parameters
-	 * 
+	 *
 	 * @param params ConfigElement
 	 * @param ctx DeviceContext
 	 * @exception FileLoaderException
@@ -1154,11 +1154,11 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Start the file loader
-	 * 
+	 *
 	 * @param ctx DeviceContext
 	 */
 	public void startLoader( DeviceContext ctx) {
-		
+
 		// Get the file state cache from the context
 
 		m_stateCache = getContext().getStateCache();
@@ -1168,7 +1168,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 		m_stateCache.addStateListener(this);
 
 		// Get the database interface
-		
+
 		DBQueueInterface dbQueue = null;
 
 		if ( getContext().getDBInterface() instanceof DBQueueInterface)
@@ -1233,10 +1233,10 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 				queueFileRequest(recoveredQueue.removeRequestNoWait());
 		}
 	}
-	
+
 	/**
 	 * Shutdown the file loader and release all resources
-	 * 
+	 *
 	 * @param immediate boolean
 	 */
 	public void shutdownLoader(boolean immediate) {
@@ -1249,7 +1249,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Run the file store file processors
-	 * 
+	 *
 	 * @param context DiskDeviceContext
 	 * @param state FileState
 	 * @param segment FileSegment
@@ -1293,7 +1293,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Run the file load file processors
-	 * 
+	 *
 	 * @param context DiskDeviceContext
 	 * @param state FileState
 	 * @param segment FileSegment
@@ -1337,7 +1337,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Re-create, or attach, a file request to the file state.
-	 * 
+	 *
 	 * @param fid int
 	 * @param tempPath String
 	 * @param virtPath String
@@ -1396,7 +1396,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Find the file segment for the specified virtual path
-	 * 
+	 *
 	 * @param virtPath String
 	 * @return FileSegment
 	 */
@@ -1428,7 +1428,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Determine if the loader supports NTFS streams
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean supportsStreams() {
@@ -1465,7 +1465,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * File state has expired. The listener can control whether the file state is removed from the cache, or not.
-	 * 
+	 *
 	 * @param state FileState
 	 * @return true to remove the file state from the cache, or false to leave the file state in the cache
 	 */
@@ -1599,7 +1599,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * File state cache is closing down, any resources attached to the file state must be released.
-	 * 
+	 *
 	 * @param state FileState
 	 */
 	public void fileStateClosed(FileState state) {
@@ -1635,7 +1635,7 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 	/**
 	 * Create a file segment to load/save the file data
-	 * 
+	 *
 	 * @param state FileState
 	 * @param params FileOpenParams
 	 * @param fname String
@@ -1740,10 +1740,10 @@ public abstract class ObjectIdFileLoader implements FileLoader, BackgroundFileLo
 
 		return netFile;
 	}
-	
+
 	/**
 	 * Set the database context
-	 * 
+	 *
 	 * @param dbCtx DBDeviceContext
 	 */
 	public final void setContext(DBDeviceContext dbCtx) {

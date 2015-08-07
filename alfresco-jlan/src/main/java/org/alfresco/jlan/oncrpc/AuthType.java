@@ -27,16 +27,16 @@ package org.alfresco.jlan.oncrpc;
 public final class AuthType {
 
   //	Authentication type contants
-  
+
   public static final int Null		= 0;
   public static final int Unix		= 1;
   public static final int Short		= 2;
   public static final int DES			= 3;
 
   //	Authentication type strings
-  
+
   private static final String[] _authTypes = { "Null", "Unix", "Short", "DES" };
-  
+
   /**
    * Return the authentication type as string
    *

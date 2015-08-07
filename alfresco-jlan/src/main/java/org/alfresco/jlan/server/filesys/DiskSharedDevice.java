@@ -41,7 +41,7 @@ public class DiskSharedDevice extends SharedDevice {
     super(name, ShareType.DISK, ctx);
     setInterface(iface);
   }
-  
+
   /**
    * Construct a disk share with the specified name and device interface.
    *
@@ -55,19 +55,19 @@ public class DiskSharedDevice extends SharedDevice {
     setInterface(iface);
     setAttributes(attrib);
   }
-  
+
   /**
    * Return the disk device context
-   * 
+   *
    * @return DiskDeviceContext
    */
   public final DiskDeviceContext getDiskContext() {
   	return (DiskDeviceContext) getContext();
   }
-  
+
   /**
    * Return the disk interface
-   * 
+   *
    * @return DiskInterface
    */
   public final DiskInterface getDiskInterface() {

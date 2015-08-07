@@ -21,7 +21,7 @@ package org.alfresco.jlan.smb.nt;
 
 /**
  * Save Exception Class
- * 
+ *
  * <p>Thrown when an error occurs saving an ACE, ACL, SID or security descriptor to a buffer.
  *
  * @author gkspencer
@@ -36,10 +36,10 @@ public class SaveException extends Exception {
 	public SaveException() {
 		super();
 	}
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param msg String
 	 */
 	public SaveException(String msg) {

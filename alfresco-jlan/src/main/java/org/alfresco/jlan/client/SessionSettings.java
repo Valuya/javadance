@@ -29,66 +29,66 @@ import org.alfresco.jlan.smb.TcpipSMB;
 
 /**
  *  The session settings class holds the connection options for a new SMB session.
- *  
+ *
  *  <p>A SessionSettings object can be used with the various open session methods of the SessionFactory class to specify per
  *  session overrides to the default settings, such as protocol order, remote ports, timeout values, debugging options.
- * 
+ *
  * @author gkspencer
  */
 public class SessionSettings {
 
     //  Primary and secondary protocols to connect with
-    
+
     private int m_primaryProto   = Protocol.TCPNetBIOS;
     private int m_secondaryProto = Protocol.NativeSMB;
 
     // SMB dialects to negotiate
-    
+
     private DialectSelector m_dialects;
-    
+
     // Session timeout, in milliseconds. Used for initial connection and send/receive.
-    
+
     private int m_timeout = RFCNetBIOSProtocol.TMO;
-    
+
     // NetBIOS session and native SMB session ports
-    
+
     private int m_netbiosPort = RFCNetBIOSProtocol.PORT;
     private int m_nativeSMBPort = TcpipSMB.PORT;
 
     // NetBIOS name scope
-    
+
     private String m_netbiosScopeId;
-    
+
     // NetBIOS name port
-    
+
     private int m_netbiosNamePort = RFCNetBIOSProtocol.NAME_PORT;
-    
+
     // NetBIOS broadcast name lookup subnet mask
-    
+
     private String m_subnetMask;
-    
+
     // WINS server address
-    
+
     private InetAddress m_WINSServer = NetBIOSSession.getDefaultWINSServer();
-    
+
     // NetBIOS name lookup type and timeout, in milliseconds
-    
+
     private int m_lookupType = NetBIOSSession.getDefaultLookupType();
     private int m_lookupTmo  = NetBIOSSession.getDefaultLookupTimeout();
-    
+
     // Use wildcard file server name when connecting to remote server
-    
+
     private boolean m_useWildcardName = NetBIOSSession.getDefaultWildcardFileServerName();
-    
+
     // Flag to indicate if the primary protocol should be updated from the secondary protocol
     // setting when the connection is successfully made using the secondary protocol.
-    
+
     private boolean m_updateProtocol;
-    
+
     // Virtual circuit, a value of zero may reset other connections from this name or address
-    
+
     private int m_vcircuit;
-    
+
 	/**
 	 * Default constructor
 	 */
@@ -97,7 +97,7 @@ public class SessionSettings {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param primaryProto int
 	 * @param secondaryProto int
 	 */
@@ -108,7 +108,7 @@ public class SessionSettings {
 
 	/**
 	 * /** Class constructor
-	 * 
+	 *
 	 * @param primaryProto int
 	 * @param secondaryProto int
 	 * @param tmo int
@@ -122,7 +122,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the primary protocol
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPrimaryProtocol() {
@@ -131,7 +131,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the secondary protocol
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSecondaryProtocol() {
@@ -140,7 +140,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the session timeout
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getSessionTimeout() {
@@ -149,7 +149,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the SMB dialect list to negotiate
-	 * 
+	 *
 	 * @return DialectSelector
 	 */
 	public final DialectSelector getDialects() {
@@ -158,7 +158,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the NetBIOS session port
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNetBIOSSessionPort() {
@@ -167,7 +167,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the NetBIOS name port
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNetBIOSNamePort() {
@@ -176,7 +176,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the native SMB port
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getNativeSMBPort() {
@@ -185,7 +185,7 @@ public class SessionSettings {
 
 	/**
 	 * Determine if the NetBIOS name scope is set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasNetBIOSNameScope() {
@@ -194,7 +194,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the NetBIOS name scope
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getNetBIOSNameScope() {
@@ -203,7 +203,7 @@ public class SessionSettings {
 
 	/**
 	 * Get the subnet mask to be used for NetBIOS name lookup broadcasts
-	 * 
+	 *
 	 * @return String
 	 */
 	public final String getSubnetMask() {
@@ -212,7 +212,7 @@ public class SessionSettings {
 
 	/**
 	 * Get the WINS server to be used for NetBIOS name lookups
-	 * 
+	 *
 	 * @return InetAddress
 	 */
 	public final InetAddress getWINSServer() {
@@ -221,7 +221,7 @@ public class SessionSettings {
 
 	/**
 	 * Get the NetBIOS name lookup type(s) to use
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLookupType() {
@@ -230,7 +230,7 @@ public class SessionSettings {
 
 	/**
 	 * Get the NetBIOS name lookup timeout, in milliseconds
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getLookupTimeout() {
@@ -239,7 +239,7 @@ public class SessionSettings {
 
 	/**
 	 * Get the use wildcard file server name (*SMBSERVER) flag
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean useWildcardServerName() {
@@ -248,7 +248,7 @@ public class SessionSettings {
 
 	/**
 	 * Check if the update primary protocol flag is set
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasUpdateProtocol() {
@@ -257,7 +257,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the virtual circuit for this session
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getVirtualCircuit() {
@@ -266,7 +266,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the primary connection protocol
-	 * 
+	 *
 	 * @param proto int
 	 */
 	public final void setPrimaryProtocol(int proto) {
@@ -275,7 +275,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the secondary connection protocol
-	 * 
+	 *
 	 * @param proto int
 	 */
 	public final void setSecondaryProtocol(int proto) {
@@ -284,7 +284,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the session connection timeout, in milliseconds
-	 * 
+	 *
 	 * @param tmo int
 	 */
 	public final void setSessionTimeout(int tmo) {
@@ -293,7 +293,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the negotiated dialect list
-	 * 
+	 *
 	 * @param dialects DialectSelector
 	 */
 	public final void setDialects(DialectSelector dialects) {
@@ -302,7 +302,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the NetBIOS session port
-	 * 
+	 *
 	 * @param port int
 	 */
 	public final void setNetBIOSSessionPort(int port) {
@@ -311,7 +311,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the NetBIOS name port
-	 * 
+	 *
 	 * @param port int
 	 */
 	public final void setNetBIOSNamePort(int port) {
@@ -320,7 +320,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the native SMB port
-	 * 
+	 *
 	 * @param port int
 	 */
 	public final void setNativeSMBPort(int port) {
@@ -329,7 +329,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the NetBIOS name scope
-	 * 
+	 *
 	 * @param scope String
 	 */
 	public final void setNetBIOSNameScope(String scope) {
@@ -338,7 +338,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the subnet mask to be used for NetBIOS name lookup broadcasts
-	 * 
+	 *
 	 * @param mask String
 	 */
 	public final void setSubnetMask(String mask) {
@@ -347,7 +347,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the WINS server to be used for NetBIOS name lookups
-	 * 
+	 *
 	 * @param addr InetAddress
 	 */
 	public final void setWINSServer(InetAddress addr) {
@@ -356,7 +356,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the NetBIOS name lookup type(s) to use
-	 * 
+	 *
 	 * @param typ int
 	 */
 	public final void setLookupType(int typ) {
@@ -365,7 +365,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the NetBIOS name lookup timeout, in milliseconds
-	 * 
+	 *
 	 * @param tmo int
 	 */
 	public final void setLookupTimeout(int tmo) {
@@ -374,7 +374,7 @@ public class SessionSettings {
 
 	/**
 	 * Set/clear the use wildcard file server name (*SMBSERVER) flag
-	 * 
+	 *
 	 * @param ena boolean
 	 */
 	public final void setUseWildcardServerName(boolean ena) {
@@ -383,7 +383,7 @@ public class SessionSettings {
 
 	/**
 	 * Set/clear the update protocol flag
-	 * 
+	 *
 	 * @param updateProto boolean
 	 */
 	public final void setUpdateProtocol(boolean updateProto) {
@@ -392,7 +392,7 @@ public class SessionSettings {
 
 	/**
 	 * Set the virtual circuit
-	 * 
+	 *
 	 * @param vc int
 	 */
 	public final void setVirtualCircuit(int vc) {
@@ -401,7 +401,7 @@ public class SessionSettings {
 
 	/**
 	 * Return the session settings as a string
-	 * 
+	 *
 	 * @return String
 	 */
 	public String toString() {

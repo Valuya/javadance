@@ -23,7 +23,7 @@ import org.alfresco.jlan.util.DataPacker;
 
 /**
  * NT Dialect Parameter Packer Class
- * 
+ *
  * <p>The NT SMB dialect uses parameters that are not always word/longword aligned.
  *
  * @author gkspencer
@@ -31,13 +31,13 @@ import org.alfresco.jlan.util.DataPacker;
 class NTParameterPacker {
 
 	//	Buffer and current offset
-	
+
 	private byte[] m_buf;
 	private int m_pos;
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf byte[]
 	 */
 	public NTParameterPacker(byte[] buf) {
@@ -47,7 +47,7 @@ class NTParameterPacker {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param pos int
 	 */
@@ -58,45 +58,45 @@ class NTParameterPacker {
 
 	/**
 	 * Pack a byte (8 bit) value
-	 * 
+	 *
 	 * @param val byte
 	 */
 	public final void packByte(byte val) {
 		m_buf[m_pos++] = val;
 	}
-		
+
 	/**
 	 * Pack a byte (8 bit) value
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packByte(int val) {
 		m_buf[m_pos++] = (byte) val;
 	}
-		
+
 	/**
 	 * Pack a word (16 bit) value
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packWord(int val) {
 		DataPacker.putIntelShort(val, m_buf, m_pos);
 		m_pos += 2;
 	}
-	
+
 	/**
 	 * Pack an integer (32 bit) value
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packInt(int val) {
 		DataPacker.putIntelInt(val,m_buf,m_pos);
 		m_pos += 4;
 	}
-	
+
 	/**
 	 * Pack a long (64 bit) value
-	 * 
+	 *
 	 * @param val long
 	 */
 	public final void packLong(long val) {
@@ -106,34 +106,34 @@ class NTParameterPacker {
 
 	/**
 	 * Return the current buffer position
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPosition() {
 		return m_pos;
 	}
-	
+
 	/**
 	 * Return the buffer
-	 * 
+	 *
 	 * @return byte[]
 	 */
 	public final byte[] getBuffer() {
 		return m_buf;
 	}
-	
+
 	/**
 	 * Unpack a byte value
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackByte() {
 		return (int) m_buf[m_pos++];
 	}
-	
+
 	/**
 	 * Unpack a word (16 bit) value
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackWord() {
@@ -141,10 +141,10 @@ class NTParameterPacker {
 		m_pos += 2;
 		return val;
 	}
-	
+
 	/**
 	 * Unpack an integer (32 bit) value
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackInt() {
@@ -152,10 +152,10 @@ class NTParameterPacker {
 		m_pos += 4;
 		return val;
 	}
-	
+
 	/**
 	 * Unpack a long (64 bit) value
-	 * 
+	 *
 	 * @return int
 	 */
 	public final long unpackLong() {
@@ -163,10 +163,10 @@ class NTParameterPacker {
 		m_pos += 8;
 		return val;
 	}
-	
+
 	/**
 	 * Reset the parameter packer/reader to use the new buffer/offset
-	 * 
+	 *
 	 * @param buf byte[]
 	 * @param pos int
 	 */

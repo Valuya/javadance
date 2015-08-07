@@ -45,11 +45,11 @@ import org.alfresco.jlan.util.StringList;
 
 /**
  * Security Accounts Manager Pipe File Class
- * 
+ *
  * <p>
  * Pipe file connected to a remote SAMR DCE/RPC service that can be used to retrieve information
  * about remote users, groups, aliases, and perform id to name mappings.
- * 
+ *
  * @author gkspencer
  */
 public class SamrPipeFile extends IPCPipeFile {
@@ -69,7 +69,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @param sess SMBIPCSession
 	 * @param pkt DCEPacket
 	 * @param handle int
@@ -96,7 +96,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open the SAM service on the remote server
-	 * 
+	 *
 	 * @return SamrPolicyHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -156,7 +156,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Enumerate the domains in the server
-	 * 
+	 *
 	 * @return StringList
 	 * @throws IOException
 	 * @throws SMBException
@@ -243,7 +243,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Enumerate the groups in a domain
-	 * 
+	 *
 	 * @return StringList
 	 * @throws IOException
 	 * @throws SMBException
@@ -348,7 +348,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Enumerate the users in a domain
-	 * 
+	 *
 	 * @return StringList
 	 * @throws IOException
 	 * @throws SMBException
@@ -455,7 +455,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Enumerate the aliases/local groups in a domain
-	 * 
+	 *
 	 * @return StringList
 	 * @throws IOException
 	 * @throws SMBException
@@ -564,7 +564,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Find a domain and return the SID
-	 * 
+	 *
 	 * @param domain String
 	 * @return SID
 	 * @throws IOException
@@ -644,7 +644,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a domain and return the policy handle required to perform other functions on the domain
-	 * 
+	 *
 	 * @param domain String
 	 * @return PolicyHandle
 	 * @throws IOException
@@ -675,7 +675,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open the built in domain
-	 * 
+	 *
 	 * @return PolicyHandle
 	 * @throws IOException
 	 * @throws SMBException
@@ -690,7 +690,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a domain and return the policy handle required to perform other functions on the domain
-	 * 
+	 *
 	 * @param domainSID SID
 	 * @return PolicyHandle
 	 * @throws IOException
@@ -753,7 +753,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Lookup an object name within a domain and return the resource ids and types
-	 * 
+	 *
 	 * @param domHandle PolicyHandle
 	 * @param name String
 	 * @return RIDList
@@ -809,7 +809,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Lookup the object name for the specified security id
-	 * 
+	 *
 	 * @param sid SID
 	 * @return RIDList
 	 * @throws IOException
@@ -878,7 +878,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Lookup the domain name for the specified security id
-	 * 
+	 *
 	 * @param sid SID
 	 * @return String
 	 * @throws IOException
@@ -900,7 +900,7 @@ public class SamrPipeFile extends IPCPipeFile {
 	/**
 	 * Lookup resource ids within a domain and fill in the resource names and types. The original
 	 * RIDList is returned with the names and types set.
-	 * 
+	 *
 	 * @param domHandle PolicyHandle
 	 * @param rids RIDList
 	 * @return RIDList
@@ -940,7 +940,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Lookup resource ids within a domain and return the resource names and types
-	 * 
+	 *
 	 * @param domHandle PolicyHandle
 	 * @param ids int[]
 	 * @return RIDList
@@ -957,7 +957,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Lookup resource ids within a domain and return the resource names and types
-	 * 
+	 *
 	 * @param domHandle PolicyHandle
 	 * @param ids int[]
 	 * @param count int
@@ -1013,7 +1013,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a user and return the policy handle required to perform other functions on the user
-	 * 
+	 *
 	 * @param domHandle domHandle PolicyHandle
 	 * @param rid RID
 	 * @return PolicyHandle
@@ -1030,7 +1030,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a user and return the policy handle required to perform other functions on the user
-	 * 
+	 *
 	 * @param domain String
 	 * @param userName String
 	 * @return PolicyHandle
@@ -1067,7 +1067,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Open a user and return the policy handle required to perform other functions on the user
-	 * 
+	 *
 	 * @param domHandle domHandle PolicyHandle
 	 * @param rid int
 	 * @return PolicyHandle
@@ -1119,7 +1119,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the list of groups that the user has membership of
-	 * 
+	 *
 	 * @param domain String
 	 * @param userName String
 	 * @return RIDList
@@ -1163,7 +1163,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the list of groups that the user has membership of
-	 * 
+	 *
 	 * @param usrHandle PolicyHandle
 	 * @return RIDList
 	 * @throws IOException
@@ -1245,7 +1245,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the list of aliases that the user has membership of
-	 * 
+	 *
 	 * @param domain String
 	 * @param userName String
 	 * @return RIDList
@@ -1294,7 +1294,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the list of aliases that the user has membership of
-	 * 
+	 *
 	 * @param domHandle PolicyHandle
 	 * @param userSID SID
 	 * @return RIDList
@@ -1393,7 +1393,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return information for the specified user
-	 * 
+	 *
 	 * @param usrHandle PolicyHandle
 	 * @param infoLevel int
 	 * @return UserInfo
@@ -1453,7 +1453,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Close the remote SAM service
-	 * 
+	 *
 	 * @param handle PolicyHandle
 	 * @exception IOException
 	 * @exception SMBException
@@ -1487,7 +1487,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Close the pipe
-	 * 
+	 *
 	 * @exception IOException
 	 * @exception SMBException
 	 */
@@ -1511,7 +1511,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Unpack a RID list that contains ids and types from a DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @param rscName String
 	 * @return RIDList
@@ -1582,7 +1582,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Unpack a RID list that contains names and types from a DCE buffer
-	 * 
+	 *
 	 * @param buf DCEBuffer
 	 * @param ids int[]
 	 * @param count int
@@ -1654,7 +1654,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Return the SAMR service handle
-	 * 
+	 *
 	 * @return SamrPolicyHandle
 	 */
 	private final SamrPolicyHandle getSamrHandle() {
@@ -1663,7 +1663,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Clear the domain SID and policy handle caches. This will close all domain handles.
-	 * 
+	 *
 	 * @exception IOException
 	 * @exception SMBException
 	 */
@@ -1693,7 +1693,7 @@ public class SamrPipeFile extends IPCPipeFile {
 
 	/**
 	 * Populate the domain SID cache
-	 * 
+	 *
 	 * @exception IOException
 	 * @exception SMBException
 	 */

@@ -29,68 +29,68 @@ import java.io.IOException;
 public class DERInteger extends DERObject {
 
   // Integer value
-  
+
   private long m_integer;
-  
+
   /**
    * Default constructor
    */
   public DERInteger() {
   }
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param val int
    */
   public DERInteger(int val) {
     m_integer = val;
   }
-  
+
   /**
    * Class constructor
-   * 
+   *
    * @param val long
    */
   public DERInteger(long val) {
     m_integer = val;
   }
-  
+
   /**
    * Return the long value
-   * 
+   *
    * @return long
    */
   public final long getValue() {
     return m_integer;
   }
-  
+
   /**
    * Return the integer value
-   * 
+   *
    * @return int
    */
   public final int intValue() {
 	  return (int) m_integer;
   }
-  
+
   /**
    * Decode the object
-   * 
+   *
    * @param buf DERBuffer
    * @throws IOException
    */
   public void derDecode(DERBuffer buf) throws IOException {
 
     // Decode the type
-    
+
     if ( buf.unpackType() == DER.Integer) {
-      
+
       // Unpack the length and value
-      
+
       int len = buf.unpackByte();
       m_integer = 0;
-      
+
       if ( len == 1)
     	  m_integer = buf.unpackByte();
       else if ( len > 1) {
@@ -104,45 +104,45 @@ public class DERInteger extends DERObject {
 
   /**
    * Encode the object
-   * 
+   *
    * @param buf DERBuffer
    * @throws IOException
    */
   public void derEncode(DERBuffer buf) throws IOException {
 
     // Pack the type, length and value
-    
+
     buf.packByte( DER.Integer);
-    
+
     // Calculate the number of bytes required to pack the integer value
-    
+
     int bytLen = 8;
-    
+
     while ( bytLen > 0 && (m_integer & ( 0xFFL << ((bytLen - 1) * 8))) == 0)
     	bytLen--;
-    
+
     // Pack the length
-    
+
     buf.packLength( bytLen);
-    
+
     // Pack the integer bytes
-    
+
     while ( bytLen > 0)
     	buf.packByte(( int) ( m_integer >> ( --bytLen * 8)) & 0xFF);
   }
-  
+
   /**
    * Return the integer as a string
-   * 
+   *
    * @return String
    */
   public String toString() {
     StringBuffer str = new StringBuffer();
-    
+
     str.append("[Integer:");
     str.append( getValue());
     str.append("]");
-    
+
     return str.toString();
   }
 }

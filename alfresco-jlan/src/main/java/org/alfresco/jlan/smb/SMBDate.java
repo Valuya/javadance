@@ -24,7 +24,7 @@ import java.util.Date;
 
 /**
  *  SMB date/time class.
- *  
+ *
  *  <p>Date/time encoding returned by older SMB/CIFS requests.
  *
  * @author gkspencer
@@ -85,7 +85,7 @@ public final class SMBDate extends Date {
 
     this.setTime(cal.getTime().getTime());
   }
-  
+
   /**
    * Create a new SMBDate using the long time value.
    *
@@ -94,7 +94,7 @@ public final class SMBDate extends Date {
   public SMBDate(long dattim) {
     super(dattim);
   }
-  
+
   /**
    * Return this date as an SMB encoded date.
    *
@@ -118,7 +118,7 @@ public final class SMBDate extends Date {
 
     return smbDate;
   }
-  
+
   /**
    * Return this time as an SMB encoded time.
    *

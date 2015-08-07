@@ -107,14 +107,14 @@ public class SMBPacket {
   private int m_pkttype;
 
 	//	Current byte area pack/unpack position
-	
+
 	protected int m_pos;
 	protected int m_endpos;
 
 	//	Time of last packet send
-	
+
 	protected long m_lastTxTime;
-	
+
   /**
    * Default constructor
    */
@@ -144,25 +144,25 @@ public class SMBPacket {
 
 	/**
 	 * Check if a received SMB is valid, if not then throw an exception
-	 * 
+	 *
 	 * @exception SMBException
 	 */
 	public final void checkForError()
 		throws SMBException {
-			
+
 	  //  Check if a valid SMB response has been received
-	
+
 	  if (isValidResponse() == false) {
-	  	
+	
 	  	//	Check for NT error codes
-	  	
+	
 	  	if ( isLongErrorCode())
 	  		throw new SMBException(SMBStatus.NTErr, getLongErrorCode());
 	  	else
 	  		throw new SMBException(getErrorClass(), getErrorCode());
 	  }
 	}
-	
+
   /**
    * Clear the data byte count
    */
@@ -173,7 +173,7 @@ public class SMBPacket {
 
 	/**
 	 * Check if the error class/code match the specified error/class
-	 * 
+	 *
 	 * @param errClass int
 	 * @param errCode int
 	 * @return boolean
@@ -183,7 +183,7 @@ public class SMBPacket {
 			return true;
 		return false;
 	}
-	
+
   /**
    * Send the SMB packet and receive the response packet
    *
@@ -198,30 +198,30 @@ public class SMBPacket {
     throws java.io.IOException, SMBException {
 
 		//	Set multiplex id
-	
+
 		if ( getMultiplexId() == 0)
 			setMultiplexId(1);
-		
+
     //	Send the SMB request
 
     sess.Send(m_smbbuf, getLength());
 
 		//	Receive a response
-				
+
     if (sess.Receive(rxPkt.getBuffer()) >= MIN_RXLEN) {
 
 			//	Check if the response is for the current request
-			
+
 			if ( rxPkt.getCommand() == m_pkttype) {
-				
+
 	      //  Check if a valid SMB response has been received
-	
+
 	      if (throwerr == true)
 	      	checkForError();
 
 				//	Valid packet received, return to caller
-				
-				return;		      
+
+				return;
 			}
     }
 
@@ -260,17 +260,17 @@ public class SMBPacket {
     throws SMBException, IOException {
 
 		//	Set the process id, user id and multiplex id
-		
+
 		setProcessId(sess.getProcessId());
 		setUserId(sess.getUserId());
-		
+
 		if ( getMultiplexId() == 0)
 			setMultiplexId(1);
-		
+
 		//	Get the network session
-		
+
 		NetworkSession netSess = sess.getSession();
-		
+
     //	Send the SMB request
 
     netSess.Send(m_smbbuf, getLength());
@@ -278,25 +278,25 @@ public class SMBPacket {
 		//	Receive the response, other asynchronous responses may be received before the response for this request
 
 		boolean rxValid = false;
-		
+
 		while ( rxValid == false) {
-			
+
 			//	Receive a response
-					
+
 	    if (netSess.Receive(rxPkt.getBuffer()) >= MIN_RXLEN) {
 
 				//	Check if the response is for the current request
-				
+
 				if ( rxPkt.getCommand() == m_pkttype) {
-					
+
 		      //  Check if a valid SMB response has been received
-		
+
 		      if (throwerr == true)
 		      	checkForError();
 
 					//	Valid packet received, return to caller
-					
-					return;		      
+
+					return;
 				}
 	    }
     }
@@ -335,13 +335,13 @@ public class SMBPacket {
 
 	/**
 	 * Return the available buffer space for data bytes
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getAvailableLength() {
 		return m_smbbuf.length - DataPacker.longwordAlign(getByteOffset());
 	}
-	
+
   /**
    * Get the data byte count for the SMB packet
    *
@@ -380,7 +380,7 @@ public class SMBPacket {
 
 	/**
 	 * Determine if normal or long error codes have been returned
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasLongErrorCode() {
@@ -388,19 +388,19 @@ public class SMBPacket {
 	  	return false;
 	  return true;
 	}
-	
+
 	/**
 	 * Return the saved packet type
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int isType() {
 		return m_pkttype;
 	}
-	
+
 	/**
 	 * Check if the packet contains ASCII or Unicode strings
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isUnicode() {
@@ -409,31 +409,31 @@ public class SMBPacket {
 
 	/**
 	 * Check if the packet is using caseless filenames
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isCaseless() {
 	  return (getFlags() & FLG_CASELESS) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if long file names are being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLongFileNames() {
 	  return (getFlags2() & FLG2_LONGFILENAMES) != 0 ? true : false;
 	}
-	
+
 	/**
 	 * Check if long error codes are being used
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean isLongErrorCode() {
 	  return (getFlags2() & FLG2_LONGERRORCODE) != 0 ? true : false;
 	}
-	
+
   /**
    * Get the SMB error class
    *
@@ -566,13 +566,13 @@ public class SMBPacket {
 
   /**
    * Return the last sent packet time
-   * 
+   *
    * @return long
    */
   public final long getLastPacketSendTime() {
     return m_lastTxTime;
   }
-  
+
   /**
    * Initialize the SMB packet buffer.
    */
@@ -609,9 +609,9 @@ public class SMBPacket {
     //	Check if this is a response packet, and the correct type of packet
 
     if (isResponse() && getCommand() == m_pkttype) {
-      
+
       //	Check if standard error codes or NT 32-bit error codes are being used
-      
+
       if (( getFlags2() & FLG2_LONGERRORCODE) == 0) {
       	if ( getErrorCode() == SMBStatus.Success)
       		return true;
@@ -624,25 +624,25 @@ public class SMBPacket {
 
 	/**
 	 * Pack a byte (8 bit) value into the byte area
-	 * 
+	 *
 	 * @param val byte
 	 */
 	public final void packByte(byte val) {
 		m_smbbuf[m_pos++] = val;
 	}
-		
+
 	/**
 	 * Pack a byte (8 bit) value into the byte area
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packByte(int val) {
 		m_smbbuf[m_pos++] = (byte) val;
 	}
-		
+
 	/**
 	 * Pack the specified bytes into the byte area
-	 * 
+	 *
 	 * @param byts byte[]
 	 * @param len int
 	 */
@@ -653,107 +653,107 @@ public class SMBPacket {
 
 	/**
 	 * Pack a string using either ASCII or Unicode into the byte area
-	 * 
+	 *
 	 * @param str String
 	 * @param uni boolean
 	 */
 	public final void packString(String str, boolean uni) {
-		
+
 		//	Check for Unicode or ASCII
-		
+
 		if ( uni) {
-			
+
 			//	Word align the buffer position, pack the Unicode string
-			
+
 			m_pos = DataPacker.wordAlign(m_pos);
 			DataPacker.putUnicodeString(str,m_smbbuf,m_pos,true);
 			m_pos += (str.length() * 2) + 2;
 		}
 		else {
-			
+
 			//	Pack the ASCII string
-			
+
 			DataPacker.putString(str,m_smbbuf,m_pos,true);
 			m_pos += str.length() + 1;
 		}
 	}
-			
+
 	/**
 	 * Pack a word (16 bit) value into the byte area
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packWord(int val) {
 		DataPacker.putIntelShort(val, m_smbbuf, m_pos);
 		m_pos += 2;
 	}
-	
+
 	/**
 	 * Pack a 32 bit integer value into the byte area
-	 * 
+	 *
 	 * @param val int
 	 */
 	public final void packInt(int val) {
 		DataPacker.putIntelInt(val,m_smbbuf,m_pos);
 		m_pos += 4;
 	}
-	
+
 	/**
 	 * Pack a long integer (64 bit) value into the byte area
-	 * 
+	 *
 	 * @param val long
 	 */
 	public final void packLong(long val) {
 		DataPacker.putIntelLong(val,m_smbbuf,m_pos);
 		m_pos += 8;
 	}
-	
+
 	/**
 	 * Return the current byte area buffer position
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int getPosition() {
 		return m_pos;
 	}
-	
+
 	/**
 	 * Set the byte area buffer position
-	 * 
+	 *
 	 * @param pos int
 	 */
 	public final void setPosition(int pos) {
 		m_pos = pos;
 	}
-	
+
 	/**
 	 * Unpack a byte value from the byte area
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackByte() {
 		return (int) m_smbbuf[m_pos++];
 	}
-	
+
 	/**
 	 * Unpack a block of bytes from the byte area
-	 * 
+	 *
 	 * @param len int
 	 * @return byte[]
 	 */
 	public final byte[] unpackBytes(int len) {
 		if ( len <= 0)
 			return null;
-			
+
 		byte[] buf = new byte[len];
 		System.arraycopy(m_smbbuf,m_pos,buf,0,len);
 		m_pos += len;
 		return buf;
 	}
-	
+
 	/**
 	 * Unpack a word (16 bit) value from the byte area
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackWord() {
@@ -764,7 +764,7 @@ public class SMBPacket {
 
 	/**
 	 * Unpack an integer (32 bit) value from the byte/parameter area
-	 * 
+	 *
 	 * @return int
 	 */
 	public final int unpackInt() {
@@ -772,10 +772,10 @@ public class SMBPacket {
 		m_pos += 4;
 		return val;
 	}
-		
+
 	/**
 	 * Unpack a long integer (64 bit) value from the byte area
-	 * 
+	 *
 	 * @return long
 	 */
 	public final long unpackLong() {
@@ -783,81 +783,81 @@ public class SMBPacket {
 		m_pos += 8;
 		return val;
 	}
-	
+
 	/**
 	 * Unpack a string from the byte area
-	 * 
+	 *
 	 * @param uni boolean
 	 * @return String
 	 */
 	public final String unpackString(boolean uni) {
-		
+
 		//	Check for Unicode or ASCII
-		
+
 		String ret = null;
-		
+
 		if ( uni) {
-			
+
 			//	Word align the current buffer position
-			
+
 			m_pos = DataPacker.wordAlign(m_pos);
 			ret = DataPacker.getUnicodeString(m_smbbuf,m_pos,255);
 			if ( ret != null)
 				m_pos += ( ret.length() * 2) + 2;
 		}
 		else {
-			
+
 			//	Unpack the ASCII string
-			
+
 			ret = DataPacker.getString(m_smbbuf,m_pos,255);
 			if ( ret != null)
 				m_pos += ret.length() + 1;
 		}
-		
+
 		//	Return the string
-		
+
 		return ret;
 	}
 
 	/**
 	 * Unpack a string from the byte area
-	 * 
+	 *
 	 * @param len int
 	 * @param uni boolean
 	 * @return String
 	 */
 	public final String unpackString(int len, boolean uni) {
-		
+
 		//	Check for Unicode or ASCII
-		
+
 		String ret = null;
-		
+
 		if ( uni) {
-			
+
 			//	Word align the current buffer position
-			
+
 			m_pos = DataPacker.wordAlign(m_pos);
 			ret = DataPacker.getUnicodeString(m_smbbuf,m_pos,len);
 			if ( ret != null)
 				m_pos += ( ret.length() * 2);
 		}
 		else {
-			
+
 			//	Unpack the ASCII string
-			
+
 			ret = DataPacker.getString(m_smbbuf,m_pos,len);
 			if ( ret != null)
 				m_pos += ret.length();
 		}
-		
+
 		//	Return the string
-		
+
 		return ret;
 	}
 
 	/**
 	 * Check if there is more data in the byte area
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public final boolean hasMoreData() {
@@ -865,7 +865,7 @@ public class SMBPacket {
 			return true;
 		return false;
 	}
-		
+
   /**
    * Receive an SMB response packet.
    *
@@ -892,12 +892,12 @@ public class SMBPacket {
    */
   protected final void ReceiveSMB( AuthenticateSession sess)
   	throws java.io.IOException, SMBException {
-  		
+
   	//	Call the main receive method
-  	
+
   	ReceiveSMB(sess, true);
   }
-  
+
   /**
    * Receive an SMB packet on the spceified SMB session.
    *
@@ -910,41 +910,41 @@ public class SMBPacket {
   	throws java.io.IOException, SMBException {
 
 		//	Get the network session
-		
+
 		NetworkSession netSess= sess.getSession();
-		
+
 		//	Receive the response, other asynchronous responses may be received before the response for this request
 
 		boolean rxValid = false;
-		
+
 		while ( rxValid == false) {
-			
+
 			//	Receive a response
-					
+
 	    if (netSess.Receive(getBuffer()) >= MIN_RXLEN) {
 
 				//	Check if the response is for the current request
-				
+
 				if ( getCommand() == m_pkttype) {
-					
+
 		      //  Check if a valid SMB response has been received
 
-					if ( throwErr == true)		
+					if ( throwErr == true)
 						checkForError();
 
 					//	Valid packet received, return to caller
-					
-					return;		      
+
+					return;
 				}
-				
+
 				//	Asynchronous response received, pass the packet to the session for processing
-				
+
 				sess.processAsynchResponse(this);
 	    }
 	    else {
-	    	
+	
 		    //	Not enough data received for an SMB header
-		
+
 		    throw new java.io.IOException("Short NetBIOS receive");
 	    }
     }
@@ -952,7 +952,7 @@ public class SMBPacket {
 
   /**
    * Receive an asynchronous SMB response from the server
-   * 
+   *
    * @param sess Session
    * @param waitTime 		Receive timeout in milliseconds, or zero for no timeout
    * @throws java.io.IOException
@@ -960,28 +960,28 @@ public class SMBPacket {
    */
   protected final void ReceiveAsynchSMB( AuthenticateSession sess, int waitTime)
 		throws java.io.IOException, SMBException {
-	
+
 		//	Get the network session
-		
+
 		NetworkSession netSess = sess.getSession();
     netSess.setTimeout( waitTime);
-		
+
 		//	Receive, or wait for, a response
-	
+
     if (netSess.Receive(getBuffer()) >= MIN_RXLEN) {
 
 			//	Asynchronous response received, pass the packet to the session for processing
-			
+
 			sess.processAsynchResponse(this);
     }
     else {
-    	
+
 	    //	Not enough data received for an SMB header
-	
+
 	    throw new java.io.IOException("Short NetBIOS receive");
     }
 	}
-  
+
   /**
    * Send the SMB packet on the specified SMB session.
    *
@@ -991,9 +991,9 @@ public class SMBPacket {
   protected final void SendSMB( AuthenticateSession sess) throws java.io.IOException {
 
     //	Update the last send time
-    
+
     m_lastTxTime = System.currentTimeMillis();
-    
+
     //	Send the SMB request
 
     sess.getSession().Send(m_smbbuf, getLength());
@@ -1005,14 +1005,14 @@ public class SMBPacket {
    * @param cmd    Secondary SMB command code.
    */
   public final void setAndXCommand(int cmd) {
-  	
+
   	//	Set the chained command packet type
-  	
+
     m_smbbuf[ANDXCOMMAND] = (byte) cmd;
     m_smbbuf[ANDXRESERVED] = (byte) 0;
-    
+
     //	If the AndX command is disabled clear the offset to the chained packet
-    
+
     if ( cmd == PacketType.NoChainedCommand)
     	setParameter(1, 0);
   }
@@ -1189,7 +1189,7 @@ public class SMBPacket {
 	public final void alignBytePointer() {
   	m_pos = DataPacker.longwordAlign(m_pos);
 	}
-	
+
   /**
    * Reset the byte/parameter pointer area for packing/unpacking data items from the packet
    */
@@ -1197,7 +1197,7 @@ public class SMBPacket {
   	m_pos 	 = getByteOffset();
   	m_endpos = m_pos + getByteCount();
   }
-  
+
   /**
    * Reset the byte/parameter pointer area for packing/unpacking data items from the packet, and align
    * the buffer on an int (32bit) boundary
@@ -1206,17 +1206,17 @@ public class SMBPacket {
   	m_pos 	 = DataPacker.longwordAlign(getByteOffset());
   	m_endpos = m_pos + getByteCount();
   }
-  
+
   /**
    * Reset the byte/parameter pointer area for packing/unpacking paramaters from the packet
    */
   public final void resetParameterPointer() {
   	m_pos = PARAMWORDS;
   }
-  
+
   /**
    * Set the unpack pointer to the specified offset, for AndX processing
-   * 
+   *
    * @param off int
    * @param len int
    */
@@ -1224,86 +1224,86 @@ public class SMBPacket {
   	m_pos 	 = off;
   	m_endpos = m_pos + len;
   }
-  
+
   /**
    * Skip a number of bytes in the parameter/byte area
-   * 
+   *
    * @param cnt int
    */
   public final void skipBytes(int cnt) {
   	m_pos += cnt;
   }
-  
+
   /**
    * Return the flags value as a string
-   * 
+   *
    * @return String
    */
   protected final String getFlagsAsString() {
-    
+
     //	Get the flags value
-    
+
     int flags = getFlags();
     if ( flags == 0)
      	return "<None>";
-    
+
     StringBuffer str = new StringBuffer();
     if ((flags & FLG_SUBDIALECT) != 0)
       str.append("SubDialect,");
-    
+
     if ((flags & FLG_CASELESS) != 0)
       str.append("Caseless,");
-    
+
     if ((flags & FLG_CANONICAL) != 0)
       str.append("Canonical,");
-    
+
     if ((flags & FLG_OPLOCK) != 0)
       str.append("Oplock,");
-    
+
     if ((flags & FLG_NOTIFY) != 0)
       str.append("Notify,");
-    
+
     if ((flags & FLG_RESPONSE) != 0)
       str.append("Response,");
-    
+
     str.setLength(str.length() - 1);
-    
+
     return str.toString();
   }
-  
+
   /**
    * Return the flags2 value as a string
-   * 
+   *
    * @return String
    */
   protected final String getFlags2AsString() {
 
     //	Get the flags2 value
-    
+
     int flags2 = getFlags2();
-    
+
     if ( flags2 == 0)
       return "<None>";
-    
+
     StringBuffer str = new StringBuffer();
-    
+
     if (( flags2 & FLG2_LONGFILENAMES) != 0)
       str.append("LongFilenames,");
-    
+
     if (( flags2 & FLG2_EXTENDEDATTRIB) != 0)
       str.append("ExtAttributes,");
-    
+
     if (( flags2 & FLG2_READIFEXE) != 0)
       str.append("ReadIfEXE,");
-    
+
     if (( flags2 & FLG2_LONGERRORCODE) != 0)
       str.append("LongErrorCode,");
-    
+
     if (( flags2 & FLG2_UNICODE) != 0)
       str.append("Unicode,");
-    
+
     str.setLength(str.length() - 1);
-    
+
     return str.toString();
   }
 }

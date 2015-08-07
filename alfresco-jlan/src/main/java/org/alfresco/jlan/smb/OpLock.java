@@ -21,29 +21,29 @@ package org.alfresco.jlan.smb;
 
 /**
  * OpLock Types Class
- * 
+ *
  * <p>Contains oplock constants
- * 
+ *
  * @author gkspencer
  */
 public class OpLock {
 
 	// Oplock types
-	
+
 	public static final int TypeNone 		= 0;
 	public static final int TypeExclusive	= 1;
 	public static final int TypeBatch		= 2;
 	public static final int TypeLevelII		= 3;
-	
+
 	/**
 	 * Return the oplock type as a string
-	 * 
+	 *
 	 * @param typ int
 	 * @return String
 	 */
 	public static String getTypeAsString(int typ) {
 		String typStr = "";
-		
+
 		switch ( typ) {
 			case TypeNone:
 				typStr = "None";
@@ -58,7 +58,7 @@ public class OpLock {
 				typStr = "LevelII";
 				break;
 		}
-		
+
 		return typStr;
 	}
 }

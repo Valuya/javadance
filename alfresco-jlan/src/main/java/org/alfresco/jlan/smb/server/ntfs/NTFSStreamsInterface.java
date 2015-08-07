@@ -26,7 +26,7 @@ import org.alfresco.jlan.server.filesys.TreeConnection;
 
 /**
  * NTFS Streams Interface
- * 
+ *
  * <p>Optional interface that a DiskInterface driver can implement to provide file streams support.
  *
  * @author gkspencer
@@ -35,16 +35,16 @@ public interface NTFSStreamsInterface {
 
 	/**
 	 * Determine if NTFS streams are enabled
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 * @return boolean
 	 */
 	public boolean hasStreamsEnabled(SrvSession sess, TreeConnection tree);
-	
+
 	/**
 	 * Return stream information for the specified stream
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 * @param streamInfo StreamInfo
@@ -53,10 +53,10 @@ public interface NTFSStreamsInterface {
 	 */
 	public StreamInfo getStreamInformation(SrvSession sess, TreeConnection tree, StreamInfo streamInfo)
 		throws IOException;
-		
+
 	/**
 	 * Return a list of the streams for the specified file
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 * @param fileName String
@@ -65,10 +65,10 @@ public interface NTFSStreamsInterface {
 	 */
 	public StreamInfoList getStreamList(SrvSession sess, TreeConnection tree, String fileName)
 		throws IOException;
-		
+
 	/**
 	 * Rename a stream
-	 * 
+	 *
 	 * @param sess SrvSession
 	 * @param tree TreeConnection
 	 * @param oldName String
