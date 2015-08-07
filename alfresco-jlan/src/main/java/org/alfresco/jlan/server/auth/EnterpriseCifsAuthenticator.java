@@ -1331,16 +1331,16 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	                try
 	                {
 	                	// Parse the AP-REP and add the missing subkey, return the updated response blob
-	
+
 	                	byte[] respToken = krbAuthCtx.parseKerberosApRep( krbDetails.getResponseToken());
 	                	krbDetails.setResponseToken(respToken);
-	
+
 	                	// Create the NegtokenTarg
-	
+
 		                negTokenTarg = new NegTokenTarg( SPNEGO.AcceptCompleted, respOid, krbDetails.getResponseToken());
-	
+
 	                	// DEBUG
-	
+
 	                	if ( Debug.EnableDbg && hasDebug())
 	                		Debug.println("[SMB] Created NegTokenTarg using updated AP-REP, added subkey");
 	                }

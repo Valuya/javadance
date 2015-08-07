@@ -218,7 +218,7 @@ public class SharedDeviceList {
   	str.append("[");
 
 		//	Enumerate the shares
-		
+
   	Enumeration<String> enm = m_shares.keys();
 
   	while ( enm.hasMoreElements()) {

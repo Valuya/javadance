@@ -153,9 +153,9 @@ public class SMBPacket {
 	  //  Check if a valid SMB response has been received
 
 	  if (isValidResponse() == false) {
-	
+
 	  	//	Check for NT error codes
-	
+
 	  	if ( isLongErrorCode())
 	  		throw new SMBException(SMBStatus.NTErr, getLongErrorCode());
 	  	else
@@ -942,7 +942,7 @@ public class SMBPacket {
 				sess.processAsynchResponse(this);
 	    }
 	    else {
-	
+
 		    //	Not enough data received for an SMB header
 
 		    throw new java.io.IOException("Short NetBIOS receive");

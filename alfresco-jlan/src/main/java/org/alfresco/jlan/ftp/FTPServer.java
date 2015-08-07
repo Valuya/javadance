@@ -134,22 +134,22 @@ public class FTPServer extends NetworkFileServer implements Runnable, Configurat
 		if ( m_configSection != null) {
 
 	  		//	Check if there is a data port range, initialize the data port id
-	
+
 	  		m_dataPortId = getFTPConfiguration().getFTPDataPortLow();
-	
+
 	  		//	Enable debug
-	
+
 	  		if ( getFTPConfiguration().getFTPDebug() != 0)
 	  			setDebug(true);
-	
+
 	  		//	Create the root path, if configured
-	
+
 	  		if ( getFTPConfiguration().hasFTPRootPath()) {
 
 	  			try {
 
 	  				//	Create the root path
-	
+
 	  				m_rootPath = new FTPPath(getFTPConfiguration().getFTPRootPath());
 	  			}
 	  			catch (InvalidPathException ex) {
@@ -823,7 +823,7 @@ public class FTPServer extends NetworkFileServer implements Runnable, Configurat
 						break;
 
 					//	Changes that require a restart
-				
+
 					case ConfigId.FTPBindAddress:
 					case ConfigId.FTPPort:
 						sts = StsRestartRequired;

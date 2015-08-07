@@ -923,7 +923,7 @@ public class NFSServer extends RpcNetworkServer implements RpcProcessor {
 			//	Check if any of the file times should be updated
 
 			if ( setFlags != 0) {
-					
+
 				//	Set the file access/modify date/times
 
 				FileInfo finfo = new FileInfo();

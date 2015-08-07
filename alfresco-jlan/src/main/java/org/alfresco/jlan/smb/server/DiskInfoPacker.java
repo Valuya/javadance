@@ -245,7 +245,7 @@ class DiskInfoPacker {
 	  }
 	  else
 	  	buf.putZeros(24);
-	
+
 	  //	Pack the number of allocation blocks, block size and free block count
 
 	  buf.putInt((int) diskInfo.getTotalUnits());

@@ -675,7 +675,7 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				catch (Exception ex) {
 				}
 			}
-			
+
       //	Release the database connection
 
       if ( conn != null)
@@ -1270,7 +1270,7 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				catch (Exception ex) {
 				}
 			}
-			
+
 	    //	Release the database connection
 
 			if ( conn != null)
@@ -1384,7 +1384,7 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				catch (Exception ex) {
 				}
 			}
-			
+
 	    //	Release the database connection
 
 			if ( conn != null)
@@ -1503,7 +1503,7 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				catch (Exception ex) {
 				}
 			}
-			
+
       //	Release the database connection
 
       if ( conn != null)
@@ -1620,34 +1620,34 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 	    	    finfo.setSize(rs.getLong("FileSize"));
 	    	    finfo.setAllocationSize(finfo.getSize());
 	    	    finfo.setDirectoryId(rs.getInt("DirId"));
-	
+
 	    	    //	Load the various file date/times
-	
+
 	    	    Timestamp ftime = rs.getTimestamp("CreateDate");
     	    	finfo.setCreationDateTime( ftime != null ? ftime.getTime() : 0L);
-    	
+    
     	    	ftime = rs.getTimestamp("ModifyDate");
     	    	finfo.setModifyDateTime( ftime != null ? ftime.getTime() : 0L);
-    	
+    
     	    	ftime = rs.getTimestamp("AccessDate");
     				finfo.setAccessDateTime( ftime != null ? ftime.getTime() : 0L);
 
     				ftime = rs.getTimestamp("ChangeDate");
     				finfo.setChangeDateTime( ftime != null ? ftime.getTime() : 0L);
-	
+
 	    	    //	Build the file attributes flags
-	
+
 	    	    int attr = 0;
-	
+
 	    	    if ( rs.getBoolean("ReadOnlyFile") == true)
 	    	    	attr += FileAttribute.ReadOnly;
-	    	
+	    
 	    	    if ( rs.getBoolean("SystemFile") == true)
 	    	    	attr += FileAttribute.System;
-	    	
+	    
 	    	    if ( rs.getBoolean("HiddenFile") == true)
 	    	    	attr += FileAttribute.Hidden;
-	    	
+	    
 	    	    if ( rs.getBoolean("DirectoryFile") == true) {
               attr += FileAttribute.Directory;
               finfo.setFileType( FileType.Directory);
@@ -1657,14 +1657,14 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 
 	    			if ( rs.getBoolean("ArchivedFile") == true)
 	    				attr += FileAttribute.Archive;
-	    	
+	    
 	    	    finfo.setFileAttributes(attr);
-	
+
 	    	    //	Get the group/owner id
-	
+
 	    	    finfo.setGid(rs.getInt("OwnerGid"));
 	    	    finfo.setUid(rs.getInt("OwnerUid"));
-	
+
 	    	    finfo.setMode(rs.getInt("FileMode"));
 
             //  Check if the file is a symbolic link
@@ -1697,7 +1697,7 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				catch (Exception ex) {
 				}
 			}
-			
+
       //	Release the database connection
 
       if ( conn != null)
@@ -1804,9 +1804,9 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
         	case DBInterface.FileAll:
         	  sinfo.setName(rs.getString("StreamName"));
 	    	    sinfo.setSize(rs.getLong("StreamSize"));
-	
+
 	    	    //	Load the various file date/times
-	
+
     	    	sinfo.setCreationDateTime( rs.getLong("CreateDate"));
     	    	sinfo.setModifyDateTime( rs.getLong("ModifyDate"));
     				sinfo.setAccessDateTime( rs.getLong("AccessDate"));
@@ -1836,7 +1836,7 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				catch (Exception ex) {
 				}
 			}
-			
+
       //	Release the database connection
 
       if ( conn != null)
@@ -1951,9 +1951,9 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
         	  sinfo.setName(rs.getString("StreamName"));
       			sinfo.setStreamId(rs.getInt("StreamId"));
 	    	    sinfo.setSize(rs.getLong("StreamSize"));
-	
+
 	    	    //	Load the various file date/times
-	
+
     	    	sinfo.setCreationDateTime( rs.getLong("CreateDate"));
     	    	sinfo.setModifyDateTime( rs.getLong("ModifyDate"));
     				sinfo.setAccessDateTime( rs.getLong("AccessDate"));
@@ -1987,7 +1987,7 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				catch (Exception ex) {
 				}
 			}
-			
+
       //	Release the database connection
 
       if ( conn != null)
@@ -2066,7 +2066,7 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				catch (Exception ex) {
 				}
 			}
-				
+
 	  	//	Release the database connection
 
 			if ( conn != null)
@@ -2146,7 +2146,7 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				catch (Exception ex) {
 				}
 			}
-				
+
 	  	//	Release the database connection
 
 			if ( conn != null)
@@ -4182,9 +4182,9 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				Debug.println("[Oracle] Deleted file data fid=" + fileId + ", stream=" + streamId + ", records=" + recCnt);
 	  }
 	  catch (SQLException ex) {
-	
+
 	  	//	DEBUG
-	
+
 	  	if ( Debug.EnableInfo && hasDebug())
 	  		Debug.println(ex);
 	  }
@@ -4248,9 +4248,9 @@ public class OracleDBInterface extends JdbcDBInterface implements DBQueueInterfa
 				Debug.println("[Oracle] Deleted Jar data jarId=" + jarId + ", records=" + recCnt);
 	  }
 	  catch (SQLException ex) {
-	
+
 	  	//	DEBUG
-	
+
 	  	if ( Debug.EnableInfo && hasDebug())
 	  		Debug.println(ex);
 	  }

@@ -147,7 +147,7 @@ public class OracleSearchContext extends DBSearchContext {
 			//	has been specified
 
 			String fileName = null;
-			
+
       while ( m_rs.next()) {
 
         //	Get the file name for the next file

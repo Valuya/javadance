@@ -117,12 +117,12 @@ public class PolicyHandle {
 
 	  if ( isValid() == false)
 	  	return -1;
-	
+
 	  //	Copy the policy handle bytes to the user buffer
 
 	  for ( int i = 0; i < POLICY_HANDLE_SIZE; i++)
 	  	buf[off+i] = m_handle[i];
-	
+
 	  //	Return the new buffer position
 
 	  return off+POLICY_HANDLE_SIZE;
@@ -163,16 +163,16 @@ public class PolicyHandle {
 	  if ((off + POLICY_HANDLE_SIZE) <= buf.length) {
 
 	  	//	Allocate the policy handle buffer
-	
+
 	  	m_handle = new byte[POLICY_HANDLE_SIZE];
-	
+
 	  	//	Copy the policy handle
-	
+
 	  	for ( int i = 0; i < POLICY_HANDLE_SIZE; i++)
 	  		m_handle[i] = buf[off+i];
 	  }
 	}
-	
+
 	/**
 	 * Return the policy handle as a string
 	 *

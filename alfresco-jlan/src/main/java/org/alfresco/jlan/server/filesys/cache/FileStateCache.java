@@ -697,11 +697,11 @@ public abstract class FileStateCache {
 					noshrReason = "Sharing mode disallows write";
 
 		    		// DEBUG
-		
+
 		    		if ( Debug.EnableDbg && hasDebug())
 		    			Debug.println("Sharing mode disallows write access path=" + fstate.getPath());
 		    	}
-		
+
 				// Check if the file has been opened for exclusive access
 
 				else if ( fstate.getSharedAccess() == SharingMode.NOSHARING) {
@@ -716,7 +716,7 @@ public abstract class FileStateCache {
 					noshrReason = "Sharing mode mismatch";
 
 		    		// DEBUG
-		
+
 		    		if ( Debug.EnableDbg && hasDebug())
 		    			Debug.println("Local share mode=0x" + Integer.toHexString( fstate.getSharedAccess()) + ", params share mode=0x" + Integer.toHexString( params.getSharedAccess()));
 				}

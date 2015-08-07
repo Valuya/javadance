@@ -149,7 +149,7 @@ public class DerbySearchContext extends DBSearchContext {
 			//	has been specified
 
 			String fileName = null;
-			
+
       while ( m_rs != null && m_rs.next()) {
 
         //	Get the file name for the next file

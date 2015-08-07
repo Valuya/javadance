@@ -435,7 +435,7 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		
+
 		//	Pack the file name length
 
 		int nameLen = info.getFileName().length();
@@ -485,7 +485,7 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		
+
     //  Pack the creation date/time
 
     if (info.hasCreationDateTime()) {
@@ -574,7 +574,7 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		
+
     //  Pack the creation date/time
 
     if (info.hasCreationDateTime()) {
@@ -670,7 +670,7 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		
+
     //  Pack the creation date/time
 
     if (info.hasCreationDateTime()) {
@@ -772,7 +772,7 @@ class FindInfoPacker {
 	int startPos = buf.getPosition();
 	buf.putZeros(4);
 	buf.putZeros(4);
-		
+
     //  Pack the creation date/time
 
     if (info.hasCreationDateTime()) {
@@ -887,7 +887,7 @@ class FindInfoPacker {
 		int startPos = buf.getPosition();
 		buf.putZeros(4);
 		buf.putInt( EnableFileIdPacking ? info.getFileId() : 0);
-		
+
 		//  Pack the creation date/time
 
 		if (info.hasCreationDateTime()) {

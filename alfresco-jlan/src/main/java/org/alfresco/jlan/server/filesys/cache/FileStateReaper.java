@@ -183,16 +183,16 @@ public class FileStateReaper implements Runnable {
 	            try
 	            {
 	            	// Loop through the registered file state caches and remove expired file states
-	
+
 	            	Enumeration<String> filesysNames = m_stateCaches.keys();
-	
+
 	            	while ( filesysNames.hasMoreElements())
 	            	{
 	            		// Get the current filesystem name and associated state cache
-	
+
 	            		String filesysName = filesysNames.nextElement();
 	            		FileStateCache stateCache = m_stateCaches.get( filesysName);
-	
+
 		                // Check for expired file states
 
 		                int cnt = stateCache.removeExpiredFileStates();
@@ -206,7 +206,7 @@ public class FileStateReaper implements Runnable {
 	            catch (Exception ex)
 	            {
 	            	// Log errors if not shutting down
-	
+
 	            	if ( m_shutdown == false)
 	            		Debug.println(ex);
 	            }

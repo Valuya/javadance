@@ -680,13 +680,13 @@ public class HazelCastClusterFileStateCache extends ClusterFileStateCache implem
 							hcState = (HazelCastClusterFileState) state;
 			            	hcState.setNearCacheTime();
 			            	hcState.setPathInternal( newNormPath);
-			
+
 			            	// Add to the near-cache
-			
+
 			            	m_nearCache.put( newNormPath, hcState);
-			
+
 			            	// DEBUG
-			
+
 			            	if ( hasDebugLevel( DebugNearCache))
 			            		Debug.println("Added state to near-cache state=" + state + " (rename)");
 						}
@@ -1390,7 +1390,7 @@ public class HazelCastClusterFileStateCache extends ClusterFileStateCache implem
 			m_clusterTopic.addMessageListener( this);
 
 	    	// Indicate that the cluster is running
-	
+
 	    	getStateCache().clusterRunning();
 		}
 	}

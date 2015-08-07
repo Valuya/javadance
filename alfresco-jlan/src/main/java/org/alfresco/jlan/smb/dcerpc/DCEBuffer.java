@@ -453,7 +453,7 @@ public class DCEBuffer {
 		  case HDR_VERMAJOR:
 		  	result = (m_buffer[m_base + VERSIONMAJOR] & 0xFF);
 		  	break;
-		
+
 		  //	Version minor
 
 		  case HDR_VERMINOR:
@@ -465,37 +465,37 @@ public class DCEBuffer {
 			case HDR_PDUTYPE:
 		  	result = (m_buffer[m_base + PDUTYPE] & 0xFF);
 		  	break;
-		
+
 		  //	Flags
 
 		  case HDR_FLAGS:
 		  	result = (m_buffer[m_base + HEADERFLAGS] & 0xFF);
 		  	break;
-		
+
 		  //	Data representation
 
 		  case HDR_DATAREP:
 		  	result = DataPacker.getIntelInt(m_buffer,m_base+VERSIONMINOR);
 		  	break;
-		
+
 		  //	Authorisation length
 
 		  case HDR_AUTHLEN:
 		  	result = DataPacker.getIntelInt(m_buffer,m_base+AUTHLEN);
 		  	break;
-		
+
 		  //	Fragment length
 
 		  case HDR_FRAGLEN:
 		  	result = DataPacker.getIntelInt(m_buffer, m_base+FRAGMENTLEN);
 		  	break;
-		
+
 		  //	Call id
 
 		  case HDR_CALLID:
 		  	result = DataPacker.getIntelInt(m_buffer, m_base+CALLID);
 		  	break;
-		
+
 		  //	Request allocation hint
 
 		  case HDR_ALLOCHINT:
@@ -529,7 +529,7 @@ public class DCEBuffer {
 		  case HDR_VERMAJOR:
 		  	m_buffer[m_base + VERSIONMAJOR] = (byte) (val & 0xFF);
 		  	break;
-		
+
 		  //	Version minor
 
 		  case HDR_VERMINOR:
@@ -541,37 +541,37 @@ public class DCEBuffer {
 			case HDR_PDUTYPE:
 		  	m_buffer[m_base + PDUTYPE] = (byte) (val & 0xFF);
 		  	break;
-		
+
 		  //	Flags
 
 		  case HDR_FLAGS:
 		  	m_buffer[m_base + HEADERFLAGS] = (byte) (val & 0xFF);
 		  	break;
-		
+
 		  //	Data representation
 
 		  case HDR_DATAREP:
 		  	DataPacker.putIntelInt(val,m_buffer,m_base+PACKEDDATAREP);
 		  	break;
-		
+
 		  //	Authorisation length
 
 		  case HDR_AUTHLEN:
 		  	DataPacker.putIntelInt(val,m_buffer,m_base+AUTHLEN);
 		  	break;
-		
+
 		  //	Fragment length
 
 		  case HDR_FRAGLEN:
 		  	DataPacker.putIntelInt(val,m_buffer,m_base+FRAGMENTLEN);
 		  	break;
-		
+
 		  //	Call id
 
 		  case HDR_CALLID:
 		  	DataPacker.putIntelInt(val,m_buffer, m_base+CALLID);
 		  	break;
-		
+
 		  //	Request allocation hint
 
 		  case HDR_ALLOCHINT:
@@ -1150,7 +1150,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < 4)
 	  	extendBuffer();
-	
+
 	  //	Pack the integer value
 
 	  DataPacker.putIntelInt(ival,m_buffer,m_pos);
@@ -1168,7 +1168,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < 1)
 	  	extendBuffer();
-	
+
 	  //	Pack the short value
 
 		m_buffer[m_pos++] = (byte) (bval & 0xFF);
@@ -1186,7 +1186,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < 1)
 	  	extendBuffer();
-	
+
 	  //	Pack the short value
 
 		m_buffer[m_pos++] = bval;
@@ -1205,7 +1205,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < 1)
 	  	extendBuffer();
-	
+
 	  //	Pack the short value
 
 		m_buffer[m_pos++] = (byte) (bval & 0xFF);
@@ -1224,7 +1224,7 @@ public class DCEBuffer {
 
 		if ( m_buffer.length - m_pos < len)
 			extendBuffer();
-	
+
 		//	Pack the bytes
 
 		for ( int i = 0; i < len; i++)
@@ -1244,7 +1244,7 @@ public class DCEBuffer {
 
 		if ( m_buffer.length - m_pos < len)
 			extendBuffer();
-	
+
 		//	Pack the bytes
 
 		for ( int i = 0; i < len; i++)
@@ -1266,7 +1266,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < 2)
 	  	extendBuffer();
-	
+
 	  //	Pack the short value
 
 	  DataPacker.putIntelShort(sval,m_buffer,m_pos);
@@ -1286,7 +1286,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < reqLen)
 	  	extendBuffer(reqLen);
-	
+
 	  //	Pack the string
 
 	  m_pos = DCEDataPacker.putDCEString(m_buffer,m_pos,str,false);
@@ -1306,7 +1306,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < reqLen)
 	  	extendBuffer(reqLen);
-	
+
 	  //	Pack the string
 
 	  m_pos = DCEDataPacker.putDCEString(m_buffer,m_pos,str,false);
@@ -1333,7 +1333,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < reqLen)
 	  	extendBuffer( reqLen);
-	
+
 	  //	Pack the string
 
 	  m_pos = DCEDataPacker.putDCEString(m_buffer,m_pos,str,incNul);
@@ -1355,7 +1355,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < 20)
 	  	extendBuffer();
-	
+
 	  //	Pack the string return details
 
 		DataPacker.putIntelInt(len, m_buffer, m_pos);
@@ -1393,7 +1393,7 @@ public class DCEBuffer {
 	  	DataPacker.putIntelShort(incNul ? sLen + 2 : sLen,m_buffer,m_pos);
 	  else
 	  	DataPacker.putIntelShort(0,m_buffer,m_pos);
-	
+
 	  DataPacker.putIntelShort(sLen != 0 ? sLen + 2 : 0,m_buffer,m_pos + 2);
 	  DataPacker.putIntelInt(str != null ? DUMMY_ADDRESS : 0,m_buffer,m_pos + 4);
 
@@ -1481,7 +1481,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < (str.length() + 1))
 	  	extendBuffer(str.length() + 2);
-	
+
 	  //	Pack the string
 
 	  m_pos = DataPacker.putString(str,m_buffer,m_pos,incNul);
@@ -1500,7 +1500,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < (str.length() + 1))
 	  	extendBuffer(str.length() + 8);
-	
+
 	  //	Pack the string
 
 	  m_pos = DataPacker.putString(str,m_buffer,m_pos,incNul);
@@ -1521,7 +1521,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < 4)
 	  	extendBuffer();
-	
+
 	  //	Check if the object is valid, if not then put a null pointer into the buffer
 
 	  if ( obj == null)
@@ -1542,7 +1542,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < 4)
 	  	extendBuffer();
-	
+
 	  //	Check if the object is valid, if not then put a null pointer into the buffer
 
 	  if ( notNull == false)
@@ -1568,7 +1568,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < len)
 	  	extendBuffer();
-	
+
 	  //	Pack the UUID
 
 	  m_pos = uuid.storeUUID(m_buffer,m_pos,writeVer);
@@ -1585,7 +1585,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < PolicyHandle.POLICY_HANDLE_SIZE)
 	  	extendBuffer(PolicyHandle.POLICY_HANDLE_SIZE);
-	
+
 	  //	Pack the policy handle
 
 		m_pos = handle.storePolicyHandle(m_buffer,m_pos);
@@ -1615,7 +1615,7 @@ public class DCEBuffer {
 
 	  if ( m_buffer.length - m_pos < 4)
 	  	extendBuffer();
-	
+
 	  //	Pack the status value
 
 	  DataPacker.putIntelInt(sts,m_buffer,m_pos);
@@ -1710,7 +1710,7 @@ public class DCEBuffer {
 		int bytCnt = cnt * 4;
 	  if ( m_buffer.length - m_pos < bytCnt)
 	  	extendBuffer(bytCnt * 2);
-	
+
 	  //	Pack the zero integer values
 
 	  DataPacker.putZeros(m_buffer,m_pos, bytCnt);
@@ -1816,11 +1816,11 @@ public class DCEBuffer {
 
 	  if ( align < 0 || align > 2)
 	  	return;
-	
+
 	  //	Align the buffer position on the required boundary
 
 	  m_pos = (m_pos + _alignRound[align]) & _alignMask[align];
-	}	
+	}
 
 	/**
 	 * Align the receive buffer position on the specified boundary
@@ -1833,7 +1833,7 @@ public class DCEBuffer {
 
 	  if ( align < 0 || align > 2 || m_rdpos >= m_buffer.length)
 	  	return;
-	
+
 	  //	Align the buffer position on the required boundary
 
 	  m_rdpos = (m_rdpos + _alignRound[align]) & _alignMask[align];

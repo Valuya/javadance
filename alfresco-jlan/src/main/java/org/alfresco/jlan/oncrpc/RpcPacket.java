@@ -481,7 +481,7 @@ public class RpcPacket {
     //	Align the buffer position on the required boundary
 
 	  m_pos = (m_pos + 3) & 0xFFFFFFFC;
-	}	
+	}
 
   /**
    * Pack a byte value
@@ -692,7 +692,7 @@ public class RpcPacket {
       else {
 
 	      // Unpack the bytes into a string
-	
+
 	      str = DataPacker.getString(m_buffer, m_pos, len);
       }
 

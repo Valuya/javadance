@@ -88,7 +88,7 @@ public class UUID {
 	    m_uuidBytes = new byte[UUID_LENGTH_BINARY];
 	    for ( int i = 0; i < UUID_LENGTH_BINARY; i++)
 	    	m_uuidBytes[i] = buf[off + i];
-	
+
 	    //	Generate the string version of the UUID
 
 	    m_uuid = generateUUIDString(m_uuidBytes);
@@ -167,7 +167,7 @@ public class UUID {
 	    m_uuidBytes = new byte[UUID_LENGTH_BINARY];
 
 			try {
-			
+
   	    //	Convert the first integer and pack into the buffer
 
   			String val = m_uuid.substring(0,8);
@@ -353,13 +353,13 @@ public class UUID {
 	  byte[] uuidByts = getBytes();
 	  if ( uuidByts == null)
 	  	return pos;
-	
+
 	  //	Write the binary UUID to the buffer
 
 	  for ( int i = 0; i < UUID_LENGTH_BINARY; i++)
 	  	buf[pos+i] = uuidByts[i];
 		pos += UUID_LENGTH_BINARY;
-	
+
 	  //	Check if version should be written to the buffer
 
 	  if ( writeVer) {

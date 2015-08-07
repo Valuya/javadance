@@ -111,7 +111,7 @@ public class JavaFileDiskDriver implements DiskInterface {
         	fattr += FileAttribute.Hidden;
 
 				//	Create the file information
-				
+
         FileInfo finfo = new FileInfo(pathStr[1], flen, fattr);
         long fdate = file.lastModified();
         finfo.setModifyDateTime(fdate);
@@ -296,7 +296,7 @@ public class JavaFileDiskDriver implements DiskInterface {
     		throw new AccessDeniedException("Directory not empty");
 
 			//	Delete the directory
-			
+
       delDir.delete();
   	}
 

@@ -144,16 +144,16 @@ public abstract class RpcNetworkServer extends NetworkServer implements RpcProce
 				  // Check if the server has been registered successfully with the portmapper/rpcbind service
 
 				  if ( rxRpc != null && rxRpc.getAcceptStatus() == Rpc.StsSuccess) {
-			
+
 					  // Server registered successfully
-			
+
 					  if ( Debug.EnableInfo && hasDebug())
 						  Debug.println("[" + getProtocolName() + "] Registered successfully, " + mappings[i]);
 				  }
 				  else {
-			
+
 					  // Indicate that the server registration failed
-			
+
 					  Debug.println("[" + getProtocolName() + "] RPC Server registration failed for " + mappings[i]);
 					  Debug.println("  Response:" + rxRpc);
 				  }
@@ -260,16 +260,16 @@ public abstract class RpcNetworkServer extends NetworkServer implements RpcProce
 					// Check if the server has been unregistered successfully with the portmapper/rpcbind service
 
 					if ( rxRpc != null && rxRpc.getAcceptStatus() == Rpc.StsSuccess) {
-				
+
 						// Server registered successfully
-				
+
 						if ( Debug.EnableInfo && hasDebug())
 							Debug.println("[" + getProtocolName() + "] UnRegistered successfully, " + mappings[i]);
 					}
 					else {
-				
+
 						// Indicate that the server registration failed
-				
+
 						Debug.println("[" + getProtocolName() + "] RPC Server unregistration failed for " + mappings[i]);
 						Debug.println("  Response:" + rxRpc);
 					}

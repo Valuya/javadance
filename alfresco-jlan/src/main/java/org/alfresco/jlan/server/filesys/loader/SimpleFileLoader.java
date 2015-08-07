@@ -178,7 +178,7 @@ public class SimpleFileLoader implements FileLoader, NamedFileLoader {
     if (delFile.exists() && delFile.isFile()) {
 
 			//	Delete the file
-			
+
       delFile.delete();
   	}
 	}
@@ -239,7 +239,7 @@ public class SimpleFileLoader implements FileLoader, NamedFileLoader {
     		throw new AccessDeniedException("Directory not empty");
 
 			//	Delete the directory
-			
+
       delDir.delete();
   	}
 

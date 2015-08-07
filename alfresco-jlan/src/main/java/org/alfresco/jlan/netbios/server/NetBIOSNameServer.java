@@ -397,9 +397,9 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 				//  Build an add name packet for each IP address
 
 				for ( int i = 0; i < req.getNetBIOSName().numberOfAddresses(); i++) {
-		
+
 					//	Build an add name request for the current IP address
-		
+
 					int len = addPkt.buildAddNameRequest(req.getNetBIOSName(), i, req.getTransactionId());
 					if ( bcast == false)
 						addPkt.setFlags(0);
@@ -450,9 +450,9 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 				//  Build a refresh name packet for each IP address
 
 				for ( int i = 0; i < req.getNetBIOSName().numberOfAddresses(); i++) {
-		
+
 					//	Build a refresh name request for the current IP address
-		
+
 					int len = refreshPkt.buildRefreshNameRequest(req.getNetBIOSName(), i, req.getTransactionId());
 					if ( bcast == false)
 						refreshPkt.setFlags(0);
@@ -502,9 +502,9 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 				//  Build a delete name packet for each IP address
 
 				for ( int i = 0; i < req.getNetBIOSName().numberOfAddresses(); i++) {
-		
+
 					//	Build an add name request for the current IP address
-		
+
 					int len = delPkt.buildDeleteNameRequest(req.getNetBIOSName(), i, req.getTransactionId());
 					if ( bcast == false)
 						delPkt.setFlags(0);
@@ -1276,7 +1276,7 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 
 		if ( pkt.getAnswerCount() == 0)
 			return;
-			
+
   	//	Get the details from the response packet
 
   	int tranId = pkt.getTransactionId();
@@ -1705,11 +1705,11 @@ public class NetBIOSNameServer extends NetworkServer implements Runnable, Config
 	    		if ( hasDebug()) {
 	    			Debug.println("NetBIOSNameServer error");    			Debug.println(ex);
 	    		}
-	
+
 	    		//	Store the error and inform listeners of the server error. If the server is shutting down we expect a
 	    		//	socket error as the socket is closed by the shutdown thread and the pending read request generates an
 	    		//	exception.
-	
+
 	    		if ( m_shutdown == false) {
 		    		setException(ex);
 		    		fireServerEvent(ServerListener.ServerError);

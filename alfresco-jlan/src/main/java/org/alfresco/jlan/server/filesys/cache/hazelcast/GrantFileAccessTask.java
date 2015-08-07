@@ -144,11 +144,11 @@ public class GrantFileAccessTask extends RemoteStateTask<FileAccessToken> {
 				noshrReason = "Sharing mode disallows write";
 
 	    		// DEBUG
-	
+
 	    		if ( Debug.EnableDbg && hasDebug())
 	    			Debug.println("Sharing mode disallows write access path=" + fState.getPath());
 	    	}
-	
+
 			// Check if the file has been opened for exclusive access
 
 			else if ( fState.getSharedAccess() == SharingMode.NOSHARING) {
@@ -163,7 +163,7 @@ public class GrantFileAccessTask extends RemoteStateTask<FileAccessToken> {
 				noshrReason = "Sharing mode mismatch";
 
 	    		// DEBUG
-	
+
 	    		if ( Debug.EnableDbg && hasDebug())
 	    			Debug.println("Local share mode=0x" + Integer.toHexString( fState.getSharedAccess()) + ", params share mode=0x" + Integer.toHexString( m_params.getSharedAccess()));
 			}

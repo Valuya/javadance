@@ -340,7 +340,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 	    try
 	    {
 	    	// DEBUG
-	
+
 	        if ( Debug.EnableInfo && hasDebug(DBG_STATE))
 	            debugPrintln("Cleanup session, vcircuits=" + m_vcircuits.getCircuitCount() + ", changeNotify="
 	                    + getNotifyChangeCount());

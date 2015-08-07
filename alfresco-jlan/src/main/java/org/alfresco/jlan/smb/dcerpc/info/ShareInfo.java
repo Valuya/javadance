@@ -489,7 +489,7 @@ public class ShareInfo implements DCEWriteable, DCEReadable {
 		  	buf.putPointer(true);
 		  	strBuf.putString(getName(), DCEBuffer.ALIGN_INT, true);
 		  	break;
-		
+
 		  //	Information level 1
 
 		  case InfoLevel1:

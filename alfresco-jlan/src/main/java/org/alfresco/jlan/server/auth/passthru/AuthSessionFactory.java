@@ -669,22 +669,22 @@ public final class AuthSessionFactory {
 	  NetBIOSName nbName = null;
 
 	  if ( IPAddress.isNumericAddress(toName)) {
-	
+
 	  	try {
 
 		  	//	Get a list of NetBIOS names from the remote host
-		
+
 		  	toAddr = toName;
 		  	NetBIOSNameList nameList = NetBIOSSession.FindNamesForAddress(toAddr);
-		
+
 		  	//	Find the server service
-		
+
 		  	nbName = nameList.findName(NetBIOSName.FileServer, false);
 		  	if ( nbName == null)
 		  		throw new IOException("Server service not running");
 
 		  	//	Set the remote name
-		
+
 		  	toName = nbName.getName();
 			}
 			catch (UnknownHostException ex) {
@@ -701,9 +701,9 @@ public final class AuthSessionFactory {
 	  //	Check if the NetBIOS name scope has been set, if so then update the names to add the scope id
 
 	  if ( hasNetBIOSNameScope()) {
-	
+
 	  	//	Add the NetBIOS scope id to the to/from NetBIOS names
-	
+
 	  	toName   = toName + "." + getNetBIOSNameScope();
 	  	fromName = fromName + "." + getNetBIOSNameScope();
 	  }
@@ -738,9 +738,9 @@ public final class AuthSessionFactory {
 				  //	Check if the session is connected
 
 				  if ( nbSession.isConnected() == false) {
-				
+
 				  	//	Close the session
-				
+
 				  	try {
 				  		nbSession.Close();
 				  	}
@@ -786,9 +786,9 @@ public final class AuthSessionFactory {
 			  //	Check if the session is connected
 
 			  if ( nbSession.isConnected() == false) {
-			
+
 			  	//	Close the session
-			
+
 			  	try {
 			  		nbSession.Close();
 			  	}
@@ -850,17 +850,17 @@ public final class AuthSessionFactory {
 	    //	Check if the session is connected
 
 	    if ( tcpSession.isConnected() == false) {
-	
+
 	    	//	Close the session
-	
+
 	    	try {
 	    		tcpSession.Close();
 	    	}
 	    	catch (Exception ex) {
 	    	}
-	
+
 	    	//	Return a null session
-	
+
 	    	return null;
 	    }
     }

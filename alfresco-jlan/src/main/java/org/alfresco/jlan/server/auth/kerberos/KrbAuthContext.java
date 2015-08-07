@@ -100,27 +100,27 @@ public class KrbAuthContext extends AuthContext {
         		// Try the current encryption key
 
 	        	EncryptionKey encKey = new EncryptionKey( krbKey.getEncoded(), krbKey.getKeyType(), new Integer(2));
-	
+
 	        	// Decrypt the encrypted ticket
-	
+
         		try
         		{
 		        	// Decrypt the encrypted part of the Kerberos ticket
-		
+
 		        	EncryptedData encPart = new EncryptedData( krbTkt.getEncryptedType(), krbTkt.getEncryptedPartKeyVersion() != -1 ? new Integer(krbTkt.getEncryptedPartKeyVersion()) : null,
 		        											   krbTkt.getEncryptedPart());
 		        	byte[] decPart = encPart.decrypt( encKey, 2);
-		
+
 		        	if ( Debug.EnableDbg && hasDebug())
 		        		Debug.println( "Decrypted ticket = Len=" + decPart.length + ", key=[Type=" + encKey.getEType() + ", Kvno=" + encKey.getKeyVersionNumber() + ", Key=" + HexDump.hexString(encKey.getBytes()) + "]");
-		
+
 		        	DERBuffer derBuf = new DERBuffer( decPart);
 		        	byte[] encTktByts = derBuf.unpackApplicationSpecificBytes();
-		
+
 		        	if ( encTktByts != null)
 		        	{
 		        		// Create the encrypted Kerberos ticket part
-		
+
 		        		m_encTkt = new EncKrbTicket( encTktByts);
 
 		        		if ( Debug.EnableDbg && hasDebug())
@@ -148,21 +148,21 @@ public class KrbAuthContext extends AuthContext {
     		try
     		{
 	        	// Decrypt the authenticator
-	
+
 	        	EncryptedData encPart = new EncryptedData( apReq.getAuthenticatorEncType(), apReq.getAuthenticatorKeyVersion() != -1 ? new Integer(apReq.getAuthenticatorKeyVersion()) : null,
 	        											   apReq.getAuthenticator());
 	        	byte[] decPart = encPart.decrypt( encKey, 11);
-	
+
 	        	if ( Debug.EnableDbg && hasDebug())
 	        		Debug.println( "Decrypted authenticator = Len=" + decPart.length + ", key=[Type=" + encKey.getEType() + ", Kvno=" + encKey.getKeyVersionNumber() + ", Key=" + HexDump.hexString(encKey.getBytes()) + "]");
-	
+
 	        	DERBuffer derBuf = new DERBuffer( decPart);
 	        	byte[] krbAuthByts = derBuf.unpackApplicationSpecificBytes();
-	
+
 	        	if ( krbAuthByts != null) {
 
 	        		// Parse the authenticator
-	
+
 	        		m_krbAuth = new KrbAuthenticator( krbAuthByts);
 	        		if ( Debug.EnableDbg && hasDebug())
 		        		Debug.println( "Krb Authenticator = " + m_krbAuth);
