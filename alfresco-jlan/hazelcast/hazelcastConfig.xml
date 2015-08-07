@@ -178,7 +178,7 @@
             hz.LATEST_UPDATE ; entry with the latest update wins.
         -->
         <merge-policy>hz.ADD_NEW_ENTRY</merge-policy>
-<!--		
+<!--
 		<near-cache>
 			<time-to-live-seconds>5</time-to-live-seconds>
 			<max-idle-seconds>60</max-idle-seconds>
@@ -188,5 +188,5 @@
 		</near-cache>
 -->
     </map>
-	
+
 </hazelcast>

@@ -7,11 +7,11 @@
     <noFTP/>
     <noNFS/>
   </servers>
-	
+
   <cluster>
     <configFile>./hazelcast/hazelcastConfig.xml</configFile>
   </cluster>
-	
+
   <SMB>
     <host name="JLANSRV" domain="ALFRESCO">
       <broadcast>192.168.1.255</broadcast>
@@ -48,7 +48,7 @@
         <kerberosDebug/>
 
 		<disableNTLM/>
--->		
+-->
 
 		<mode>USER</mode>
 		<NOallowGuest/>
@@ -72,7 +72,7 @@
 	<sslEngineDebug/>
     -->
   </FTP>
-	
+
   <NFS>
     <enablePortMapper/>
     <debug flags="Session,Error,File,FileIO"/>
@@ -121,7 +121,7 @@
 			  <NODebug/>
 			  <NOSQLDebug/>
 			</DatabaseInterface>
-			
+
 			<FileLoader>
 				<class>org.alfresco.jlan.server.filesys.db.DBFileLoader</class>
 				<ThreadPoolSize>6:2</ThreadPoolSize>
@@ -147,7 +147,7 @@
 		  <cacheDebug flags="Rename"/>
 		</stateCache>
 	</diskshare>
-  </shares>		
+  </shares>
 
   <security>
     <JCEProvider>cryptix.jce.provider.CryptixCrypto</JCEProvider>
@@ -158,7 +158,7 @@
         <comment>System administrator</comment>
         <administrator/>
       </user>
-		
+
       <user name="normal">
         <password>normal</password>
       </user>

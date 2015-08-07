@@ -4,7 +4,7 @@
 <!-- Build the standalone version of the Alfresco JLAN Server Jars -->
 
 <project name="Alfresco JLAN Server" default="createJar" basedir=".">
-	
+
     <!-- Create the JLAN Server Jar (without database interface implementations) -->
 	<target name="createJar">
 		<delete dir="build/standalone" quiet="true"/>
@@ -122,7 +122,7 @@
 			manifest="source/meta-inf/alfrescojlan_manifest.mf"
 			basedir="build/standalone-cluster"/>
 	</target>
-	
+
     <!-- Create the JLAN Client Jar -->
 	<target name="createJarClient">
 		<delete dir="build/standalone" quiet="true"/>
@@ -215,7 +215,7 @@
 	    
 	</target>
   
-    <!-- Generate the JLAN Server Javadocs -->	
+    <!-- Generate the JLAN Server Javadocs -->
 	<target name="createDocs">
     <mkdir dir="javadoc"/>
 		<javadoc sourcepath="src/main/java"

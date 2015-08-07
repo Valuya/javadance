@@ -13,16 +13,16 @@
 		<server name="imac"/>
 -->
 	</servers>
-	
+
 	<run>
 		<NOinterleaved/>
 		<perServer threads="1"/>
 	</run>
-	
+
 	<tests>
 		<default iterations="50" verbose="false" cleanup="true"/>
 		<NTCreateFile/>
-		
+
 <!-- Available tests -->
 <!--
 		<createFile/>
@@ -41,8 +41,8 @@
 		<folderSearch numberOfFiles="500" numberOfFolders="100"/>
 		<NTCreateFile/>
 -->
-	</tests>	
-	
+	</tests>
+
 	<debug>
 		<output>
 			<class>org.alfresco.jlan.debug.ConsoleDebug</class>

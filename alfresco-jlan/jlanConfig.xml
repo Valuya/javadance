@@ -7,7 +7,7 @@
     <noFTP/>
     <noNFS/>
   </servers>
-	
+
   <SMB>
     <host name="JLANSRV" domain="ALFRESCO">
       <broadcast>SETUP_FOR_YOUR_NETWORK</broadcast>
@@ -60,7 +60,7 @@
 	<NOsslEngineDebug/>
 -->
   </FTP>
-	
+
   <NFS>
     <enablePortMapper/>
     <debug flags="File,FileIO"/>
@@ -81,7 +81,7 @@
         <LocalPath>.</LocalPath>
       </driver>
     </diskshare>
-  </shares>		
+  </shares>
 
   <security>
     <JCEProvider>cryptix.jce.provider.CryptixCrypto</JCEProvider>

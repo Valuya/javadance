@@ -7,7 +7,7 @@
     <FTP/>
     <NFS/>
   </servers>
-	
+
   <SMB>
     <host name="JLANSRV" domain="ALFRESCO">
       <broadcast>192.168.1.255</broadcast>
@@ -44,7 +44,7 @@
         <kerberosDebug/>
 
 		<disableNTLM/>
--->		
+-->
 
 		<mode>USER</mode>
 		<NOallowGuest/>
@@ -66,7 +66,7 @@
 	<NOrequireSecureSession/>
 	<sslEngineDebug/>
   </FTP>
-	
+
   <NFS>
     <NOenablePortMapper/>
     <debug flags="Session,Error,File,FileIO"/>
@@ -123,7 +123,7 @@
 		</driver>
 
 		<size totalSize="5G"/>
-<!--		
+<!--
 		<accessControl default="Write">
 			<domain name="STARLASOFT" access="Write"/>
 			<user name="gkspencer" access="Write"/>
@@ -133,7 +133,7 @@
 			<address ip="192.168.1.2" access="Write"/>
 			<protocol type="CIFS" access="Read"/>
 		</accessControl>
--->		
+-->
 	</diskshare>
 
 <!--	  	  
@@ -170,7 +170,7 @@
 		</driver>
 
 		<size totalSize="5G"/>
-		
+
 		<accessControl default="None">
 			<domain name="STARLASOFT" access="Write"/>
 			<user name="gkspencer" access="Write"/>
@@ -200,13 +200,13 @@
 			  <Debug/>
 			  <SQLDebug/>
 			</DatabaseInterface>
-			
+
 			<FileLoader>
 				<class>org.alfresco.jlan.server.filesys.db.DBFileLoader</class>
 				<ThreadPoolSize>6:2</ThreadPoolSize>
 				<TempDirectory>/Volumes/Data/JLAN/jdbcMySQL</TempDirectory>
 				<MaximumFilesPerDirectory>1000</MaximumFilesPerDirectory>
-	
+
 				<SmallFileSize>100K</SmallFileSize>
 				<FilesPerJar>500</FilesPerJar>
 				<SizePerJar>1000K</SizePerJar>
@@ -219,7 +219,7 @@
 		</driver>
 	</diskshare>
 
-  </shares>		
+  </shares>
 
   <security>
     <JCEProvider>cryptix.jce.provider.CryptixCrypto</JCEProvider>
@@ -230,7 +230,7 @@
         <comment>System administrator</comment>
         <administrator/>
       </user>
-		
+
       <user name="normal">
         <password>normal</password>
       </user>
