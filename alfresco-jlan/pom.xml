@@ -128,10 +128,12 @@
                                 <filter>
                                     <artifact>org.bouncycastle</artifact>
                                     <includes>
+                                        <!-- Note: This WILL NOT WORK unless the jar is signed! -->
                                         <include>org/bouncycastle/**</include>
                                     </includes>
                                 </filter>
                                 <filter>
+                                    <artifact>*:*</artifact>
                                     <excludes>
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
