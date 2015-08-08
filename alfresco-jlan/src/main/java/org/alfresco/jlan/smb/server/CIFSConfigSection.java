@@ -1232,7 +1232,7 @@ public class CIFSConfigSection extends ConfigSection {
 
       //  Inform listeners, validate the configuration change
 
-      sts = fireConfigurationChange(ConfigId.SMBTCPEnable, new Boolean(ena));
+      sts = fireConfigurationChange(ConfigId.SMBTCPEnable, Boolean.valueOf(ena));
       m_tcpSMBEnable = ena;
     }
 
