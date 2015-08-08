@@ -246,7 +246,7 @@
                     <processMainArtifact>false</processMainArtifact>
                     <processAttachedArtifacts>false</processAttachedArtifacts>
                     <removeExistingSignatures>true</removeExistingSignatures>
-                    <archive>target/${artifactId}-${version}-executable.jar</archive>
+                    <archive>target/${project.artifactId}-${project.version}-executable.jar</archive>
                 </configuration>
             </plugin>
 
