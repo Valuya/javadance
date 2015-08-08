@@ -249,7 +249,7 @@ public class NFSConfigSection extends ConfigSection {
 
       //  Inform listeners, validate the configuration change
 
-      sts = fireConfigurationChange(ConfigId.NFSPortMapEnable, new Boolean(ena));
+      sts = fireConfigurationChange(ConfigId.NFSPortMapEnable, Boolean.valueOf(ena));
       m_nfsPortMapper = ena;
     }
 
@@ -416,7 +416,7 @@ public class NFSConfigSection extends ConfigSection {
 
       //  Inform listeners, validate the configuration change
 
-      sts = fireConfigurationChange(ConfigId.NFSPortMapDebug, new Boolean(dbg));
+      sts = fireConfigurationChange(ConfigId.NFSPortMapDebug, Boolean.valueOf(dbg));
       m_portMapDebug = dbg;
     }
 
@@ -443,7 +443,7 @@ public class NFSConfigSection extends ConfigSection {
 
       //  Inform listeners, validate the configuration change
 
-      sts = fireConfigurationChange(ConfigId.NFSMountDebug, new Boolean(dbg));
+      sts = fireConfigurationChange(ConfigId.NFSMountDebug, Boolean.valueOf(dbg));
       m_mountServerDebug = dbg;
     }
 
@@ -589,7 +589,7 @@ public class NFSConfigSection extends ConfigSection {
 
       //  Inform listeners, validate the configuration change
 
-      sts = fireConfigurationChange(ConfigId.NFSFileCacheDebug, new Boolean(ena));
+      sts = fireConfigurationChange(ConfigId.NFSFileCacheDebug, Boolean.valueOf(ena));
       m_nfsFileCacheDebug = ena;
     }
 

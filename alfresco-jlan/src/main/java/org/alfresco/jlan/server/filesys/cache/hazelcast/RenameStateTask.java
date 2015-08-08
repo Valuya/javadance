@@ -110,6 +110,6 @@ public class RenameStateTask extends RemoteStateTask<Boolean> {
 
 		// Return the rename status
 
-		return new Boolean( true);
+		return Boolean.TRUE;
 	}
 }

@@ -476,7 +476,7 @@ public class FTPConfigSection extends ConfigSection {
 
       //  Inform listeners, validate the configuration change
 
-      sts = fireConfigurationChange(ConfigId.FTPAllowAnon, new Boolean(ena));
+      sts = fireConfigurationChange(ConfigId.FTPAllowAnon, Boolean.valueOf(ena));
       m_ftpAllowAnonymous = ena;
     }
 
@@ -766,7 +766,7 @@ public class FTPConfigSection extends ConfigSection {
 
 	  //  Inform listeners, validate the configuration change
 
-	  int sts = fireConfigurationChange(ConfigId.FTPRequireSecure, new Boolean( reqSecureSess));
+	  int sts = fireConfigurationChange(ConfigId.FTPRequireSecure, Boolean.valueOf(reqSecureSess));
 
 	  //  Set the require secure session flag
 

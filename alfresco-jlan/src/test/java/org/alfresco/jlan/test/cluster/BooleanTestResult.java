@@ -59,7 +59,7 @@ public class BooleanTestResult extends TestResult {
 	 * @return Object
 	 */
 	public Object getResult() {
-		return new Boolean( m_result);
+		return Boolean.valueOf(m_result);
 	}
 
 	/**

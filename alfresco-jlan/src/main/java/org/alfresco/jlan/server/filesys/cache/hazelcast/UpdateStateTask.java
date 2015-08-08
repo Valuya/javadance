@@ -112,6 +112,6 @@ public class UpdateStateTask extends RemoteStateTask<Boolean> {
 
 		// Return a status
 
-		return new Boolean( changedSts);
+		return Boolean.valueOf(changedSts);
 	}
 }

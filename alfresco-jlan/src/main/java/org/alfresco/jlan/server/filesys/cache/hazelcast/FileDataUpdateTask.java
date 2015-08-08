@@ -147,6 +147,6 @@ public class FileDataUpdateTask extends RemoteStateTask<Boolean> {
 
 		// Return the updated file state
 
-		return new Boolean( updSts);
+		return Boolean.valueOf(updSts);
 	}
 }

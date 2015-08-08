@@ -85,6 +85,6 @@ public class AddOpLockTask extends RemoteStateTask<Boolean> {
 
 		// Return a success status
 
-		return new Boolean( true);
+		return Boolean.TRUE;
 	}
 }
