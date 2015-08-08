@@ -71,6 +71,13 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-compile</id>
