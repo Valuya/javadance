@@ -152,6 +152,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.13</version>
                 <configuration>
+                    <skip>true</skip> <!-- for now -->
                     <!-- <configLocation>checkstyle.xml</configLocation> -->
                     <enableRulesSummary>false</enableRulesSummary>
                     <!-- <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation> -->
@@ -260,5 +261,15 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>
