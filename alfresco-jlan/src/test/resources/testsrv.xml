@@ -40,10 +40,10 @@
     </debug>
 
     <shares>
-        <diskshare name="JLAN" comment="Test share">
+        <diskshare name="${it.sharename}" comment="Test share">
             <driver>
                 <class>org.alfresco.jlan.smb.server.disk.JavaFileDiskDriver</class>
-                <LocalPath>${localsharepath}</LocalPath>
+                <LocalPath>${it.localsharepath}/scratch</LocalPath>
             </driver>
         </diskshare>
     </shares>
@@ -57,13 +57,10 @@
           <allowGuest/>
       </authenticator>
       <users>
-          <user name="jlansrv">
-              <password>jlan</password>
+          <user name="admin">
+              <password>admin</password>
               <comment>System administrator</comment>
               <administrator/>
-          </user>
-          <user name="normal">
-              <password>normal</password>
           </user>
       </users>
 

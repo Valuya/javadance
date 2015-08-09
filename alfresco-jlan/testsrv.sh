@@ -6,7 +6,7 @@ if [ $# -lt 1 ] ; then
 fi
 case "$1" in
     start)
-        LOCALSHAREPATH=$2
+        LOCALSHAREPATH=$2/scratch
         JAR=$3
         rm -rf ${LOCALSHAREPATH} && mkdir -p ${LOCALSHAREPATH}
         echo "Starting test server"
@@ -14,8 +14,6 @@ case "$1" in
         echo $! > testsrv.pid
         ;;
     stop)
-        LOCALSHAREPATH=$2
-        rm -rf ${LOCALSHAREPATH}
         if [ -f testsrv.pid ] ; then
             echo "Stopping test server"
             kill `cat testsrv.pid` || true

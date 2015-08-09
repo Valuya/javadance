@@ -18,7 +18,7 @@
                     <name>!sign.skip</name>
                 </property>
             </activation>
-        <!-- The actual jarsigner properties are specified in the settings.xml -->
+            <!-- The actual jarsigner properties are specified in the settings.xml -->
             <properties>
                 <sign.skip>true</sign.skip>
                 <sign.alias>WHATEVER</sign.alias>
@@ -181,6 +181,7 @@
                 </executions>
             </plugin>
 
+            <!-- run unit tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -192,6 +193,7 @@
                 </configuration>
             </plugin>
 
+            <!-- run pre/post for integration tests -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -204,6 +206,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipITs}</skip>
                             <executable>/bin/sh</executable>
                             <arguments>
                                 <argument>testsrv.sh</argument>
@@ -220,11 +223,11 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipITs}</skip>
                             <executable>/bin/sh</executable>
                             <arguments>
                                 <argument>testsrv.sh</argument>
                                 <argument>stop</argument>
-                                <argument>${it.localsharepath}</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -241,9 +244,9 @@
                         <host>${it.host}</host>
                         <nbport>${it.nbport}</nbport>
                         <cifsport>${it.cifsport}</cifsport>
-                        <user>jlansrv</user>
-                        <pass>jlan</pass>
-                        <share>JLAN</share>
+                        <user>${it.user}</user>
+                        <pass>${it.pass}</pass>
+                        <share>${it.sharename}</share>
                         <provclass>org.bouncycastle.jce.provider.BouncyCastleProvider</provclass>
                         <iterations>50</iterations>
                     </systemPropertyVariables>
@@ -259,7 +262,7 @@
                 </executions>
             </plugin>
 
-            <!-- executable jar -->
+            <!-- create executable jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -335,6 +338,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Create separae jar with DLLs -->
             <plugin>
                 <!-- Windows DLL to be packaged separately. Used in the distribution -->
                 <artifactId>maven-jar-plugin</artifactId>
@@ -359,6 +363,7 @@
                 <directory>src/test/resources</directory>
             </testResource>
         </testResources>
+
     </build>
 
     <reporting>
@@ -377,10 +382,13 @@
         <executablejar>target/${project.artifactId}-${project.version}-executable.jar</executablejar>
         <it.broadcast>127.255.255.255</it.broadcast>
         <it.host>localhost</it.host>
+        <it.user>admin</it.user>
+        <it.pass>admin</it.pass>
         <it.nbport>11139</it.nbport>
         <it.namingport>11137</it.namingport>
         <it.datagramport>11138</it.datagramport>
         <it.cifsport>11445</it.cifsport>
+        <it.sharename>JLAN</it.sharename>
         <it.localsharepath>target/it</it.localsharepath>
     </properties>
 </project>
