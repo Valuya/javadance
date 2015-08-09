@@ -7,12 +7,12 @@
 
     <SMB>
         <host name="${it.host}" domain="WORKGROUP">
-            <broadcast>192.168.2.255</broadcast> -->
+            <broadcast>${it.broadcast}</broadcast> -->
             <smbdialects>LanMan,NT</smbdialects>
             <comment>Test CIFS Server</comment>
 
             <Win32NetBIOS/>
-            <!-- <Win32Announce interval="5"/> -->
+            <Win32Announce interval="5"/>
 
             <hostAnnounce interval="5"/>
 
@@ -22,6 +22,7 @@
         </host>
 
         <sessionDebug flags="Negotiate,Socket,Tree"/>
+        <netbiosDebug/>
         <!-- <netbiosDebug/> -->
         <!-- <announceDebug/> -->
         <authenticator type="enterprise">
