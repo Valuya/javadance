@@ -241,7 +241,8 @@ public class NetBIOSName {
 	 * @param name String
 	 */
 	public NetBIOSName(String name) {
-		setName(name.substring(0, NameLength - 1).trim());
+        int l = name.length() > NameLength ? NameLength : name.length();
+		setName(name.substring(0, l - 1).trim());
 		setType(name.charAt(NameLength - 1));
 	}
 
@@ -252,7 +253,8 @@ public class NetBIOSName {
 	 * @param scope String
 	 */
 	protected NetBIOSName(String name, String scope) {
-		setName(name.substring(0, NameLength - 1).trim());
+        int l = name.length() > NameLength ? NameLength : name.length();
+		setName(name.substring(0, l - 1).trim());
 		setType(name.charAt(NameLength - 1));
 
 		if ( scope != null && scope.length() > 0)

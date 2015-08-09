@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.8.8</version>
+            <version>6.9.6</version>
             <scope>test</scope>
         </dependency>
 
@@ -128,7 +128,7 @@
             <!-- run PMD check -->
             <plugin>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.5</version>
                 <executions>
                     <execution>
                         <id>check</id>
@@ -164,7 +164,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.13</version>
+                <version>2.16</version>
                 <configuration>
                     <skip>true</skip> <!-- for now -->
                     <!-- <configLocation>checkstyle.xml</configLocation> -->
@@ -193,15 +193,70 @@
             </plugin>
 
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>/bin/sh</executable>
+                            <arguments>
+                                <argument>testsrv.sh</argument>
+                                <argument>start</argument>
+                                <argument>${it.localsharepath}</argument>
+                                <argument>${executablejar}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>post-integration-test</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>/bin/sh</executable>
+                            <arguments>
+                                <argument>testsrv.sh</argument>
+                                <argument>stop</argument>
+                                <argument>${it.localsharepath}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- run integration tests -->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.18.1</version>
                 <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>testngIT.xml</suiteXmlFile>
-                        <groups>functest,perftest</groups>
-                    </suiteXmlFiles>
+                    <systemPropertyVariables>
+                        <host>${it.host}</host>
+                        <nbport>${it.nbport}</nbport>
+                        <cifsport>${it.cifsport}</cifsport>
+                        <user>jlansrv</user>
+                        <pass>jlan</pass>
+                        <share>JLAN</share>
+                        <provclass>org.bouncycastle.jce.provider.BouncyCastleProvider</provclass>
+                        <iterations>50</iterations>
+                    </systemPropertyVariables>
+                    <groups>functest</groups>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- executable jar -->
@@ -276,7 +331,7 @@
                     <processMainArtifact>false</processMainArtifact>
                     <processAttachedArtifacts>false</processAttachedArtifacts>
                     <removeExistingSignatures>true</removeExistingSignatures>
-                    <archive>target/${project.artifactId}-${project.version}-executable.jar</archive>
+                    <archive>${executablejar}</archive>
                 </configuration>
             </plugin>
 
@@ -297,6 +352,13 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <testResources>
+            <testResource>
+                <filtering>true</filtering>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
     </build>
 
     <reporting>
@@ -304,9 +366,21 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.3</version>
+                <version>2.5</version>
             </plugin>
         </plugins>
     </reporting>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <executablejar>target/${project.artifactId}-${project.version}-executable.jar</executablejar>
+        <it.broadcast>127.255.255.255</it.broadcast>
+        <it.host>localhost</it.host>
+        <it.nbport>11139</it.nbport>
+        <it.namingport>11137</it.namingport>
+        <it.datagramport>11138</it.datagramport>
+        <it.cifsport>11445</it.cifsport>
+        <it.localsharepath>target/it</it.localsharepath>
+    </properties>
 </project>
