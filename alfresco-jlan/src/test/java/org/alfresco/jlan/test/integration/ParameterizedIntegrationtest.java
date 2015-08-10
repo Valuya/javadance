@@ -20,7 +20,6 @@ import org.testng.annotations.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.DiskSession;
 import org.alfresco.jlan.client.SessionFactory;
 import org.alfresco.jlan.client.SessionSettings;
@@ -138,7 +137,7 @@ public class ParameterizedIntegrationtest {
             // Delete the test folders
             for (String name : foldersToDelete) {
                 try {
-                    ((CIFSDiskSession)getSession()).DeleteDirectory(name);
+                    getSession().DeleteDirectory(name);
                 } catch (Exception e) {
                     LOGGER.warn("Cleanup folder {} failed", name, e);
                 }
