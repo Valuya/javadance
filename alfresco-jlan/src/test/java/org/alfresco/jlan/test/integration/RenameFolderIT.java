@@ -34,11 +34,6 @@ import org.alfresco.jlan.client.DiskSession;
  */
 public class RenameFolderIT extends ParameterizedIntegrationtest {
 
-    // Constants
-
-    private static final String TestFolderName 	= "fromFolder";
-    private static final String TestFolderNew	= "toFolder";
-
     /**
      * Default constructor
      */
