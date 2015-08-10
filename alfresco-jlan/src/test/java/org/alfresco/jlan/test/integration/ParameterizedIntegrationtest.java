@@ -301,9 +301,6 @@ public class ParameterizedIntegrationtest {
         return m_path;
     }
 
-    protected void doTest(int iteration) throws Exception {
-    }
-
     /**
      * Sleep for a while
      *

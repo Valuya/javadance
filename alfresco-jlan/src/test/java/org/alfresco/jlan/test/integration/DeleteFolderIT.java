@@ -43,9 +43,9 @@ public class DeleteFolderIT extends ParameterizedIntegrationtest {
 		super();
 	}
 
-    @Override
-    protected void doTest(int iteration) throws Exception {
+    private void doTest(int iteration) throws Exception {
         DiskSession s = getSession();
+        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
         String testFolderName = getPerTestFolderName(iteration);
         if (s.FileExists(testFolderName) && s.isDirectory(testFolderName)) {
             Reporter.log("Folder " + testFolderName + "already exists.");

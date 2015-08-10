@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.alfresco.jlan.test.integration;
 
 import static org.testng.Assert.*;
@@ -27,57 +28,39 @@ import org.testng.annotations.Test;
 import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.DiskSession;
 import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.server.filesys.AccessMode;
-import org.alfresco.jlan.server.filesys.FileAction;
-import org.alfresco.jlan.server.filesys.FileAttribute;
-import org.alfresco.jlan.smb.SMBException;
-import org.alfresco.jlan.smb.SMBStatus;
-import org.alfresco.jlan.smb.SharingMode;
+import org.alfresco.jlan.debug.Debug;
 
 /**
- * NTCreate File Test Class
+ * Delete File Test Class
  *
  * @author gkspencer
  */
-public class NTCreateFileIT extends ParameterizedIntegrationtest {
+public class DeleteFileIT extends ParameterizedIntegrationtest {
 
-	/**
-	 * Default constructor
-	 */
-	public NTCreateFileIT() {
-		super();
-	}
+    /**
+     * Default constructor
+     */
+    public DeleteFileIT() {
+        super();
+    }
 
     private void doTest(int iteration) throws Exception {
-        Reporter.log("Running " + getTestname() + " #" + iteration + "<br/>\n");
         DiskSession s = getSession();
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-
-        // Create a test file name for this iteration
         String testFileName = getPerTestFileName(iteration);
-
-        // Check if the test file exists
         if (s.FileExists(testFileName)) {
-            Reporter.log("File already exists, " + testFileName);
+            Reporter.log("File " + testFileName + " exists");
+        } else {
+            SMBFile testFile = s.CreateFile(testFileName);
+            assertTrue(s.FileExists(testFileName));
         }
         CIFSDiskSession cifsSess = (CIFSDiskSession)s;
         try {
-            SMBFile testFile = cifsSess.NTCreate( testFileName, AccessMode.NTReadWrite, FileAttribute.NTNormal,
-                    SharingMode.READ, FileAction.NTCreate, 0, 0);
-            if (testFile != null) {
-                testFile.Close();
-            }
-            assertTrue(s.FileExists(testFileName), "File does not exist after create, " + testFileName); 
-        } catch ( SMBException ex) {
-            // Check for an access denied error code
-            if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
-                Reporter.log("Create failed with access denied error (expected), " + testFileName);
-            } else if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
-                Reporter.log("Create failed with object name collision (expected), " + testFileName);
-            } else {
-                fail("Caught exception", ex);
-            }
+            cifsSess.DeleteFile(testFileName);
+        } catch ( Exception ex) {
+            fail("Error deleting file " + testFileName + " on server " + s.getServer(), ex);
         }
+        assertFalse(cifsSess.FileExists(testFileName), "File exists after delete");
     }
 
     @Parameters({"iterations"})

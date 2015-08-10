@@ -51,8 +51,7 @@ public class OpenFileIT extends ParameterizedIntegrationtest {
         super();
     }
 
-    @Override
-    protected void doTest(int iteration) throws Exception {
+    private void doTest(int iteration) throws Exception {
         DiskSession s = getSession();
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
         String testFileName = getPerTestFileName(iteration);
