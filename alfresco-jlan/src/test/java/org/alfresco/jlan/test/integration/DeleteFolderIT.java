@@ -21,6 +21,9 @@ package org.alfresco.jlan.test.integration;
 
 import static org.testng.Assert.*;
 import org.testng.Reporter;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.DiskSession;
@@ -61,5 +64,13 @@ public class DeleteFolderIT extends ParameterizedIntegrationtest {
 
         // Check if the folder exists
         assertFalse(cifsSess.FileExists(testFolderName) && cifsSess.isDirectory(testFolderName));
+    }
+
+    @Parameters({"iterations"})
+    @Test(groups = "functest")
+    public void test(@Optional("1") int iterations) throws Exception {
+        for (int i = 0; i < iterations; i++) {
+            doTest(i);
+        }
     }
 }

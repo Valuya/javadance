@@ -15,7 +15,6 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
-import org.testng.annotations.Test;
 
 import org.alfresco.jlan.client.DiskSession;
 import org.alfresco.jlan.client.SessionFactory;
@@ -40,7 +39,7 @@ public class ParameterizedIntegrationtest {
 
     @Parameters({"host", "user", "pass", "share", "provclass", "nbport", "cifsport"})
     @BeforeSuite(alwaysRun = true)
-    public void initSuite(final String host, final String user, final String pass,
+    public static void initSuite(final String host, final String user, final String pass,
             final String share, final String provclass, @Optional Integer nbport, @Optional Integer cifsport) {
         m_host = host;
         m_user = user;
@@ -305,12 +304,15 @@ public class ParameterizedIntegrationtest {
     protected void doTest(int iteration) throws Exception {
     }
 
-    @Parameters({"iterations"})
-    @Test(groups = "functest")
-    public void test(@Optional("1") int iterations) throws Exception {
-        for (int i = 0; i < iterations; i++) {
-            doTest(i);
+    /**
+     * Sleep for a while
+     *
+     * @param sleepMs long
+     */
+    protected final void testSleep(long sleepMs) {
+        try {
+            Thread.sleep( sleepMs);
+        } catch (InterruptedException ex) {
         }
     }
-
 }

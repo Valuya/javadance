@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.alfresco.jlan.test.integration;
 
 import static org.testng.Assert.*;
@@ -25,8 +26,10 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import org.alfresco.jlan.client.CIFSDiskSession;
+import org.alfresco.jlan.client.CIFSFile;
 import org.alfresco.jlan.client.DiskSession;
 import org.alfresco.jlan.client.SMBFile;
+import org.alfresco.jlan.debug.Debug;
 import org.alfresco.jlan.server.filesys.AccessMode;
 import org.alfresco.jlan.server.filesys.FileAction;
 import org.alfresco.jlan.server.filesys.FileAttribute;
@@ -35,53 +38,55 @@ import org.alfresco.jlan.smb.SMBStatus;
 import org.alfresco.jlan.smb.SharingMode;
 
 /**
- * NTCreate File Test Class
+ * Open File Test Class
  *
  * @author gkspencer
  */
-public class NTCreateFileIT extends ParameterizedIntegrationtest {
+public class OpenFileIT extends ParameterizedIntegrationtest {
 
-	/**
-	 * Default constructor
-	 */
-	public NTCreateFileIT() {
-		super();
-	}
+    /**
+     * Default constructor
+     */
+    public OpenFileIT() {
+        super();
+    }
 
     @Override
     protected void doTest(int iteration) throws Exception {
-        Reporter.log("Running " + getTestname() + " #" + iteration + "<br/>\n");
         DiskSession s = getSession();
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-
-        // Create a test file name for this iteration
         String testFileName = getPerTestFileName(iteration);
-
-        // Check if the test file exists
         if (s.FileExists(testFileName)) {
-            Reporter.log("File already exists, " + testFileName);
-        }
-        CIFSDiskSession cifsSess = (CIFSDiskSession)s;
-        try {
-            SMBFile testFile = cifsSess.NTCreate( testFileName, AccessMode.NTReadWrite, FileAttribute.NTNormal,
-                    SharingMode.READ, FileAction.NTCreate, 0, 0);
+            Reporter.log("File " + testFileName + " exists");
+        } else {
+            SMBFile testFile = s.CreateFile(testFileName);
             if (testFile != null) {
                 testFile.Close();
             }
-            assertTrue(s.FileExists(testFileName), "File does not exist after create, " + testFileName); 
-        } catch ( SMBException ex) {
-            // Check for an access denied error code
-            if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
-                Reporter.log("Create failed with access denied error (expected), " + testFileName);
-            } else if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
-                Reporter.log("Create failed with object name collision (expected), " + testFileName);
-            } else {
-                fail("Caught exception", ex);
+            assertTrue(s.FileExists(testFileName));
+        }
+        CIFSDiskSession cifsSess = (CIFSDiskSession)s;
+        CIFSFile openFile = null;
+        try {
+            // Open existing file for exclusive access, else fail
+            openFile = cifsSess.NTCreate("\\" + testFileName, AccessMode.NTReadWrite, FileAttribute.NTNormal,
+                    SharingMode.NOSHARING, FileAction.NTOpen, 0, 0);
+            if (null != openFile) {
+                // Hold the file open for a short while, other threads should fail to open the file
+                testSleep(2000);
+                // Close the test file
+                openFile.Close();
             }
+        } catch (SMBException ex) {
+            // Check for an access denied error code
+            assertTrue(ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied,
+                    "Open failed with wrong error");
+            Reporter.log("Open failed with access denied error (expected)");
         }
     }
 
     @Parameters({"iterations"})
+    //@Test(groups = "functest", threadPoolSize = 3, invocationCount = 3)
     @Test(groups = "functest")
     public void test(@Optional("1") int iterations) throws Exception {
         for (int i = 0; i < iterations; i++) {

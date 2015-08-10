@@ -10,7 +10,7 @@ case "$1" in
         JAR=$3
         rm -rf ${LOCALSHAREPATH} && mkdir -p ${LOCALSHAREPATH}
         echo "Starting test server"
-        java -jar ${JAR} target/test-classes/testsrv.xml >/tmp/testsrv.out 2>&1  &
+        java -jar ${JAR} target/test-classes/testsrv.xml >/tmp/testsrv.out 2>&1 &
         echo $! > testsrv.pid
         ;;
     stop)
