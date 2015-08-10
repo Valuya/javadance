@@ -26,42 +26,42 @@ import org.testng.annotations.Test;
 
 import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.client.SMBFile;
+import org.alfresco.jlan.debug.Debug;
 import org.alfresco.jlan.smb.SMBException;
 import org.alfresco.jlan.smb.SMBStatus;
 
 /**
- * Create File Test Class
+ * Create Folder Test Class
  *
  * @author gkspencer
  */
-public class CreateFileIT extends ParameterizedIntegrationtest {
+public class CreateFolderIT extends ParameterizedIntegrationtest {
 
-	/**
-	 * Default constructor
-	 */
-	public CreateFileIT() {
-		super("CreateFileIT");
-	}
+    /**
+     * Default constructor
+     */
+    public CreateFolderIT() {
+        super("CreateFolderIT");
+    }
 
     private void doTest(int iteration) throws Exception {
         DiskSession s = getSession();
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFileName = getPerTestFileName(iteration);
-        try {
-            SMBFile testFile = s.CreateFile(testFileName);
-            if (null != testFile) {
-                testFile.Close();
-            }
-            assertTrue(s.FileExists(testFileName), "File exists after create");
-        } catch (SMBException ex) {
-            // Check for an access denied error code
-            if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
-                LOGGER.info("Create of {} failed with access denied error (expected)", testFileName);
-            } else if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
-                LOGGER.info("Create of {} failed with object name collision (expected)", testFileName);
-            } else {
-                fail("Caught exception", ex);
+        String testFolderName = getPerTestFolderName(iteration);
+        if (s.FileExists(testFolderName)) {
+            LOGGER.info("Folder {} exists", testFolderName);
+        } else {
+            try {
+                // Create the folder
+                s.CreateDirectory(testFolderName);
+
+                assertTrue(s.FileExists(testFolderName), "Folder exists after create");
+            } catch (SMBException ex) {
+                if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
+                    LOGGER.info("Create of {} failed with object name collision (expected)", testFolderName);
+                } else {
+                    fail("Caught exception", ex);
+                }
             }
         }
     }
