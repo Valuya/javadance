@@ -20,6 +20,7 @@ import org.testng.annotations.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.DiskSession;
 import org.alfresco.jlan.client.SessionFactory;
 import org.alfresco.jlan.client.SessionSettings;
@@ -127,14 +128,22 @@ public class ParameterizedIntegrationtest {
         public void afterMethod(Method m) throws Exception {
             // Delete the test files
             for (String name : filesToDelete) {
-                getSession().DeleteFile(name);
+                try {
+                    getSession().DeleteFile(name);
+                } catch (Exception e) {
+                    LOGGER.warn("Cleanup file {} failed", name, e);
+                }
             }
             filesToDelete.clear();
             // Delete the test folders
             for (String name : foldersToDelete) {
-                getSession().DeleteFile(name);
+                try {
+                    ((CIFSDiskSession)getSession()).DeleteDirectory(name);
+                } catch (Exception e) {
+                    LOGGER.warn("Cleanup folder {} failed", name, e);
+                }
             }
-            filesToDelete.clear();
+            foldersToDelete.clear();
             LOGGER.info("Finished {}.{}", getTestname(), m.getName());
         }
 
@@ -291,6 +300,14 @@ public class ParameterizedIntegrationtest {
 
         foldersToDelete.add(fName.toString());
         return fName.toString();
+    }
+
+    public final void registerFileNameForDelete(final String name) {
+        filesToDelete.add(name);
+    }
+
+    public final void registerFolderNameForDelete(final String name) {
+        foldersToDelete.add(name);
     }
 
     /**

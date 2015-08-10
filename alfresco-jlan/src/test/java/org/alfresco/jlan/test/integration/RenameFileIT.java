@@ -17,10 +17,14 @@
  * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.alfresco.jlan.test.cluster;
+package org.alfresco.jlan.test.integration;
 
-import java.io.StringWriter;
+import static org.testng.Assert.*;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
+import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.DiskSession;
 import org.alfresco.jlan.client.SMBFile;
 import org.alfresco.jlan.debug.Debug;
@@ -30,122 +34,38 @@ import org.alfresco.jlan.debug.Debug;
  *
  * @author gkspencer
  */
-public class RenameFileTest extends Test {
+public class RenameFileIT extends ParameterizedIntegrationtest {
 
-	// Constants
+    /**
+     * Default constructor
+     */
+    public RenameFileIT() {
+        super("RenameFileIT");
+    }
 
-	private static final String TestFileName 	= "renameFile";
-	private static final String TestFileExt	 	= ".txt";
-	private static final String TestFileNewExt	= ".renamed";
+    private void doTest(int iteration) throws Exception {
+        DiskSession s = getSession();
+        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
+        String testFileName = getPerTestFileName(iteration);
+        String newFileName = testFileName.replace(".txt", ".ren");
+        registerFileNameForDelete(newFileName);
+        assertFalse(s.FileExists(testFileName), "File already exits");
+        SMBFile testFile = s.CreateFile(testFileName);
+        if (null != testFile) {
+            testFile.Close();
+        }
+        assertTrue(s.FileExists(testFileName), "File exits after creation");
+        // Rename the file
+        s.RenameFile(testFileName, newFileName);
+        assertTrue(s.FileExists(newFileName), "New file exits after rename");
+        assertFalse(s.FileExists(testFileName), "Old file exits after rename");
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public RenameFileTest() {
-		super( "RenameFile");
-	}
-
-	/**
-	 * Run the rename file test
-	 *
-	 * @param threadId int
-	 * @param iteration int
-	 * @param sess DiskSession
-	 * @param log StringWriter
-	 * @return TestResult
-	 */
-	public TestResult runTest( int threadId, int iteration, DiskSession sess, StringWriter log) {
-
-		TestResult result = null;
-
-		try {
-
-			// Create a test file name for this iteration
-
-			String testFileName = TestFileName + "_" + threadId + "_" + iteration + TestFileExt;
-			String newFileName  = TestFileName + "_" + threadId + "_" + iteration + TestFileNewExt;
-
-			// DEBUG
-
-			testLog( log, "RenameFile Test");
-
-			// Check if the test file exists
-
-			if ( sess.FileExists( testFileName)) {
-				testLog( log, "File " + testFileName + " exists");
-
-				// Set a failure status
-
-				result = new BooleanTestResult( false, "File already exists, " + testFileName);
-			}
-			else {
-
-				// Create a new file
-
-				testLog( log, "Creating file " + testFileName + " via " + sess.getServer());
-				SMBFile testFile = sess.CreateFile( testFileName);
-				if ( testFile != null)
-					testFile.Close();
-
-				// Check the file exists
-
-				if ( sess.FileExists( testFileName)) {
-
-					// Rename the file
-
-					sess.RenameFile( testFileName, newFileName);
-
-					// Check that the new file exists
-
-					if ( sess.FileExists( newFileName)) {
-
-						// Check that the old file name does not exist
-
-						if ( sess.FileExists( testFileName) == false)
-							result = new BooleanTestResult( true);
-						else
-							result = new BooleanTestResult( false, "Old file exists after rename, " + testFileName);
-					}
-					else
-						result = new BooleanTestResult( false, "New file does not exist after rename, " + newFileName);
-				}
-				else {
-					testLog( log, "** File does not exist after create");
-					result = new BooleanTestResult( false, "File does not exist, " + testFileName);
-				}
-			}
-
-			// Finished
-
-			testLog( log, "Test completed");
-
-		}
-		catch ( Exception ex) {
-			Debug.println(ex);
-
-			result = new ExceptionTestResult(ex);
-		}
-
-		// Return the test result
-
-		return result;
-	}
-
-	/**
-	 * Cleanup the test
-	 *
-	 * @param threadId int
-	 * @param iter int
-	 * @param sess DiskSession
-	 * @param log StringWriter
-	 * @exception Exception
-	 */
-	public void cleanupTest( int threadId, int iter, DiskSession sess, StringWriter log)
-		throws Exception {
-
-		// Delete the test file
-
-		String fName = TestFileName + "_" + threadId + "_" + iter + TestFileNewExt;
-		sess.DeleteFile( fName);
-	}
+    @Parameters({"iterations"})
+    @Test(groups = "functest")
+    public void test(@Optional("1") int iterations) throws Exception {
+        for (int i = 0; i < iterations; i++) {
+            doTest(i);
+        }
+    }
 }
