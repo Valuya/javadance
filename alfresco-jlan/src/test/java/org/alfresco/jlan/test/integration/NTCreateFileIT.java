@@ -19,7 +19,6 @@
 package org.alfresco.jlan.test.integration;
 
 import static org.testng.Assert.*;
-import org.testng.Reporter;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -45,11 +44,10 @@ public class NTCreateFileIT extends ParameterizedIntegrationtest {
 	 * Default constructor
 	 */
 	public NTCreateFileIT() {
-		super();
+		super("NTCreateFileIT");
 	}
 
     private void doTest(int iteration) throws Exception {
-        Reporter.log("Running " + getTestname() + " #" + iteration + "<br/>\n");
         DiskSession s = getSession();
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
 
@@ -58,7 +56,7 @@ public class NTCreateFileIT extends ParameterizedIntegrationtest {
 
         // Check if the test file exists
         if (s.FileExists(testFileName)) {
-            Reporter.log("File already exists, " + testFileName);
+            LOGGER.info("File {} already exists", testFileName);
         }
         CIFSDiskSession cifsSess = (CIFSDiskSession)s;
         try {
@@ -71,9 +69,9 @@ public class NTCreateFileIT extends ParameterizedIntegrationtest {
         } catch ( SMBException ex) {
             // Check for an access denied error code
             if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
-                Reporter.log("Create failed with access denied error (expected), " + testFileName);
+                LOGGER.info("Create of {} failed with access denied error (expected)", testFileName);
             } else if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
-                Reporter.log("Create failed with object name collision (expected), " + testFileName);
+                LOGGER.info("Create of {} failed with object name collision (expected)", testFileName);
             } else {
                 fail("Caught exception", ex);
             }

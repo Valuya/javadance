@@ -26,42 +26,44 @@ import org.testng.annotations.Test;
 
 import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.DiskSession;
+import org.alfresco.jlan.client.SMBFile;
+import org.alfresco.jlan.smb.SMBException;
+import org.alfresco.jlan.smb.SMBStatus;
 
 /**
- * Delete Folder Test Class
+ * Create File Test Class
  *
  * @author gkspencer
  */
-public class DeleteFolderIT extends ParameterizedIntegrationtest {
+public class CreateFileIT extends ParameterizedIntegrationtest {
 
 	/**
 	 * Default constructor
 	 */
-	public DeleteFolderIT() {
-        super("DeleteFolderIT");
+	public CreateFileIT() {
+		super("CreateFileIT");
 	}
 
     private void doTest(int iteration) throws Exception {
         DiskSession s = getSession();
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFolderName = getPerTestFolderName(iteration);
-        if (s.FileExists(testFolderName) && s.isDirectory(testFolderName)) {
-            LOGGER.info("Folder {} already exists", testFolderName);
-        } else {
-            s.CreateDirectory(testFolderName);
-            assertTrue(s.FileExists(testFolderName));
-        }
-
-        // Delete the folder
-        CIFSDiskSession cifsSess = (CIFSDiskSession)s;
+        String testFileName = getPerTestFileName(iteration);
         try {
-            cifsSess.DeleteDirectory(testFolderName);
-        } catch ( Exception ex) {
-            fail("Error deleting folder " + testFolderName + " on server " + s.getServer(), ex);
+            SMBFile testFile = s.CreateFile(testFileName);
+            if (null != testFile) {
+                testFile.Close();
+            }
+            assertTrue(s.FileExists(testFileName), "File exists after create");
+        } catch (SMBException ex) {
+            // Check for an access denied error code
+            if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
+                LOGGER.info("Create of {} failed with access denied error (expected)", testFileName);
+            } else if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
+                LOGGER.info("Create of {} failed with object name collision (expected)", testFileName);
+            } else {
+                fail("Catched exception", ex);
+            }
         }
-
-        // Check if the folder exists
-        assertFalse(cifsSess.FileExists(testFolderName) && cifsSess.isDirectory(testFolderName));
     }
 
     @Parameters({"iterations"})

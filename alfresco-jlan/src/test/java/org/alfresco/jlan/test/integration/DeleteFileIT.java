@@ -20,7 +20,6 @@
 package org.alfresco.jlan.test.integration;
 
 import static org.testng.Assert.*;
-import org.testng.Reporter;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -28,7 +27,6 @@ import org.testng.annotations.Test;
 import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.DiskSession;
 import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.debug.Debug;
 
 /**
  * Delete File Test Class
@@ -41,7 +39,7 @@ public class DeleteFileIT extends ParameterizedIntegrationtest {
      * Default constructor
      */
     public DeleteFileIT() {
-        super();
+        super("DeleteFileIT");
     }
 
     private void doTest(int iteration) throws Exception {
@@ -49,7 +47,7 @@ public class DeleteFileIT extends ParameterizedIntegrationtest {
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
         String testFileName = getPerTestFileName(iteration);
         if (s.FileExists(testFileName)) {
-            Reporter.log("File " + testFileName + " exists");
+            LOGGER.info("File {} exists", testFileName);
         } else {
             SMBFile testFile = s.CreateFile(testFileName);
             assertTrue(s.FileExists(testFileName));

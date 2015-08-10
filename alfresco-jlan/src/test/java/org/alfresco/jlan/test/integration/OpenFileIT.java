@@ -20,7 +20,6 @@
 package org.alfresco.jlan.test.integration;
 
 import static org.testng.Assert.*;
-import org.testng.Reporter;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -29,7 +28,6 @@ import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.CIFSFile;
 import org.alfresco.jlan.client.DiskSession;
 import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.debug.Debug;
 import org.alfresco.jlan.server.filesys.AccessMode;
 import org.alfresco.jlan.server.filesys.FileAction;
 import org.alfresco.jlan.server.filesys.FileAttribute;
@@ -48,7 +46,7 @@ public class OpenFileIT extends ParameterizedIntegrationtest {
      * Default constructor
      */
     public OpenFileIT() {
-        super();
+        super("OpenFileIT");
     }
 
     private void doTest(int iteration) throws Exception {
@@ -56,7 +54,7 @@ public class OpenFileIT extends ParameterizedIntegrationtest {
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
         String testFileName = getPerTestFileName(iteration);
         if (s.FileExists(testFileName)) {
-            Reporter.log("File " + testFileName + " exists");
+            LOGGER.info("File {} exists", testFileName);
         } else {
             SMBFile testFile = s.CreateFile(testFileName);
             if (testFile != null) {
@@ -80,7 +78,7 @@ public class OpenFileIT extends ParameterizedIntegrationtest {
             // Check for an access denied error code
             assertTrue(ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied,
                     "Open failed with wrong error");
-            Reporter.log("Open failed with access denied error (expected)");
+            LOGGER.info("Open of {} failed with access denied error (expected)", testFileName);
         }
     }
 
