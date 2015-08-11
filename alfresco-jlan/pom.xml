@@ -254,9 +254,9 @@
                         <pass>${it.pass}</pass>
                         <share>${it.sharename}</share>
                         <provclass>org.bouncycastle.jce.provider.BouncyCastleProvider</provclass>
-                        <iterations>50</iterations>
+                        <iterations>${it.iterations}</iterations>
                     </systemPropertyVariables>
-                    <groups>functest</groups>
+                    <groups>${it.groups}</groups>
                 </configuration>
                 <executions>
                     <execution>
@@ -396,5 +396,7 @@
         <it.cifsport>11445</it.cifsport>
         <it.sharename>JLAN</it.sharename>
         <it.localsharepath>target/it</it.localsharepath>
+        <it.iterations>50</it.iterations>
+        <it.groups>functest</it.groups>
     </properties>
 </project>
