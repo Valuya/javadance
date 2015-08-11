@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<configuration debug="true" scan="true">
+<configuration scan="true">
     <appender class="ch.qos.logback.core.ConsoleAppender" name="stdout">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>

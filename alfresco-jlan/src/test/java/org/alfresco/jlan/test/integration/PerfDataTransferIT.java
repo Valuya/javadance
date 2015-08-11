@@ -6,7 +6,6 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.Reporter;
 
-
 import org.alfresco.jlan.client.CIFSDiskSession;
 import org.alfresco.jlan.client.DiskSession;
 import org.alfresco.jlan.client.SMBFile;
