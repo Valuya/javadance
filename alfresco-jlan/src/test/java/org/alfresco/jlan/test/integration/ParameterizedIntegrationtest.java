@@ -3,6 +3,7 @@ package org.alfresco.jlan.test.integration;
 import java.security.Provider;
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.lang.reflect.Method;
 

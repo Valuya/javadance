@@ -64,7 +64,7 @@ public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
 
 
     private void doTest(final int iteration, final long fileSize, final int writeSize,
-            final int folderDepth, final int foldersPerLevel, final int filePerLevel) throws Exception {
+            final int folderDepth, final int foldersPerLevel, final int filesPerLevel) throws Exception {
         DiskSession s = getSession();
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
         String testFolder = getPerTestFolderName(iteration);
@@ -100,7 +100,7 @@ public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
                         curPath = curPath + FileName.DOS_SEPERATOR_STR;
                     }
                     // Create the current level of files/folders
-                    createFolderLevel(curPath, s, curLevel, ioBuf, nextStack);
+                    createFolderLevel(curPath, s, curLevel, ioBuf, nextStack, foldersPerLevel, filesPerLevel, fileSize);
                     // Add the path to the list of paths to be deleted by cleanup
                 }
                 // Update the folder level
@@ -183,7 +183,7 @@ public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
                 pathStr.append(fileIdx);
                 pathStr.append(LEVELFILEEXT);
                 String fileName = pathStr.toString();
-                registerFileNameForDelete(folderName);
+                registerFileNameForDelete(fileName);
                 // Create a new file
                 SMBFile testFile = sess.CreateFile(fileName);
                 // Write to the file until we hit the required file size
@@ -237,7 +237,7 @@ public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
                 fail("Invalid filesperlevel (" + MIN_FILESPERLEVEL + " - " + MAX_FILESPERLEVEL + ")");
             }
             for (int i = 0; i < iterations; i++) {
-                doTest(i, fileSize, writeSize, folderDepth, foldersPerLevel, filePerLevel);
+                doTest(i, fileSize, writeSize, folderDepth, foldersPerLevel, filesPerLevel);
             }
         }
 }
