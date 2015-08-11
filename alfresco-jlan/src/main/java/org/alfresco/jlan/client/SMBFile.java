@@ -19,7 +19,8 @@
 
 package org.alfresco.jlan.client;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.IOException;
 
 import org.alfresco.jlan.client.info.FileInfo;
 import org.alfresco.jlan.smb.SMBDate;
@@ -33,7 +34,7 @@ import org.alfresco.jlan.smb.SMBStatus;
  *
  * @author gkspencer
  */
-public abstract class SMBFile {
+public abstract class SMBFile implements Closeable {
 
 	//	Various file state flags.
 
@@ -123,25 +124,36 @@ public abstract class SMBFile {
 	 * Close the remote file.
 	 *
 	 * @param wrDateTime Set the last write date/time, or null to let the server set the date/time
-	 * @exception java.io.IOException If an I/O error occurs
+	 * @exception IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
 	public abstract void Close(SMBDate wrDateTime)
-		throws java.io.IOException, SMBException;
+		throws IOException, SMBException;
 
 	/**
 	 * Close the remote file, let the remote server set the last write date/time
 	 *
-	 * @exception java.io.IOException If an I/O error occurs
+	 * @exception IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
 	public final void Close()
-		throws java.io.IOException, SMBException {
+		throws IOException, SMBException {
 
 		// Do not specify the last write date/time so the server will set it for us
 
 		Close(null);
 	}
+
+    /**
+     * Implement the Closeable interface.
+     */
+    public void close() throws IOException {
+        try {
+            Close(null);
+        } catch (SMBException e) {
+            throw new IOException(e);
+        }
+    }
 
 	/**
 	 * Finalize, object destruction.
@@ -156,7 +168,7 @@ public abstract class SMBFile {
 			}
 			catch (SMBException ex) {
 			}
-			catch (java.io.IOException ex) {
+			catch (IOException ex) {
 			}
 		}
 	}
@@ -164,11 +176,11 @@ public abstract class SMBFile {
 	/**
 	 * Flush any buffered data for this file.
 	 *
-	 * @exception java.io.IOException If an I/O error occurs
+	 * @exception IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
 	public abstract void Flush()
-		throws java.io.IOException, SMBException;
+		throws IOException, SMBException;
 
 	/**
 	 * Return the file attributes
@@ -294,22 +306,22 @@ public abstract class SMBFile {
 	 * @param siz Maximum length of data to receive.
 	 * @param offset Offset within buffer to place received data.
 	 * @return Actual length of data received.
-	 * @exception java.io.IOException If an I/O error occurs
+	 * @exception IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
 	public abstract int Read(byte[] buf, int siz, int offset)
-		throws java.io.IOException, SMBException;
+		throws IOException, SMBException;
 
 	/**
 	 * Read a block of data from the file.
 	 *
 	 * @param buf Byte buffer to receive the data.
 	 * @return Actual length of data received.
-	 * @exception java.io.IOException If an I/O error occurs
+	 * @exception IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
 	public final int Read(byte[] buf)
-		throws java.io.IOException, SMBException {
+		throws IOException, SMBException {
 
 		// Read a full buffer of data
 
@@ -323,22 +335,22 @@ public abstract class SMBFile {
 	 * @param siz Length of data to be written.
 	 * @param offset Offset within buffer to start writing data from.
 	 * @return Actual length of data written.
-	 * @exception java.io.IOException If an I/O error occurs
+	 * @exception IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
 	public abstract int Write(byte[] buf, int siz, int offset)
-		throws java.io.IOException, SMBException;
+		throws IOException, SMBException;
 
 	/**
 	 * Write a block of data to the file.
 	 *
 	 * @param buf Byte buffer containing data to be written.
 	 * @return Actual length of data written.
-	 * @exception java.io.IOException If an I/O error occurs
+	 * @exception IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
 	public final int Write(byte[] buf)
-		throws java.io.IOException, SMBException {
+		throws IOException, SMBException {
 
 		// Write the whole buffer
 
@@ -350,11 +362,11 @@ public abstract class SMBFile {
 	 *
 	 * @param str String to be written to the file
 	 * @return Actual length of data written.
-	 * @exception java.io.IOException If an I/O error occurs
+	 * @exception IOException If an I/O error occurs
 	 * @exception SMBException If an SMB level error occurs
 	 */
 	public final int Write(String str)
-		throws java.io.IOException, SMBException {
+		throws IOException, SMBException {
 
 		// Write the whole buffer
 
@@ -373,7 +385,7 @@ public abstract class SMBFile {
 	 * @exception SMBException If an SMB level error occurs
 	 */
 	public abstract long Seek(long pos, int typ)
-		throws java.io.IOException, SMBException;
+		throws IOException, SMBException;
 
 	/**
 	 * Lock a range of bytes within the file

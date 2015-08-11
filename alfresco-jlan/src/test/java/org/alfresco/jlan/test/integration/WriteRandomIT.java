@@ -71,26 +71,26 @@ public class WriteRandomIT extends ParameterizedIntegrationtest {
     }
 
     private void doTest(final int iteration, final long fileSize, final int writeSize, int writeCount) throws Exception {
-        SMBFile testFile = null;
+        SMBFile tf = null;
         DiskSession s = getSession();
         assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
         String testFileName = getUniqueFileName(iteration, s);
         CIFSDiskSession cifsSess = (CIFSDiskSession)s;
         if (s.FileExists(testFileName)) {
             LOGGER.info("Opening existing file {} via {}", testFileName, s.getServer());
-            testFile = s.OpenFile(testFileName, AccessMode.ReadWrite);
+            tf = s.OpenFile(testFileName, AccessMode.ReadWrite);
         } else {
-            testFile = cifsSess.CreateFile(testFileName);
+            tf = cifsSess.CreateFile(testFileName);
             assertTrue(s.FileExists(testFileName), "File exists after create");
         }
-        assertNotNull(testFile);
-        // Extend the file to the required size
-        cifsSess.NTSetEndOfFile(testFile.getFileId(), fileSize);
-        // Check that the file was extended
-        FileInfo fInfo = cifsSess.getFileInformation(testFileName);
-        assertNotNull(fInfo);
-        assertEquals(fInfo.getSize(), fileSize, "File size after extend");
-        try {
+        assertNotNull(tf);
+        try (SMBFile testFile = tf) {
+            // Extend the file to the required size
+            cifsSess.NTSetEndOfFile(testFile.getFileId(), fileSize);
+            // Check that the file was extended
+            FileInfo fInfo = cifsSess.getFileInformation(testFileName);
+            assertNotNull(fInfo);
+            assertEquals(fInfo.getSize(), fileSize, "File size after extend");
             // Refresh the file information to get the latest file size
             testFile.refreshFileInformation();
             // Allocate the read/write buffer
@@ -133,19 +133,6 @@ public class WriteRandomIT extends ParameterizedIntegrationtest {
                 }
                 // Update the write count
                 wc++;
-            }
-            // Close the file
-            testFile.Close();
-            testFile = null;
-        } catch ( Exception ex) {
-            fail("Caught exception", ex);
-        } finally {
-            // Make sure the test file is closed
-            if (null != testFile) {
-                try {
-                    testFile.Close();
-                } catch ( Exception ex) {
-                }
             }
         }
     }
