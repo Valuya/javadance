@@ -22,7 +22,6 @@
         </host>
 
         <sessionDebug flags="Negotiate,Socket,Tree"/>
-        <netbiosDebug/>
         <!-- <netbiosDebug/> -->
         <!-- <announceDebug/> -->
         <authenticator type="enterprise">
