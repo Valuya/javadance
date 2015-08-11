@@ -336,7 +336,7 @@
                     <storepass>${sign.storepass}</storepass>
                     <storetype>${sign.storetype}</storetype>
                     <sigfile>${sign.sigfile}</sigfile>
-                    <tsa>${sign.tsa}</tsa>
+                    <!-- <tsa>${sign.tsa}</tsa> -->
                     <processMainArtifact>false</processMainArtifact>
                     <processAttachedArtifacts>false</processAttachedArtifacts>
                     <removeExistingSignatures>true</removeExistingSignatures>
