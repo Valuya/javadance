@@ -56,7 +56,7 @@ public class DeleteFolderIT extends ParameterizedIntegrationtest {
         CIFSDiskSession cifsSess = (CIFSDiskSession)s;
         try {
             cifsSess.DeleteDirectory(testFolderName);
-        } catch ( Exception ex) {
+        } catch (Exception ex) {
             fail("Error deleting folder " + testFolderName + " on server " + s.getServer(), ex);
         }
 
