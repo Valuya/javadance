@@ -134,7 +134,8 @@ public class ParameterizedIntegrationtest {
                 }
             }
             filesToDelete.clear();
-            // Delete the test folders
+            // Delete the test folders in reverse order
+            Collections.reverse(foldersToDelete);
             for (String name : foldersToDelete) {
                 try {
                     getSession().DeleteDirectory(name);

@@ -139,11 +139,10 @@ public class WriteRandomIT extends ParameterizedIntegrationtest {
 
     @Parameters({"iterations", "filesize", "writesize", "writecount"})
         @Test(groups = "perftest")
-        public void test(@Optional("1") final int iterations,
-                @Optional("10M") final String fs, @Optional("8K") final String ws, @Optional("100") final String wc) throws Exception {
+        public void test(@Optional("1") final int iterations, @Optional("10M") final String fs,
+                @Optional("8K") final String ws, @Optional("100") final int writeCount) throws Exception {
             long fileSize = 0;
             int writeSize = 0;
-            int writeCount = 0;
             try {
                 fileSize = MemorySize.getByteValue(fs);
                 if (fileSize < MIN_FILESIZE || fileSize > MAX_FILESIZE) {
@@ -160,13 +159,8 @@ public class WriteRandomIT extends ParameterizedIntegrationtest {
             } catch (NumberFormatException ex) {
                 fail("Invalid write size " + ws);
             }
-            try {
-                writeCount = Integer.parseInt(wc);
-
-                if (writeCount < MIN_WRITECOUNT || writeCount > MAX_WRITECOUNT)
-                    fail("Invalid write count (" + MIN_WRITECOUNT + " - " + MIN_WRITECOUNT + ")");
-            } catch ( NumberFormatException ex) {
-                fail("Invalid write count " + wc);
+            if (writeCount < MIN_WRITECOUNT || writeCount > MAX_WRITECOUNT) {
+                fail("Invalid write count (" + MIN_WRITECOUNT + " - " + MAX_WRITECOUNT + ")");
             }
             for (int i = 0; i < iterations; i++) {
                 doTest(i, fileSize, writeSize, writeCount);
