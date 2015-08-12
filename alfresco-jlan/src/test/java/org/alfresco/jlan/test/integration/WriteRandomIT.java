@@ -77,9 +77,10 @@ public class WriteRandomIT extends ParameterizedIntegrationtest {
         String testFileName = getUniqueFileName(iteration, s);
         CIFSDiskSession cifsSess = (CIFSDiskSession)s;
         if (s.FileExists(testFileName)) {
-            LOGGER.info("Opening existing file {} via {}", testFileName, s.getServer());
+            LOGGER.debug("Opening existing file {} via {}", testFileName, s.getServer());
             tf = s.OpenFile(testFileName, AccessMode.ReadWrite);
         } else {
+            LOGGER.debug("Creating file {} via {}", testFileName, s.getServer());
             tf = cifsSess.CreateFile(testFileName);
             assertTrue(s.FileExists(testFileName), "File exists after create");
         }
