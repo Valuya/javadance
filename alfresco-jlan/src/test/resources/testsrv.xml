@@ -41,7 +41,7 @@
     <shares>
         <diskshare name="${it.sharename}" comment="Test share">
             <driver>
-                <class>org.alfresco.jlan.smb.server.disk.JavaFileDiskDriver</class>
+                <class>org.alfresco.jlan.smb.server.disk.EnhJavaFileDiskDriver</class>
                 <LocalPath>${it.localsharepath}/scratch</LocalPath>
             </driver>
         </diskshare>
