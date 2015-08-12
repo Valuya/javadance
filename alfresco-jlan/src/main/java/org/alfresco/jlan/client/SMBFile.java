@@ -148,10 +148,12 @@ public abstract class SMBFile implements Closeable {
      * Implement the Closeable interface.
      */
     public void close() throws IOException {
-        try {
-            Close(null);
-        } catch (SMBException e) {
-            throw new IOException(e);
+        if (!isClosed()) {
+            try {
+                Close(null);
+            } catch (SMBException e) {
+                throw new IOException(e);
+            }
         }
     }
 
