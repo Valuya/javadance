@@ -24,15 +24,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbException;
 
 /**
  * Delete Folder Test Class
  *
  * @author gkspencer
  */
-public class DeleteFolderIT extends ParameterizedIntegrationtest {
+public class DeleteFolderIT extends ParameterizedJcifsTest {
 
 	/**
 	 * Default constructor
@@ -41,27 +41,23 @@ public class DeleteFolderIT extends ParameterizedIntegrationtest {
         super("DeleteFolderIT");
 	}
 
-    private void doTest(int iteration) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFolderName = getPerTestFolderName(iteration);
-        if (s.FileExists(testFolderName) && s.isDirectory(testFolderName)) {
+    private void doTest(final int iteration) throws Exception {
+        final String testFolderName = getPerTestFolderName(iteration);
+        final SmbFile sf = new SmbFile(getRoot(), testFolderName);
+        if (sf.exists() && sf.isDirectory()) {
             LOGGER.info("Folder {} already exists", testFolderName);
         } else {
-            s.CreateDirectory(testFolderName);
-            assertTrue(s.FileExists(testFolderName));
+            sf.mkdir();
+            assertTrue(sf.exists(), "Folder exists after create");
         }
-
         // Delete the folder
-        CIFSDiskSession cifsSess = (CIFSDiskSession)s;
         try {
-            cifsSess.DeleteDirectory(testFolderName);
-        } catch (Exception ex) {
-            fail("Error deleting folder " + testFolderName + " on server " + s.getServer(), ex);
+            sf.delete();
+        } catch (SmbException ex) {
+            fail("Error deleting folder " + testFolderName + " on server " + sf.getServer(), ex);
         }
-
         // Check if the folder exists
-        assertFalse(cifsSess.FileExists(testFolderName) && cifsSess.isDirectory(testFolderName));
+        assertFalse(sf.exists(), "Folder exists after delete");
     }
 
     @Parameters({"iterations"})
