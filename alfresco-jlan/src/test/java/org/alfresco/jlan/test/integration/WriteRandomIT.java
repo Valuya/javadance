@@ -122,7 +122,7 @@ public class WriteRandomIT extends ParameterizedIntegrationtest {
                 // Read the data back from the file
                 testFile.Seek(writePos, SeekType.StartOfFile);
                 int rdlen = testFile.Read( ioBuf);
-                assertEquals(ioBuf.length, rdlen, "read length equals buffer length");
+                assertEquals(rdlen, ioBuf.length, "read length equals buffer length");
 
                 // Check that the buffer contains the expected pattern
                 int chkIdx = 0;
@@ -139,7 +139,8 @@ public class WriteRandomIT extends ParameterizedIntegrationtest {
     }
 
     @Parameters({"iterations", "filesize", "writesize", "writecount"})
-        @Test(groups = "perftest")
+        //@Test(groups = "functest")
+        @Test(groups = "xtest")
         public void test(@Optional("1") final int iterations, @Optional("10M") final String fs,
                 @Optional("8K") final String ws, @Optional("100") final int writeCount) throws Exception {
             long fileSize = 0;

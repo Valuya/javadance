@@ -6,18 +6,18 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.Reporter;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.smb.SMBException;
+import java.io.OutputStream;
+
 import org.alfresco.jlan.util.MemorySize;
+
+import jcifs.smb.SmbFile;
 
 /**
  * Data Transfer Performance Test Class
  *
  * @author gkspencer
  */
-public class PerfDataTransferIT extends ParameterizedIntegrationtest {
+public class PerfDataTransferIT extends ParameterizedJcifsTest {
 
     // Maximum/minimum allowed file size
     private static final long MIN_FILESIZE = 50 * MemorySize.MEGABYTE;
@@ -35,33 +35,32 @@ public class PerfDataTransferIT extends ParameterizedIntegrationtest {
     }
 
     private void doTest(final int iteration, final long fileSize, final int writeSize) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFileName = getPerTestFileName(iteration);
-        if (s.FileExists(testFileName)) {
+        final String testFileName = getPerTestFileName(iteration);
+        final SmbFile sf = new SmbFile(getRoot(), testFileName);
+        if (sf.exists()) {
             LOGGER.info("File {} exists", testFileName);
         } else {
             // Allocate the I/O buffer
-            byte[] ioBuf = new byte[writeSize];
+            final byte[] ioBuf = new byte[writeSize];
             // Record the start time
-            long startTime = System.currentTimeMillis();
+            final long startTime = System.currentTimeMillis();
             long endTime = 0L;
-            try {
-                // Create a new file
-                SMBFile testFile = s.CreateFile(testFileName);
-
+            // Create a new file
+            sf.createNewFile();
+            assertTrue(sf.exists(), "File exists after create");
+            try (final OutputStream os = sf.getOutputStream()) {
                 // Write to the file until we hit the required file size
                 long fs = 0L;
                 while (fs < fileSize) {
                     // Write to the file
-                    testFile.Write(ioBuf, ioBuf.length, 0);
+                    os.write(ioBuf);
                     // Update the file size
                     fs += ioBuf.length;
                 }
                 // Make sure all data has been written to the file
-                testFile.Flush();
+                os.flush();
                 // Close the test file
-                testFile.Close();
+                os.close();
                 // Save the end time
                 endTime = System.currentTimeMillis();
 
@@ -81,14 +80,12 @@ public class PerfDataTransferIT extends ParameterizedIntegrationtest {
                         hrs, mins, secs, ms, elapsedMs, MemorySize.asScaledString(throughput));
                 LOGGER.info(msg);
                 Reporter.log(msg + "<br/>\n");
-            } catch (SMBException ex) {
-                fail("Caught exception", ex);
             }
         }
     }
 
     @Parameters({"iterations", "filesize", "writesize"})
-        @Test(groups = "perftest")
+        @Test(groups = "perftest", singleThreaded = true)
         public void test(@Optional("1") final int iterations,
                 @Optional("500M") final String fs, @Optional("32K") final String ws) throws Exception {
             long fileSize = 0;

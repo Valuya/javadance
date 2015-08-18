@@ -1,7 +1,6 @@
 package org.alfresco.jlan.test.integration;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -11,19 +10,16 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.Reporter;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.server.filesys.FileName;
-import org.alfresco.jlan.smb.SMBException;
 import org.alfresco.jlan.util.MemorySize;
+
+import jcifs.smb.SmbFile;
 
 /**
  * Files Per Folder Performance Test Class
  *
- * @author gkspencer
+ * @author Fritz Elfert
  */
-public class PerfFilesPerFolderIT extends ParameterizedIntegrationtest {
+public class PerfFilesPerFolderIT extends ParameterizedJcifsTest {
 
 	// Maximum/minimum number of files
 
@@ -54,7 +50,7 @@ public class PerfFilesPerFolderIT extends ParameterizedIntegrationtest {
 	private static final String TESTFILENAME = "_FilesPerFolder_";
 	private static final String TESTFILEEXT = ".txt";
 
-	/**
+    /**
 	 * Default constructor
 	 */
 	public PerfFilesPerFolderIT() {
@@ -62,22 +58,14 @@ public class PerfFilesPerFolderIT extends ParameterizedIntegrationtest {
 	}
 
     private void doTest(final int iteration, final long fileSize, final int writeSize, final int filesPerFolder) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFolder = getPerTestFolderName(iteration);
-        s.CreateDirectory(testFolder);
-        assertTrue(s.FileExists(testFolder), "Folder exists after create");
-        String testFolderPrefix = testFolder;
-        if (testFolderPrefix.startsWith(FileName.DOS_SEPERATOR_STR) == false) {
-            testFolderPrefix = FileName.DOS_SEPERATOR_STR + testFolderPrefix;
-        }
-        if (testFolderPrefix.endsWith(FileName.DOS_SEPERATOR_STR) == false) {
-            testFolderPrefix = testFolderPrefix + FileName.DOS_SEPERATOR_STR;
-        }
+        final String testFolder = getPerTestFolderName(iteration);
+        final SmbFile folder = new SmbFile(getRoot(), testFolder);
+        folder.mkdir();
+        assertTrue(folder.exists(), "Folder exists after create");
         // Allocate the I/O buffer
-        byte[] ioBuf = new byte[writeSize];
+        final byte[] ioBuf = new byte[writeSize];
         // Record the start time
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         long endTime = 0L;
         // Create the test files
         int fileCnt = 1;
@@ -86,7 +74,7 @@ public class PerfFilesPerFolderIT extends ParameterizedIntegrationtest {
         while (fileCnt <= filesPerFolder) {
             // Create a unique file name
             testFileStr.setLength(0);
-            testFileStr.append(testFolderPrefix);
+            testFileStr.append(testFolder);
             testFileStr.append(PREFIXES[ fileCnt % PREFIXES.length]);
             testFileStr.append(TESTFILENAME);
             testFileStr.append(fileCnt);
@@ -96,27 +84,25 @@ public class PerfFilesPerFolderIT extends ParameterizedIntegrationtest {
             final String testFileName = testFileStr.toString();
             registerFileNameForDelete(testFileName);
             // Fill the write buffer with a test pattern
-            byte testPat = (byte)PREFIXES[fileCnt % PREFIXES.length].charAt(0);
+            final byte testPat = (byte)PREFIXES[fileCnt % PREFIXES.length].charAt(0);
             Arrays.fill(ioBuf, testPat);
             // Create a new file
-            try (final SMBFile testFile = s.CreateFile(testFileName)) {
-                assertTrue(s.FileExists(testFileName), "File exists after create");
-                // Write to the file until we hit the required file size
+            final SmbFile testFile = new SmbFile(getRoot(), testFileName);
+            testFile.createNewFile();
+            assertTrue(testFile.exists(), "File exists after create");
+            // Write to the file until we hit the required file size
+            try (final OutputStream os = testFile.getOutputStream()) {
                 long written = 0L;
                 while (written < fileSize) {
                     // Write to the file
-                    testFile.Write(ioBuf, ioBuf.length, 0);
+                    os.write(ioBuf);
                     // Update the file size
                     written += ioBuf.length;
                 }
-                // Make sure all data has been written to the file
-                testFile.Flush();
-                testFile.Close();
-                // Update the file counter
-                fileCnt++;
-            } catch (SMBException ex) {
-                fail("Caught exception", ex);
+                os.flush();
             }
+            // Update the file counter
+            fileCnt++;
         }
         // Save the end time
         endTime = System.currentTimeMillis();
@@ -128,14 +114,14 @@ public class PerfFilesPerFolderIT extends ParameterizedIntegrationtest {
         int secs = (int) (elapsedSecs % 60L);
         int mins = (int) ((elapsedSecs/60L) % 60L);
         int hrs  = (int) (elapsedSecs/3600L);
-        String msg = String.format("Created %d files (size %s) in %d:%d:%d.%d (%dms)", filesPerFolder,
+        String msg = String.format("Created %d files (size %s) in %02d:%02d:%02d.%03d (%dms)", filesPerFolder,
                 MemorySize.asScaledString(fileSize), hrs, mins, secs, ms, elapsedMs);
         LOGGER.info(msg);
         Reporter.log(msg + "<br/>\n");
     }
 
     @Parameters({"iterations", "filesize", "writesize", "filecount"})
-        @Test(groups = "functest")
+        @Test(groups = "perftest", singleThreaded = true)
         public void test(@Optional("1") final int iterations, @Optional("4K") final String fs,
                 @Optional("4K") final String ws, @Optional("2000") final int filesPerFolder) throws Exception {
             long fileSize = 0;
