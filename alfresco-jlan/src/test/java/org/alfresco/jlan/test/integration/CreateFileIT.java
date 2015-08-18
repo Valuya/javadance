@@ -24,18 +24,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.smb.SMBException;
-import org.alfresco.jlan.smb.SMBStatus;
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbException;
 
 /**
  * Create File Test Class
  *
  * @author gkspencer
  */
-public class CreateFileIT extends ParameterizedIntegrationtest {
+public class CreateFileIT extends ParameterizedJcifsTest {
 
 	/**
 	 * Default constructor
@@ -44,21 +41,17 @@ public class CreateFileIT extends ParameterizedIntegrationtest {
 		super("CreateFileIT");
 	}
 
-    private void doTest(int iteration) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFileName = getPerTestFileName(iteration);
+    private void doTest(final int iteration) throws Exception {
+        final String testFileName = getPerTestFileName(iteration);
         try {
-            SMBFile testFile = s.CreateFile(testFileName);
-            if (null != testFile) {
-                testFile.Close();
-            }
-            assertTrue(s.FileExists(testFileName), "File exists after create");
-        } catch (SMBException ex) {
+            final SmbFile sf = new SmbFile(getRoot(), testFileName, SmbFile.FILE_NO_SHARE);
+            sf.createNewFile();
+            assertTrue(sf.exists(), "File exists after create");
+        } catch (SmbException ex) {
             // Check for an access denied error code
-            if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
+            if (ex.getNtStatus() == SmbException.NT_STATUS_ACCESS_DENIED) {
                 LOGGER.info("Create of {} failed with access denied error (expected)", testFileName);
-            } else if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
+            } else if (ex.getNtStatus() == SmbException.NT_STATUS_OBJECT_NAME_COLLISION) {
                 LOGGER.info("Create of {} failed with object name collision (expected)", testFileName);
             } else {
                 fail("Caught exception", ex);

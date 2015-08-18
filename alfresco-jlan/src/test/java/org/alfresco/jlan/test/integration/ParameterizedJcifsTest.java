@@ -35,8 +35,7 @@ public class ParameterizedJcifsTest {
     private static String m_share;
     private static Integer m_cifsport;
 
-    private static SmbFile m_root;
-
+    private SmbFile m_root;
     private String testname;
     private String m_path;
     private List<String> filesToDelete = new ArrayList<>();
@@ -98,7 +97,6 @@ public class ParameterizedJcifsTest {
             url += "/" + m_share + "/";
             Config.setProperty("jcifs.resolveOrder", "DNS");
             Config.setProperty("jcifs.smb.client.attrExpirationPeriod", "0");
-            LOGGER.debug("Creating new session on {}", m_host);
             m_root = new SmbFile(url);
             assertNotNull(m_root, "Root");
         }
