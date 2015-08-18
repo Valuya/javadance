@@ -24,18 +24,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.debug.Debug;
-import org.alfresco.jlan.smb.SMBException;
-import org.alfresco.jlan.smb.SMBStatus;
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbException;
 
 /**
  * Create Folder Test Class
  *
  * @author gkspencer
  */
-public class CreateFolderIT extends ParameterizedIntegrationtest {
+public class CreateFolderIT extends ParameterizedJcifsTest {
 
     /**
      * Default constructor
@@ -44,20 +41,18 @@ public class CreateFolderIT extends ParameterizedIntegrationtest {
         super("CreateFolderIT");
     }
 
-    private void doTest(int iteration) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFolderName = getPerTestFolderName(iteration);
-        if (s.FileExists(testFolderName)) {
+    private void doTest(final int iteration) throws Exception {
+        final String testFolderName = getPerTestFolderName(iteration);
+        final SmbFile sf = new SmbFile(getRoot(), testFolderName);
+        if (sf.exists()) {
             LOGGER.info("Folder {} exists", testFolderName);
         } else {
             try {
                 // Create the folder
-                s.CreateDirectory(testFolderName);
-
-                assertTrue(s.FileExists(testFolderName), "Folder exists after create");
-            } catch (SMBException ex) {
-                if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
+                sf.mkdir();
+                assertTrue(sf.exists(), "Folder exists after create");
+            } catch (SmbException ex) {
+                if (ex.getNtStatus() == SmbException.NT_STATUS_OBJECT_NAME_COLLISION) {
                     LOGGER.info("Create of {} failed with object name collision (expected)", testFolderName);
                 } else {
                     fail("Caught exception", ex);

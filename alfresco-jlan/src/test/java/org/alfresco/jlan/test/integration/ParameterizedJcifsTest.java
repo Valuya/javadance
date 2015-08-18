@@ -103,7 +103,7 @@ public class ParameterizedJcifsTest {
 
     @AfterMethod(alwaysRun = true)
         public void afterMethod(Method m) throws Exception {
-            if (!foldersToDelete.isEmpty()) {
+            if (!filesToDelete.isEmpty()) {
                 LOGGER.debug("Cleaning up files of test {}", getTestname());
             }
             // Delete the test files
