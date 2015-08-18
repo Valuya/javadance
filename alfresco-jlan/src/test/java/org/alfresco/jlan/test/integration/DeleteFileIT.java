@@ -24,16 +24,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.client.SMBFile;
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbException;
 
 /**
  * Delete File Test Class
  *
  * @author gkspencer
  */
-public class DeleteFileIT extends ParameterizedIntegrationtest {
+public class DeleteFileIT extends ParameterizedJcifsTest {
 
     /**
      * Default constructor
@@ -42,23 +41,21 @@ public class DeleteFileIT extends ParameterizedIntegrationtest {
         super("DeleteFileIT");
     }
 
-    private void doTest(int iteration) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFileName = getPerTestFileName(iteration);
-        if (s.FileExists(testFileName)) {
+    private void doTest(final int iteration) throws Exception {
+        final String testFileName = getPerTestFileName(iteration);
+        final SmbFile sf = new SmbFile(getRoot(), testFileName);
+        if (sf.exists()) {
             LOGGER.info("File {} exists", testFileName);
         } else {
-            SMBFile testFile = s.CreateFile(testFileName);
-            assertTrue(s.FileExists(testFileName));
+            sf.createNewFile();
+            assertTrue(sf.exists(), "File exists after create");
         }
-        CIFSDiskSession cifsSess = (CIFSDiskSession)s;
         try {
-            cifsSess.DeleteFile(testFileName);
-        } catch ( Exception ex) {
-            fail("Error deleting file " + testFileName + " on server " + s.getServer(), ex);
+            sf.delete();
+        } catch (SmbException ex) {
+            fail("Error deleting file " + testFileName + " on server " + sf.getServer(), ex);
         }
-        assertFalse(cifsSess.FileExists(testFileName), "File exists after delete");
+        assertFalse(sf.exists(), "File exists after delete");
     }
 
     @Parameters({"iterations"})

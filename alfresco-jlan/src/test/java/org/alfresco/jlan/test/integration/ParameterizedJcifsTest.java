@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jcifs.smb.SmbFile;
+import jcifs.smb.SmbException;
 import jcifs.Config;
 
 public class ParameterizedJcifsTest {
@@ -102,15 +103,18 @@ public class ParameterizedJcifsTest {
         }
 
     @AfterMethod(alwaysRun = true)
-        public void afterMethod(Method m) throws Exception {
+        public void afterMethod(final Method m) throws Exception {
             if (!filesToDelete.isEmpty()) {
                 LOGGER.debug("Cleaning up files of test {}", getTestname());
             }
             // Delete the test files
-            for (String name : filesToDelete) {
+            for (final String name : filesToDelete) {
                 try {
-                    new SmbFile(m_root, name).delete();
-                } catch (Exception e) {
+                    final SmbFile sf = new SmbFile(m_root, name);
+                    if (sf.exists()) {
+                        sf.delete();
+                    }
+                } catch (SmbException e) {
                     LOGGER.warn("Cleanup file {} failed", name, e);
                 }
             }
@@ -120,10 +124,13 @@ public class ParameterizedJcifsTest {
             }
             // Delete the test folders in reverse order
             Collections.reverse(foldersToDelete);
-            for (String name : foldersToDelete) {
+            for (final String name : foldersToDelete) {
                 try {
-                    new SmbFile(m_root, name).delete();
-                } catch (Exception e) {
+                    final SmbFile sf = new SmbFile(m_root, name);
+                    if (sf.exists()) {
+                        sf.delete();
+                    }
+                } catch (SmbException e) {
                     LOGGER.warn("Cleanup folder {} failed", name, e);
                 }
             }
