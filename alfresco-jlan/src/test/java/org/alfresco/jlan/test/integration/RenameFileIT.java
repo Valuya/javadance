@@ -24,17 +24,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.debug.Debug;
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbException;
 
 /**
  * Rename File Test Class
  *
  * @author gkspencer
  */
-public class RenameFileIT extends ParameterizedIntegrationtest {
+public class RenameFileIT extends ParameterizedJcifsTest {
 
     /**
      * Default constructor
@@ -43,22 +41,20 @@ public class RenameFileIT extends ParameterizedIntegrationtest {
         super("RenameFileIT");
     }
 
-    private void doTest(int iteration) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFileName = getPerTestFileName(iteration);
-        String newFileName = testFileName.replace(".txt", ".ren");
+    private void doTest(final int iteration) throws Exception {
+        final String testFileName = getPerTestFileName(iteration);
+        final String newFileName = testFileName.replace(".txt", ".ren");
         registerFileNameForDelete(newFileName);
-        assertFalse(s.FileExists(testFileName), "File already exits");
-        SMBFile testFile = s.CreateFile(testFileName);
-        if (null != testFile) {
-            testFile.Close();
-        }
-        assertTrue(s.FileExists(testFileName), "File exits after creation");
+        SmbFile sf = new SmbFile(getRoot(), testFileName);
+        SmbFile sfn = new SmbFile(getRoot(), newFileName);
+        assertFalse(sf.exists(), "File already exits");
+        assertFalse(sfn.exists(), "Renamed file already exits");
+        sf.createNewFile();
+        assertTrue(sf.exists(), "File exits after creation");
         // Rename the file
-        s.RenameFile(testFileName, newFileName);
-        assertTrue(s.FileExists(newFileName), "New file exits after rename");
-        assertFalse(s.FileExists(testFileName), "Old file exits after rename");
+        sf.renameTo(sfn);
+        assertTrue(sfn.exists(), "New file exits after rename");
+        assertFalse(sf.exists(), "Old file exits after rename");
     }
 
     @Parameters({"iterations"})
