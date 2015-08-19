@@ -23,22 +23,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.server.filesys.AccessMode;
-import org.alfresco.jlan.server.filesys.FileAction;
-import org.alfresco.jlan.server.filesys.FileAttribute;
-import org.alfresco.jlan.smb.SMBException;
-import org.alfresco.jlan.smb.SMBStatus;
-import org.alfresco.jlan.smb.SharingMode;
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbException;
 
 /**
  * NTCreate File Test Class
  *
  * @author gkspencer
  */
-public class NTCreateFileIT extends ParameterizedIntegrationtest {
+public class NTCreateFileIT extends ParameterizedJcifsTest {
 
 	/**
 	 * Default constructor
@@ -47,30 +40,23 @@ public class NTCreateFileIT extends ParameterizedIntegrationtest {
 		super("NTCreateFileIT");
 	}
 
-    private void doTest(int iteration) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-
+    private void doTest(final int iteration) throws Exception {
         // Create a test file name for this iteration
-        String testFileName = getPerTestFileName(iteration);
+        final String testFileName = getPerTestFileName(iteration);
+        final SmbFile sf = new SmbFile(getRoot(), testFileName, SmbFile.FILE_SHARE_READ);
 
         // Check if the test file exists
-        if (s.FileExists(testFileName)) {
+        if (sf.exists()) {
             LOGGER.info("File {} already exists", testFileName);
         }
-        CIFSDiskSession cifsSess = (CIFSDiskSession)s;
         try {
-            SMBFile testFile = cifsSess.NTCreate( testFileName, AccessMode.NTReadWrite, FileAttribute.NTNormal,
-                    SharingMode.READ, FileAction.NTCreate, 0, 0);
-            if (testFile != null) {
-                testFile.Close();
-            }
-            assertTrue(s.FileExists(testFileName), "File does not exist after create, " + testFileName); 
-        } catch ( SMBException ex) {
+            sf.createNewFile();
+            assertTrue(sf.exists(), "File exists after create");
+        } catch ( SmbException ex) {
             // Check for an access denied error code
-            if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTAccessDenied) {
+            if (ex.getNtStatus() == SmbException.NT_STATUS_ACCESS_DENIED) {
                 LOGGER.info("Create of {} failed with access denied error (expected)", testFileName);
-            } else if (ex.getErrorClass() == SMBStatus.NTErr && ex.getErrorCode() == SMBStatus.NTObjectNameCollision) {
+            } else if (ex.getNtStatus() == SmbException.NT_STATUS_OBJECT_NAME_COLLISION) {
                 LOGGER.info("Create of {} failed with object name collision (expected)", testFileName);
             } else {
                 fail("Caught exception", ex);
