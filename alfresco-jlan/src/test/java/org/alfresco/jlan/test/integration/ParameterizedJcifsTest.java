@@ -5,6 +5,7 @@ import java.security.Security;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.lang.ThreadLocal;
 import java.lang.reflect.Method;
 
 import static org.testng.Assert.*;
@@ -39,9 +40,16 @@ public class ParameterizedJcifsTest {
     private SmbFile m_root;
     private String testname;
     private String m_path;
-    private List<String> filesToDelete = new ArrayList<>();
-    private List<String> foldersToDelete = new ArrayList<>();
-
+    private ThreadLocal<List<String>> filesToDelete = new ThreadLocal<List<String>>() {
+        @Override public List<String> initialValue() {
+            return new ArrayList<String>();
+        }
+    };
+    private ThreadLocal<List<String>> foldersToDelete = new ThreadLocal<List<String>>() {
+        @Override public List<String> initialValue() {
+            return new ArrayList<String>();
+        }
+    };
     protected ParameterizedJcifsTest(final String name) {
         testname = name;
     }
@@ -104,11 +112,11 @@ public class ParameterizedJcifsTest {
 
     @AfterMethod(alwaysRun = true)
         public void afterMethod(final Method m) throws Exception {
-            if (!filesToDelete.isEmpty()) {
+            if (!filesToDelete.get().isEmpty()) {
                 LOGGER.debug("Cleaning up files of test {}", getTestname());
             }
             // Delete the test files
-            for (final String name : filesToDelete) {
+            for (final String name : filesToDelete.get()) {
                 try {
                     final SmbFile sf = new SmbFile(m_root, name);
                     if (sf.exists()) {
@@ -118,13 +126,13 @@ public class ParameterizedJcifsTest {
                     LOGGER.warn("Cleanup file {} failed", name, e);
                 }
             }
-            filesToDelete.clear();
-            if (!foldersToDelete.isEmpty()) {
+            filesToDelete.get().clear();
+            if (!foldersToDelete.get().isEmpty()) {
                 LOGGER.debug("Cleaning up folders of test {}", getTestname());
             }
             // Delete the test folders in reverse order
-            Collections.reverse(foldersToDelete);
-            for (final String name : foldersToDelete) {
+            Collections.reverse(foldersToDelete.get());
+            for (final String name : foldersToDelete.get()) {
                 try {
                     final SmbFile sf = new SmbFile(m_root, name);
                     if (sf.exists()) {
@@ -134,7 +142,7 @@ public class ParameterizedJcifsTest {
                     LOGGER.warn("Cleanup folder {} failed", name, e);
                 }
             }
-            foldersToDelete.clear();
+            foldersToDelete.get().clear();
             LOGGER.info("Finished {}.{}", getTestname(), m.getName());
         }
 
@@ -156,7 +164,7 @@ public class ParameterizedJcifsTest {
         fName.append(iter);
         fName.append(".txt");
 
-        filesToDelete.add(fName.toString());
+        filesToDelete.get().add(fName.toString());
         return fName.toString();
     }
 
@@ -180,7 +188,7 @@ public class ParameterizedJcifsTest {
         fName.append(iter);
         fName.append(".txt");
 
-        filesToDelete.add(fName.toString());
+        filesToDelete.get().add(fName.toString());
         return fName.toString();
     }
 
@@ -202,7 +210,7 @@ public class ParameterizedJcifsTest {
         fName.append(iter);
         fName.append("/");
 
-        foldersToDelete.add(fName.toString());
+        foldersToDelete.get().add(fName.toString());
         return fName.toString();
     }
 
@@ -226,7 +234,7 @@ public class ParameterizedJcifsTest {
         fName.append(iter);
         fName.append("/");
 
-        foldersToDelete.add(fName.toString());
+        foldersToDelete.get().add(fName.toString());
         return fName.toString();
     }
 
@@ -252,7 +260,7 @@ public class ParameterizedJcifsTest {
         fName.append(m_root.getServer());
         fName.append(".txt");
 
-        filesToDelete.add(fName.toString());
+        filesToDelete.get().add(fName.toString());
         return fName.toString();
     }
 
@@ -278,16 +286,16 @@ public class ParameterizedJcifsTest {
         fName.append(m_root.getServer());
         fName.append("/");
 
-        foldersToDelete.add(fName.toString());
+        foldersToDelete.get().add(fName.toString());
         return fName.toString();
     }
 
     public final void registerFileNameForDelete(final String name) {
-        filesToDelete.add(name);
+        filesToDelete.get().add(name);
     }
 
     public final void registerFolderNameForDelete(final String name) {
-        foldersToDelete.add(name);
+        foldersToDelete.get().add(name);
     }
 
     /**
