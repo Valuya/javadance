@@ -56,7 +56,7 @@ public class RenameFolderIT extends ParameterizedJcifsTest {
     }
 
     @Parameters({"iterations"})
-    @Test(groups = "xfunctest")
+    @Test(groups = "functest")
     public void test(@Optional("1") int iterations) throws Exception {
         for (int i = 0; i < iterations; i++) {
             doTest(i);
