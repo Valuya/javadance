@@ -19,36 +19,49 @@
 
 package org.alfresco.jlan.test.integration;
 
+import java.io.OutputStream;
+
 import static org.testng.Assert.*;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import jcifs.smb.SmbFile;
+import jcifs.smb.SmbException;
 
 /**
- * Concurrent Create File Test Class
+ * Sharing Test Class
  *
  * @author gkspencer
  */
-public class ConcurrentCreateFileIT extends ParameterizedJcifsTest {
+public class SharingModeIT extends ParameterizedJcifsTest {
 
 	/**
 	 * Default constructor
 	 */
-	public ConcurrentCreateFileIT() {
-		super("ConcurrentCreateFileIT");
+	public SharingModeIT() {
+		super("SharingModeIT");
 	}
 
     private void doTest(final int iteration) throws Exception {
-        final String testFileName = getUniqueFileName(iteration);
-        final SmbFile sf = new SmbFile(getRoot(), testFileName);
-        if (sf.exists()) {
-            LOGGER.info("File {} exists", testFileName);
-        } else {
-            LOGGER.info("Creating {} in thread {}", testFileName, Thread.currentThread().getId());
+        final String testFileName = getPerTestFileName(iteration);
+        final SmbFile sf = new SmbFile(getRoot(), testFileName, SmbFile.FILE_NO_SHARE);
+        LOGGER.debug("Creating {} in thread {}", testFileName, Thread.currentThread().getId());
+        try {
             sf.createNewFile();
             assertTrue(sf.exists(), "File exists after create");
+            try (final OutputStream os = sf.getOutputStream()) {
+                testSleep(3000L);
+            }
+        } catch (SmbException ex) {
+            // Check for an access denied error code
+            if (ex.getNtStatus() == SmbException.NT_STATUS_ACCESS_DENIED) {
+                LOGGER.info("Create of {} failed with access denied error (expected)", testFileName);
+            } else if (ex.getNtStatus() == SmbException.NT_STATUS_OBJECT_NAME_COLLISION) {
+                LOGGER.info("Create of {} failed with object name collision (expected)", testFileName);
+            } else {
+                fail("Caught exception", ex);
+            }
         }
     }
 

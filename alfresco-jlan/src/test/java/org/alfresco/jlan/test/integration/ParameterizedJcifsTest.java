@@ -123,7 +123,7 @@ public class ParameterizedJcifsTest {
                         sf.delete();
                     }
                 } catch (SmbException e) {
-                    LOGGER.warn("Cleanup file {} failed", name, e);
+                    LOGGER.warn("Cleanup file {} failed: {}", name, e.getMessage());
                 }
             }
             filesToDelete.get().clear();
@@ -139,7 +139,7 @@ public class ParameterizedJcifsTest {
                         sf.delete();
                     }
                 } catch (SmbException e) {
-                    LOGGER.warn("Cleanup folder {} failed", name, e);
+                    LOGGER.warn("Cleanup folder {} failed: {}", name, e.getMessage());
                 }
             }
             foldersToDelete.get().clear();
