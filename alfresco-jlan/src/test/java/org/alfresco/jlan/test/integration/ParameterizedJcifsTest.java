@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.lang.ThreadLocal;
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.testng.Assert.*;
 import org.testng.ITestContext;
@@ -31,15 +32,17 @@ public class ParameterizedJcifsTest {
     protected static final Logger LOGGER = LoggerFactory
         .getLogger(ParameterizedJcifsTest.class);
 
+    private static AtomicLong firstThreadId = new AtomicLong();
+
     private static String m_host;
     private static String m_user;
     private static String m_pass;
     private static String m_share;
     private static Integer m_cifsport;
 
-    private SmbFile m_root;
     private String testname;
     private String m_path;
+    private SmbFile m_root;
     private ThreadLocal<List<String>> filesToDelete = new ThreadLocal<List<String>>() {
         @Override public List<String> initialValue() {
             return new ArrayList<String>();
@@ -73,28 +76,14 @@ public class ParameterizedJcifsTest {
         return testname;
     }
 
-    /*
-    @BeforeTest(alwaysRun = true)
-        public void beforeTest() throws Exception {
-            assertNotNull(m_host, "Target host");
-            assertNotNull(m_share, "Target share");
-            assertNotNull(m_user, "Target user");
-            assertNotNull(m_pass, "Target pass");
-            String url = "smb://" + m_user + ":" + m_pass + "@" + m_host;
-            if (null != m_cifsport) {
-                url += ":" + m_cifsport;
-            }
-            url += "/" + m_share + "/";
-            Config.setProperty("jcifs.resolveOrder", "DNS");
-            Config.setProperty("jcifs.smb.client.attrExpirationPeriod", "0");
-            m_root = new SmbFile(url);
-            assertNotNull(m_root, "Root");
-        }
-        */
+    protected boolean isFirstThread() {
+        return firstThreadId.get() == Thread.currentThread().getId();
+    }
 
     @BeforeMethod(alwaysRun = true)
         public void BeforeMethod(Method m) throws Exception {
-            LOGGER.info("Starting {}.{}", getTestname(), m.getName());
+            firstThreadId.compareAndSet(0L, Thread.currentThread().getId());
+            LOGGER.info("Starting {}.{} [T{}]", getTestname(), m.getName(), Thread.currentThread().getId());
             assertNotNull(m_host, "Target host");
             assertNotNull(m_share, "Target share");
             assertNotNull(m_user, "Target user");
@@ -106,8 +95,9 @@ public class ParameterizedJcifsTest {
             url += "/" + m_share + "/";
             Config.setProperty("jcifs.resolveOrder", "DNS");
             Config.setProperty("jcifs.smb.client.attrExpirationPeriod", "0");
+            // Config.setProperty("jcifs.smb.client.ssnLimit", "1");
             m_root = new SmbFile(url);
-            assertNotNull(m_root, "Root");
+            assertNotNull(getRoot(), "Root");
         }
 
     @AfterMethod(alwaysRun = true)
@@ -118,7 +108,7 @@ public class ParameterizedJcifsTest {
             // Delete the test files
             for (final String name : filesToDelete.get()) {
                 try {
-                    final SmbFile sf = new SmbFile(m_root, name);
+                    final SmbFile sf = new SmbFile(getRoot(), name);
                     if (sf.exists()) {
                         sf.delete();
                     }
@@ -134,7 +124,7 @@ public class ParameterizedJcifsTest {
             Collections.reverse(foldersToDelete.get());
             for (final String name : foldersToDelete.get()) {
                 try {
-                    final SmbFile sf = new SmbFile(m_root, name);
+                    final SmbFile sf = new SmbFile(getRoot(), name);
                     if (sf.exists()) {
                         sf.delete();
                     }
@@ -257,7 +247,7 @@ public class ParameterizedJcifsTest {
         fName.append("_");
         fName.append(iter);
         fName.append("_");
-        fName.append(m_root.getServer());
+        fName.append(getRoot().getServer());
         fName.append(".txt");
 
         filesToDelete.get().add(fName.toString());
@@ -283,7 +273,7 @@ public class ParameterizedJcifsTest {
         fName.append("_");
         fName.append(iter);
         fName.append("_");
-        fName.append(m_root.getServer());
+        fName.append(getRoot().getServer());
         fName.append("/");
 
         foldersToDelete.get().add(fName.toString());
