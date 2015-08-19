@@ -30,23 +30,18 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.Reporter;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.client.info.FileInfo;
-import org.alfresco.jlan.debug.Debug;
-import org.alfresco.jlan.server.config.InvalidConfigurationException;
-import org.alfresco.jlan.server.filesys.AccessMode;
-import org.alfresco.jlan.smb.SeekType;
 import org.alfresco.jlan.util.MemorySize;
-import org.springframework.extensions.config.ConfigElement;
+
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbRandomAccessFile;
+import jcifs.smb.SmbException;
 
 /**
  * Random Access File Write Test Class
  *
  * @author gkspencer
  */
-public class WriteRandomIT extends ParameterizedIntegrationtest {
+public class WriteRandomIT extends ParameterizedJcifsTest {
 
     // Maximum/minimum allowed file size, write size and write count
 
@@ -71,31 +66,25 @@ public class WriteRandomIT extends ParameterizedIntegrationtest {
     }
 
     private void doTest(final int iteration, final long fileSize, final int writeSize, int writeCount) throws Exception {
-        SMBFile tf = null;
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFileName = getUniqueFileName(iteration, s);
-        CIFSDiskSession cifsSess = (CIFSDiskSession)s;
-        if (s.FileExists(testFileName)) {
-            LOGGER.debug("Opening existing file {} via {}", testFileName, s.getServer());
-            tf = s.OpenFile(testFileName, AccessMode.ReadWrite);
+        final String testFileName = getUniqueFileName(iteration);
+        final SmbFile sf = new SmbFile(getRoot(), testFileName);
+        if (sf.exists()) {
+            LOGGER.debug("Opening existing file {} via {}", testFileName, sf.getServer());
         } else {
-            LOGGER.debug("Creating file {} via {}", testFileName, s.getServer());
-            tf = cifsSess.CreateFile(testFileName);
-            assertTrue(s.FileExists(testFileName), "File exists after create");
+            LOGGER.debug("Creating file {} via {}", testFileName, sf.getServer());
+            sf.createNewFile();
+            assertTrue(sf.exists(), "File exists after create");
         }
+        final SmbRandomAccessFile tf = new SmbRandomAccessFile(sf, "rw");
         assertNotNull(tf);
-        try (SMBFile testFile = tf) {
+        try {
             // Extend the file to the required size
-            cifsSess.NTSetEndOfFile(testFile.getFileId(), fileSize);
+            tf.setLength(fileSize);
             // Check that the file was extended
-            FileInfo fInfo = cifsSess.getFileInformation(testFileName);
-            assertNotNull(fInfo);
-            assertEquals(fInfo.getSize(), fileSize, "File size after extend");
-            // Refresh the file information to get the latest file size
-            testFile.refreshFileInformation();
+            assertEquals(sf.length(), fileSize, "File size after extend");
             // Allocate the read/write buffer
-            byte[] ioBuf = new byte[writeSize];
+            byte[] iBuf = new byte[writeSize];
+            byte[] oBuf = new byte[writeSize];
             // Use a random file position for each write
             Random randomPos = new Random();
             int maxPos = (int)(fileSize - writeSize);
@@ -110,37 +99,32 @@ public class WriteRandomIT extends ParameterizedIntegrationtest {
                     patIdx = 0;
                 }
                 byte fillByte = (byte)WRITEPATTERN.charAt(patIdx++);
-                Arrays.fill(ioBuf, fillByte);
+                Arrays.fill(oBuf, fillByte);
 
                 // Set the write position
-                writePos = randomPos.nextInt( maxPos);
-                testFile.Seek(writePos, SeekType.StartOfFile);
+                writePos = randomPos.nextInt(maxPos - 1);
+                tf.seek(writePos);
 
                 // Write to the file
-                testFile.Write(ioBuf, ioBuf.length, 0);
+                tf.write(oBuf);
 
                 // Read the data back from the file
-                testFile.Seek(writePos, SeekType.StartOfFile);
-                int rdlen = testFile.Read( ioBuf);
-                assertEquals(rdlen, ioBuf.length, "read length equals buffer length");
-
+                tf.seek(writePos);
+                tf.readFully(iBuf);
                 // Check that the buffer contains the expected pattern
-                int chkIdx = 0;
-                while (chkIdx < ioBuf.length) {
-                    if (ioBuf[chkIdx] != fillByte) {
-                        fail("Pattern check failed at position " + writePos + ", writeCount=" + writeCount);
-                    }
-                    chkIdx++;
+                if (!Arrays.equals(iBuf, oBuf)) {
+                    fail("Pattern check failed at position " + writePos + ", writeCount=" + writeCount);
                 }
                 // Update the write count
                 wc++;
             }
+        } finally {
+            tf.close();
         }
     }
 
     @Parameters({"iterations", "filesize", "writesize", "writecount"})
-        //@Test(groups = "functest")
-        @Test(groups = "xtest")
+        @Test(groups = "brokenfunctest")
         public void test(@Optional("1") final int iterations, @Optional("10M") final String fs,
                 @Optional("8K") final String ws, @Optional("100") final int writeCount) throws Exception {
             long fileSize = 0;
