@@ -24,15 +24,14 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
+import jcifs.smb.SmbFile;
 
 /**
  * Rename Folder Test Class
  *
  * @author gkspencer
  */
-public class RenameFolderIT extends ParameterizedIntegrationtest {
+public class RenameFolderIT extends ParameterizedJcifsTest {
 
     /**
      * Default constructor
@@ -41,23 +40,23 @@ public class RenameFolderIT extends ParameterizedIntegrationtest {
         super("RenameFolderIT");
     }
 
-    private void doTest(int iteration) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFolderName = getPerTestFolderName(iteration);
-        String newFolderName = testFolderName + "_new";
+    private void doTest(final int iteration) throws Exception {
+        final String testFolderName = getPerTestFolderName(iteration);
+        final String newFolderName = testFolderName.substring(0, testFolderName.lastIndexOf('/')) + "_new/";
         registerFolderNameForDelete(newFolderName);
-        assertFalse(s.FileExists(testFolderName), "Old folder exists before test");
-        assertFalse(s.FileExists(newFolderName), "New folder exists before test");
-        s.CreateDirectory(testFolderName);
-        assertTrue(s.FileExists(testFolderName), "Old folder exists after create");
-        s.RenameFile(testFolderName, newFolderName);
-        assertTrue(s.FileExists(newFolderName), "New folder exists after rename");
-        assertFalse(s.FileExists(testFolderName), "Old folder exists after rename");
+        SmbFile sf = new SmbFile(getRoot(), testFolderName);
+        SmbFile sfn = new SmbFile(getRoot(), newFolderName);
+        assertFalse(sf.exists(), "Old folder exists before test");
+        assertFalse(sfn.exists(), "New folder exists before test");
+        sf.mkdir();
+        assertTrue(sf.exists(), "Old folder exists after create");
+        sf.renameTo(sfn);
+        assertTrue(sfn.exists(), "New folder exists after rename");
+        assertFalse(sf.exists(), "Old folder exists after rename");
     }
 
     @Parameters({"iterations"})
-    @Test(groups = "functest")
+    @Test(groups = "xfunctest")
     public void test(@Optional("1") int iterations) throws Exception {
         for (int i = 0; i < iterations; i++) {
             doTest(i);
