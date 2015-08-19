@@ -124,7 +124,7 @@ public class WriteRandomIT extends ParameterizedJcifsTest {
     }
 
     @Parameters({"iterations", "filesize", "writesize", "writecount"})
-        @Test(groups = "brokenfunctest")
+        @Test(groups = "broken")
         public void test(@Optional("1") final int iterations, @Optional("10M") final String fs,
                 @Optional("8K") final String ws, @Optional("100") final int writeCount) throws Exception {
             long fileSize = 0;

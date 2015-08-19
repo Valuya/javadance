@@ -6,24 +6,22 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.Reporter;
 
-import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.alfresco.jlan.client.CIFSDiskSession;
-import org.alfresco.jlan.client.DiskSession;
-import org.alfresco.jlan.client.SMBFile;
-import org.alfresco.jlan.server.filesys.FileName;
-import org.alfresco.jlan.smb.SMBException;
 import org.alfresco.jlan.util.MemorySize;
+
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbException;
 
 /**
  * Folder Tree Copy Performance Test Class
  *
  * @author gkspencer
  */
-public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
+public class PerfFolderTreeIT extends ParameterizedJcifsTest {
 
 	// Maximum/minumum folder depth, folders per level, files per level
 
@@ -65,18 +63,17 @@ public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
 
     private void doTest(final int iteration, final long fileSize, final int writeSize,
             final int folderDepth, final int foldersPerLevel, final int filesPerLevel) throws Exception {
-        DiskSession s = getSession();
-        assertTrue(s instanceof CIFSDiskSession, "Not an NT dialect CIFS session");
-        String testFolder = getPerTestFolderName(iteration);
-        s.CreateDirectory(testFolder);
-        assertTrue(s.FileExists(testFolder), "Folder exits after creation");
+        final String testFolder = getPerTestFolderName(iteration);
+        final SmbFile sf = new SmbFile(getRoot(), testFolder);
+        sf.mkdir();
+        assertTrue(sf.exists(), "Folder exits after creation");
         byte[] ioBuf = new byte[writeSize];
         Arrays.fill(ioBuf, (byte)'A');
 
         // Make the current folder path a relative path
         String curFolder = testFolder;
-        if (curFolder.endsWith(FileName.DOS_SEPERATOR_STR) == false) {
-            curFolder = curFolder + FileName.DOS_SEPERATOR_STR;
+        if (curFolder.endsWith("/") == false) {
+            curFolder = curFolder + "/";
         }
 
         // Record the start time
@@ -95,13 +92,12 @@ public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
                 for (int pathIdx = 0; pathIdx < pathStack.size(); pathIdx++) {
                     // Get the current path
                     String curPath = pathStack.get(pathIdx);
-                    registerFolderNameForDelete(curPath);
-                    if (curPath.endsWith(FileName.DOS_SEPERATOR_STR) == false) {
-                        curPath = curPath + FileName.DOS_SEPERATOR_STR;
+                    if (curPath.endsWith("/") == false) {
+                        curPath = curPath + "/";
                     }
+                    registerFolderNameForDelete(curPath);
                     // Create the current level of files/folders
-                    createFolderLevel(curPath, s, curLevel, ioBuf, nextStack, foldersPerLevel, filesPerLevel, fileSize);
-                    // Add the path to the list of paths to be deleted by cleanup
+                    createFolderLevel(curPath, curLevel, ioBuf, nextStack, foldersPerLevel, filesPerLevel, fileSize);
                 }
                 // Update the folder level
                 curLevel++;
@@ -136,14 +132,13 @@ public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
      * Create a folder level at the specified path
      *
      * @param rootPath String
-     * @param sess DiskSession
      * @param curLevel int
      * @param ioBuf byte[]
      * @param pathStack ArrayList<String>
      */
-    private void createFolderLevel(final String rootPath, final DiskSession sess, final int curLevel,
+    private void createFolderLevel(final String rootPath, final int curLevel,
             final byte[] ioBuf, final ArrayList<String> pathStack,
-            final int foldersPerLevel, final int filesPerLevel, final long fileSize) throws SMBException, IOException {
+            final int foldersPerLevel, final int filesPerLevel, final long fileSize) throws Exception {
 
         // Create the folder levels and files
 
@@ -158,12 +153,13 @@ public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
             pathStr.append(curLevel);
             pathStr.append("_");
             pathStr.append(folderIdx);
+            pathStr.append("/");
             // Create the folder
             String folderName = pathStr.toString();
             registerFolderNameForDelete(folderName);
             try {
-                sess.CreateDirectory(folderName);
-            } catch (SMBException ex) {
+                new SmbFile(getRoot(), folderName).mkdir();
+            } catch (SmbException ex) {
                 LOGGER.warn("Error creating folder {}", folderName, ex);
                 throw ex;
             }
@@ -185,19 +181,17 @@ public class PerfFolderTreeIT extends ParameterizedIntegrationtest {
                 String fileName = pathStr.toString();
                 registerFileNameForDelete(fileName);
                 // Create a new file
-                SMBFile testFile = sess.CreateFile(fileName);
-                // Write to the file until we hit the required file size
-                long fs = 0L;
-                while (fs < fileSize) {
-                    // Write to the file
-                    testFile.Write(ioBuf, ioBuf.length, 0);
-                    // Update the file size
-                    fs += ioBuf.length;
+                final SmbFile sf = new SmbFile(getRoot(), fileName);
+                try (OutputStream os = sf.getOutputStream()) {
+                    // Write to the file until we hit the required file size
+                    long fs = 0L;
+                    while (fs < fileSize) {
+                        // Write to the file
+                        os.write(ioBuf);
+                        // Update the file size
+                        fs += ioBuf.length;
+                    }
                 }
-                // Make sure all data has been written to the file
-                testFile.Flush();
-                // Close the test file
-                testFile.Close();
                 // Update the file count
                 m_totalFiles++;
             }
