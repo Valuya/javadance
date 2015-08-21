@@ -58,9 +58,8 @@ public class PerfDataTransferIT extends ParameterizedJcifsTest {
                     fs += ioBuf.length;
                 }
                 // Make sure all data has been written to the file
+                // File is closed via autoClose
                 os.flush();
-                // Close the test file
-                os.close();
                 // Save the end time
                 endTime = System.currentTimeMillis();
 
