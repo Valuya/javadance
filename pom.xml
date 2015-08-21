@@ -29,45 +29,21 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:https://svn.alfresco.com/repos/alfresco-open-mirror/services/jlan/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.alfresco.com/repos/alfresco-enterprise/services/jlan/trunk</developerConnection>
+        <url>http://github.com//OpenDataSpace/jlan</url>
+        <connection>scm:git:https://github.com/OpenDataSpace/jlan.git</connection>
+        <developerConnection>scm:git:git@github.com:OpenDataSpace/jlan.git</developerConnection>
     </scm>
     <prerequisites>
         <maven>3.0.3</maven>
     </prerequisites>
 
     <distributionManagement>
-        <repository>
-             <id>alfresco-internal</id>
-             <url>https://artifacts.alfresco.com/nexus/content/repositories/releases</url>
-        </repository>
         <snapshotRepository>
-             <id>alfresco-internal-snapshots</id>
-             <url>https://artifacts.alfresco.com/nexus/content/repositories/snapshots</url>
+            <id>${snapshot.deploy.id}</id>
+            <name>${snapshot.deploy.name}</name>
+            <url>${snapshot.deploy.url}</url>
         </snapshotRepository>
     </distributionManagement>
-    <repositories>
-        <repository>
-            <id>alfresco-public</id>
-                <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>alfresco-public-snapshots</id>
-            <url>https://artifacts.alfresco.com/nexus/content/groups/public-snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <build>
        <!-- Defining version and some configuration of Maven plugins -->
