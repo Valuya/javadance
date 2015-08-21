@@ -103,6 +103,7 @@ import org.alfresco.jlan.smb.server.ntfs.NTFSStreamsInterface;
 import org.alfresco.jlan.smb.server.ntfs.StreamInfoList;
 import org.alfresco.jlan.util.DataBuffer;
 import org.alfresco.jlan.util.DataPacker;
+import org.alfresco.jlan.util.HexDump;
 import org.alfresco.jlan.util.MemorySize;
 import org.alfresco.jlan.util.WildCard;
 
@@ -2707,6 +2708,9 @@ public class NTProtocolHandler extends CoreProtocolHandler {
 			// Read from the file
 
 			rdlen = disk.readFile(m_sess, conn, netFile, buf, dataPos, maxCount, offset);
+            if (Debug.EnableInfo && m_sess.hasDebug(SMBSrvSession.DBG_DUMPDATA)) {
+                HexDump.Dump(buf, rdlen, dataPos);
+            }
 		}
 		catch (InvalidDeviceInterfaceException ex) {
 
