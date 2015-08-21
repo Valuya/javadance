@@ -21,7 +21,7 @@
             <tcpipSMB port="${it.cifsport}" platforms="linux,macosx,solaris"/> -->
         </host>
 
-        <sessionDebug flags="Negotiate,Socket,Tree"/>
+        <sessionDebug flags="Negotiate,Socket,Tree,File,FileIO,State"/>
         <!-- <netbiosDebug/> -->
         <!-- <announceDebug/> -->
         <authenticator type="enterprise">
