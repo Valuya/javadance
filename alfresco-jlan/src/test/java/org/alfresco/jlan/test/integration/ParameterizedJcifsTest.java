@@ -82,8 +82,9 @@ public class ParameterizedJcifsTest {
 
     @BeforeMethod(alwaysRun = true)
         public void BeforeMethod(Method m) throws Exception {
+            Thread.currentThread().setName("T" + Thread.currentThread().getId());
             firstThreadId.compareAndSet(0L, Thread.currentThread().getId());
-            LOGGER.info("Starting {}.{} [T{}]", getTestname(), m.getName(), Thread.currentThread().getId());
+            LOGGER.info("Starting {}.{}", getTestname(), m.getName());
             assertNotNull(m_host, "Target host");
             assertNotNull(m_share, "Target share");
             assertNotNull(m_user, "Target user");
@@ -95,6 +96,7 @@ public class ParameterizedJcifsTest {
             url += "/" + m_share + "/";
             Config.setProperty("jcifs.resolveOrder", "DNS");
             Config.setProperty("jcifs.smb.client.attrExpirationPeriod", "0");
+            Config.setProperty("jcifs.util.loglevel", "10");
             // Config.setProperty("jcifs.smb.client.ssnLimit", "1");
             m_root = new SmbFile(url);
             assertNotNull(getRoot(), "Root");
