@@ -331,6 +331,11 @@ public class NIOJavaNetworkFile extends NetworkFile {
 
 		ByteBuffer byteBuf = ByteBuffer.wrap(buf, pos, len);
 
+    //	Seek to the required file position
+
+    if ( currentPosition() != fileOff)
+      seekFile(fileOff, SeekType.StartOfFile);
+
     //  Read from the file
 
     int rdlen = m_channel.read(byteBuf);
