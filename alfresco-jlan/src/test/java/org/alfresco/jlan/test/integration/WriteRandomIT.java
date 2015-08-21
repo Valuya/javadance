@@ -92,7 +92,6 @@ public class WriteRandomIT extends ParameterizedJcifsTest {
             // Write to the file until we hit the required write count
             int wc = 0;
             int patIdx = 0;
-            long writePos = 0L;
             while (wc < writeCount) {
                 // Fill each buffer with a different test pattern
                 if (patIdx == WRITEPATTERN.length()) {
@@ -102,7 +101,7 @@ public class WriteRandomIT extends ParameterizedJcifsTest {
                 Arrays.fill(oBuf, fillByte);
 
                 // Set the write position
-                writePos = randomPos.nextInt(maxPos - 1);
+                final long writePos = randomPos.nextInt(maxPos);
                 tf.seek(writePos);
 
                 // Write to the file
@@ -113,7 +112,7 @@ public class WriteRandomIT extends ParameterizedJcifsTest {
                 tf.readFully(iBuf);
                 // Check that the buffer contains the expected pattern
                 if (!Arrays.equals(iBuf, oBuf)) {
-                    fail("Pattern check failed at position " + writePos + ", writeCount=" + writeCount);
+                    fail("Pattern check failed at position " + writePos + ", writeCount=" + wc);
                 }
                 // Update the write count
                 wc++;
@@ -124,7 +123,7 @@ public class WriteRandomIT extends ParameterizedJcifsTest {
     }
 
     @Parameters({"iterations", "filesize", "writesize", "writecount"})
-        @Test(groups = "broken")
+        @Test(groups = "functest")
         public void test(@Optional("1") final int iterations, @Optional("10M") final String fs,
                 @Optional("8K") final String ws, @Optional("100") final int writeCount) throws Exception {
             long fileSize = 0;
