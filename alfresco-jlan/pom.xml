@@ -91,9 +91,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <optimize>false</optimize>
-                </configuration>
                 <executions>
                     <execution>
                         <id>default-compile</id>
