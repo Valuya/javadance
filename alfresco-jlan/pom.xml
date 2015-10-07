@@ -107,9 +107,8 @@
                                 <!-- Exclude DB-backend, cluster-support, and Windows-Service -->
                                 <exclude>org/alfresco/jlan/app/JLANServerService.java</exclude>
                                 <exclude>org/alfresco/jlan/debug/cluster/**</exclude>
-                                <exclude>org/alfresco/jlan/server/filesys/cache/**</exclude>
-                                <exclude>org/alfresco/jlan/server/filesys/db/**</exclude>
-                                <exclude>org/alfresco/jlan/smb/dcerpc/client/**</exclude>
+                                <exclude>org/alfresco/jlan/server/filesys/db/oracle/**</exclude>
+                                <exclude>org/alfresco/jlan/server/filesys/db/postgresql/**</exclude>
                             </excludes>
                         </configuration>
                     </execution>
