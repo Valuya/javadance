@@ -1,4 +1,5 @@
 *.swp
+.checkstyle
 .pmd
 .pmdruleset.xml
 edu.umd.cs.findbugs.core.prefs
