@@ -91,13 +91,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerArgument>-Xlint:all</compilerArgument>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarnings>true</showWarnings>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
                 <executions>
                     <execution>
                         <id>default-compile</id>
@@ -107,9 +100,8 @@
                                 <!-- Exclude DB-backend, cluster-support, and Windows-Service -->
                                 <exclude>org/alfresco/jlan/app/JLANServerService.java</exclude>
                                 <exclude>org/alfresco/jlan/debug/cluster/**</exclude>
-                                <exclude>org/alfresco/jlan/server/filesys/cache/**</exclude>
-                                <exclude>org/alfresco/jlan/server/filesys/db/**</exclude>
-                                <exclude>org/alfresco/jlan/smb/dcerpc/client/**</exclude>
+                                <exclude>org/alfresco/jlan/server/filesys/db/oracle/**</exclude>
+                                <exclude>org/alfresco/jlan/server/filesys/db/postgresql/**</exclude>
                             </excludes>
                         </configuration>
                     </execution>
@@ -120,64 +112,22 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.1</version>
                 <configuration>
-                    <effort>Max</effort>
-                    <threshold>Low</threshold>
-                    <xmlOutput>true</xmlOutput>
-                    <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
                     <failOnError>false</failOnError>
-                    <includeTests>true</includeTests>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- run PMD check -->
             <plugin>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.5</version>
-                <executions>
-                    <execution>
-                        <id>check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>cpd-check</id>
-                        <goals>
-                            <goal>cpd-check</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>cpd</id>
-                        <goals>
-                            <goal>cpd</goal>
-                        </goals>
-                        <configuration>
-                            <failOnViolation>false</failOnViolation>
-                        </configuration>
-                    </execution>
-                </executions>
                 <configuration>
-                    <includeTests>true</includeTests>
-                    <targetJdk>1.7</targetJdk>
-                    <verbose>true</verbose>
                     <failOnViolation>false</failOnViolation>
                 </configuration>
             </plugin>
 
             <!-- run checkstyle check -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.16</version>
                 <configuration>
                     <skip>true</skip> <!-- for now -->
                     <!-- <configLocation>checkstyle.xml</configLocation> -->
@@ -185,20 +135,11 @@
                     <!-- <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation> -->
                     <failOnViolation>false</failOnViolation>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- run unit tests -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
                 <configuration>
                     <suiteXmlFiles>
                         <suiteXmlFile>testng.xml</suiteXmlFile>
@@ -210,7 +151,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.4.0</version>
                 <executions>
                     <execution>
                         <id>pre-integration-test</id>
@@ -249,9 +189,7 @@
 
             <!-- run integration tests -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18.1</version>
                 <configuration>
                     <systemPropertyVariables>
                         <host>${it.host}</host>
@@ -379,19 +317,7 @@
 
     </build>
 
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.5</version>
-            </plugin>
-        </plugins>
-    </reporting>
-
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <executablejar>target/${project.artifactId}-${project.version}-executable.jar</executablejar>
         <it.broadcast>127.255.255.255</it.broadcast>
         <it.host>localhost</it.host>
