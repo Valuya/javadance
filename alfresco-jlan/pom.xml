@@ -114,6 +114,7 @@
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <configuration>
                     <failOnError>false</failOnError>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
 
@@ -122,6 +123,7 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <configuration>
                     <failOnViolation>false</failOnViolation>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
 
