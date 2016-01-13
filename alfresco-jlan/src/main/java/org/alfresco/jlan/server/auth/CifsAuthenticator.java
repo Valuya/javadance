@@ -94,10 +94,6 @@ public abstract class CifsAuthenticator implements ICifsAuthenticator {
 
 	private String m_guestUserName = GUEST_USERNAME;
 
-	// Random number generator used to generate challenge keys
-
-	protected Random m_random = new Random(System.currentTimeMillis());
-
 	// Server configuration and required sections
 
 	protected ServerConfigurationAccessor m_config;
