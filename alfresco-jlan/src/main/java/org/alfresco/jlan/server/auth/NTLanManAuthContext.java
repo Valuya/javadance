@@ -19,7 +19,7 @@
 
 package org.alfresco.jlan.server.auth;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import org.alfresco.jlan.util.DataPacker;
 import org.alfresco.jlan.util.HexDump;
@@ -35,8 +35,7 @@ import org.alfresco.jlan.util.HexDump;
 public class NTLanManAuthContext extends ChallengeAuthContext {
 
   // Random number generator used to generate challenge
-
-  private static Random m_random = new Random(System.currentTimeMillis());
+  private static SecureRandom m_random = new SecureRandom();
 
   /**
    * Class constructor
