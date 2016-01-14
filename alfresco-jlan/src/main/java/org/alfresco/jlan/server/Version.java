@@ -30,7 +30,8 @@ public class Version {
 
   // Top level version
 
-  public static String ReleaseVersion = Version.class.getPackage().getImplementationVersion();
+  public static String ReleaseVersion = Version.class.getPackage().getImplementationVersion() != null ?
+          Version.class.getPackage().getImplementationVersion() : "6.0.0";
 
   // Server version strings
 
