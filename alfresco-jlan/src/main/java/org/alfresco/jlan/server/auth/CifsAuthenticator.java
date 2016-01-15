@@ -22,7 +22,6 @@ package org.alfresco.jlan.server.auth;
 import java.net.InetAddress;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
 
 import org.springframework.extensions.config.ConfigElement;
 import org.alfresco.jlan.debug.Debug;
