@@ -45,7 +45,7 @@ public class LocalAuthenticator extends CifsAuthenticator {
    */
   public LocalAuthenticator() {
     setAccessMode(USER_MODE);
-    setExtendedSecurity( false);
+    setExtendedSecurity(true);
   }
 
   /**
