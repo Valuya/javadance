@@ -308,6 +308,18 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Update dependencies -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <includes>jcifs:jcifs:jar</includes>
+                    </includes>
+                </configuration>
+            </plugin>
+
         </plugins>
 
         <testResources>
