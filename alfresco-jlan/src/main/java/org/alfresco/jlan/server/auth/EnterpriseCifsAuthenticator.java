@@ -266,8 +266,10 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 				// Debug
 
-				if ( Debug.EnableInfo && hasDebug())
+				if ( Debug.EnableInfo && hasDebug()) {
 					Debug.println("[SMB] CIFS Kerberos authenticator error - " + ex.getMessage());
+					Debug.println(ex);
+                }
 
 				throw new InvalidConfigurationException("Failed to login CIFS server service");
 			}
