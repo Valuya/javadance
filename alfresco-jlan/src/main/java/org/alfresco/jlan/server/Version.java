@@ -42,7 +42,7 @@ public class Version {
             Properties p = new Properties();
             p.load(Version.class.getResourceAsStream("/appversion.properties"));
             ReleaseVersion = p.getProperty("version", DEFAULT_RELEASE);
-        } catch (IOException x) {
+        } catch (Exception x) {
             // ignore
         }
     }
