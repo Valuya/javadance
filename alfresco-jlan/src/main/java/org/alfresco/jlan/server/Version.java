@@ -19,6 +19,9 @@
 
 package org.alfresco.jlan.server;
 
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * Server Versions Class
  *
@@ -28,18 +31,31 @@ package org.alfresco.jlan.server;
  */
 public class Version {
 
-  // Top level version
+    // Top level version
+    public static String ReleaseVersion;
 
-  public static String ReleaseVersion = "6.0.0";
+    private static final String DEFAULT_RELEASE = "6.0.0";
 
-  // Server version strings
+    static {
+        ReleaseVersion = DEFAULT_RELEASE;
+        try {
+            Properties p = new Properties();
+            p.load(Version.class.getResourceAsStream("/appversion.properties"));
+            ReleaseVersion = p.getProperty("version", DEFAULT_RELEASE);
+        } catch (IOException x) {
+            // ignore
+        }
+    }
 
-  public static String SMBServerVersion       = ReleaseVersion;
-  public static String NetBIOSServerVersion   = ReleaseVersion;
 
-  public static String NFSServerVersion       = ReleaseVersion;
-  public static String MountServerVersion     = ReleaseVersion;
-  public static String PortMapServerVersion   = ReleaseVersion;
+    // Server version strings
 
-  public static String FTPServerVersion       = ReleaseVersion;
+    public static String SMBServerVersion       = ReleaseVersion;
+    public static String NetBIOSServerVersion   = ReleaseVersion;
+
+    public static String NFSServerVersion       = ReleaseVersion;
+    public static String MountServerVersion     = ReleaseVersion;
+    public static String PortMapServerVersion   = ReleaseVersion;
+
+    public static String FTPServerVersion       = ReleaseVersion;
 }
