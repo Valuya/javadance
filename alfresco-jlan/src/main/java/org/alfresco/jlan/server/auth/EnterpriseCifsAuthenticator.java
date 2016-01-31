@@ -121,6 +121,9 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 
 	private boolean m_enableTicketCracking;
 
+	// Strip realm from username
+	private boolean m_stripRealmFromUsername = false;
+
 	// Server login context
 
 	private LoginContext m_loginContext;
@@ -175,6 +178,10 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
         	System.setProperty( "sun.security.krb5.debug", "true");
 
         	System.setProperty("com.ibm.security.jgss.debug", "all");
+        }
+
+        if ( params.getChild("stripRealmFromUsername") != null) {
+            m_stripRealmFromUsername = true;
         }
 
         // Access the CIFS server configuration
@@ -1389,7 +1396,11 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
             		{
                         // Store the full user name in the client information, indicate that this is not a guest logon
 
-                        client.setUserName( krbDetails.getSourceName());
+                        if (m_stripRealmFromUsername) {
+                            client.setUserName( userName);
+                        } else {
+                            client.setUserName( krbDetails.getSourceName());
+                        }
                         client.setGuest( false);
 
                         // Indicate that the session is logged on
