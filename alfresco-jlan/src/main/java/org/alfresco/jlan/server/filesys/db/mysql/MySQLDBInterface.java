@@ -144,7 +144,7 @@ public class MySQLDBInterface extends JdbcDBInterface implements DBQueueInterfac
 
 		// Set the JDBC driver class, must be set before the connection pool is created
 
-		setDriverName("com.mysql.jdbc.Driver");
+		setDriverName("org.mariadb.jdbc.Driver");
 
 		// Call the base class to do the main initialization
 
