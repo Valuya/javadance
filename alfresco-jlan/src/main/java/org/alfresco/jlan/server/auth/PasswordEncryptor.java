@@ -19,19 +19,14 @@
 
 package org.alfresco.jlan.server.auth;
 
+import org.alfresco.jlan.debug.Debug;
+
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.Mac;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.alfresco.jlan.debug.Debug;
 
 /**
  * Password Encryptor Class
@@ -140,7 +135,7 @@ public class PasswordEncryptor {
 
         // Create the MD4 hash
 
-        md4 = MessageDigest.getInstance("MD4");
+        md4 = sun.security.provider.MD4.getInstance();
 
         try {
           pwdBytes = pwd.getBytes("UnicodeLittleUnmarked");
@@ -201,7 +196,7 @@ public class PasswordEncryptor {
 
         // Create the MD4 hash
 
-        md4 = MessageDigest.getInstance("MD4");
+        md4 = sun.security.provider.MD4.getInstance();
         len = pwd.length();
         pwdBytes = new byte[len * 2];
 
@@ -524,7 +519,7 @@ public class PasswordEncryptor {
 
     // Create the MD4 hash
 
-    MessageDigest md4 = MessageDigest.getInstance("MD4");
+    MessageDigest md4 = sun.security.provider.MD4.getInstance();
 
     md4.update(pwdBytes);
     return md4.digest();
