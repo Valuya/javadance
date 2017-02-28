@@ -28,6 +28,7 @@
       -->
 
       <hostAnnounce interval="5"/>
+      <closeSessionOnError />
     </host>
     <sessionDebug flags="Negotiate,Socket,Tree"/>
 <!--    <netbiosDebug/> -->
