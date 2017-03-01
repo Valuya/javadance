@@ -19,25 +19,13 @@
 
 package org.alfresco.jlan.smb.server;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
-import java.util.Random;
-import java.util.Vector;
-
 import org.alfresco.jlan.debug.Debug;
 import org.alfresco.jlan.server.ServerListener;
 import org.alfresco.jlan.server.SrvSession;
 import org.alfresco.jlan.server.SrvSessionList;
 import org.alfresco.jlan.server.Version;
 import org.alfresco.jlan.server.auth.ICifsAuthenticator;
-import org.alfresco.jlan.server.config.ConfigId;
-import org.alfresco.jlan.server.config.ConfigurationListener;
-import org.alfresco.jlan.server.config.CoreServerConfigSection;
-import org.alfresco.jlan.server.config.InvalidConfigurationException;
-import org.alfresco.jlan.server.config.ServerConfiguration;
+import org.alfresco.jlan.server.config.*;
 import org.alfresco.jlan.server.core.InvalidDeviceInterfaceException;
 import org.alfresco.jlan.server.core.ShareType;
 import org.alfresco.jlan.server.core.SharedDevice;
@@ -52,6 +40,14 @@ import org.alfresco.jlan.smb.server.nio.NIOCifsConnectionsHandler;
 import org.alfresco.jlan.smb.server.nio.win32.AsyncWinsockCifsConnectionsHandler;
 import org.alfresco.jlan.smb.server.win32.Win32NetBIOSLanaMonitor;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+import java.util.Random;
+import java.util.Vector;
+
 /**
  * CIFS Server Class
  *
@@ -59,833 +55,819 @@ import org.alfresco.jlan.smb.server.win32.Win32NetBIOSLanaMonitor;
  */
 public class SMBServer extends NetworkFileServer implements Runnable, ConfigurationListener {
 
-	// Constants
-	//
-	// Server version
+    // Constants
+    //
+    // Server version
 
-	private static final String ServerVersion = Version.SMBServerVersion;
+    private static final String ServerVersion = Version.SMBServerVersion;
 
-	// CIFS server custom server events
+    // CIFS server custom server events
 
-	public static final int CIFSNetBIOSNamesAdded = ServerListener.ServerCustomEvent;
+    public static final int CIFSNetBIOSNamesAdded = ServerListener.ServerCustomEvent;
 
-	// Configuration sections
+    // Configuration sections
 
-	private CIFSConfigSection m_cifsConfig;
-	private CoreServerConfigSection m_coreConfig;
+    private CIFSConfigSection m_cifsConfig;
+    private CoreServerConfigSection m_coreConfig;
 
-	// Server thread
+    // Server thread
 
-	private Thread m_srvThread;
+    private Thread m_srvThread;
 
-	// Session connections handler
+    // Session connections handler
 
-	private CifsConnectionsHandler m_connectionsHandler;
+    private CifsConnectionsHandler m_connectionsHandler;
 
-	// Active session list
+    // Active session list
 
-	private SrvSessionList m_sessions;
+    private SrvSessionList m_sessions;
 
-	// Server type flags, used when announcing the host
+    // Server type flags, used when announcing the host
 
-	private int m_srvType = ServerType.WorkStation + ServerType.Server;
+    private int m_srvType = ServerType.WorkStation + ServerType.Server;
 
-	// Server GUID
+    // Server GUID
 
-	private UUID m_serverGUID;
+    private UUID m_serverGUID;
 
-	// CIFS packet pool
+    // CIFS packet pool
 
-	private CIFSPacketPool m_packetPool;
+    private CIFSPacketPool m_packetPool;
 
-	/**
-	 * Create an SMB server using the specified configuration.
-	 *
-	 * @param cfg ServerConfiguration
-	 */
-	public SMBServer(ServerConfiguration cfg) throws IOException {
+    /**
+     * Create an SMB server using the specified configuration.
+     *
+     * @param cfg ServerConfiguration
+     */
+    public SMBServer(ServerConfiguration cfg) throws IOException {
 
-		super("CIFS", cfg);
+        super("CIFS", cfg);
 
-		// Call the common constructor
+        // Call the common constructor
 
-		CommonConstructor();
-	}
+        CommonConstructor();
+    }
 
-	/**
-	 * Add a new session to the server
-	 *
-	 * @param sess SMBSrvSession
-	 */
-	public final void addSession(SMBSrvSession sess) {
+    /**
+     * Add a new session to the server
+     *
+     * @param sess SMBSrvSession
+     */
+    public final void addSession(SMBSrvSession sess) {
 
-		// Add the session to the session list
+        // Add the session to the session list
 
-		m_sessions.addSession(sess);
+        m_sessions.addSession(sess);
 
-		// Propagate the debug settings to the new session
+        // Propagate the debug settings to the new session
 
-		if ( Debug.EnableInfo && hasDebug()) {
+        if (Debug.EnableInfo && hasDebug()) {
 
-			// Enable session debugging, output to the same stream as the server
+            // Enable session debugging, output to the same stream as the server
 
-			sess.setDebug(getCIFSConfiguration().getSessionDebugFlags());
-		}
-	}
+            sess.setDebug(getCIFSConfiguration().getSessionDebugFlags());
+        }
+    }
 
-	/**
-	 * Check if the disk share is read-only.
-	 *
-	 * @param shr SharedDevice
-	 */
-	protected final void checkReadOnly(SharedDevice shr) {
+    /**
+     * Check if the disk share is read-only.
+     *
+     * @param shr SharedDevice
+     */
+    protected final void checkReadOnly(SharedDevice shr) {
 
-		// For disk devices check if the shared device is read-only, this should also check if the
-		// shared device path actually exists.
+        // For disk devices check if the shared device is read-only, this should also check if the
+        // shared device path actually exists.
 
-		if ( shr.getType() == ShareType.DISK) {
+        if (shr.getType() == ShareType.DISK) {
 
-			// Check if the disk device is read-only
+            // Check if the disk device is read-only
 
-			try {
+            try {
 
-				// Get the device interface for the shared device
+                // Get the device interface for the shared device
 
-				DiskInterface disk = (DiskInterface) shr.getInterface();
-				if ( disk.isReadOnly(null, shr.getContext())) {
+                DiskInterface disk = (DiskInterface) shr.getInterface();
+                if (disk.isReadOnly(null, shr.getContext())) {
 
-					// The disk is read-only, mark the share as read-only
+                    // The disk is read-only, mark the share as read-only
 
-					int attr = shr.getAttributes();
-					if ( (attr & SharedDevice.ReadOnly) == 0)
-						attr += SharedDevice.ReadOnly;
-					shr.setAttributes(attr);
+                    int attr = shr.getAttributes();
+                    if ((attr & SharedDevice.ReadOnly) == 0)
+                        attr += SharedDevice.ReadOnly;
+                    shr.setAttributes(attr);
 
-					// Debug
+                    // Debug
 
-					if ( Debug.EnableInfo && hasDebug())
-						Debug.println("[SMB] Add Share " + shr.toString() + " : isReadOnly");
-				}
-			}
-			catch (InvalidDeviceInterfaceException ex) {
+                    if (Debug.EnableInfo && hasDebug())
+                        Debug.println("[SMB] Add Share " + shr.toString() + " : isReadOnly");
+                }
+            } catch (InvalidDeviceInterfaceException ex) {
 
-				// Shared device interface error
+                // Shared device interface error
 
-				if ( Debug.EnableInfo && hasDebug())
-					Debug.println("[SMB] Add Share " + shr.toString() + " : " + ex.toString());
-			}
-			catch (FileNotFoundException ex) {
+                if (Debug.EnableInfo && hasDebug())
+                    Debug.println("[SMB] Add Share " + shr.toString() + " : " + ex.toString());
+            } catch (FileNotFoundException ex) {
 
-				// Shared disk device local path does not exist
+                // Shared disk device local path does not exist
 
-				if ( Debug.EnableInfo && hasDebug())
-					Debug.println("[SMB] Add Share " + shr.toString() + " : " + ex.toString());
-			}
-			catch (IOException ex) {
+                if (Debug.EnableInfo && hasDebug())
+                    Debug.println("[SMB] Add Share " + shr.toString() + " : " + ex.toString());
+            } catch (IOException ex) {
 
-				// Shared disk device access error
+                // Shared disk device access error
 
-				if ( Debug.EnableInfo && hasDebug())
-					Debug.println("[SMB] Add Share " + shr.toString() + " : " + ex.toString());
-			}
-		}
-	}
+                if (Debug.EnableInfo && hasDebug())
+                    Debug.println("[SMB] Add Share " + shr.toString() + " : " + ex.toString());
+            }
+        }
+    }
 
-	/**
-	 * Common constructor code.
-	 */
-	private void CommonConstructor()
-		throws IOException {
+    /**
+     * Common constructor code.
+     */
+    private void CommonConstructor()
+            throws IOException {
 
-		// Get the CIFS server configuration
+        // Get the CIFS server configuration
 
-		m_cifsConfig = (CIFSConfigSection) getConfiguration().getConfigSection(CIFSConfigSection.SectionName);
+        m_cifsConfig = (CIFSConfigSection) getConfiguration().getConfigSection(CIFSConfigSection.SectionName);
 
-		if ( m_cifsConfig != null) {
+        if (m_cifsConfig != null) {
 
-			// Add the SMB server as a configuration change listener of the server configuration
+            // Add the SMB server as a configuration change listener of the server configuration
 
-			getConfiguration().addListener(this);
+            getConfiguration().addListener(this);
 
-			// Check if debug output is enabled
+            // Check if debug output is enabled
 
-			if ( getCIFSConfiguration().getSessionDebugFlags() != 0)
-				setDebug(true);
+            if (getCIFSConfiguration().getSessionDebugFlags() != 0)
+                setDebug(true);
 
-			// Set the server version
+            // Set the server version
 
-			setVersion(ServerVersion);
+            setVersion(ServerVersion);
 
-			// Create the active session list
+            // Create the active session list
 
-			m_sessions = new SrvSessionList();
+            m_sessions = new SrvSessionList();
 
-			// Set the maximum virtual circuits per session
+            // Set the maximum virtual circuits per session
 
-			SMBSrvSession.getFactory().setMaximumVirtualCircuits( m_cifsConfig.getMaximumVirtualCircuits());
+            SMBSrvSession.getFactory().setMaximumVirtualCircuits(m_cifsConfig.getMaximumVirtualCircuits());
+            SMBSrvSession.getFactory().setCloseSessionOnError(m_cifsConfig.isCloseSessionOnError());
 
-			// Get the core server configuration
-
-			m_coreConfig = (CoreServerConfigSection) getConfiguration().getConfigSection( CoreServerConfigSection.SectionName);
-			if ( m_coreConfig != null) {
-
-				// Create the CIFS packet pool using the global memory pool
-
-				m_packetPool = new CIFSPacketPool( m_coreConfig.getMemoryPool(), m_coreConfig.getThreadPool());
-
-				// Check if packet pool debugging is enabled
-
-				if (( m_cifsConfig.getSessionDebugFlags() & SMBSrvSession.DBG_PKTPOOL) != 0)
-					m_packetPool.setDebug( true);
-
-				if (( m_cifsConfig.getSessionDebugFlags() & SMBSrvSession.DBG_PKTALLOC) != 0)
-					m_packetPool.setAllocateDebug( true);
-			}
-		}
-		else
-			setEnabled(false);
-
-	}
-
-	/**
-	 * Delete temporary shares created by the share mapper for the specified session
-	 *
-	 * @param sess SMBSrvSession
-	 */
-	public final void deleteTemporaryShares(SMBSrvSession sess) {
-
-		// Delete temporary shares via the share mapper
-
-		getShareMapper().deleteShares(sess);
-	}
-
-	/**
-	 * Return the CIFS server configuration
-	 *
-	 * @return CIFSConfigSection
-	 */
-	public final CIFSConfigSection getCIFSConfiguration() {
-		return m_cifsConfig;
-	}
+            // Get the core server configuration
 
-	/**
-	 * Return the server comment.
-	 *
-	 * @return java.lang.String
-	 */
-	public final String getComment() {
-		return getCIFSConfiguration().getComment();
-	}
+            m_coreConfig = (CoreServerConfigSection) getConfiguration().getConfigSection(CoreServerConfigSection.SectionName);
+            if (m_coreConfig != null) {
 
-	/**
-	 * Return the CIFS server name
-	 *
-	 * @return String
-	 */
-	public final String getServerName() {
-		return getCIFSConfiguration().getServerName();
-	}
+                // Create the CIFS packet pool using the global memory pool
+
+                m_packetPool = new CIFSPacketPool(m_coreConfig.getMemoryPool(), m_coreConfig.getThreadPool());
+
+                // Check if packet pool debugging is enabled
+
+                if ((m_cifsConfig.getSessionDebugFlags() & SMBSrvSession.DBG_PKTPOOL) != 0)
+                    m_packetPool.setDebug(true);
+
+                if ((m_cifsConfig.getSessionDebugFlags() & SMBSrvSession.DBG_PKTALLOC) != 0)
+                    m_packetPool.setAllocateDebug(true);
+            }
+        } else
+            setEnabled(false);
+
+    }
+
+    /**
+     * Delete temporary shares created by the share mapper for the specified session
+     *
+     * @param sess SMBSrvSession
+     */
+    public final void deleteTemporaryShares(SMBSrvSession sess) {
+
+        // Delete temporary shares via the share mapper
+
+        getShareMapper().deleteShares(sess);
+    }
+
+    /**
+     * Return the CIFS server configuration
+     *
+     * @return CIFSConfigSection
+     */
+    public final CIFSConfigSection getCIFSConfiguration() {
+        return m_cifsConfig;
+    }
 
-	/**
-	 * Return the server type flags.
-	 *
-	 * @return int
-	 */
-	public final int getServerType() {
-		return m_srvType;
-	}
+    /**
+     * Return the server comment.
+     *
+     * @return java.lang.String
+     */
+    public final String getComment() {
+        return getCIFSConfiguration().getComment();
+    }
 
-	/**
-	 * Return the per session debug flag settings.
-	 */
-	public final int getSessionDebug() {
-		return getCIFSConfiguration().getSessionDebugFlags();
-	}
+    /**
+     * Return the CIFS server name
+     *
+     * @return String
+     */
+    public final String getServerName() {
+        return getCIFSConfiguration().getServerName();
+    }
 
-	/**
-	 * Return the list of SMB dialects that this server supports.
-	 *
-	 * @return DialectSelector
-	 */
-	public final DialectSelector getSMBDialects() {
-		return getCIFSConfiguration().getEnabledDialects();
-	}
+    /**
+     * Return the server type flags.
+     *
+     * @return int
+     */
+    public final int getServerType() {
+        return m_srvType;
+    }
 
-	/**
-	 * Return the CIFS authenticator
-	 *
-	 * @return CifsAuthenticator
-	 */
-	public final ICifsAuthenticator getCifsAuthenticator() {
-		return getCIFSConfiguration().getAuthenticator();
-	}
+    /**
+     * Return the per session debug flag settings.
+     */
+    public final int getSessionDebug() {
+        return getCIFSConfiguration().getSessionDebugFlags();
+    }
 
-	/**
-	 * Return the active session list
-	 *
-	 * @return SrvSessionList
-	 */
-	public final SrvSessionList getSessions() {
-		return m_sessions;
-	}
+    /**
+     * Return the list of SMB dialects that this server supports.
+     *
+     * @return DialectSelector
+     */
+    public final DialectSelector getSMBDialects() {
+        return getCIFSConfiguration().getEnabledDialects();
+    }
 
-	/**
-	 * Return the CIFS packet pool
-	 *
-	 * @return CIFSPacketPool
-	 */
-	public final CIFSPacketPool getPacketPool() {
-		return m_packetPool;
-	}
+    /**
+     * Return the CIFS authenticator
+     *
+     * @return CifsAuthenticator
+     */
+    public final ICifsAuthenticator getCifsAuthenticator() {
+        return getCIFSConfiguration().getAuthenticator();
+    }
 
-	/**
-	 * Return the thread pool
-	 *
-	 * @return ThreadRequestPool
-	 */
-	public final ThreadRequestPool getThreadPool() {
-		return m_coreConfig.getThreadPool();
-	}
+    /**
+     * Return the active session list
+     *
+     * @return SrvSessionList
+     */
+    public final SrvSessionList getSessions() {
+        return m_sessions;
+    }
 
-	/**
-	 * Start the SMB server.
-	 */
-	public void run() {
+    /**
+     * Return the CIFS packet pool
+     *
+     * @return CIFSPacketPool
+     */
+    public final CIFSPacketPool getPacketPool() {
+        return m_packetPool;
+    }
 
-		// Fire a server startup event
+    /**
+     * Return the thread pool
+     *
+     * @return ThreadRequestPool
+     */
+    public final ThreadRequestPool getThreadPool() {
+        return m_coreConfig.getThreadPool();
+    }
 
-		fireServerEvent(ServerListener.ServerStartup);
+    /**
+     * Start the SMB server.
+     */
+    public void run() {
 
-		// Indicate that the server is active
+        // Fire a server startup event
 
-		setActive(true);
+        fireServerEvent(ServerListener.ServerStartup);
 
-		// Check if we are running under Windows
+        // Indicate that the server is active
 
-		boolean isWindows = isWindowsNTOnwards();
+        setActive(true);
 
-		// Generate a GUID for the server based on the server name
+        // Check if we are running under Windows
 
-		Random r = new Random();
-		m_serverGUID = new UUID(r.nextLong(), r.nextLong());
+        boolean isWindows = isWindowsNTOnwards();
 
-		// Debug
+        // Generate a GUID for the server based on the server name
 
-		if ( Debug.EnableInfo && hasDebug()) {
+        Random r = new Random();
+        m_serverGUID = new UUID(r.nextLong(), r.nextLong());
 
-			// Dump the server name/version and Java runtime details
+        // Debug
 
-			Debug.println("[SMB] CIFS Server " + getServerName() + " starting");
-			Debug.print("[SMB] Version " + isVersion());
-			Debug.print(", Java VM " + System.getProperty("java.vm.version"));
-			Debug.println(", OS " + System.getProperty("os.name") + ", version " + System.getProperty("os.version"));
+        if (Debug.EnableInfo && hasDebug()) {
 
-			// Check for server alias names
+            // Dump the server name/version and Java runtime details
 
-			if ( getCIFSConfiguration().hasAliasNames())
-				Debug.println("[SMB] Server alias(es) : " + getCIFSConfiguration().getAliasNames());
+            Debug.println("[SMB] CIFS Server " + getServerName() + " starting");
+            Debug.print("[SMB] Version " + isVersion());
+            Debug.print(", Java VM " + System.getProperty("java.vm.version"));
+            Debug.println(", OS " + System.getProperty("os.name") + ", version " + System.getProperty("os.version"));
 
-			// Output the authenticator details
+            // Check for server alias names
 
-			if ( getCifsAuthenticator() != null)
-				Debug.println("[SMB] Using authenticator " + getCifsAuthenticator().toString());
+            if (getCIFSConfiguration().hasAliasNames())
+                Debug.println("[SMB] Server alias(es) : " + getCIFSConfiguration().getAliasNames());
 
-			// Display the timezone offset/name
+            // Output the authenticator details
 
-			if ( getGlobalConfiguration().getTimeZone() != null)
-				Debug.println("[SMB] Server timezone " + getGlobalConfiguration().getTimeZone() + ", offset from UTC = "
-						+ getGlobalConfiguration().getTimeZoneOffset() / 60 + "hrs");
-			else
-				Debug.println("[SMB] Server timezone offset = " + getGlobalConfiguration().getTimeZoneOffset() / 60 + "hrs");
+            if (getCifsAuthenticator() != null)
+                Debug.println("[SMB] Using authenticator " + getCifsAuthenticator().toString());
 
-			// Dump the available dialect list
+            // Display the timezone offset/name
 
-			Debug.println("[SMB] Dialects enabled = " + getSMBDialects());
+            if (getGlobalConfiguration().getTimeZone() != null)
+                Debug.println("[SMB] Server timezone " + getGlobalConfiguration().getTimeZone() + ", offset from UTC = "
+                        + getGlobalConfiguration().getTimeZoneOffset() / 60 + "hrs");
+            else
+                Debug.println("[SMB] Server timezone offset = " + getGlobalConfiguration().getTimeZoneOffset() / 60 + "hrs");
 
-			// Dump the share list
+            // Dump the available dialect list
 
-			Debug.println("[SMB] Shares:");
-			Enumeration<SharedDevice> enm = getFullShareList(getCIFSConfiguration().getServerName(), null).enumerateShares();
+            Debug.println("[SMB] Dialects enabled = " + getSMBDialects());
 
-			while (enm.hasMoreElements()) {
-				SharedDevice share = enm.nextElement();
-				Debug.println("[SMB]  " + share.toString() + " "
-						+ (share.getContext() != null ? share.getContext().toString() : ""));
-			}
-		}
+            // Dump the share list
 
-		// Create a server socket to listen for incoming session requests
+            Debug.println("[SMB] Shares:");
+            Enumeration<SharedDevice> enm = getFullShareList(getCIFSConfiguration().getServerName(), null).enumerateShares();
 
-		try {
+            while (enm.hasMoreElements()) {
+                SharedDevice share = enm.nextElement();
+                Debug.println("[SMB]  " + share.toString() + " "
+                        + (share.getContext() != null ? share.getContext().toString() : ""));
+            }
+        }
 
-			// Add the IPC$ named pipe shared device
+        // Create a server socket to listen for incoming session requests
 
-			AdminSharedDevice admShare = new AdminSharedDevice();
-			getFilesystemConfiguration().addShare(admShare);
+        try {
 
-			// Clear the server shutdown flag
+            // Add the IPC$ named pipe shared device
 
-			setShutdown(false);
+            AdminSharedDevice admShare = new AdminSharedDevice();
+            getFilesystemConfiguration().addShare(admShare);
 
-			// Get the list of IP addresses the server is bound to
+            // Clear the server shutdown flag
 
-			getServerIPAddresses();
+            setShutdown(false);
 
-			// Check if the NT SMB dialect is enabled, if so then update the server flags to
-			// indicate that this is an NT server
+            // Get the list of IP addresses the server is bound to
 
-			if ( getCIFSConfiguration().getEnabledDialects().hasDialect(Dialect.NT) == true) {
+            getServerIPAddresses();
 
-				// Enable the NT server flag
+            // Check if the NT SMB dialect is enabled, if so then update the server flags to
+            // indicate that this is an NT server
 
-				getCIFSConfiguration().setServerType(getServerType() + ServerType.NTServer);
+            if (getCIFSConfiguration().getEnabledDialects().hasDialect(Dialect.NT) == true) {
 
-				// Debug
+                // Enable the NT server flag
 
-				if ( Debug.EnableInfo && hasDebug())
-					Debug.println("[SMB] Added NTServer flag to host announcement");
-			}
+                getCIFSConfiguration().setServerType(getServerType() + ServerType.NTServer);
 
-			// Create the CIFS connections handler
-			//
-			// Note: The older thread per session/socket handler is used for Win32 NetBIOS connections
+                // Debug
 
-			if ( getCIFSConfiguration().hasDisableNIOCode() || getCIFSConfiguration().hasWin32NetBIOS()) {
+                if (Debug.EnableInfo && hasDebug())
+                    Debug.println("[SMB] Added NTServer flag to host announcement");
+            }
 
-				// Use the older threaded connections handler (thread per session model)
+            // Create the CIFS connections handler
+            //
+            // Note: The older thread per session/socket handler is used for Win32 NetBIOS connections
 
-				m_connectionsHandler = new ThreadedCifsConnectionsHandler();
-			}
-			else {
+            if (getCIFSConfiguration().hasDisableNIOCode() || getCIFSConfiguration().hasWin32NetBIOS()) {
 
-				// Check if the Java socket or JNI based connections handler should be used
+                // Use the older threaded connections handler (thread per session model)
 
-				if ( getCIFSConfiguration().hasTcpipSMB() || getCIFSConfiguration().hasNetBIOSSMB()) {
+                m_connectionsHandler = new ThreadedCifsConnectionsHandler();
+            } else {
 
-					// Use the NIO based native SMB/NetBIOS SMB connections handler
+                // Check if the Java socket or JNI based connections handler should be used
 
-					m_connectionsHandler = new NIOCifsConnectionsHandler();
-				}
-				else {
+                if (getCIFSConfiguration().hasTcpipSMB() || getCIFSConfiguration().hasNetBIOSSMB()) {
 
-					// Use the JNI based Winsock NetBIOS connections handler
+                    // Use the NIO based native SMB/NetBIOS SMB connections handler
 
-					m_connectionsHandler = new AsyncWinsockCifsConnectionsHandler();
-				}
-			}
+                    m_connectionsHandler = new NIOCifsConnectionsHandler();
+                } else {
 
-			// Initialize the connections handler
+                    // Use the JNI based Winsock NetBIOS connections handler
 
-			m_connectionsHandler.initializeHandler( this, getCIFSConfiguration());
-			m_connectionsHandler.startHandler();
+                    m_connectionsHandler = new AsyncWinsockCifsConnectionsHandler();
+                }
+            }
 
-			// Check if there are any session handlers installed, if not then close the server
+            // Initialize the connections handler
 
-			if ( m_connectionsHandler.numberOfSessionHandlers() > 0 || getCIFSConfiguration().hasWin32NetBIOS()) {
+            m_connectionsHandler.initializeHandler(this, getCIFSConfiguration());
+            m_connectionsHandler.startHandler();
 
-				// Fire a server active event
+            // Check if there are any session handlers installed, if not then close the server
 
-				fireServerEvent(ServerListener.ServerActive);
+            if (m_connectionsHandler.numberOfSessionHandlers() > 0 || getCIFSConfiguration().hasWin32NetBIOS()) {
 
-				// Wait for incoming connection requests
+                // Fire a server active event
 
-				while (hasShutdown() == false) {
+                fireServerEvent(ServerListener.ServerActive);
 
-					// Sleep for a while
+                // Wait for incoming connection requests
 
-					try {
-						Thread.sleep(3000L);
-					}
-					catch (InterruptedException ex) {
-					}
-				}
-			}
-			else if ( Debug.EnableError && hasDebug()) {
+                while (hasShutdown() == false) {
 
-				// DEBUG
+                    // Sleep for a while
 
-				Debug.println("[SMB] No valid session handlers, server closing");
-			}
-		}
-		catch (Exception ex) {
+                    try {
+                        Thread.sleep(3000L);
+                    } catch (InterruptedException ex) {
+                    }
+                }
+            } else if (Debug.EnableError && hasDebug()) {
 
-			// Do not report an error if the server has shutdown, closing the server socket
-			// causes an exception to be thrown.
+                // DEBUG
 
-			if ( hasShutdown() == false) {
-				Debug.println("[SMB] Server error : " + ex.toString(), Debug.Error);
-				Debug.println(ex);
+                Debug.println("[SMB] No valid session handlers, server closing");
+            }
+        } catch (Exception ex) {
 
-				// Store the error, fire a server error event
+            // Do not report an error if the server has shutdown, closing the server socket
+            // causes an exception to be thrown.
 
-				setException(ex);
-				fireServerEvent(ServerListener.ServerError);
-			}
-		}
+            if (hasShutdown() == false) {
+                Debug.println("[SMB] Server error : " + ex.toString(), Debug.Error);
+                Debug.println(ex);
 
-		// Debug
+                // Store the error, fire a server error event
 
-		if ( Debug.EnableInfo && hasDebug())
-			Debug.println("[SMB] SMB Server shutting down ...");
+                setException(ex);
+                fireServerEvent(ServerListener.ServerError);
+            }
+        }
 
-		// Close the host announcer and session handlers
+        // Debug
 
-		m_connectionsHandler.stopHandler();
+        if (Debug.EnableInfo && hasDebug())
+            Debug.println("[SMB] SMB Server shutting down ...");
 
-		// Shutdown the Win32 NetBIOS LANA monitor, if enabled
+        // Close the host announcer and session handlers
 
-		if ( isWindows && Win32NetBIOSLanaMonitor.getLanaMonitor() != null) {
+        m_connectionsHandler.stopHandler();
 
-			// Shutdown the LANA monitor
+        // Shutdown the Win32 NetBIOS LANA monitor, if enabled
 
-			Win32NetBIOSLanaMonitor.getLanaMonitor().shutdownRequest();
-		}
+        if (isWindows && Win32NetBIOSLanaMonitor.getLanaMonitor() != null) {
 
-		// Indicate that the server is not active
+            // Shutdown the LANA monitor
 
-		setActive(false);
-		fireServerEvent(ServerListener.ServerShutdown);
+            Win32NetBIOSLanaMonitor.getLanaMonitor().shutdownRequest();
+        }
 
-		// DEBUG
+        // Indicate that the server is not active
 
-		if ( Debug.EnableInfo && hasDebug())
-			Debug.println("[SMB] Packet pool at shutdown: " + getPacketPool());
-	}
+        setActive(false);
+        fireServerEvent(ServerListener.ServerShutdown);
 
-	/**
-	 * Notify the server that a session has been closed.
-	 *
-	 * @param sess SMBSrvSession
-	 */
-	protected final void sessionClosed(SMBSrvSession sess) {
+        // DEBUG
 
-		// Remove the session from the active session list
+        if (Debug.EnableInfo && hasDebug())
+            Debug.println("[SMB] Packet pool at shutdown: " + getPacketPool());
+    }
 
-		m_sessions.removeSession(sess);
+    /**
+     * Notify the server that a session has been closed.
+     *
+     * @param sess SMBSrvSession
+     */
+    protected final void sessionClosed(SMBSrvSession sess) {
 
-		// DEBUG
+        // Remove the session from the active session list
 
-		if ( hasDebug()) {
-			Debug.println("[SMB] Closed session " + sess.getSessionId() + ", sessions=" + m_sessions.numberOfSessions());
-			if ( m_sessions.numberOfSessions() > 0 && m_sessions.numberOfSessions() <= 10) {
-				Enumeration<SrvSession> sessions = m_sessions.enumerateSessions();
-				Debug.print("      Active sessions [");
-				while ( sessions.hasMoreElements()) {
-					SMBSrvSession curSess = (SMBSrvSession) sessions.nextElement();
-					    InetAddress addr = curSess.getRemoteAddress();
-					    Debug.print("" + curSess.getSessionId() + "=" + (addr != null ? addr.getHostAddress() : "unknown") + ",");
-				}
-				Debug.println("]");
-			}
-		}
+        m_sessions.removeSession(sess);
 
-		// Notify session listeners that a session has been closed
+        // DEBUG
 
-		fireSessionClosedEvent(sess);
-	}
+        if (hasDebug()) {
+            Debug.println("[SMB] Closed session " + sess.getSessionId() + ", sessions=" + m_sessions.numberOfSessions());
+            if (m_sessions.numberOfSessions() > 0 && m_sessions.numberOfSessions() <= 10) {
+                Enumeration<SrvSession> sessions = m_sessions.enumerateSessions();
+                Debug.print("      Active sessions [");
+                while (sessions.hasMoreElements()) {
+                    SMBSrvSession curSess = (SMBSrvSession) sessions.nextElement();
+                    InetAddress addr = curSess.getRemoteAddress();
+                    Debug.print("" + curSess.getSessionId() + "=" + (addr != null ? addr.getHostAddress() : "unknown") + ",");
+                }
+                Debug.println("]");
+            }
+        }
 
-	/**
-	 * Notify the server that a user has logged on.
-	 *
-	 * @param sess SMBSrvSession
-	 */
-	protected final void sessionLoggedOn(SMBSrvSession sess) {
+        // Notify session listeners that a session has been closed
 
-		// Notify session listeners that a user has logged on.
+        fireSessionClosedEvent(sess);
+    }
 
-		fireSessionLoggedOnEvent(sess);
-	}
+    /**
+     * Notify the server that a user has logged on.
+     *
+     * @param sess SMBSrvSession
+     */
+    protected final void sessionLoggedOn(SMBSrvSession sess) {
 
-	/**
-	 * Notify the server that a session has been closed.
-	 *
-	 * @param sess SMBSrvSession
-	 */
-	protected final void sessionOpened(SMBSrvSession sess) {
+        // Notify session listeners that a user has logged on.
 
-		// Notify session listeners that a session has been closed
+        fireSessionLoggedOnEvent(sess);
+    }
 
-		fireSessionOpenEvent(sess);
-	}
+    /**
+     * Notify the server that a session has been closed.
+     *
+     * @param sess SMBSrvSession
+     */
+    protected final void sessionOpened(SMBSrvSession sess) {
 
-	/**
-	 * Shutdown the SMB server
-	 *
-	 * @param immediate boolean
-	 */
-	public final void shutdownServer(boolean immediate) {
+        // Notify session listeners that a session has been closed
 
-		// Indicate that the server is closing
+        fireSessionOpenEvent(sess);
+    }
 
-		setShutdown(true);
+    /**
+     * Shutdown the SMB server
+     *
+     * @param immediate boolean
+     */
+    public final void shutdownServer(boolean immediate) {
 
-		try {
+        // Indicate that the server is closing
 
-			// Wakeup the main CIFS server thread
+        setShutdown(true);
 
-			m_srvThread.interrupt();
-		}
-		catch (Exception ex) {
-		}
+        try {
 
-		// Close the active sessions
+            // Wakeup the main CIFS server thread
 
-		Enumeration<SrvSession> enm = m_sessions.enumerateSessions();
+            m_srvThread.interrupt();
+        } catch (Exception ex) {
+        }
 
-		while (enm.hasMoreElements()) {
+        // Close the active sessions
 
-			// Get the session id and associated session
+        Enumeration<SrvSession> enm = m_sessions.enumerateSessions();
 
-			SMBSrvSession sess = (SMBSrvSession) enm.nextElement();
+        while (enm.hasMoreElements()) {
 
-			// Inform listeners that the session has been closed
+            // Get the session id and associated session
 
-			fireSessionClosedEvent(sess);
+            SMBSrvSession sess = (SMBSrvSession) enm.nextElement();
 
-			// Close the session
+            // Inform listeners that the session has been closed
 
-			sess.closeSession();
-		}
+            fireSessionClosedEvent(sess);
 
-		// Wait for the main server thread to close
+            // Close the session
 
-		if ( m_srvThread != null) {
+            sess.closeSession();
+        }
 
-			try {
-				m_srvThread.join(3000);
-			}
-			catch (Exception ex) {
-			}
-		}
+        // Wait for the main server thread to close
 
-		// Fire a shutdown notification event
+        if (m_srvThread != null) {
 
-		fireServerEvent(ServerListener.ServerShutdown);
-	}
+            try {
+                m_srvThread.join(3000);
+            } catch (Exception ex) {
+            }
+        }
 
-	/**
-	 * Start the SMB server in a seperate thread
-	 */
-	public void startServer() {
+        // Fire a shutdown notification event
 
-		// Create a seperate thread to run the SMB server
+        fireServerEvent(ServerListener.ServerShutdown);
+    }
 
-		m_srvThread = new Thread(this);
-		m_srvThread.setName("CIFS Server");
+    /**
+     * Start the SMB server in a seperate thread
+     */
+    public void startServer() {
 
-		m_srvThread.start();
-	}
+        // Create a seperate thread to run the SMB server
 
-	/**
-	 * Validate configuration changes that are relevant to the SMB server
-	 *
-	 * @param id int
-	 * @param config ServerConfiguration
-	 * @param newVal Object
-	 * @return int
-	 * @throws InvalidConfigurationException
-	 */
-	public int configurationChanged(int id, ServerConfiguration config, Object newVal)
-		throws InvalidConfigurationException {
+        m_srvThread = new Thread(this);
+        m_srvThread.setName("CIFS Server");
 
-		int sts = ConfigurationListener.StsIgnored;
+        m_srvThread.start();
+    }
 
-		try {
+    /**
+     * Validate configuration changes that are relevant to the SMB server
+     *
+     * @param id     int
+     * @param config ServerConfiguration
+     * @param newVal Object
+     * @return int
+     * @throws InvalidConfigurationException
+     */
+    public int configurationChanged(int id, ServerConfiguration config, Object newVal)
+            throws InvalidConfigurationException {
 
-			// Check if the configuration change affects the SMB server
+        int sts = ConfigurationListener.StsIgnored;
 
-			switch (id) {
+        try {
 
-			// Server enable/disable
+            // Check if the configuration change affects the SMB server
 
-			case ConfigId.ServerSMBEnable:
+            switch (id) {
 
-				// Check if the server is active
+                // Server enable/disable
 
-				Boolean enaSMB = (Boolean) newVal;
+                case ConfigId.ServerSMBEnable:
 
-				if ( isActive() && enaSMB.booleanValue() == false) {
+                    // Check if the server is active
 
-					// Shutdown the server
+                    Boolean enaSMB = (Boolean) newVal;
 
-					shutdownServer(false);
-				}
-				else if ( isActive() == false && enaSMB.booleanValue() == true) {
+                    if (isActive() && enaSMB.booleanValue() == false) {
 
-					// Start the server
+                        // Shutdown the server
 
-					startServer();
-				}
+                        shutdownServer(false);
+                    } else if (isActive() == false && enaSMB.booleanValue() == true) {
 
-				// Indicate that the setting was accepted
+                        // Start the server
 
-				sts = ConfigurationListener.StsAccepted;
-				break;
+                        startServer();
+                    }
 
-			// Changes that can be accepted without restart
+                    // Indicate that the setting was accepted
 
-			case ConfigId.SMBComment:
-			case ConfigId.SMBDialects:
-			case ConfigId.SMBTCPPort:
-			case ConfigId.SMBMacExtEnable:
-			case ConfigId.SMBDebugEnable:
-			case ConfigId.ServerTimezone:
-			case ConfigId.ServerTZOffset:
-			case ConfigId.ShareList:
-			case ConfigId.ShareMapper:
-			case ConfigId.SecurityAuthenticator:
-			case ConfigId.UsersList:
-			case ConfigId.DebugDevice:
-				sts = ConfigurationListener.StsAccepted;
-				break;
+                    sts = ConfigurationListener.StsAccepted;
+                    break;
 
-			// Changes that affect new sessions only
-			//
-			// Enable/dsiable debug output
+                // Changes that can be accepted without restart
 
-			case ConfigId.SMBSessionDebug:
-				sts = ConfigurationListener.StsNewSessionsOnly;
-				if ( newVal instanceof Integer) {
-					Integer dbgVal = (Integer) newVal;
-					setDebug( dbgVal.intValue() != 0 ? true : false);
-				}
-				break;
+                case ConfigId.SMBComment:
+                case ConfigId.SMBDialects:
+                case ConfigId.SMBTCPPort:
+                case ConfigId.SMBMacExtEnable:
+                case ConfigId.SMBDebugEnable:
+                case ConfigId.ServerTimezone:
+                case ConfigId.ServerTZOffset:
+                case ConfigId.ShareList:
+                case ConfigId.ShareMapper:
+                case ConfigId.SecurityAuthenticator:
+                case ConfigId.UsersList:
+                case ConfigId.DebugDevice:
+                    sts = ConfigurationListener.StsAccepted;
+                    break;
 
-			// Maximum virtual circuits per session
+                // Changes that affect new sessions only
+                //
+                // Enable/dsiable debug output
 
-			case ConfigId.SMBMaxVirtualCircuit:
-				sts = ConfigurationListener.StsNewSessionsOnly;
-				if ( newVal instanceof Integer) {
-					Integer maxVC = (Integer) newVal;
-					SMBSrvSession.getFactory().setMaximumVirtualCircuits( maxVC);
-				}
-				break;
+                case ConfigId.SMBSessionDebug:
+                    sts = ConfigurationListener.StsNewSessionsOnly;
+                    if (newVal instanceof Integer) {
+                        Integer dbgVal = (Integer) newVal;
+                        setDebug(dbgVal.intValue() != 0 ? true : false);
+                    }
+                    break;
 
-			// Changes that require a restart
+                // Maximum virtual circuits per session
 
-			case ConfigId.SMBHostName:
-			case ConfigId.SMBAliasNames:
-			case ConfigId.SMBDomain:
-			case ConfigId.SMBBroadcastMask:
-			case ConfigId.SMBAnnceEnable:
-			case ConfigId.SMBAnnceInterval:
-			case ConfigId.SMBAnnceDebug:
-			case ConfigId.SMBTCPEnable:
-			case ConfigId.SMBBindAddress:
-				sts = ConfigurationListener.StsRestartRequired;
-				break;
-			}
-		}
-		catch (Exception ex) {
-			throw new InvalidConfigurationException("SMB Server configuration error", ex);
-		}
+                case ConfigId.SMBMaxVirtualCircuit:
+                    sts = ConfigurationListener.StsNewSessionsOnly;
+                    if (newVal instanceof Integer) {
+                        Integer maxVC = (Integer) newVal;
+                        SMBSrvSession.getFactory().setMaximumVirtualCircuits(maxVC);
+                    }
+                    break;
 
-		// Return the status
+                // Changes that require a restart
 
-		return sts;
-	}
+                case ConfigId.SMBHostName:
+                case ConfigId.SMBAliasNames:
+                case ConfigId.SMBDomain:
+                case ConfigId.SMBBroadcastMask:
+                case ConfigId.SMBAnnceEnable:
+                case ConfigId.SMBAnnceInterval:
+                case ConfigId.SMBAnnceDebug:
+                case ConfigId.SMBTCPEnable:
+                case ConfigId.SMBBindAddress:
+                    sts = ConfigurationListener.StsRestartRequired;
+                    break;
+            }
+        } catch (Exception ex) {
+            throw new InvalidConfigurationException("SMB Server configuration error", ex);
+        }
 
-	/**
-	 * Determine if we are running under Windows NT onwards
-	 *
-	 * @return boolean
-	 */
-	private final boolean isWindowsNTOnwards() {
+        // Return the status
 
-		// Get the operating system name property
+        return sts;
+    }
 
-		String osName = System.getProperty("os.name");
+    /**
+     * Determine if we are running under Windows NT onwards
+     *
+     * @return boolean
+     */
+    private final boolean isWindowsNTOnwards() {
 
-		if ( osName.startsWith("Windows")) {
-			if ( osName.endsWith("95") || osName.endsWith("98") || osName.endsWith("ME")) {
+        // Get the operating system name property
 
-				// Windows 95-ME
+        String osName = System.getProperty("os.name");
 
-				return false;
-			}
+        if (osName.startsWith("Windows")) {
+            if (osName.endsWith("95") || osName.endsWith("98") || osName.endsWith("ME")) {
 
-			// Looks like Windows NT onwards
+                // Windows 95-ME
 
-			return true;
-		}
+                return false;
+            }
 
-		// Not Windows
+            // Looks like Windows NT onwards
 
-		return false;
-	}
+            return true;
+        }
 
-	/**
-	 * Get the list of local IP addresses
-	 *
-	 */
-	private final void getServerIPAddresses() {
+        // Not Windows
 
-		try {
+        return false;
+    }
 
-			// Get the local IP address list
+    /**
+     * Get the list of local IP addresses
+     */
+    private final void getServerIPAddresses() {
 
-			Enumeration<NetworkInterface> enm = NetworkInterface.getNetworkInterfaces();
-			Vector<InetAddress> addrList = new Vector<InetAddress>();
+        try {
 
-			while (enm.hasMoreElements()) {
+            // Get the local IP address list
 
-				// Get the current network interface
+            Enumeration<NetworkInterface> enm = NetworkInterface.getNetworkInterfaces();
+            Vector<InetAddress> addrList = new Vector<InetAddress>();
 
-				NetworkInterface ni = enm.nextElement();
+            while (enm.hasMoreElements()) {
 
-				// Get the address list for the current interface
+                // Get the current network interface
 
-				Enumeration<InetAddress> addrs = ni.getInetAddresses();
+                NetworkInterface ni = enm.nextElement();
 
-				while (addrs.hasMoreElements())
-					addrList.add(addrs.nextElement());
-			}
+                // Get the address list for the current interface
 
-			// Convert the vector of addresses to an array
+                Enumeration<InetAddress> addrs = ni.getInetAddresses();
 
-			if ( addrList.size() > 0) {
+                while (addrs.hasMoreElements())
+                    addrList.add(addrs.nextElement());
+            }
 
-				// Convert the address vector to an array
+            // Convert the vector of addresses to an array
 
-				InetAddress[] inetAddrs = new InetAddress[addrList.size()];
+            if (addrList.size() > 0) {
 
-				// Copy the address details to the array
+                // Convert the address vector to an array
 
-				for (int i = 0; i < addrList.size(); i++)
-					inetAddrs[i] = addrList.elementAt(i);
+                InetAddress[] inetAddrs = new InetAddress[addrList.size()];
 
-				// Set the server IP address list
+                // Copy the address details to the array
 
-				setServerAddresses(inetAddrs);
-			}
-		}
-		catch (Exception ex) {
+                for (int i = 0; i < addrList.size(); i++)
+                    inetAddrs[i] = addrList.elementAt(i);
 
-			// DEBUG
+                // Set the server IP address list
 
-			if ( Debug.EnableError && hasDebug())
-				Debug.println("[SMB] Error getting local IP addresses, " + ex.toString());
-		}
-	}
+                setServerAddresses(inetAddrs);
+            }
+        } catch (Exception ex) {
 
-	/**
-	 * Return the server GUID
-	 *
-	 * @return UUID
-	 */
-	public final UUID getServerGUID() {
-		return m_serverGUID;
-	}
+            // DEBUG
 
-	/**
-	 * Send a NetBIOS names added event to server listeners
-	 *
-	 * @param lana int
-	 */
-	public final void fireNetBIOSNamesAddedEvent(int lana) {
+            if (Debug.EnableError && hasDebug())
+                Debug.println("[SMB] Error getting local IP addresses, " + ex.toString());
+        }
+    }
 
-		// Send the event to registered listeners, encode the LANA id in the top of the event id
+    /**
+     * Return the server GUID
+     *
+     * @return UUID
+     */
+    public final UUID getServerGUID() {
+        return m_serverGUID;
+    }
 
-		fireServerEvent(CIFSNetBIOSNamesAdded + (lana << 16));
-	}
+    /**
+     * Send a NetBIOS names added event to server listeners
+     *
+     * @param lana int
+     */
+    public final void fireNetBIOSNamesAddedEvent(int lana) {
+
+        // Send the event to registered listeners, encode the LANA id in the top of the event id
+
+        fireServerEvent(CIFSNetBIOSNamesAdded + (lana << 16));
+    }
 }

@@ -19,52 +19,18 @@
 
 package org.alfresco.jlan.app;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Locale;
-import java.util.StringTokenizer;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.alfresco.jlan.debug.Debug;
 import org.alfresco.jlan.debug.DebugConfigSection;
 import org.alfresco.jlan.netbios.win32.Win32NetBIOS;
 import org.alfresco.jlan.server.auth.CifsAuthenticator;
 import org.alfresco.jlan.server.auth.UserAccount;
 import org.alfresco.jlan.server.auth.UserAccountList;
-import org.alfresco.jlan.server.auth.acl.ACLParseException;
-import org.alfresco.jlan.server.auth.acl.AccessControl;
-import org.alfresco.jlan.server.auth.acl.AccessControlList;
-import org.alfresco.jlan.server.auth.acl.AccessControlParser;
-import org.alfresco.jlan.server.auth.acl.InvalidACLTypeException;
-import org.alfresco.jlan.server.config.CoreServerConfigSection;
-import org.alfresco.jlan.server.config.GlobalConfigSection;
-import org.alfresco.jlan.server.config.InvalidConfigurationException;
-import org.alfresco.jlan.server.config.SecurityConfigSection;
-import org.alfresco.jlan.server.config.ServerConfiguration;
+import org.alfresco.jlan.server.auth.acl.*;
+import org.alfresco.jlan.server.config.*;
 import org.alfresco.jlan.server.core.DeviceContextException;
 import org.alfresco.jlan.server.core.ShareType;
 import org.alfresco.jlan.server.core.SharedDeviceList;
-import org.alfresco.jlan.server.filesys.DiskDeviceContext;
-import org.alfresco.jlan.server.filesys.DiskInterface;
-import org.alfresco.jlan.server.filesys.DiskSharedDevice;
-import org.alfresco.jlan.server.filesys.FilesystemsConfigSection;
-import org.alfresco.jlan.server.filesys.SrvDiskInfo;
-import org.alfresco.jlan.server.filesys.VolumeInfo;
+import org.alfresco.jlan.server.filesys.*;
 import org.alfresco.jlan.server.filesys.cache.FileStateCache;
 import org.alfresco.jlan.server.filesys.cache.StandaloneFileStateCache;
 import org.alfresco.jlan.server.thread.ThreadRequestPool;
@@ -75,23 +41,26 @@ import org.alfresco.jlan.smb.server.SMBSrvSession;
 import org.alfresco.jlan.smb.server.VirtualCircuitList;
 import org.alfresco.jlan.smb.util.DriveMapping;
 import org.alfresco.jlan.smb.util.DriveMappingList;
-import org.alfresco.jlan.util.IPAddress;
-import org.alfresco.jlan.util.MemorySize;
-import org.alfresco.jlan.util.Platform;
-import org.alfresco.jlan.util.StringList;
-import org.alfresco.jlan.util.X64;
+import org.alfresco.jlan.util.*;
 import org.springframework.extensions.config.ConfigElement;
 import org.springframework.extensions.config.element.GenericConfigElement;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Cifs Only XML File Server Configuration Class
- *
+ * <p>
  * <p>
  * XML implementation of the SMB server configuration.
  *
@@ -99,2520 +68,2460 @@ import org.xml.sax.InputSource;
  */
 public class CifsOnlyXMLServerConfiguration extends ServerConfiguration {
 
-	// Constants
-	//
-	// Node type for an Element
+    // Constants
+    //
+    // Node type for an Element
 
-	private static final int ELEMENT_TYPE = 1;
+    private static final int ELEMENT_TYPE = 1;
 
-	// CIFS session debug type strings
-	//
-	// Must match the bit mask order.
+    // CIFS session debug type strings
+    //
+    // Must match the bit mask order.
 
-	private static final String m_sessDbgStr[] = { "NETBIOS", "STATE", "RXDATA", "TXDATA", "DUMPDATA", "NEGOTIATE", "TREE",
-			"SEARCH", "INFO", "FILE", "FILEIO", "TRANSACT", "ECHO", "ERROR", "IPC", "LOCK", "PKTTYPE", "DCERPC", "STATECACHE",
-			"TIMING", "NOTIFY", "STREAMS", "SOCKET", "PKTPOOL", "PKTSTATS", "THREADPOOL", "BENCHMARK", "OPLOCK", "PKTALLOC" };
+    private static final String m_sessDbgStr[] = {"NETBIOS", "STATE", "RXDATA", "TXDATA", "DUMPDATA", "NEGOTIATE", "TREE",
+            "SEARCH", "INFO", "FILE", "FILEIO", "TRANSACT", "ECHO", "ERROR", "IPC", "LOCK", "PKTTYPE", "DCERPC", "STATECACHE",
+            "TIMING", "NOTIFY", "STREAMS", "SOCKET", "PKTPOOL", "PKTSTATS", "THREADPOOL", "BENCHMARK", "OPLOCK", "PKTALLOC"};
 
-	// Default session debug flags, if enabled
+    // Default session debug flags, if enabled
 
-	private static final int DEFAULT_SESSDEBUG = SMBSrvSession.DBG_ERROR + SMBSrvSession.DBG_INFO + SMBSrvSession.DBG_SEARCH
-			+ SMBSrvSession.DBG_TREE + SMBSrvSession.DBG_TRAN + SMBSrvSession.DBG_STATE;
+    private static final int DEFAULT_SESSDEBUG = SMBSrvSession.DBG_ERROR + SMBSrvSession.DBG_INFO + SMBSrvSession.DBG_SEARCH
+            + SMBSrvSession.DBG_TREE + SMBSrvSession.DBG_TRAN + SMBSrvSession.DBG_STATE;
 
-	// Valid drive letter names for mapped drives
+    // Valid drive letter names for mapped drives
 
-	private static final String _driveLetters = "CDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String _driveLetters = "CDEFGHIJKLMNOPQRSTUVWXYZ";
 
-	// Default thread pool size
+    // Default thread pool size
 
-	private static final int DefaultThreadPoolInit	= 25;
-	private static final int DefaultThreadPoolMax	= 50;
+    private static final int DefaultThreadPoolInit = 25;
+    private static final int DefaultThreadPoolMax = 50;
 
-	// Default memory pool settings
+    // Default memory pool settings
 
-	private static final int[] DefaultMemoryPoolBufSizes  = { 256, 4096, 16384, 66000 };
-	private static final int[] DefaultMemoryPoolInitAlloc = {  20,   20,     5,     5 };
-	private static final int[] DefaultMemoryPoolMaxAlloc  = { 100,   50,    50,    50 };
+    private static final int[] DefaultMemoryPoolBufSizes = {256, 4096, 16384, 66000};
+    private static final int[] DefaultMemoryPoolInitAlloc = {20, 20, 5, 5};
+    private static final int[] DefaultMemoryPoolMaxAlloc = {100, 50, 50, 50};
 
-	// Memory pool packet size limits
+    // Memory pool packet size limits
 
-	private static final int MemoryPoolMinimumPacketSize	= 256;
-	private static final int MemoryPoolMaximumPacketSize	= 128 * (int) MemorySize.KILOBYTE;
+    private static final int MemoryPoolMinimumPacketSize = 256;
+    private static final int MemoryPoolMaximumPacketSize = 128 * (int) MemorySize.KILOBYTE;
 
-	// Memory pool allocation limits
+    // Memory pool allocation limits
 
-	private static final int MemoryPoolMinimumAllocation	= 5;
-	private static final int MemoryPoolMaximumAllocation    = 500;
+    private static final int MemoryPoolMinimumAllocation = 5;
+    private static final int MemoryPoolMaximumAllocation = 500;
 
-	// Maximum session timeout
+    // Maximum session timeout
 
-	private static final int MaxSessionTimeout				= 60 * 60;	// 1 hour
+    private static final int MaxSessionTimeout = 60 * 60;    // 1 hour
 
-	// Date formatter
+    // Date formatter
 
-	private SimpleDateFormat m_dateFmt = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
+    private SimpleDateFormat m_dateFmt = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
 
-	/**
-	 * Default constructor
-	 */
-	public CifsOnlyXMLServerConfiguration() {
-		super("");
-	}
+    /**
+     * Default constructor
+     */
+    public CifsOnlyXMLServerConfiguration() {
+        super("");
+    }
 
-	/**
-	 * Load the configuration from the specified file.
-	 *
-	 * @param fname java.lang.String
-	 * @exception IOException
-	 * @exception InvalidConfigurationException
-	 */
-	public final void loadConfiguration(String fname)
-		throws IOException, InvalidConfigurationException {
+    /**
+     * Load the configuration from the specified file.
+     *
+     * @param fname java.lang.String
+     * @throws IOException
+     * @throws InvalidConfigurationException
+     */
+    public final void loadConfiguration(String fname)
+            throws IOException, InvalidConfigurationException {
 
-		// Open the configuration file
+        // Open the configuration file
 
-		InputStream inFile = new FileInputStream(fname);
-		Reader inRead = new InputStreamReader(inFile);
+        InputStream inFile = new FileInputStream(fname);
+        Reader inRead = new InputStreamReader(inFile);
 
-		// Call the main parsing method
+        // Call the main parsing method
 
-		loadConfiguration(inRead);
-	}
+        loadConfiguration(inRead);
+    }
 
-	/**
-	 * Load the configuration from the specified input stream
-	 *
-	 * @param in Reader
-	 * @exception IOException
-	 * @exception InvalidConfigurationException
-	 */
-	public final void loadConfiguration(Reader in)
-		throws IOException, InvalidConfigurationException {
+    /**
+     * Load the configuration from the specified input stream
+     *
+     * @param in Reader
+     * @throws IOException
+     * @throws InvalidConfigurationException
+     */
+    public final void loadConfiguration(Reader in)
+            throws IOException, InvalidConfigurationException {
 
-		// Reset the current configuration to the default settings
+        // Reset the current configuration to the default settings
 
-		removeAllConfigSections();
+        removeAllConfigSections();
 
-		// Load and parse the XML configuration document
+        // Load and parse the XML configuration document
 
-		try {
+        try {
 
-			// Load the configuration from the XML file
+            // Load the configuration from the XML file
 
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
 
-			InputSource xmlSource = new InputSource(in);
-			Document doc = builder.parse(xmlSource);
+            InputSource xmlSource = new InputSource(in);
+            Document doc = builder.parse(xmlSource);
 
-			// Parse the document
+            // Parse the document
 
-			loadConfiguration(doc);
-		}
-		catch (Exception ex) {
+            loadConfiguration(doc);
+        } catch (Exception ex) {
 
-			// Rethrow the exception as a configuration exeception
+            // Rethrow the exception as a configuration exeception
 
-			throw new InvalidConfigurationException("XML error", ex);
-		}
-		finally {
+            throw new InvalidConfigurationException("XML error", ex);
+        } finally {
 
-			// Close the input file
+            // Close the input file
 
-			in.close();
-		}
-	}
+            in.close();
+        }
+    }
 
-	/**
-	 * Load the configuration from the specified document
-	 *
-	 * @param doc Document
-	 * @exception IOException
-	 * @exception InvalidConfigurationException
-	 */
-	public void loadConfiguration(Document doc)
-		throws IOException, InvalidConfigurationException {
+    /**
+     * Load the configuration from the specified document
+     *
+     * @param doc Document
+     * @throws IOException
+     * @throws InvalidConfigurationException
+     */
+    public void loadConfiguration(Document doc)
+            throws IOException, InvalidConfigurationException {
 
-		// Reset the current configuration to the default settings
+        // Reset the current configuration to the default settings
 
-		removeAllConfigSections();
+        removeAllConfigSections();
 
-		// Parse the XML configuration document
+        // Parse the XML configuration document
 
-		try {
+        try {
 
-			// Access the root of the XML document, get a list of the child nodes
+            // Access the root of the XML document, get a list of the child nodes
 
-			Element root = doc.getDocumentElement();
-			NodeList childNodes = root.getChildNodes();
+            Element root = doc.getDocumentElement();
+            NodeList childNodes = root.getChildNodes();
 
-			// Process the debug settings element
+            // Process the debug settings element
 
-			procDebugElement(findChildNode("debug", childNodes));
+            procDebugElement(findChildNode("debug", childNodes));
 
-			// Process the core server configuration settings
+            // Process the core server configuration settings
 
-			procServerCoreElement(findChildNode("server-core", childNodes));
+            procServerCoreElement(findChildNode("server-core", childNodes));
 
-			// Process the global configuration settings
+            // Process the global configuration settings
 
-			procGlobalElement(findChildNode("global", childNodes));
+            procGlobalElement(findChildNode("global", childNodes));
 
-			// Process the security element
+            // Process the security element
 
-			procSecurityElement(findChildNode("security", childNodes));
+            procSecurityElement(findChildNode("security", childNodes));
 
-			// Process the shares element
+            // Process the shares element
 
-			procSharesElement(findChildNode("shares", childNodes));
+            procSharesElement(findChildNode("shares", childNodes));
 
-			// Process the SMB server specific settings
+            // Process the SMB server specific settings
 
-			procSMBServerElement(findChildNode("SMB", childNodes));
+            procSMBServerElement(findChildNode("SMB", childNodes));
 
-			// Process the drive mappings settings
+            // Process the drive mappings settings
 
-			procDriveMappingsElement(findChildNode("DriveMappings", childNodes));
-		}
-		catch (Exception ex) {
+            procDriveMappingsElement(findChildNode("DriveMappings", childNodes));
+        } catch (Exception ex) {
 
-			// Rethrow the exception as a configuration exeception
+            // Rethrow the exception as a configuration exeception
 
-			throw new InvalidConfigurationException("XML error", ex);
-		}
-	}
+            throw new InvalidConfigurationException("XML error", ex);
+        }
+    }
 
-	/**
-	 * Process the server core settings XML element
-	 *
-	 * @param srvCore Element
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void procServerCoreElement(Element srvCore)
-		throws InvalidConfigurationException {
+    /**
+     * Process the server core settings XML element
+     *
+     * @param srvCore Element
+     * @throws InvalidConfigurationException
+     */
+    protected final void procServerCoreElement(Element srvCore)
+            throws InvalidConfigurationException {
 
-		// Create the core server configuration section
+        // Create the core server configuration section
 
-		CoreServerConfigSection coreConfig = new CoreServerConfigSection(this);
+        CoreServerConfigSection coreConfig = new CoreServerConfigSection(this);
 
-		// Check if the server core element has been specified
+        // Check if the server core element has been specified
 
-		if ( srvCore == null) {
+        if (srvCore == null) {
 
-			// Configure a default memory pool
+            // Configure a default memory pool
 
-			coreConfig.setMemoryPool( DefaultMemoryPoolBufSizes, DefaultMemoryPoolInitAlloc, DefaultMemoryPoolMaxAlloc);
+            coreConfig.setMemoryPool(DefaultMemoryPoolBufSizes, DefaultMemoryPoolInitAlloc, DefaultMemoryPoolMaxAlloc);
 
-			// Configure a default thread pool size
+            // Configure a default thread pool size
 
-			coreConfig.setThreadPool( DefaultThreadPoolInit, DefaultThreadPoolMax);
-			return;
-		}
+            coreConfig.setThreadPool(DefaultThreadPoolInit, DefaultThreadPoolMax);
+            return;
+        }
 
-		// Check if the thread pool size has been specified
+        // Check if the thread pool size has been specified
 
-		Element elem = findChildNode("threadPool", srvCore.getChildNodes());
-		if ( elem != null) {
+        Element elem = findChildNode("threadPool", srvCore.getChildNodes());
+        if (elem != null) {
 
-			// Get the initial thread pool size
+            // Get the initial thread pool size
 
-			String initSizeStr = elem.getAttribute("init");
-			if ( initSizeStr == null || initSizeStr.length() == 0)
-				throw new InvalidConfigurationException("Thread pool initial size not specified");
+            String initSizeStr = elem.getAttribute("init");
+            if (initSizeStr == null || initSizeStr.length() == 0)
+                throw new InvalidConfigurationException("Thread pool initial size not specified");
 
-			// Validate the initial thread pool size
+            // Validate the initial thread pool size
 
-			int initSize = 0;
+            int initSize = 0;
 
-			try {
-				initSize = Integer.parseInt( initSizeStr);
-			}
-			catch (NumberFormatException ex) {
-				throw new InvalidConfigurationException("Invalid thread pool size value, " + initSizeStr);
-			}
+            try {
+                initSize = Integer.parseInt(initSizeStr);
+            } catch (NumberFormatException ex) {
+                throw new InvalidConfigurationException("Invalid thread pool size value, " + initSizeStr);
+            }
 
-			// Range check the thread pool size
+            // Range check the thread pool size
 
-			if ( initSize < ThreadRequestPool.MinimumWorkerThreads)
-				throw new InvalidConfigurationException("Thread pool size below minimum allowed size");
+            if (initSize < ThreadRequestPool.MinimumWorkerThreads)
+                throw new InvalidConfigurationException("Thread pool size below minimum allowed size");
 
-			if ( initSize > ThreadRequestPool.MaximumWorkerThreads)
-				throw new InvalidConfigurationException("Thread pool size above maximum allowed size");
+            if (initSize > ThreadRequestPool.MaximumWorkerThreads)
+                throw new InvalidConfigurationException("Thread pool size above maximum allowed size");
 
-			// Get the maximum thread pool size
+            // Get the maximum thread pool size
 
-			String maxSizeStr = elem.getAttribute("max");
-			int maxSize = initSize;
+            String maxSizeStr = elem.getAttribute("max");
+            int maxSize = initSize;
 
-			if ( maxSizeStr.length() > 0) {
+            if (maxSizeStr.length() > 0) {
 
-				// Validate the maximum thread pool size
+                // Validate the maximum thread pool size
 
-				try {
-					maxSize = Integer.parseInt( maxSizeStr);
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException(" Invalid thread pool maximum size value, " + maxSizeStr);
-				}
+                try {
+                    maxSize = Integer.parseInt(maxSizeStr);
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException(" Invalid thread pool maximum size value, " + maxSizeStr);
+                }
 
-				// Range check the maximum thread pool size
+                // Range check the maximum thread pool size
 
-				if ( maxSize < ThreadRequestPool.MinimumWorkerThreads)
-					throw new InvalidConfigurationException("Thread pool maximum size below minimum allowed size");
+                if (maxSize < ThreadRequestPool.MinimumWorkerThreads)
+                    throw new InvalidConfigurationException("Thread pool maximum size below minimum allowed size");
 
-				if ( maxSize > ThreadRequestPool.MaximumWorkerThreads)
-					throw new InvalidConfigurationException("Thread pool maximum size above maximum allowed size");
+                if (maxSize > ThreadRequestPool.MaximumWorkerThreads)
+                    throw new InvalidConfigurationException("Thread pool maximum size above maximum allowed size");
 
-				if ( maxSize < initSize)
-					throw new InvalidConfigurationException("Initial size is larger than maxmimum size");
-			}
-			else if ( maxSizeStr != null)
-				throw new InvalidConfigurationException("Thread pool maximum size not specified");
+                if (maxSize < initSize)
+                    throw new InvalidConfigurationException("Initial size is larger than maxmimum size");
+            } else if (maxSizeStr != null)
+                throw new InvalidConfigurationException("Thread pool maximum size not specified");
 
-			// Configure the thread pool
+            // Configure the thread pool
 
-			coreConfig.setThreadPool( initSize, maxSize);
-		}
-		else {
+            coreConfig.setThreadPool(initSize, maxSize);
+        } else {
 
-			// Configure a default thread pool size
+            // Configure a default thread pool size
 
-			coreConfig.setThreadPool( DefaultThreadPoolInit, DefaultThreadPoolMax);
-		}
+            coreConfig.setThreadPool(DefaultThreadPoolInit, DefaultThreadPoolMax);
+        }
 
-		// Check if thread pool debug output is enabled
+        // Check if thread pool debug output is enabled
 
-		if ( findChildNode("threadPoolDebug", srvCore.getChildNodes()) != null)
-			coreConfig.getThreadPool().setDebug( true);
+        if (findChildNode("threadPoolDebug", srvCore.getChildNodes()) != null)
+            coreConfig.getThreadPool().setDebug(true);
 
-		// Check if the memory pool configuration has been specified
+        // Check if the memory pool configuration has been specified
 
-		elem = findChildNode("memoryPool", srvCore.getChildNodes());
-		if ( elem != null) {
+        elem = findChildNode("memoryPool", srvCore.getChildNodes());
+        if (elem != null) {
 
-			// Check if the packet sizes/allocations have been specified
+            // Check if the packet sizes/allocations have been specified
 
-			Element pktElem = findChildNode("packetSizes", elem.getChildNodes());
-			if ( pktElem != null) {
+            Element pktElem = findChildNode("packetSizes", elem.getChildNodes());
+            if (pktElem != null) {
 
-				// Calculate the array size for the packet size/allocation arrays
+                // Calculate the array size for the packet size/allocation arrays
 
-				NodeList nodeList = pktElem.getChildNodes();
-				int elemCnt = 0;
+                NodeList nodeList = pktElem.getChildNodes();
+                int elemCnt = 0;
 
-				for ( int i = 0; i < nodeList.getLength(); i++) {
-					if ( nodeList.item( i).getNodeType() == ELEMENT_TYPE)
-						elemCnt++;
-				}
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    if (nodeList.item(i).getNodeType() == ELEMENT_TYPE)
+                        elemCnt++;
+                }
 
-				// Create the packet size, initial allocation and maximum allocation arrays
+                // Create the packet size, initial allocation and maximum allocation arrays
 
-				int[] pktSizes  = new int[elemCnt];
-				int[] initSizes = new int[elemCnt];
-				int[] maxSizes  = new int[elemCnt];
+                int[] pktSizes = new int[elemCnt];
+                int[] initSizes = new int[elemCnt];
+                int[] maxSizes = new int[elemCnt];
 
-				int elemIdx = 0;
+                int elemIdx = 0;
 
-				// Process the packet size elements
+                // Process the packet size elements
 
-				for ( int i = 0; i < nodeList.getLength(); i++) {
+                for (int i = 0; i < nodeList.getLength(); i++) {
 
-					// Get the current element node
+                    // Get the current element node
 
-					Node curNode = nodeList.item( i);
-					if ( curNode.getNodeType() == ELEMENT_TYPE) {
+                    Node curNode = nodeList.item(i);
+                    if (curNode.getNodeType() == ELEMENT_TYPE) {
 
-						// Get the element and check if it is a packet size element
+                        // Get the element and check if it is a packet size element
 
-						Element curElem = (Element) curNode;
-						if ( curElem.getNodeName().equals("packet")) {
+                        Element curElem = (Element) curNode;
+                        if (curElem.getNodeName().equals("packet")) {
 
-							// Get the packet size
+                            // Get the packet size
 
-							int pktSize   = -1;
-							int initAlloc = -1;
-							int maxAlloc  = -1;
+                            int pktSize = -1;
+                            int initAlloc = -1;
+                            int maxAlloc = -1;
 
-							String pktSizeStr = curElem.getAttribute("size");
-							if ( pktSizeStr == null || pktSizeStr.length() == 0)
-								throw new InvalidConfigurationException("Memory pool packet size not specified");
+                            String pktSizeStr = curElem.getAttribute("size");
+                            if (pktSizeStr == null || pktSizeStr.length() == 0)
+                                throw new InvalidConfigurationException("Memory pool packet size not specified");
 
-							// Parse the packet size
+                            // Parse the packet size
 
-							try {
-								pktSize = MemorySize.getByteValueInt( pktSizeStr);
-							}
-							catch ( NumberFormatException ex) {
-								throw new InvalidConfigurationException("Memory pool packet size, invalid size value, " + pktSizeStr);
-							}
+                            try {
+                                pktSize = MemorySize.getByteValueInt(pktSizeStr);
+                            } catch (NumberFormatException ex) {
+                                throw new InvalidConfigurationException("Memory pool packet size, invalid size value, " + pktSizeStr);
+                            }
 
-							// Make sure the packet sizes have been specified in ascending order
+                            // Make sure the packet sizes have been specified in ascending order
 
-							if ( elemIdx > 0 && pktSizes[elemIdx - 1] >= pktSize)
-								throw new InvalidConfigurationException("Invalid packet size specified, less than/equal to previous packet size");
+                            if (elemIdx > 0 && pktSizes[elemIdx - 1] >= pktSize)
+                                throw new InvalidConfigurationException("Invalid packet size specified, less than/equal to previous packet size");
 
-							// Get the initial allocation for the current packet size
+                            // Get the initial allocation for the current packet size
 
-							String initSizeStr = curElem.getAttribute("init");
-							if ( initSizeStr == null || initSizeStr.length() == 0)
-								throw new InvalidConfigurationException("Memory pool initial allocation not specified");
+                            String initSizeStr = curElem.getAttribute("init");
+                            if (initSizeStr == null || initSizeStr.length() == 0)
+                                throw new InvalidConfigurationException("Memory pool initial allocation not specified");
 
-							// Parse the initial allocation
+                            // Parse the initial allocation
 
-							try {
-								initAlloc = Integer.parseInt( initSizeStr);
-							}
-							catch (NumberFormatException ex) {
-								throw new InvalidConfigurationException("Invalid initial allocation, " + initSizeStr);
-							}
+                            try {
+                                initAlloc = Integer.parseInt(initSizeStr);
+                            } catch (NumberFormatException ex) {
+                                throw new InvalidConfigurationException("Invalid initial allocation, " + initSizeStr);
+                            }
 
-							// Range check the initial allocation
+                            // Range check the initial allocation
 
-							if ( initAlloc < MemoryPoolMinimumAllocation)
-								throw new InvalidConfigurationException("Initial memory pool allocation below minimum of " + MemoryPoolMinimumAllocation);
+                            if (initAlloc < MemoryPoolMinimumAllocation)
+                                throw new InvalidConfigurationException("Initial memory pool allocation below minimum of " + MemoryPoolMinimumAllocation);
 
-							if ( initAlloc > MemoryPoolMaximumAllocation)
-								throw new InvalidConfigurationException("Initial memory pool allocation above maximum of " + MemoryPoolMaximumAllocation);
+                            if (initAlloc > MemoryPoolMaximumAllocation)
+                                throw new InvalidConfigurationException("Initial memory pool allocation above maximum of " + MemoryPoolMaximumAllocation);
 
-							// Get the maximum allocation for the current packet size
+                            // Get the maximum allocation for the current packet size
 
-							String maxSizeStr = curElem.getAttribute("max");
-							if ( maxSizeStr == null || maxSizeStr.length() == 0)
-								throw new InvalidConfigurationException("Memory pool maximum allocation not specified");
+                            String maxSizeStr = curElem.getAttribute("max");
+                            if (maxSizeStr == null || maxSizeStr.length() == 0)
+                                throw new InvalidConfigurationException("Memory pool maximum allocation not specified");
 
-							// Parse the maximum allocation
+                            // Parse the maximum allocation
 
-							try {
-								maxAlloc = Integer.parseInt( maxSizeStr);
-							}
-							catch (NumberFormatException ex) {
-								throw new InvalidConfigurationException("Invalid maximum allocation, " + maxSizeStr);
-							}
+                            try {
+                                maxAlloc = Integer.parseInt(maxSizeStr);
+                            } catch (NumberFormatException ex) {
+                                throw new InvalidConfigurationException("Invalid maximum allocation, " + maxSizeStr);
+                            }
 
-							// Range check the maximum allocation
+                            // Range check the maximum allocation
 
-							if ( maxAlloc < MemoryPoolMinimumAllocation)
-								throw new InvalidConfigurationException("Maximum memory pool allocation below minimum of " + MemoryPoolMinimumAllocation);
+                            if (maxAlloc < MemoryPoolMinimumAllocation)
+                                throw new InvalidConfigurationException("Maximum memory pool allocation below minimum of " + MemoryPoolMinimumAllocation);
 
-							if ( initAlloc > MemoryPoolMaximumAllocation)
-								throw new InvalidConfigurationException("Maximum memory pool allocation above maximum of " + MemoryPoolMaximumAllocation);
+                            if (initAlloc > MemoryPoolMaximumAllocation)
+                                throw new InvalidConfigurationException("Maximum memory pool allocation above maximum of " + MemoryPoolMaximumAllocation);
 
-							// Set the current packet size elements
+                            // Set the current packet size elements
 
-							pktSizes[elemIdx]  = pktSize;
-							initSizes[elemIdx] = initAlloc;
-							maxSizes[elemIdx]  = maxAlloc;
+                            pktSizes[elemIdx] = pktSize;
+                            initSizes[elemIdx] = initAlloc;
+                            maxSizes[elemIdx] = maxAlloc;
 
-							elemIdx++;
-						}
-					}
+                            elemIdx++;
+                        }
+                    }
 
-				}
+                }
 
-				// Check if all elements were used in the packet size/allocation arrays
+                // Check if all elements were used in the packet size/allocation arrays
 
-				if ( elemIdx < pktSizes.length) {
+                if (elemIdx < pktSizes.length) {
 
-					// Re-allocate the packet size/allocation arrays
+                    // Re-allocate the packet size/allocation arrays
 
-					int[] newPktSizes  = new int[elemIdx];
-					int[] newInitSizes = new int[elemIdx];
-					int[] newMaxSizes  = new int[elemIdx];
+                    int[] newPktSizes = new int[elemIdx];
+                    int[] newInitSizes = new int[elemIdx];
+                    int[] newMaxSizes = new int[elemIdx];
 
-					// Copy the values to the shorter arrays
+                    // Copy the values to the shorter arrays
 
-					System.arraycopy(pktSizes, 0, newPktSizes, 0, elemIdx);
-					System.arraycopy(initSizes, 0, newInitSizes, 0, elemIdx);
-					System.arraycopy(maxSizes, 0, newMaxSizes, 0, elemIdx);
+                    System.arraycopy(pktSizes, 0, newPktSizes, 0, elemIdx);
+                    System.arraycopy(initSizes, 0, newInitSizes, 0, elemIdx);
+                    System.arraycopy(maxSizes, 0, newMaxSizes, 0, elemIdx);
 
-					// Move the new arrays into place
+                    // Move the new arrays into place
 
-					pktSizes  = newPktSizes;
-					initSizes = newInitSizes;
-					maxSizes  = newMaxSizes;
-				}
+                    pktSizes = newPktSizes;
+                    initSizes = newInitSizes;
+                    maxSizes = newMaxSizes;
+                }
 
-				// Configure the memory pool
+                // Configure the memory pool
 
-				coreConfig.setMemoryPool( pktSizes, initSizes, maxSizes);
-			}
-		}
-		else {
+                coreConfig.setMemoryPool(pktSizes, initSizes, maxSizes);
+            }
+        } else {
 
-			// Configure a default memory pool
+            // Configure a default memory pool
 
-			coreConfig.setMemoryPool( DefaultMemoryPoolBufSizes, DefaultMemoryPoolInitAlloc, DefaultMemoryPoolMaxAlloc);
-		}
-	}
+            coreConfig.setMemoryPool(DefaultMemoryPoolBufSizes, DefaultMemoryPoolInitAlloc, DefaultMemoryPoolMaxAlloc);
+        }
+    }
 
-	/**
-	 * Process the global settings XML element
-	 *
-	 * @param global Element
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void procGlobalElement(Element global)
-		throws InvalidConfigurationException {
+    /**
+     * Process the global settings XML element
+     *
+     * @param global Element
+     * @throws InvalidConfigurationException
+     */
+    protected final void procGlobalElement(Element global)
+            throws InvalidConfigurationException {
 
-		// Create the global configuration section
+        // Create the global configuration section
 
-		GlobalConfigSection globalConfig = new GlobalConfigSection(this);
+        GlobalConfigSection globalConfig = new GlobalConfigSection(this);
 
-		// Check if the global element has been specified
+        // Check if the global element has been specified
 
-		if ( global == null)
-			return;
+        if (global == null)
+            return;
 
-		// Check if the timezone has been specified
+        // Check if the timezone has been specified
 
-		Element elem = findChildNode("timezone", global.getChildNodes());
-		if ( elem != null) {
+        Element elem = findChildNode("timezone", global.getChildNodes());
+        if (elem != null) {
 
-			// Check for the timezone name
+            // Check for the timezone name
 
-			String tzName = elem.getAttribute("name");
-			if ( tzName != null && tzName.length() > 0)
-				globalConfig.setTimeZone(tzName);
+            String tzName = elem.getAttribute("name");
+            if (tzName != null && tzName.length() > 0)
+                globalConfig.setTimeZone(tzName);
 
-			// Check for the timezone offset value
+            // Check for the timezone offset value
 
-			String tzOffset = elem.getAttribute("offset");
-			if ( tzOffset != null && tzOffset.length() > 0 && tzName != null && tzName.length() > 0)
-				throw new InvalidConfigurationException("Specify name or offset for timezone");
+            String tzOffset = elem.getAttribute("offset");
+            if (tzOffset != null && tzOffset.length() > 0 && tzName != null && tzName.length() > 0)
+                throw new InvalidConfigurationException("Specify name or offset for timezone");
 
-			// Validate the timezone offset
+            // Validate the timezone offset
 
-			if ( tzOffset != null && tzOffset.length() > 0) {
-				int offset = 0;
+            if (tzOffset != null && tzOffset.length() > 0) {
+                int offset = 0;
 
-				try {
-					offset = Integer.parseInt(tzOffset);
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException("Invalid timezone offset value, " + tzOffset);
-				}
+                try {
+                    offset = Integer.parseInt(tzOffset);
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException("Invalid timezone offset value, " + tzOffset);
+                }
 
-				// Range check the timezone offset value
+                // Range check the timezone offset value
 
-				if ( offset < -1440 || offset > 1440)
-					throw new InvalidConfigurationException("Invalid timezone offset, value out of valid range, " + tzOffset);
+                if (offset < -1440 || offset > 1440)
+                    throw new InvalidConfigurationException("Invalid timezone offset, value out of valid range, " + tzOffset);
 
-				// Set the timezone offset in minutes from UTC
+                // Set the timezone offset in minutes from UTC
 
-				globalConfig.setTimeZoneOffset(offset);
-			}
-		}
-	}
+                globalConfig.setTimeZoneOffset(offset);
+            }
+        }
+    }
 
-	/**
-	 * Process the SMB server XML element
-	 *
-	 * @param smb Element
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void procSMBServerElement(Element smb)
-		throws InvalidConfigurationException {
+    /**
+     * Process the SMB server XML element
+     *
+     * @param smb Element
+     * @throws InvalidConfigurationException
+     */
+    protected final void procSMBServerElement(Element smb)
+            throws InvalidConfigurationException {
 
-		// Check if the SMB element is valid
+        // Check if the SMB element is valid
 
-		if ( smb == null)
-			throw new InvalidConfigurationException("SMB section must be specified");
+        if (smb == null)
+            throw new InvalidConfigurationException("SMB section must be specified");
 
-		// Create the CIFS server configuration section
+        // Create the CIFS server configuration section
 
-		CIFSConfigSection cifsConfig = new CIFSConfigSection(this);
+        CIFSConfigSection cifsConfig = new CIFSConfigSection(this);
 
-		// Process the main SMB server settings
+        // Process the main SMB server settings
 
-		procHostElement(findChildNode("host", smb.getChildNodes()), cifsConfig);
+        procHostElement(findChildNode("host", smb.getChildNodes()), cifsConfig);
 
-		// Debug settings are now specified within the SMB server configuration block
+        // Debug settings are now specified within the SMB server configuration block
 
-		// Check if NetBIOS debug is enabled
+        // Check if NetBIOS debug is enabled
 
-		Element elem = findChildNode("netbiosDebug", smb.getChildNodes());
-		if ( elem != null)
-			cifsConfig.setNetBIOSDebug(true);
+        Element elem = findChildNode("netbiosDebug", smb.getChildNodes());
+        if (elem != null)
+            cifsConfig.setNetBIOSDebug(true);
 
-		// Check if host announcement debug is enabled
+        // Check if host announcement debug is enabled
 
-		elem = findChildNode("announceDebug", smb.getChildNodes());
-		if ( elem != null)
-			cifsConfig.setHostAnnounceDebug(true);
+        elem = findChildNode("announceDebug", smb.getChildNodes());
+        if (elem != null)
+            cifsConfig.setHostAnnounceDebug(true);
 
-		// Check if session debug is enabled
+        // Check if close session on error is enabled
 
-		elem = findChildNode("sessionDebug", smb.getChildNodes());
-		if ( elem != null) {
+        elem = findChildNode("closeSessionOnError", smb.getChildNodes());
+        if (elem != null) {
+            cifsConfig.setCloseSessionOnError(true);
+        }
 
-			// Check for session debug flags
+        // Check if session debug is enabled
 
-			String flags = elem.getAttribute("flags");
-			int sessDbg = DEFAULT_SESSDEBUG;
+        elem = findChildNode("sessionDebug", smb.getChildNodes());
+        if (elem != null) {
 
-			if ( flags != null) {
+            // Check for session debug flags
 
-				// Clear the default debug flags
+            String flags = elem.getAttribute("flags");
+            int sessDbg = DEFAULT_SESSDEBUG;
 
-				sessDbg = 0;
+            if (flags != null) {
 
-				// Parse the flags
+                // Clear the default debug flags
 
-				flags = flags.toUpperCase();
-				StringTokenizer token = new StringTokenizer(flags, ",");
+                sessDbg = 0;
 
-				while (token.hasMoreTokens()) {
+                // Parse the flags
 
-					// Get the current debug flag token
+                flags = flags.toUpperCase();
+                StringTokenizer token = new StringTokenizer(flags, ",");
 
-					String dbg = token.nextToken().trim();
+                while (token.hasMoreTokens()) {
 
-					// Find the debug flag name
+                    // Get the current debug flag token
 
-					int idx = 0;
+                    String dbg = token.nextToken().trim();
 
-					while (idx < m_sessDbgStr.length && m_sessDbgStr[idx].equalsIgnoreCase(dbg) == false)
-						idx++;
+                    // Find the debug flag name
 
-					if ( idx >= m_sessDbgStr.length)
-						throw new InvalidConfigurationException("Invalid session debug flag, " + dbg);
+                    int idx = 0;
 
-					// Set the debug flag
+                    while (idx < m_sessDbgStr.length && m_sessDbgStr[idx].equalsIgnoreCase(dbg) == false)
+                        idx++;
 
-					sessDbg += 1 << idx;
-				}
-			}
+                    if (idx >= m_sessDbgStr.length)
+                        throw new InvalidConfigurationException("Invalid session debug flag, " + dbg);
 
-			// Set the session debug flags
+                    // Set the debug flag
 
-			cifsConfig.setSessionDebugFlags(sessDbg);
-		}
+                    sessDbg += 1 << idx;
+                }
+            }
 
-		// Check if NIO based code should be disabled
+            // Set the session debug flags
 
-		if ( findChildNode( "disableNIO", smb.getChildNodes()) != null)
-			cifsConfig.setDisableNIOCode( true);
+            cifsConfig.setSessionDebugFlags(sessDbg);
+        }
 
-		// Check if a maximum virtual circuits per session limit has been specified
+        // Check if NIO based code should be disabled
 
-		elem = findChildNode("virtualCircuits", smb.getChildNodes());
-		if ( elem != null) {
+        if (findChildNode("disableNIO", smb.getChildNodes()) != null)
+            cifsConfig.setDisableNIOCode(true);
 
-			// Parse and validate the maximum virtual circuits value
+        // Check if a maximum virtual circuits per session limit has been specified
 
-			String maxVCVal = elem.getAttribute( "maxPerSession");
+        elem = findChildNode("virtualCircuits", smb.getChildNodes());
+        if (elem != null) {
 
-			if ( maxVCVal != null && maxVCVal.length() > 0) {
-				try {
+            // Parse and validate the maximum virtual circuits value
 
-					// Parse the value, and range check
+            String maxVCVal = elem.getAttribute("maxPerSession");
 
-					int maxVC = Integer.parseInt( maxVCVal);
+            if (maxVCVal != null && maxVCVal.length() > 0) {
+                try {
 
-					if ( maxVC < VirtualCircuitList.MinCircuits || maxVC > VirtualCircuitList.MaxCircuits)
-						throw new InvalidConfigurationException("Maximum virtual circuits value out of range, valid range " + VirtualCircuitList.MinCircuits + " - " +
-								VirtualCircuitList.MaxCircuits);
+                    // Parse the value, and range check
 
-					// Set the maximum virtual circuits per session
+                    int maxVC = Integer.parseInt(maxVCVal);
 
-					cifsConfig.setMaximumVirtualCircuits( maxVC);
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException("Invalid maximum virtual circuits value, " + maxVCVal);
-				}
-			}
-		}
+                    if (maxVC < VirtualCircuitList.MinCircuits || maxVC > VirtualCircuitList.MaxCircuits)
+                        throw new InvalidConfigurationException("Maximum virtual circuits value out of range, valid range " + VirtualCircuitList.MinCircuits + " - " +
+                                VirtualCircuitList.MaxCircuits);
 
-		// Check if an authenticator has been specified
+                    // Set the maximum virtual circuits per session
 
-		Element authElem = findChildNode("authenticator", smb.getChildNodes());
-		if ( authElem != null) {
+                    cifsConfig.setMaximumVirtualCircuits(maxVC);
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException("Invalid maximum virtual circuits value, " + maxVCVal);
+                }
+            }
+        }
 
-			// Get the authenticator class and security mode
+        // Check if an authenticator has been specified
 
-			Element classElem = findChildNode("class", authElem.getChildNodes());
-			String authClass = null;
+        Element authElem = findChildNode("authenticator", smb.getChildNodes());
+        if (authElem != null) {
 
-			if ( classElem == null) {
+            // Get the authenticator class and security mode
 
-				// Check if the authenticator type has been specified
+            Element classElem = findChildNode("class", authElem.getChildNodes());
+            String authClass = null;
 
-				String authType = authElem.getAttribute("type");
+            if (classElem == null) {
 
-				if ( authType == null)
-					throw new InvalidConfigurationException("Authenticator class not specified");
+                // Check if the authenticator type has been specified
 
-				// Check the authenticator type and set the appropriate authenticator class
+                String authType = authElem.getAttribute("type");
 
-				if ( authType.equalsIgnoreCase("local"))
-					authClass = "org.alfresco.jlan.server.auth.LocalAuthenticator";
-				else if ( authType.equalsIgnoreCase("passthru"))
-					authClass = "org.alfresco.jlan.server.auth.passthru.PassthruAuthenticator";
-				else if ( authType.equalsIgnoreCase("enterprise"))
-					authClass = "org.alfresco.jlan.server.auth.EnterpriseCifsAuthenticator";
-			}
-			else {
+                if (authType == null)
+                    throw new InvalidConfigurationException("Authenticator class not specified");
 
-				// Set the authenticator class
+                // Check the authenticator type and set the appropriate authenticator class
 
-				authClass = getText(classElem);
-			}
+                if (authType.equalsIgnoreCase("local"))
+                    authClass = "org.alfresco.jlan.server.auth.LocalAuthenticator";
+                else if (authType.equalsIgnoreCase("passthru"))
+                    authClass = "org.alfresco.jlan.server.auth.passthru.PassthruAuthenticator";
+                else if (authType.equalsIgnoreCase("enterprise"))
+                    authClass = "org.alfresco.jlan.server.auth.EnterpriseCifsAuthenticator";
+            } else {
 
-			Element modeElem = findChildNode("mode", authElem.getChildNodes());
-			int accessMode = CifsAuthenticator.USER_MODE;
+                // Set the authenticator class
 
-			if ( modeElem != null) {
+                authClass = getText(classElem);
+            }
 
-				// Validate the authenticator mode
+            Element modeElem = findChildNode("mode", authElem.getChildNodes());
+            int accessMode = CifsAuthenticator.USER_MODE;
 
-				String mode = getText(modeElem);
-				if ( mode.equalsIgnoreCase("user"))
-					accessMode = CifsAuthenticator.USER_MODE;
-				else if ( mode.equalsIgnoreCase("share"))
-					accessMode = CifsAuthenticator.SHARE_MODE;
-				else
-					throw new InvalidConfigurationException("Invalid authentication mode, must be USER or SHARE");
-			}
+            if (modeElem != null) {
 
-			// Get the allow guest setting
+                // Validate the authenticator mode
 
-			Element allowGuest = findChildNode("allowGuest", authElem.getChildNodes());
+                String mode = getText(modeElem);
+                if (mode.equalsIgnoreCase("user"))
+                    accessMode = CifsAuthenticator.USER_MODE;
+                else if (mode.equalsIgnoreCase("share"))
+                    accessMode = CifsAuthenticator.SHARE_MODE;
+                else
+                    throw new InvalidConfigurationException("Invalid authentication mode, must be USER or SHARE");
+            }
 
-			// Get the parameters for the authenticator class
+            // Get the allow guest setting
 
-			ConfigElement params = buildConfigElement(authElem);
-			cifsConfig.setAuthenticator(authClass, params, accessMode, allowGuest != null ? true : false);
-		}
-	}
+            Element allowGuest = findChildNode("allowGuest", authElem.getChildNodes());
 
-	/**
-	 * Process the host XML element
-	 *
-	 * @param host Element 2param cifsConfig CIFSConfigSection
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void procHostElement(Element host, CIFSConfigSection cifsConfig)
-		throws InvalidConfigurationException {
+            // Get the parameters for the authenticator class
 
-		// Check if the host element is valid
+            ConfigElement params = buildConfigElement(authElem);
+            cifsConfig.setAuthenticator(authClass, params, accessMode, allowGuest != null ? true : false);
+        }
+    }
 
-		if ( host == null)
-			throw new InvalidConfigurationException("Host section must be specified");
+    /**
+     * Process the host XML element
+     *
+     * @param host Element 2param cifsConfig CIFSConfigSection
+     * @throws InvalidConfigurationException
+     */
+    protected final void procHostElement(Element host, CIFSConfigSection cifsConfig)
+            throws InvalidConfigurationException {
 
-		// Get the host name attribute
+        // Check if the host element is valid
 
-		String attr = host.getAttribute("name");
-		if ( attr == null || attr.length() == 0)
-			throw new InvalidConfigurationException("Host name not specified or invalid");
-		cifsConfig.setServerName(attr.toUpperCase());
+        if (host == null)
+            throw new InvalidConfigurationException("Host section must be specified");
 
-		// If the global server name has not been set then use the CIFS server name
+        // Get the host name attribute
 
-		if ( getServerName() == null)
-			setServerName(cifsConfig.getServerName());
+        String attr = host.getAttribute("name");
+        if (attr == null || attr.length() == 0)
+            throw new InvalidConfigurationException("Host name not specified or invalid");
+        cifsConfig.setServerName(attr.toUpperCase());
 
-		// Get the domain name
+        // If the global server name has not been set then use the CIFS server name
 
-		attr = host.getAttribute("domain");
-		if ( attr != null && attr.length() > 0)
-			cifsConfig.setDomainName(attr.toUpperCase());
+        if (getServerName() == null)
+            setServerName(cifsConfig.getServerName());
 
-		// Get the enabled SMB dialects
+        // Get the domain name
 
-		Element elem = findChildNode("smbdialects", host.getChildNodes());
-		if ( elem != null) {
+        attr = host.getAttribute("domain");
+        if (attr != null && attr.length() > 0)
+            cifsConfig.setDomainName(attr.toUpperCase());
 
-			// Clear all configured SMB dialects
+        // Get the enabled SMB dialects
 
-			DialectSelector diaSel = cifsConfig.getEnabledDialects();
-			diaSel.ClearAll();
+        Element elem = findChildNode("smbdialects", host.getChildNodes());
+        if (elem != null) {
 
-			// Parse the SMB dilaects list
+            // Clear all configured SMB dialects
 
-			StringTokenizer token = new StringTokenizer(getText(elem), ",");
+            DialectSelector diaSel = cifsConfig.getEnabledDialects();
+            diaSel.ClearAll();
 
-			while (token.hasMoreTokens()) {
+            // Parse the SMB dilaects list
 
-				// Get the current SMB dialect token
+            StringTokenizer token = new StringTokenizer(getText(elem), ",");
 
-				String dia = token.nextToken().trim();
+            while (token.hasMoreTokens()) {
 
-				// Determine the dialect to be enabled
+                // Get the current SMB dialect token
 
-				if ( dia.equalsIgnoreCase("CORE")) {
+                String dia = token.nextToken().trim();
 
-					// Enable core dialects
+                // Determine the dialect to be enabled
 
-					diaSel.AddDialect(Dialect.Core);
-					diaSel.AddDialect(Dialect.CorePlus);
-				}
-				else if ( dia.equalsIgnoreCase("LANMAN")) {
+                if (dia.equalsIgnoreCase("CORE")) {
 
-					// Enable the LanMAn dialects
+                    // Enable core dialects
 
-					diaSel.AddDialect(Dialect.DOSLanMan1);
-					diaSel.AddDialect(Dialect.DOSLanMan2);
-					diaSel.AddDialect(Dialect.LanMan1);
-					diaSel.AddDialect(Dialect.LanMan2);
-					diaSel.AddDialect(Dialect.LanMan2_1);
-				}
-				else if ( dia.equalsIgnoreCase("NT")) {
+                    diaSel.AddDialect(Dialect.Core);
+                    diaSel.AddDialect(Dialect.CorePlus);
+                } else if (dia.equalsIgnoreCase("LANMAN")) {
 
-					// Enable the NT dialect
+                    // Enable the LanMAn dialects
 
-					diaSel.AddDialect(Dialect.NT);
-				}
-				else
-					throw new InvalidConfigurationException("Invalid SMB dialect, " + dia);
-			}
+                    diaSel.AddDialect(Dialect.DOSLanMan1);
+                    diaSel.AddDialect(Dialect.DOSLanMan2);
+                    diaSel.AddDialect(Dialect.LanMan1);
+                    diaSel.AddDialect(Dialect.LanMan2);
+                    diaSel.AddDialect(Dialect.LanMan2_1);
+                } else if (dia.equalsIgnoreCase("NT")) {
 
-			// Set the enabled server SMB dialects
+                    // Enable the NT dialect
 
-			cifsConfig.setEnabledDialects(diaSel);
-		}
+                    diaSel.AddDialect(Dialect.NT);
+                } else
+                    throw new InvalidConfigurationException("Invalid SMB dialect, " + dia);
+            }
 
-		// Check for a server comment
+            // Set the enabled server SMB dialects
 
-		elem = findChildNode("comment", host.getChildNodes());
-		if ( elem != null)
-			cifsConfig.setComment(getText(elem));
+            cifsConfig.setEnabledDialects(diaSel);
+        }
 
-		// Check for a bind address
+        // Check for a server comment
 
-		elem = findChildNode("bindto", host.getChildNodes());
-		if ( elem != null) {
+        elem = findChildNode("comment", host.getChildNodes());
+        if (elem != null)
+            cifsConfig.setComment(getText(elem));
 
-			// Check if the network adapter name has been specified
+        // Check for a bind address
 
-			if ( elem.hasAttribute("adapter")) {
+        elem = findChildNode("bindto", host.getChildNodes());
+        if (elem != null) {
 
-				// Get the IP address for the adapter
+            // Check if the network adapter name has been specified
 
-				InetAddress bindAddr = parseAdapterName(elem.getAttribute("adapter"));
+            if (elem.hasAttribute("adapter")) {
 
-				// Set the bind address for the server
+                // Get the IP address for the adapter
 
-				cifsConfig.setSMBBindAddress(bindAddr);
-			}
-			else {
+                InetAddress bindAddr = parseAdapterName(elem.getAttribute("adapter"));
 
-				// Validate the bind address
+                // Set the bind address for the server
 
-				String bindText = getText(elem);
+                cifsConfig.setSMBBindAddress(bindAddr);
+            } else {
 
-				try {
+                // Validate the bind address
 
-					// Check the bind address
+                String bindText = getText(elem);
 
-					InetAddress bindAddr = InetAddress.getByName(bindText);
+                try {
 
-					// Set the bind address for the server
+                    // Check the bind address
 
-					cifsConfig.setSMBBindAddress(bindAddr);
-				}
-				catch (UnknownHostException ex) {
-					throw new InvalidConfigurationException(ex.toString());
-				}
-			}
-		}
+                    InetAddress bindAddr = InetAddress.getByName(bindText);
 
-		// Check if the host announcer should be enabled
+                    // Set the bind address for the server
 
-		elem = findChildNode("hostAnnounce", host.getChildNodes());
-		if ( elem != null) {
+                    cifsConfig.setSMBBindAddress(bindAddr);
+                } catch (UnknownHostException ex) {
+                    throw new InvalidConfigurationException(ex.toString());
+                }
+            }
+        }
 
-			// Check for an announcement interval
+        // Check if the host announcer should be enabled
 
-			attr = elem.getAttribute("interval");
-			if ( attr != null && attr.length() > 0) {
-				try {
-					cifsConfig.setHostAnnounceInterval(Integer.parseInt(attr));
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException("Invalid host announcement interval");
-				}
-			}
+        elem = findChildNode("hostAnnounce", host.getChildNodes());
+        if (elem != null) {
 
-			// Check if the domain name has been set, this is required if the host announcer is
-			// enabled
+            // Check for an announcement interval
 
-			if ( cifsConfig.getDomainName() == null)
-				throw new InvalidConfigurationException("Domain name must be specified if host announcement is enabled");
+            attr = elem.getAttribute("interval");
+            if (attr != null && attr.length() > 0) {
+                try {
+                    cifsConfig.setHostAnnounceInterval(Integer.parseInt(attr));
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException("Invalid host announcement interval");
+                }
+            }
 
-			// Enable host announcement
+            // Check if the domain name has been set, this is required if the host announcer is
+            // enabled
 
-			cifsConfig.setHostAnnouncer(true);
-		}
+            if (cifsConfig.getDomainName() == null)
+                throw new InvalidConfigurationException("Domain name must be specified if host announcement is enabled");
 
-		// Check for a host announcer port
+            // Enable host announcement
 
-		elem = findChildNode("HostAnnouncerPort", host.getChildNodes());
-		if ( elem != null) {
-			try {
-				cifsConfig.setHostAnnouncerPort(Integer.parseInt(getText(elem)));
-				if ( cifsConfig.getHostAnnouncerPort() <= 0 || cifsConfig.getHostAnnouncerPort() >= 65535)
-					throw new InvalidConfigurationException("Host announcer port out of valid range");
-			}
-			catch (NumberFormatException ex) {
-				throw new InvalidConfigurationException("Invalid host announcer port");
-			}
-		}
+            cifsConfig.setHostAnnouncer(true);
+        }
 
-		// Check if NetBIOS SMB is enabled
+        // Check for a host announcer port
 
-		elem = findChildNode("netBIOSSMB", host.getChildNodes());
-		if ( elem != null) {
+        elem = findChildNode("HostAnnouncerPort", host.getChildNodes());
+        if (elem != null) {
+            try {
+                cifsConfig.setHostAnnouncerPort(Integer.parseInt(getText(elem)));
+                if (cifsConfig.getHostAnnouncerPort() <= 0 || cifsConfig.getHostAnnouncerPort() >= 65535)
+                    throw new InvalidConfigurationException("Host announcer port out of valid range");
+            } catch (NumberFormatException ex) {
+                throw new InvalidConfigurationException("Invalid host announcer port");
+            }
+        }
 
-			// Check if NetBIOS over TCP/IP is enabled for the current platform
+        // Check if NetBIOS SMB is enabled
 
-			boolean platformOK = false;
+        elem = findChildNode("netBIOSSMB", host.getChildNodes());
+        if (elem != null) {
 
-			if ( elem.hasAttribute("platforms")) {
+            // Check if NetBIOS over TCP/IP is enabled for the current platform
 
-				// Get the list of platforms
+            boolean platformOK = false;
 
-				String platformsStr = elem.getAttribute("platforms");
+            if (elem.hasAttribute("platforms")) {
 
-				// Parse the list of platforms that NetBIOS over TCP/IP is to be enabled for and
-				// check if the current platform is included
+                // Get the list of platforms
 
-				List<Platform.Type> enabledPlatforms = parsePlatformString(platformsStr);
-				if ( enabledPlatforms.contains(getPlatformType()))
-					platformOK = true;
-			}
-			else {
-				// No restriction on platforms
+                String platformsStr = elem.getAttribute("platforms");
 
-				platformOK = true;
-			}
+                // Parse the list of platforms that NetBIOS over TCP/IP is to be enabled for and
+                // check if the current platform is included
 
-			// Enable the NetBIOS SMB support
+                List<Platform.Type> enabledPlatforms = parsePlatformString(platformsStr);
+                if (enabledPlatforms.contains(getPlatformType()))
+                    platformOK = true;
+            } else {
+                // No restriction on platforms
 
-			cifsConfig.setNetBIOSSMB(platformOK);
+                platformOK = true;
+            }
 
-			// Only parse the other settings if NetBIOS based SMB is enabled for the current
-			// platform
+            // Enable the NetBIOS SMB support
 
-			if ( platformOK) {
+            cifsConfig.setNetBIOSSMB(platformOK);
 
-				// Check for the session port
+            // Only parse the other settings if NetBIOS based SMB is enabled for the current
+            // platform
 
-				attr = elem.getAttribute("sessionPort");
-				if ( attr != null && attr.length() > 0) {
-					try {
-						cifsConfig.setSessionPort(Integer.parseInt(attr));
-						if ( cifsConfig.getSessionPort() <= 0 || cifsConfig.getSessionPort() >= 65535)
-							throw new InvalidConfigurationException("NetBIOS SMB session port out of valid range");
-					}
-					catch (NumberFormatException ex) {
-						throw new InvalidConfigurationException("Invalid NetBIOS SMB session port");
-					}
-				}
+            if (platformOK) {
 
-				// Check for the datagram port
+                // Check for the session port
 
-				attr = elem.getAttribute("datagramPort");
-				if ( attr != null && attr.length() > 0) {
-					try {
-						cifsConfig.setDatagramPort(Integer.parseInt(attr));
-						if ( cifsConfig.getDatagramPort() <= 0 || cifsConfig.getDatagramPort() >= 65535)
-							throw new InvalidConfigurationException("NetBIOS SMB datagram port out of valid range");
-					}
-					catch (NumberFormatException ex) {
-						throw new InvalidConfigurationException("Invalid NetBIOS SMB datagram port");
-					}
-				}
+                attr = elem.getAttribute("sessionPort");
+                if (attr != null && attr.length() > 0) {
+                    try {
+                        cifsConfig.setSessionPort(Integer.parseInt(attr));
+                        if (cifsConfig.getSessionPort() <= 0 || cifsConfig.getSessionPort() >= 65535)
+                            throw new InvalidConfigurationException("NetBIOS SMB session port out of valid range");
+                    } catch (NumberFormatException ex) {
+                        throw new InvalidConfigurationException("Invalid NetBIOS SMB session port");
+                    }
+                }
 
-				// Check for the name server port
+                // Check for the datagram port
 
-				attr = elem.getAttribute("namingPort");
-				if ( attr != null && attr.length() > 0) {
-					try {
-						cifsConfig.setNameServerPort(Integer.parseInt(attr));
-						if ( cifsConfig.getNameServerPort() <= 0 || cifsConfig.getNameServerPort() >= 65535)
-							throw new InvalidConfigurationException("NetBIOS SMB naming port out of valid range");
-					}
-					catch (NumberFormatException ex) {
-						throw new InvalidConfigurationException("Invalid NetBIOS SMB naming port");
-					}
-				}
+                attr = elem.getAttribute("datagramPort");
+                if (attr != null && attr.length() > 0) {
+                    try {
+                        cifsConfig.setDatagramPort(Integer.parseInt(attr));
+                        if (cifsConfig.getDatagramPort() <= 0 || cifsConfig.getDatagramPort() >= 65535)
+                            throw new InvalidConfigurationException("NetBIOS SMB datagram port out of valid range");
+                    } catch (NumberFormatException ex) {
+                        throw new InvalidConfigurationException("Invalid NetBIOS SMB datagram port");
+                    }
+                }
 
-				// Check for a bind address
+                // Check for the name server port
 
-				attr = elem.getAttribute("bindto");
-				if ( attr != null && attr.length() > 0) {
+                attr = elem.getAttribute("namingPort");
+                if (attr != null && attr.length() > 0) {
+                    try {
+                        cifsConfig.setNameServerPort(Integer.parseInt(attr));
+                        if (cifsConfig.getNameServerPort() <= 0 || cifsConfig.getNameServerPort() >= 65535)
+                            throw new InvalidConfigurationException("NetBIOS SMB naming port out of valid range");
+                    } catch (NumberFormatException ex) {
+                        throw new InvalidConfigurationException("Invalid NetBIOS SMB naming port");
+                    }
+                }
 
-					// Validate the bind address
+                // Check for a bind address
 
-					try {
+                attr = elem.getAttribute("bindto");
+                if (attr != null && attr.length() > 0) {
 
-						// Check the bind address
+                    // Validate the bind address
 
-						InetAddress bindAddr = InetAddress.getByName(attr);
+                    try {
 
-						// Set the bind address for the NetBIOS name server
+                        // Check the bind address
 
-						cifsConfig.setNetBIOSBindAddress(bindAddr);
-					}
-					catch (UnknownHostException ex) {
-						throw new InvalidConfigurationException(ex.toString());
-					}
-				}
+                        InetAddress bindAddr = InetAddress.getByName(attr);
 
-				// Check for a bind address using the adapter name
+                        // Set the bind address for the NetBIOS name server
 
-				else if ( elem.hasAttribute("adapter")) {
+                        cifsConfig.setNetBIOSBindAddress(bindAddr);
+                    } catch (UnknownHostException ex) {
+                        throw new InvalidConfigurationException(ex.toString());
+                    }
+                }
 
-					// Get the bind address via the network adapter name
+                // Check for a bind address using the adapter name
 
-					InetAddress bindAddr = parseAdapterName(elem.getAttribute("adapter"));
-					cifsConfig.setNetBIOSBindAddress(bindAddr);
-				}
-				else if ( cifsConfig.hasSMBBindAddress()) {
+                else if (elem.hasAttribute("adapter")) {
 
-					// Use the SMB bind address for the NetBIOS name server
+                    // Get the bind address via the network adapter name
 
-					cifsConfig.setNetBIOSBindAddress(cifsConfig.getSMBBindAddress());
-				}
-			}
-		}
-		else {
+                    InetAddress bindAddr = parseAdapterName(elem.getAttribute("adapter"));
+                    cifsConfig.setNetBIOSBindAddress(bindAddr);
+                } else if (cifsConfig.hasSMBBindAddress()) {
 
-			// Disable NetBIOS SMB support
+                    // Use the SMB bind address for the NetBIOS name server
 
-			cifsConfig.setNetBIOSSMB(false);
-		}
+                    cifsConfig.setNetBIOSBindAddress(cifsConfig.getSMBBindAddress());
+                }
+            }
+        } else {
 
-		// Check if TCP/IP SMB is enabled
+            // Disable NetBIOS SMB support
 
-		elem = findChildNode("tcpipSMB", host.getChildNodes());
-		if ( elem != null) {
+            cifsConfig.setNetBIOSSMB(false);
+        }
 
-			// Check if native SMB is enabled for the current platform
+        // Check if TCP/IP SMB is enabled
 
-			boolean platformOK = false;
+        elem = findChildNode("tcpipSMB", host.getChildNodes());
+        if (elem != null) {
 
-			if ( elem.hasAttribute("platforms")) {
+            // Check if native SMB is enabled for the current platform
 
-				// Get the list of platforms
+            boolean platformOK = false;
 
-				String platformsStr = elem.getAttribute("platforms");
+            if (elem.hasAttribute("platforms")) {
 
-				// Parse the list of platforms that NetBIOS over TCP/IP is to be enabled for and
-				// check if the current platform is included
+                // Get the list of platforms
 
-				List<Platform.Type> enabledPlatforms = parsePlatformString(platformsStr);
-				if ( enabledPlatforms.contains(getPlatformType()))
-					platformOK = true;
-			}
-			else {
+                String platformsStr = elem.getAttribute("platforms");
 
-				// No restriction on platforms
+                // Parse the list of platforms that NetBIOS over TCP/IP is to be enabled for and
+                // check if the current platform is included
 
-				platformOK = true;
-			}
+                List<Platform.Type> enabledPlatforms = parsePlatformString(platformsStr);
+                if (enabledPlatforms.contains(getPlatformType()))
+                    platformOK = true;
+            } else {
 
-			// Enable the TCP/IP SMB support
+                // No restriction on platforms
 
-			cifsConfig.setTcpipSMB(platformOK);
+                platformOK = true;
+            }
 
-			// Check if the port has been specified
+            // Enable the TCP/IP SMB support
 
-			attr = elem.getAttribute("port");
-			if ( attr != null && attr.length() > 0) {
-				try {
-					cifsConfig.setTcpipSMBPort(Integer.parseInt(attr));
-					if ( cifsConfig.getTcpipSMBPort() <= 0 || cifsConfig.getTcpipSMBPort() >= 65535)
-						throw new InvalidConfigurationException("TCP/IP SMB port out of valid range");
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException("Invalid TCP/IP SMB port");
-				}
-			}
-		}
-		else {
+            cifsConfig.setTcpipSMB(platformOK);
 
-			// Disable TCP/IP SMB support
+            // Check if the port has been specified
 
-			cifsConfig.setTcpipSMB(false);
-		}
+            attr = elem.getAttribute("port");
+            if (attr != null && attr.length() > 0) {
+                try {
+                    cifsConfig.setTcpipSMBPort(Integer.parseInt(attr));
+                    if (cifsConfig.getTcpipSMBPort() <= 0 || cifsConfig.getTcpipSMBPort() >= 65535)
+                        throw new InvalidConfigurationException("TCP/IP SMB port out of valid range");
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException("Invalid TCP/IP SMB port");
+                }
+            }
+        } else {
 
-		// Check that the broadcast mask has been set if TCP/IP NetBIOS and/or the host announcer is
-		// enabled
+            // Disable TCP/IP SMB support
 
-		if ( cifsConfig.hasNetBIOSSMB() || cifsConfig.hasEnableAnnouncer()) {
+            cifsConfig.setTcpipSMB(false);
+        }
 
-			// Parse the broadcast mask
+        // Check that the broadcast mask has been set if TCP/IP NetBIOS and/or the host announcer is
+        // enabled
 
-			elem = findChildNode("broadcast", host.getChildNodes());
-			if ( elem != null) {
+        if (cifsConfig.hasNetBIOSSMB() || cifsConfig.hasEnableAnnouncer()) {
 
-				// Check if the broadcast mask is a valid numeric IP address
+            // Parse the broadcast mask
 
-				if ( IPAddress.isNumericAddress(getText(elem)) == false)
-					throw new InvalidConfigurationException("Invalid broadcast mask, must be n.n.n.n format");
+            elem = findChildNode("broadcast", host.getChildNodes());
+            if (elem != null) {
 
-				// Set the network broadcast mask
+                // Check if the broadcast mask is a valid numeric IP address
 
-				cifsConfig.setBroadcastMask(getText(elem));
-			}
-			else {
+                if (IPAddress.isNumericAddress(getText(elem)) == false)
+                    throw new InvalidConfigurationException("Invalid broadcast mask, must be n.n.n.n format");
 
-				// Broadcast mask not configured
+                // Set the network broadcast mask
 
-				throw new InvalidConfigurationException("Network broadcast mask not specified");
-			}
-		}
+                cifsConfig.setBroadcastMask(getText(elem));
+            } else {
 
-		// Check if Win32 NetBIOS is enabled
+                // Broadcast mask not configured
 
-		elem = findChildNode("Win32NetBIOS", host.getChildNodes());
-		if ( elem != null) {
+                throw new InvalidConfigurationException("Network broadcast mask not specified");
+            }
+        }
 
-			// Check if the Win32 NetBIOS server name has been specified
+        // Check if Win32 NetBIOS is enabled
 
-			attr = elem.getAttribute("name");
-			if ( attr != null && attr.length() > 0) {
+        elem = findChildNode("Win32NetBIOS", host.getChildNodes());
+        if (elem != null) {
 
-				// Validate the name
+            // Check if the Win32 NetBIOS server name has been specified
 
-				if ( attr.length() > 16)
-					throw new InvalidConfigurationException("Invalid Win32 NetBIOS name, " + attr);
+            attr = elem.getAttribute("name");
+            if (attr != null && attr.length() > 0) {
 
-				// Set the Win32 NetBIOS file server name
+                // Validate the name
 
-				cifsConfig.setWin32NetBIOSName(attr);
-			}
+                if (attr.length() > 16)
+                    throw new InvalidConfigurationException("Invalid Win32 NetBIOS name, " + attr);
 
-			// Check if the Win32 NetBIOS client accept name has been specified
+                // Set the Win32 NetBIOS file server name
 
-			attr = elem.getAttribute("accept");
-			if ( attr != null && attr.length() > 0) {
+                cifsConfig.setWin32NetBIOSName(attr);
+            }
 
-				// Validate the client accept name
+            // Check if the Win32 NetBIOS client accept name has been specified
 
-				if ( attr.length() > 15)
-					throw new InvalidConfigurationException("Invalid Win32 NetBIOS accept name, " + attr);
+            attr = elem.getAttribute("accept");
+            if (attr != null && attr.length() > 0) {
 
-				// Set the client accept string
+                // Validate the client accept name
 
-				cifsConfig.setWin32NetBIOSClientAccept(attr);
-			}
+                if (attr.length() > 15)
+                    throw new InvalidConfigurationException("Invalid Win32 NetBIOS accept name, " + attr);
 
-			// Check if the Win32 NetBIOS LANA has been specified
+                // Set the client accept string
 
-			attr = elem.getAttribute("lana");
-			if ( attr != null && attr.length() > 0) {
+                cifsConfig.setWin32NetBIOSClientAccept(attr);
+            }
 
-				// Check if the LANA has been specified as an IP address or adapter name
+            // Check if the Win32 NetBIOS LANA has been specified
 
-				int lana = -1;
+            attr = elem.getAttribute("lana");
+            if (attr != null && attr.length() > 0) {
 
-				if ( IPAddress.isNumericAddress(attr)) {
+                // Check if the LANA has been specified as an IP address or adapter name
 
-					// Convert the IP address to a LANA id
+                int lana = -1;
 
-					lana = Win32NetBIOS.getLANAForIPAddress(attr);
-					if ( lana == -1)
-						throw new InvalidConfigurationException("Failed to convert IP address " + attr + " to a LANA");
-				}
-				else if ( attr.length() > 1 && Character.isLetter(attr.charAt(0))) {
+                if (IPAddress.isNumericAddress(attr)) {
 
-					// Convert the network adapter to a LANA id
+                    // Convert the IP address to a LANA id
 
-					lana = Win32NetBIOS.getLANAForAdapterName(attr);
-					if ( lana == -1)
-						throw new InvalidConfigurationException("Failed to convert network adapter " + attr + " to a LANA");
-				}
-				else {
+                    lana = Win32NetBIOS.getLANAForIPAddress(attr);
+                    if (lana == -1)
+                        throw new InvalidConfigurationException("Failed to convert IP address " + attr + " to a LANA");
+                } else if (attr.length() > 1 && Character.isLetter(attr.charAt(0))) {
 
-					// Validate the LANA number
+                    // Convert the network adapter to a LANA id
 
-					try {
-						lana = Integer.parseInt(attr);
-					}
-					catch (NumberFormatException ex) {
-						throw new InvalidConfigurationException("Invalid Win32 NetBIOS LANA specified");
-					}
+                    lana = Win32NetBIOS.getLANAForAdapterName(attr);
+                    if (lana == -1)
+                        throw new InvalidConfigurationException("Failed to convert network adapter " + attr + " to a LANA");
+                } else {
 
-					// LANA should be in the range 0-255
+                    // Validate the LANA number
 
-					if ( lana < 0 || lana > 255)
-						throw new InvalidConfigurationException("Invalid Win32 NetBIOS LANA number, " + lana);
-				}
+                    try {
+                        lana = Integer.parseInt(attr);
+                    } catch (NumberFormatException ex) {
+                        throw new InvalidConfigurationException("Invalid Win32 NetBIOS LANA specified");
+                    }
 
-				// Set the LANA number
+                    // LANA should be in the range 0-255
 
-				cifsConfig.setWin32LANA(lana);
-			}
+                    if (lana < 0 || lana > 255)
+                        throw new InvalidConfigurationException("Invalid Win32 NetBIOS LANA number, " + lana);
+                }
 
-			// Check if the native NetBIOS interface has been specified, either 'winsock' or
-			// 'netbios'
+                // Set the LANA number
 
-			attr = elem.getAttribute("api");
+                cifsConfig.setWin32LANA(lana);
+            }
 
-			if ( attr != null && attr.length() > 0) {
-				// Validate the API type
+            // Check if the native NetBIOS interface has been specified, either 'winsock' or
+            // 'netbios'
 
-				boolean useWinsock = true;
+            attr = elem.getAttribute("api");
 
-				if ( attr.equalsIgnoreCase("netbios"))
-					useWinsock = false;
-				else if ( attr.equalsIgnoreCase("winsock") == false)
-					throw new InvalidConfigurationException("Invalid NetBIOS API type, spefify 'winsock' or 'netbios'");
+            if (attr != null && attr.length() > 0) {
+                // Validate the API type
 
-				// Set the NetBIOS API to use
+                boolean useWinsock = true;
 
-				cifsConfig.setWin32WinsockNetBIOS(useWinsock);
-			}
+                if (attr.equalsIgnoreCase("netbios"))
+                    useWinsock = false;
+                else if (attr.equalsIgnoreCase("winsock") == false)
+                    throw new InvalidConfigurationException("Invalid NetBIOS API type, spefify 'winsock' or 'netbios'");
 
-			// Force the older NetBIOS API code to be used on 64Bit Windows as Winsock NetBIOS is
-			// not available
+                // Set the NetBIOS API to use
 
-			if ( cifsConfig.useWinsockNetBIOS() == true && X64.isWindows64()) {
+                cifsConfig.setWin32WinsockNetBIOS(useWinsock);
+            }
 
-				// Log a warning
+            // Force the older NetBIOS API code to be used on 64Bit Windows as Winsock NetBIOS is
+            // not available
 
-				Debug.println("Using older Netbios() API code, Winsock NetBIOS not available on x64");
+            if (cifsConfig.useWinsockNetBIOS() == true && X64.isWindows64()) {
 
-				// Use the older NetBIOS API code
+                // Log a warning
 
-				cifsConfig.setWin32WinsockNetBIOS(false);
-			}
+                Debug.println("Using older Netbios() API code, Winsock NetBIOS not available on x64");
 
-			// Check if the current operating system is supported by the Win32 NetBIOS handler
+                // Use the older NetBIOS API code
 
-			String osName = System.getProperty("os.name");
-			if ( osName.startsWith("Windows")
-					&& (osName.endsWith("95") == false && osName.endsWith("98") == false && osName.endsWith("ME") == false)) {
+                cifsConfig.setWin32WinsockNetBIOS(false);
+            }
 
-				// Enable Win32 NetBIOS
+            // Check if the current operating system is supported by the Win32 NetBIOS handler
 
-				cifsConfig.setWin32NetBIOS(true);
-			}
-			else {
+            String osName = System.getProperty("os.name");
+            if (osName.startsWith("Windows")
+                    && (osName.endsWith("95") == false && osName.endsWith("98") == false && osName.endsWith("ME") == false)) {
 
-				// Win32 NetBIOS not supported on the current operating system
+                // Enable Win32 NetBIOS
 
-				cifsConfig.setWin32NetBIOS(false);
-			}
-		}
-		else {
+                cifsConfig.setWin32NetBIOS(true);
+            } else {
 
-			// Disable Win32 NetBIOS
+                // Win32 NetBIOS not supported on the current operating system
 
-			cifsConfig.setWin32NetBIOS(false);
-		}
+                cifsConfig.setWin32NetBIOS(false);
+            }
+        } else {
 
-		// Check if the host announcer should be enabled
+            // Disable Win32 NetBIOS
 
-		elem = findChildNode("Win32Announce", host.getChildNodes());
-		if ( elem != null) {
+            cifsConfig.setWin32NetBIOS(false);
+        }
 
-			// Check for an announcement interval
+        // Check if the host announcer should be enabled
 
-			attr = elem.getAttribute("interval");
-			if ( attr != null && attr.length() > 0) {
-				try {
-					cifsConfig.setWin32HostAnnounceInterval(Integer.parseInt(attr));
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException("Invalid host announcement interval");
-				}
-			}
+        elem = findChildNode("Win32Announce", host.getChildNodes());
+        if (elem != null) {
 
-			// Check if the domain name has been set, this is required if the host announcer is
-			// enabled
+            // Check for an announcement interval
 
-			if ( cifsConfig.getDomainName() == null)
-				throw new InvalidConfigurationException("Domain name must be specified if host announcement is enabled");
+            attr = elem.getAttribute("interval");
+            if (attr != null && attr.length() > 0) {
+                try {
+                    cifsConfig.setWin32HostAnnounceInterval(Integer.parseInt(attr));
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException("Invalid host announcement interval");
+                }
+            }
 
-			// Enable Win32 NetBIOS host announcement
+            // Check if the domain name has been set, this is required if the host announcer is
+            // enabled
 
-			cifsConfig.setWin32HostAnnouncer(true);
-		}
+            if (cifsConfig.getDomainName() == null)
+                throw new InvalidConfigurationException("Domain name must be specified if host announcement is enabled");
 
-		// Check if NetBIOS and/or TCP/IP SMB have been enabled
+            // Enable Win32 NetBIOS host announcement
 
-		if ( cifsConfig.hasNetBIOSSMB() == false && cifsConfig.hasTcpipSMB() == false && cifsConfig.hasWin32NetBIOS() == false)
-			throw new InvalidConfigurationException("NetBIOS SMB, TCP/IP SMB or Win32 NetBIOS must be enabled");
+            cifsConfig.setWin32HostAnnouncer(true);
+        }
 
-		// Check if server alias name(s) have been specified
+        // Check if NetBIOS and/or TCP/IP SMB have been enabled
 
-		elem = findChildNode("alias", host.getChildNodes());
-		if ( elem != null) {
+        if (cifsConfig.hasNetBIOSSMB() == false && cifsConfig.hasTcpipSMB() == false && cifsConfig.hasWin32NetBIOS() == false)
+            throw new InvalidConfigurationException("NetBIOS SMB, TCP/IP SMB or Win32 NetBIOS must be enabled");
 
-			// Get the alias name list
+        // Check if server alias name(s) have been specified
 
-			attr = elem.getAttribute("names");
-			if ( attr == null || attr.length() == 0)
-				throw new InvalidConfigurationException("Alias name(s) not specified");
+        elem = findChildNode("alias", host.getChildNodes());
+        if (elem != null) {
 
-			// Split the alias name list
+            // Get the alias name list
 
-			StringList names = new StringList();
-			StringTokenizer nameTokens = new StringTokenizer(attr, ",");
+            attr = elem.getAttribute("names");
+            if (attr == null || attr.length() == 0)
+                throw new InvalidConfigurationException("Alias name(s) not specified");
 
-			while (nameTokens.hasMoreTokens()) {
+            // Split the alias name list
 
-				// Get the current alias name
+            StringList names = new StringList();
+            StringTokenizer nameTokens = new StringTokenizer(attr, ",");
 
-				String alias = nameTokens.nextToken().trim().toUpperCase();
+            while (nameTokens.hasMoreTokens()) {
 
-				// Check if the name already exists in the alias list, or matches the main server
-				// name
+                // Get the current alias name
 
-				if ( alias.equalsIgnoreCase(getServerName()))
-					throw new InvalidConfigurationException("Alias is the same as the main server name");
-				else if ( names.containsString(alias))
-					throw new InvalidConfigurationException("Same alias specified twice, " + alias);
-				else
-					names.addString(alias);
-			}
+                String alias = nameTokens.nextToken().trim().toUpperCase();
 
-			// Set the server alias names
+                // Check if the name already exists in the alias list, or matches the main server
+                // name
 
-			cifsConfig.addAliasNames(names);
-		}
+                if (alias.equalsIgnoreCase(getServerName()))
+                    throw new InvalidConfigurationException("Alias is the same as the main server name");
+                else if (names.containsString(alias))
+                    throw new InvalidConfigurationException("Same alias specified twice, " + alias);
+                else
+                    names.addString(alias);
+            }
 
-		// Check if Macintosh extension SMBs should be enabled
+            // Set the server alias names
 
-		elem = findChildNode("macExtensions", host.getChildNodes());
-		if ( elem != null) {
+            cifsConfig.addAliasNames(names);
+        }
 
-			// Enable Macintosh extension SMBs
+        // Check if Macintosh extension SMBs should be enabled
 
-			cifsConfig.setMacintoshExtensions(true);
-		}
+        elem = findChildNode("macExtensions", host.getChildNodes());
+        if (elem != null) {
 
-		// Check if WINS servers are configured
+            // Enable Macintosh extension SMBs
 
-		elem = findChildNode("WINS", host.getChildNodes());
+            cifsConfig.setMacintoshExtensions(true);
+        }
 
-		if ( elem != null) {
+        // Check if WINS servers are configured
 
-			// Get the primary WINS server
+        elem = findChildNode("WINS", host.getChildNodes());
 
-			Element winsSrv = findChildNode("primary", elem.getChildNodes());
-			if ( winsSrv == null)
-				throw new InvalidConfigurationException("No primary WINS server configured");
+        if (elem != null) {
 
-			// Validate the WINS server address
+            // Get the primary WINS server
 
-			InetAddress primaryWINS = null;
+            Element winsSrv = findChildNode("primary", elem.getChildNodes());
+            if (winsSrv == null)
+                throw new InvalidConfigurationException("No primary WINS server configured");
 
-			try {
-				primaryWINS = InetAddress.getByName(getText(winsSrv));
-			}
-			catch (UnknownHostException ex) {
-				throw new InvalidConfigurationException("Invalid primary WINS server address, " + winsSrv.getNodeValue());
-			}
+            // Validate the WINS server address
 
-			// Check if a secondary WINS server has been specified
+            InetAddress primaryWINS = null;
 
-			winsSrv = findChildNode("secondary", elem.getChildNodes());
-			InetAddress secondaryWINS = null;
+            try {
+                primaryWINS = InetAddress.getByName(getText(winsSrv));
+            } catch (UnknownHostException ex) {
+                throw new InvalidConfigurationException("Invalid primary WINS server address, " + winsSrv.getNodeValue());
+            }
 
-			if ( winsSrv != null) {
+            // Check if a secondary WINS server has been specified
 
-				// Validate the secondary WINS server address
+            winsSrv = findChildNode("secondary", elem.getChildNodes());
+            InetAddress secondaryWINS = null;
 
-				try {
-					secondaryWINS = InetAddress.getByName(getText(winsSrv));
-				}
-				catch (UnknownHostException ex) {
-					throw new InvalidConfigurationException("Invalid secondary WINS server address, " + winsSrv.getNodeValue());
-				}
-			}
+            if (winsSrv != null) {
 
-			// Set the WINS server address(es)
+                // Validate the secondary WINS server address
 
-			cifsConfig.setPrimaryWINSServer(primaryWINS);
-			if ( secondaryWINS != null)
-				cifsConfig.setSecondaryWINSServer(secondaryWINS);
-		}
+                try {
+                    secondaryWINS = InetAddress.getByName(getText(winsSrv));
+                } catch (UnknownHostException ex) {
+                    throw new InvalidConfigurationException("Invalid secondary WINS server address, " + winsSrv.getNodeValue());
+                }
+            }
 
-		// Check if a session timeout is configured
+            // Set the WINS server address(es)
 
-		elem = findChildNode("sessionTimeout", host.getChildNodes());
-		if ( elem != null) {
+            cifsConfig.setPrimaryWINSServer(primaryWINS);
+            if (secondaryWINS != null)
+                cifsConfig.setSecondaryWINSServer(secondaryWINS);
+        }
 
-			// Validate the session timeout value
+        // Check if a session timeout is configured
 
-			String sessTmo = getText( elem);
-			if ( sessTmo != null && sessTmo.length() > 0) {
-				try {
+        elem = findChildNode("sessionTimeout", host.getChildNodes());
+        if (elem != null) {
 
-					// Convert the timeout value to milliseconds
+            // Validate the session timeout value
 
-					int tmo = Integer.parseInt(sessTmo);
-					if ( tmo < 0 || tmo > MaxSessionTimeout)
-						throw new InvalidConfigurationException("Session timeout out of range (0 - " + MaxSessionTimeout + ")");
+            String sessTmo = getText(elem);
+            if (sessTmo != null && sessTmo.length() > 0) {
+                try {
 
-					// Convert the session timeout to milliseconds
+                    // Convert the timeout value to milliseconds
 
-					cifsConfig.setSocketTimeout( tmo * 1000);
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException("Invalid session timeout value, " + sessTmo);
-				}
-			}
-			else
-				throw new InvalidConfigurationException("Session timeout value not specified");
-		}
-	}
+                    int tmo = Integer.parseInt(sessTmo);
+                    if (tmo < 0 || tmo > MaxSessionTimeout)
+                        throw new InvalidConfigurationException("Session timeout out of range (0 - " + MaxSessionTimeout + ")");
 
-	/**
-	 * Process the debug XML element
-	 *
-	 * @param debug Element
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void procDebugElement(Element debug)
-		throws InvalidConfigurationException {
+                    // Convert the session timeout to milliseconds
 
-		// Check if the debug section has been specified
+                    cifsConfig.setSocketTimeout(tmo * 1000);
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException("Invalid session timeout value, " + sessTmo);
+                }
+            } else
+                throw new InvalidConfigurationException("Session timeout value not specified");
+        }
+    }
 
-		if ( debug == null)
-			return;
+    /**
+     * Process the debug XML element
+     *
+     * @param debug Element
+     * @throws InvalidConfigurationException
+     */
+    protected final void procDebugElement(Element debug)
+            throws InvalidConfigurationException {
 
-		// Create the debug configuration section
+        // Check if the debug section has been specified
 
-		DebugConfigSection debugConfig = new DebugConfigSection(this);
+        if (debug == null)
+            return;
 
-		// Get the debug output class and parameters
+        // Create the debug configuration section
 
-		Element elem = findChildNode("output", debug.getChildNodes());
-		if ( elem == null)
-			throw new InvalidConfigurationException("Output class must be specified to enable debug output");
+        DebugConfigSection debugConfig = new DebugConfigSection(this);
 
-		// Get the debug output class
+        // Get the debug output class and parameters
 
-		Element debugClass = findChildNode("class", elem.getChildNodes());
-		if ( debugClass == null)
-			throw new InvalidConfigurationException("Class must be specified for debug output");
+        Element elem = findChildNode("output", debug.getChildNodes());
+        if (elem == null)
+            throw new InvalidConfigurationException("Output class must be specified to enable debug output");
 
-		// Get the parameters for the debug class
+        // Get the debug output class
 
-		ConfigElement params = buildConfigElement(elem);
-		debugConfig.setDebug(getText(debugClass), params);
-	}
+        Element debugClass = findChildNode("class", elem.getChildNodes());
+        if (debugClass == null)
+            throw new InvalidConfigurationException("Class must be specified for debug output");
 
-	/**
-	 * Process the shares XML element
-	 *
-	 * @param shares Element
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void procSharesElement(Element shares)
-		throws InvalidConfigurationException {
+        // Get the parameters for the debug class
 
-		// Check if the shares element is valid
+        ConfigElement params = buildConfigElement(elem);
+        debugConfig.setDebug(getText(debugClass), params);
+    }
 
-		if ( shares == null)
-			return;
+    /**
+     * Process the shares XML element
+     *
+     * @param shares Element
+     * @throws InvalidConfigurationException
+     */
+    protected final void procSharesElement(Element shares)
+            throws InvalidConfigurationException {
 
-		// Create the filesystems configuration section
+        // Check if the shares element is valid
 
-		FilesystemsConfigSection filesysConfig = new FilesystemsConfigSection(this);
+        if (shares == null)
+            return;
 
-		// Iterate the child elements
+        // Create the filesystems configuration section
 
-		NodeList children = shares.getChildNodes();
+        FilesystemsConfigSection filesysConfig = new FilesystemsConfigSection(this);
 
-		if ( children != null) {
+        // Iterate the child elements
 
-			// Iterate the child elements and process the disk/print share elements
+        NodeList children = shares.getChildNodes();
 
-			for (int i = 0; i < children.getLength(); i++) {
+        if (children != null) {
 
-				// Get the current child node
+            // Iterate the child elements and process the disk/print share elements
 
-				Node node = children.item(i);
+            for (int i = 0; i < children.getLength(); i++) {
 
-				if ( node.getNodeType() == ELEMENT_TYPE) {
+                // Get the current child node
 
-					// Get the next element from the list
+                Node node = children.item(i);
 
-					Element child = (Element) node;
+                if (node.getNodeType() == ELEMENT_TYPE) {
 
-					// Check if this is a disk or print share element
+                    // Get the next element from the list
 
-					if ( child.getNodeName().equalsIgnoreCase("diskshare"))
-						addDiskShare(child, filesysConfig);
-				}
-			}
-		}
-	}
+                    Element child = (Element) node;
 
-	/**
-	 * Process the security XML element
-	 *
-	 * @param security Element
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void procSecurityElement(Element security)
-		throws InvalidConfigurationException {
+                    // Check if this is a disk or print share element
 
-		// Check if the security element is valid
+                    if (child.getNodeName().equalsIgnoreCase("diskshare"))
+                        addDiskShare(child, filesysConfig);
+                }
+            }
+        }
+    }
 
-		if ( security == null)
-			return;
+    /**
+     * Process the security XML element
+     *
+     * @param security Element
+     * @throws InvalidConfigurationException
+     */
+    protected final void procSecurityElement(Element security)
+            throws InvalidConfigurationException {
 
-		// Create the security configuration section
+        // Check if the security element is valid
 
-		SecurityConfigSection secConfig = new SecurityConfigSection(this);
+        if (security == null)
+            return;
 
-		// Check if an access control manager has been specified
+        // Create the security configuration section
 
-		Element aclElem = findChildNode("accessControlManager", security.getChildNodes());
-		if ( aclElem != null) {
+        SecurityConfigSection secConfig = new SecurityConfigSection(this);
 
-			// Get the access control manager class and security mode
+        // Check if an access control manager has been specified
 
-			Element classElem = findChildNode("class", aclElem.getChildNodes());
-			if ( classElem == null)
-				throw new InvalidConfigurationException("Access control manager class not specified");
+        Element aclElem = findChildNode("accessControlManager", security.getChildNodes());
+        if (aclElem != null) {
 
-			// Get the parameters for the access control manager class
+            // Get the access control manager class and security mode
 
-			ConfigElement params = buildConfigElement(aclElem);
-			secConfig.setAccessControlManager(getText(classElem), params);
-		}
-		else {
+            Element classElem = findChildNode("class", aclElem.getChildNodes());
+            if (classElem == null)
+                throw new InvalidConfigurationException("Access control manager class not specified");
 
-			// Use the default access control manager
+            // Get the parameters for the access control manager class
 
-			secConfig.setAccessControlManager("org.alfresco.jlan.server.auth.acl.DefaultAccessControlManager",
-					new GenericConfigElement("aclManager"));
-		}
+            ConfigElement params = buildConfigElement(aclElem);
+            secConfig.setAccessControlManager(getText(classElem), params);
+        } else {
 
-		// Check if global access controls have been specified
+            // Use the default access control manager
 
-		Element globalACLs = findChildNode("globalAccessControl", security.getChildNodes());
-		if ( globalACLs != null) {
+            secConfig.setAccessControlManager("org.alfresco.jlan.server.auth.acl.DefaultAccessControlManager",
+                    new GenericConfigElement("aclManager"));
+        }
 
-			// Parse the access control list
+        // Check if global access controls have been specified
 
-			AccessControlList acls = procAccessControlElement(globalACLs, secConfig);
-			if ( acls != null)
-				secConfig.setGlobalAccessControls(acls);
-		}
+        Element globalACLs = findChildNode("globalAccessControl", security.getChildNodes());
+        if (globalACLs != null) {
 
-		// Check if a JCE provider class has been specified
+            // Parse the access control list
 
-		Element jceElem = findChildNode("JCEProvider", security.getChildNodes());
-		if ( jceElem != null) {
+            AccessControlList acls = procAccessControlElement(globalACLs, secConfig);
+            if (acls != null)
+                secConfig.setGlobalAccessControls(acls);
+        }
 
-			// Set the JCE provider
+        // Check if a JCE provider class has been specified
 
-			secConfig.setJCEProvider(getText(jceElem));
-		}
+        Element jceElem = findChildNode("JCEProvider", security.getChildNodes());
+        if (jceElem != null) {
 
-		// Add the users
+            // Set the JCE provider
 
-		Element usersElem = findChildNode("users", security.getChildNodes());
-		if ( usersElem != null) {
+            secConfig.setJCEProvider(getText(jceElem));
+        }
 
-			// Get the list of user elements
+        // Add the users
 
-			NodeList userList = usersElem.getChildNodes();
+        Element usersElem = findChildNode("users", security.getChildNodes());
+        if (usersElem != null) {
 
-			for (int i = 0; i < userList.getLength(); i++) {
+            // Get the list of user elements
 
-				// Get the current user node
+            NodeList userList = usersElem.getChildNodes();
 
-				Node node = userList.item(i);
+            for (int i = 0; i < userList.getLength(); i++) {
 
-				if ( node.getNodeType() == ELEMENT_TYPE) {
-					Element userElem = (Element) node;
-					addUser(userElem, secConfig);
-				}
-			}
-		}
+                // Get the current user node
 
-		// Check if a share mapper has been specified
+                Node node = userList.item(i);
 
-		Element mapper = findChildNode("shareMapper", security.getChildNodes());
+                if (node.getNodeType() == ELEMENT_TYPE) {
+                    Element userElem = (Element) node;
+                    addUser(userElem, secConfig);
+                }
+            }
+        }
 
-		if ( mapper != null) {
+        // Check if a share mapper has been specified
 
-			// Get the share mapper class
+        Element mapper = findChildNode("shareMapper", security.getChildNodes());
 
-			Element classElem = findChildNode("class", mapper.getChildNodes());
-			if ( classElem == null)
-				throw new InvalidConfigurationException("Share mapper class not specified");
+        if (mapper != null) {
 
-			// Get the parameters for the share mapper class
+            // Get the share mapper class
 
-			ConfigElement params = buildConfigElement(mapper);
-			secConfig.setShareMapper(getText(classElem), params);
-		}
+            Element classElem = findChildNode("class", mapper.getChildNodes());
+            if (classElem == null)
+                throw new InvalidConfigurationException("Share mapper class not specified");
 
-		// Check if the users interface has been specified
+            // Get the parameters for the share mapper class
 
-		Element usersIface = findChildNode("usersInterface", security.getChildNodes());
+            ConfigElement params = buildConfigElement(mapper);
+            secConfig.setShareMapper(getText(classElem), params);
+        }
 
-		if ( usersIface != null) {
+        // Check if the users interface has been specified
 
-			// Get the users interface class
+        Element usersIface = findChildNode("usersInterface", security.getChildNodes());
 
-			Element classElem = findChildNode("class", usersIface.getChildNodes());
-			if ( classElem == null)
-				throw new InvalidConfigurationException("Users interface class not specified");
+        if (usersIface != null) {
 
-			// Get the parameters for the users interface class
+            // Get the users interface class
 
-			ConfigElement params = buildConfigElement(usersIface);
-			secConfig.setUsersInterface(getText(classElem), params);
-		}
-	}
+            Element classElem = findChildNode("class", usersIface.getChildNodes());
+            if (classElem == null)
+                throw new InvalidConfigurationException("Users interface class not specified");
 
-	/**
-	 * Process the drive mappings XML element
-	 *
-	 * @param mappings Element
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void procDriveMappingsElement(Element mappings)
-		throws InvalidConfigurationException {
+            // Get the parameters for the users interface class
 
-		// Check if the drive mappings element is valid
+            ConfigElement params = buildConfigElement(usersIface);
+            secConfig.setUsersInterface(getText(classElem), params);
+        }
+    }
 
-		if ( mappings == null)
-			return;
+    /**
+     * Process the drive mappings XML element
+     *
+     * @param mappings Element
+     * @throws InvalidConfigurationException
+     */
+    protected final void procDriveMappingsElement(Element mappings)
+            throws InvalidConfigurationException {
 
-		// Create the drive mappings configuration section
+        // Check if the drive mappings element is valid
 
-		DriveMappingsConfigSection mapConfig = new DriveMappingsConfigSection(this);
+        if (mappings == null)
+            return;
 
-		// Parse each drive mapping element
+        // Create the drive mappings configuration section
 
-		NodeList mapElems = mappings.getChildNodes();
-		DriveMappingList mapList = null;
+        DriveMappingsConfigSection mapConfig = new DriveMappingsConfigSection(this);
 
-		if ( mapElems != null && mapElems.getLength() > 0) {
+        // Parse each drive mapping element
 
-			// Create the mapped drive list
+        NodeList mapElems = mappings.getChildNodes();
+        DriveMappingList mapList = null;
 
-			mapList = new DriveMappingList();
+        if (mapElems != null && mapElems.getLength() > 0) {
 
-			// Access the CIFS server configuration
+            // Create the mapped drive list
 
-			CIFSConfigSection cifsConfig = (CIFSConfigSection) getConfigSection(CIFSConfigSection.SectionName);
+            mapList = new DriveMappingList();
 
-			// Get a list of the available shares
+            // Access the CIFS server configuration
 
-			SecurityConfigSection secConfig = (SecurityConfigSection) getConfigSection(SecurityConfigSection.SectionName);
-			SharedDeviceList shareList = secConfig.getShareMapper().getShareList(getServerName(), null, false);
+            CIFSConfigSection cifsConfig = (CIFSConfigSection) getConfigSection(CIFSConfigSection.SectionName);
 
-			// Process each drive mapping element
+            // Get a list of the available shares
 
-			for (int i = 0; i < mapElems.getLength(); i++) {
+            SecurityConfigSection secConfig = (SecurityConfigSection) getConfigSection(SecurityConfigSection.SectionName);
+            SharedDeviceList shareList = secConfig.getShareMapper().getShareList(getServerName(), null, false);
 
-				// Get the current mapped drive details
+            // Process each drive mapping element
 
-				Node node = mapElems.item(i);
+            for (int i = 0; i < mapElems.getLength(); i++) {
 
-				if ( node.getNodeType() == ELEMENT_TYPE) {
+                // Get the current mapped drive details
 
-					// Access the mapped drive element
+                Node node = mapElems.item(i);
 
-					Element elem = (Element) node;
+                if (node.getNodeType() == ELEMENT_TYPE) {
 
-					if ( elem.getNodeName().equals("mapDrive")) {
+                    // Access the mapped drive element
 
-						// Get the mapped drive local drive and remote path details
+                    Element elem = (Element) node;
 
-						String localPath = elem.getAttribute("drive").toUpperCase();
-						String shareName = elem.getAttribute("share");
+                    if (elem.getNodeName().equals("mapDrive")) {
 
-						// Check the local path string
+                        // Get the mapped drive local drive and remote path details
 
-						if ( localPath.length() != 2)
-							throw new InvalidConfigurationException("Invalid local drive specified, " + localPath);
+                        String localPath = elem.getAttribute("drive").toUpperCase();
+                        String shareName = elem.getAttribute("share");
 
-						if ( localPath.charAt(1) != ':' || _driveLetters.indexOf(localPath.charAt(0)) == -1)
-							throw new InvalidConfigurationException("Invalid local drive specified, " + localPath);
+                        // Check the local path string
 
-						// Check if the share name is a valid local disk share
+                        if (localPath.length() != 2)
+                            throw new InvalidConfigurationException("Invalid local drive specified, " + localPath);
 
-						if ( shareName.length() == 0)
-							throw new InvalidConfigurationException("Empty share name for mapped drive, " + localPath);
+                        if (localPath.charAt(1) != ':' || _driveLetters.indexOf(localPath.charAt(0)) == -1)
+                            throw new InvalidConfigurationException("Invalid local drive specified, " + localPath);
 
-						if ( shareList.findShare(shareName, ShareType.DISK, true) == null)
-							throw new InvalidConfigurationException("Mapped drive share " + shareName + " does not exist");
+                        // Check if the share name is a valid local disk share
 
-						// Get the username/password to be used to connect the mapped drive
+                        if (shareName.length() == 0)
+                            throw new InvalidConfigurationException("Empty share name for mapped drive, " + localPath);
 
-						String userName = null;
-						String password = null;
+                        if (shareList.findShare(shareName, ShareType.DISK, true) == null)
+                            throw new InvalidConfigurationException("Mapped drive share " + shareName + " does not exist");
 
-						if ( elem.hasAttribute("username"))
-							userName = elem.getAttribute("username");
+                        // Get the username/password to be used to connect the mapped drive
 
-						if ( elem.hasAttribute("password"))
-							password = elem.getAttribute("password");
+                        String userName = null;
+                        String password = null;
 
-						// Get the options flags
+                        if (elem.hasAttribute("username"))
+                            userName = elem.getAttribute("username");
 
-						boolean interact = false;
-						boolean prompt = false;
+                        if (elem.hasAttribute("password"))
+                            password = elem.getAttribute("password");
 
-						if ( elem.hasAttribute("interactive")) {
-							if ( elem.getAttribute("interactive").equalsIgnoreCase("YES"))
-								interact = true;
-						}
+                        // Get the options flags
 
-						if ( elem.hasAttribute("prompt")) {
-							if ( elem.getAttribute("prompt").equalsIgnoreCase("YES"))
-								prompt = true;
-						}
+                        boolean interact = false;
+                        boolean prompt = false;
 
-						// Build the remote path
+                        if (elem.hasAttribute("interactive")) {
+                            if (elem.getAttribute("interactive").equalsIgnoreCase("YES"))
+                                interact = true;
+                        }
 
-						StringBuffer remPath = new StringBuffer();
-						remPath.append("\\\\");
+                        if (elem.hasAttribute("prompt")) {
+                            if (elem.getAttribute("prompt").equalsIgnoreCase("YES"))
+                                prompt = true;
+                        }
 
-						if ( cifsConfig.hasWin32NetBIOS() && cifsConfig.getWin32ServerName() != null)
-							remPath.append(cifsConfig.getWin32ServerName());
-						else
-							remPath.append(getServerName());
-						remPath.append("\\");
-						remPath.append(shareName.toUpperCase());
+                        // Build the remote path
 
-						// Add a drive mapping
+                        StringBuffer remPath = new StringBuffer();
+                        remPath.append("\\\\");
 
-						mapList.addMapping(new DriveMapping(localPath, remPath.toString(), userName, password, interact, prompt));
-					}
-				}
-			}
+                        if (cifsConfig.hasWin32NetBIOS() && cifsConfig.getWin32ServerName() != null)
+                            remPath.append(cifsConfig.getWin32ServerName());
+                        else
+                            remPath.append(getServerName());
+                        remPath.append("\\");
+                        remPath.append(shareName.toUpperCase());
 
-			// Set the mapped drive list
+                        // Add a drive mapping
 
-			mapConfig.setMappedDrives(mapList);
-		}
-	}
+                        mapList.addMapping(new DriveMapping(localPath, remPath.toString(), userName, password, interact, prompt));
+                    }
+                }
+            }
 
-	/**
-	 * Process an access control sub-section and return the access control list
-	 *
-	 * @param acl Element
-	 * @param secConfig SecutiryConfigSection
-	 * @throws InvalidConfigurationException
-	 */
-	protected final AccessControlList procAccessControlElement(Element acl, SecurityConfigSection secConfig)
-		throws InvalidConfigurationException {
+            // Set the mapped drive list
 
-		// Check if there is an access control manager configured
+            mapConfig.setMappedDrives(mapList);
+        }
+    }
 
-		if ( secConfig.getAccessControlManager() == null)
-			throw new InvalidConfigurationException("No access control manager configured");
+    /**
+     * Process an access control sub-section and return the access control list
+     *
+     * @param acl       Element
+     * @param secConfig SecutiryConfigSection
+     * @throws InvalidConfigurationException
+     */
+    protected final AccessControlList procAccessControlElement(Element acl, SecurityConfigSection secConfig)
+            throws InvalidConfigurationException {
 
-		// Create the access control list
+        // Check if there is an access control manager configured
 
-		AccessControlList acls = new AccessControlList();
+        if (secConfig.getAccessControlManager() == null)
+            throw new InvalidConfigurationException("No access control manager configured");
 
-		// Check if there is a default access level for the ACL group
+        // Create the access control list
 
-		String attrib = acl.getAttribute("default");
+        AccessControlList acls = new AccessControlList();
 
-		if ( attrib != null && attrib.length() > 0) {
+        // Check if there is a default access level for the ACL group
 
-			// Get the access level and validate
+        String attrib = acl.getAttribute("default");
 
-			try {
+        if (attrib != null && attrib.length() > 0) {
 
-				// Parse the access level name
+            // Get the access level and validate
 
-				int access = AccessControlParser.parseAccessTypeString(attrib);
+            try {
 
-				// Set the default access level for the access control list
+                // Parse the access level name
 
-				acls.setDefaultAccessLevel(access);
-			}
-			catch (InvalidACLTypeException ex) {
-				throw new InvalidConfigurationException("Default access level error, " + ex.toString());
-			}
-			catch (ACLParseException ex) {
-				throw new InvalidConfigurationException("Default access level error, " + ex.toString());
-			}
-		}
+                int access = AccessControlParser.parseAccessTypeString(attrib);
 
-		// Parse each access control element and create the required access control
+                // Set the default access level for the access control list
 
-		NodeList aclElems = acl.getChildNodes();
+                acls.setDefaultAccessLevel(access);
+            } catch (InvalidACLTypeException ex) {
+                throw new InvalidConfigurationException("Default access level error, " + ex.toString());
+            } catch (ACLParseException ex) {
+                throw new InvalidConfigurationException("Default access level error, " + ex.toString());
+            }
+        }
 
-		if ( aclElems != null && aclElems.getLength() > 0) {
+        // Parse each access control element and create the required access control
 
-			// Create the access controls
+        NodeList aclElems = acl.getChildNodes();
 
-			GenericConfigElement params = null;
-			String type = null;
+        if (aclElems != null && aclElems.getLength() > 0) {
 
-			for (int i = 0; i < aclElems.getLength(); i++) {
+            // Create the access controls
 
-				// Get the current ACL details
+            GenericConfigElement params = null;
+            String type = null;
 
-				Node node = aclElems.item(i);
+            for (int i = 0; i < aclElems.getLength(); i++) {
 
-				if ( node.getNodeType() == ELEMENT_TYPE) {
+                // Get the current ACL details
 
-					// Access the ACL element
+                Node node = aclElems.item(i);
 
-					Element elem = (Element) node;
-					type = elem.getNodeName();
+                if (node.getNodeType() == ELEMENT_TYPE) {
 
-					// Create a new config element
+                    // Access the ACL element
 
-					params = new GenericConfigElement("acl");
+                    Element elem = (Element) node;
+                    type = elem.getNodeName();
 
-					// Convert the element attributes into a list of name value pairs
+                    // Create a new config element
 
-					NamedNodeMap attrs = elem.getAttributes();
+                    params = new GenericConfigElement("acl");
 
-					if ( attrs == null || attrs.getLength() == 0)
-						throw new InvalidConfigurationException("Missing attribute(s) for access control " + type);
+                    // Convert the element attributes into a list of name value pairs
 
-					for (int j = 0; j < attrs.getLength(); j++) {
+                    NamedNodeMap attrs = elem.getAttributes();
 
-						// Create a name/value pair from the current attribute and add to the
-						// parameter list
+                    if (attrs == null || attrs.getLength() == 0)
+                        throw new InvalidConfigurationException("Missing attribute(s) for access control " + type);
 
-						Node attr = attrs.item(j);
-						params.addAttribute( attr.getNodeName(), attr.getNodeValue());
-					}
+                    for (int j = 0; j < attrs.getLength(); j++) {
 
-					try {
+                        // Create a name/value pair from the current attribute and add to the
+                        // parameter list
 
-						// Create the access control and add to the list
+                        Node attr = attrs.item(j);
+                        params.addAttribute(attr.getNodeName(), attr.getNodeValue());
+                    }
 
-						acls.addControl(secConfig.getAccessControlManager().createAccessControl(type, params));
-					}
-					catch (InvalidACLTypeException ex) {
-						throw new InvalidConfigurationException("Invalid access control type - " + type);
-					}
-					catch (ACLParseException ex) {
-						throw new InvalidConfigurationException("Access control parse error (" + type + "), " + ex.toString());
-					}
-				}
-			}
-		}
+                    try {
 
-		// Check if there are no access control rules but the default access level is set to 'None',
-		// this is not allowed
-		// as the share would not be accessible or visible.
+                        // Create the access control and add to the list
 
-		if ( acls.getDefaultAccessLevel() == AccessControl.NoAccess && acls.numberOfControls() == 0)
-			throw new InvalidConfigurationException("Empty access control list and default access 'None' not allowed");
+                        acls.addControl(secConfig.getAccessControlManager().createAccessControl(type, params));
+                    } catch (InvalidACLTypeException ex) {
+                        throw new InvalidConfigurationException("Invalid access control type - " + type);
+                    } catch (ACLParseException ex) {
+                        throw new InvalidConfigurationException("Access control parse error (" + type + "), " + ex.toString());
+                    }
+                }
+            }
+        }
 
-		// Return the access control list
+        // Check if there are no access control rules but the default access level is set to 'None',
+        // this is not allowed
+        // as the share would not be accessible or visible.
 
-		return acls;
-	}
+        if (acls.getDefaultAccessLevel() == AccessControl.NoAccess && acls.numberOfControls() == 0)
+            throw new InvalidConfigurationException("Empty access control list and default access 'None' not allowed");
 
-	/**
-	 * Add a user
-	 *
-	 * @param user Element
-	 * @param secConfig SecurityConfigSection
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void addUser(Element user, SecurityConfigSection secConfig)
-		throws InvalidConfigurationException {
+        // Return the access control list
 
-		// Get the username
+        return acls;
+    }
 
-		String attr = user.getAttribute("name");
-		if ( attr == null || attr.length() == 0)
-			throw new InvalidConfigurationException("User name not specified, or zero length");
+    /**
+     * Add a user
+     *
+     * @param user      Element
+     * @param secConfig SecurityConfigSection
+     * @throws InvalidConfigurationException
+     */
+    protected final void addUser(Element user, SecurityConfigSection secConfig)
+            throws InvalidConfigurationException {
 
-		// Check if the user already exists
+        // Get the username
 
-		String userName = attr;
+        String attr = user.getAttribute("name");
+        if (attr == null || attr.length() == 0)
+            throw new InvalidConfigurationException("User name not specified, or zero length");
 
-		if ( secConfig.hasUserAccounts() && secConfig.getUserAccounts().findUser(userName) != null)
-			throw new InvalidConfigurationException("User " + userName + " already defined");
+        // Check if the user already exists
 
-		// Get the MD4 hashed password
+        String userName = attr;
 
-		byte[] md4 = null;
-		String password = null;
+        if (secConfig.hasUserAccounts() && secConfig.getUserAccounts().findUser(userName) != null)
+            throw new InvalidConfigurationException("User " + userName + " already defined");
 
-		Element elem = findChildNode("md4", user.getChildNodes());
-		if ( elem != null) {
+        // Get the MD4 hashed password
 
-			// Get the MD4 hashed password string
+        byte[] md4 = null;
+        String password = null;
 
-			String md4Str = getText(elem);
-			if ( md4Str == null || md4Str.length() != 32)
-				throw new InvalidConfigurationException("Invalid MD4 hashed password for user " + userName);
+        Element elem = findChildNode("md4", user.getChildNodes());
+        if (elem != null) {
 
-			// Decode the MD4 string
+            // Get the MD4 hashed password string
 
-			md4 = new byte[16];
-			for (int i = 0; i < 16; i++) {
+            String md4Str = getText(elem);
+            if (md4Str == null || md4Str.length() != 32)
+                throw new InvalidConfigurationException("Invalid MD4 hashed password for user " + userName);
 
-				// Get a hex pair and convert
+            // Decode the MD4 string
 
-				String hexPair = md4Str.substring(i * 2, (i * 2) + 2);
-				md4[i] = (byte) Integer.parseInt(hexPair, 16);
-			}
-		}
-		else {
+            md4 = new byte[16];
+            for (int i = 0; i < 16; i++) {
 
-			// Get the password for the account
+                // Get a hex pair and convert
 
-			elem = findChildNode("password", user.getChildNodes());
-			if ( elem == null)
-				throw new InvalidConfigurationException("No password specified for user " + userName);
+                String hexPair = md4Str.substring(i * 2, (i * 2) + 2);
+                md4[i] = (byte) Integer.parseInt(hexPair, 16);
+            }
+        } else {
 
-			// Get the plaintext password
+            // Get the password for the account
 
-			password = getText(elem);
-		}
+            elem = findChildNode("password", user.getChildNodes());
+            if (elem == null)
+                throw new InvalidConfigurationException("No password specified for user " + userName);
 
-		// Create the user account
+            // Get the plaintext password
 
-		UserAccount userAcc = new UserAccount(userName, password);
-		userAcc.setMD4Password(md4);
+            password = getText(elem);
+        }
 
-		// Check if the user in an administrator
+        // Create the user account
 
-		elem = findChildNode("administrator", user.getChildNodes());
-		if ( elem != null)
-			userAcc.setAdministrator(true);
+        UserAccount userAcc = new UserAccount(userName, password);
+        userAcc.setMD4Password(md4);
 
-		// Get the real user name and comment
+        // Check if the user in an administrator
 
-		elem = findChildNode("realname", user.getChildNodes());
-		if ( elem != null)
-			userAcc.setRealName(getText(elem));
+        elem = findChildNode("administrator", user.getChildNodes());
+        if (elem != null)
+            userAcc.setAdministrator(true);
 
-		elem = findChildNode("comment", user.getChildNodes());
-		if ( elem != null)
-			userAcc.setComment(getText(elem));
+        // Get the real user name and comment
 
-		// Get the home directory
+        elem = findChildNode("realname", user.getChildNodes());
+        if (elem != null)
+            userAcc.setRealName(getText(elem));
 
-		elem = findChildNode("home", user.getChildNodes());
-		if ( elem != null)
-			userAcc.setHomeDirectory(getText(elem));
+        elem = findChildNode("comment", user.getChildNodes());
+        if (elem != null)
+            userAcc.setComment(getText(elem));
 
-		// Add the user account
+        // Get the home directory
 
-		UserAccountList accList = secConfig.getUserAccounts();
-		if ( accList == null)
-			secConfig.setUserAccounts(new UserAccountList());
-		secConfig.getUserAccounts().addUser(userAcc);
-	}
+        elem = findChildNode("home", user.getChildNodes());
+        if (elem != null)
+            userAcc.setHomeDirectory(getText(elem));
 
-	/**
-	 * Add a disk share
-	 *
-	 * @param disk Element 2param filesysConfig FilesystemConfigSection
-	 * @exception InvalidConfigurationException
-	 */
-	protected final void addDiskShare(Element disk, FilesystemsConfigSection filesysConfig)
-		throws InvalidConfigurationException {
+        // Add the user account
 
-		// Get the share name and comment attributes
+        UserAccountList accList = secConfig.getUserAccounts();
+        if (accList == null)
+            secConfig.setUserAccounts(new UserAccountList());
+        secConfig.getUserAccounts().addUser(userAcc);
+    }
 
-		String attr = disk.getAttribute("name");
-		if ( attr == null || attr.length() == 0)
-			throw new InvalidConfigurationException("Disk share name must be specified");
+    /**
+     * Add a disk share
+     *
+     * @param disk Element 2param filesysConfig FilesystemConfigSection
+     * @throws InvalidConfigurationException
+     */
+    protected final void addDiskShare(Element disk, FilesystemsConfigSection filesysConfig)
+            throws InvalidConfigurationException {
 
-		String name = attr;
-		String comment = null;
+        // Get the share name and comment attributes
 
-		attr = disk.getAttribute("comment");
-		if ( attr != null && attr.length() > 0)
-			comment = attr;
+        String attr = disk.getAttribute("name");
+        if (attr == null || attr.length() == 0)
+            throw new InvalidConfigurationException("Disk share name must be specified");
 
-		// Get the disk driver details
+        String name = attr;
+        String comment = null;
 
-		Element driverElem = findChildNode("driver", disk.getChildNodes());
-		if ( driverElem == null)
-			throw new InvalidConfigurationException("No driver specified for disk share " + name);
+        attr = disk.getAttribute("comment");
+        if (attr != null && attr.length() > 0)
+            comment = attr;
 
-		Element classElem = findChildNode("class", driverElem.getChildNodes());
-		if ( classElem == null || getText(classElem).length() == 0)
-			throw new InvalidConfigurationException("No driver class specified for disk share " + name);
+        // Get the disk driver details
 
-		// Get the security configuration section
+        Element driverElem = findChildNode("driver", disk.getChildNodes());
+        if (driverElem == null)
+            throw new InvalidConfigurationException("No driver specified for disk share " + name);
 
-		SecurityConfigSection secConfig = (SecurityConfigSection) getConfigSection(SecurityConfigSection.SectionName);
+        Element classElem = findChildNode("class", driverElem.getChildNodes());
+        if (classElem == null || getText(classElem).length() == 0)
+            throw new InvalidConfigurationException("No driver class specified for disk share " + name);
 
-		// Check if an access control list has been specified
+        // Get the security configuration section
 
-		AccessControlList acls = null;
-		Element aclElem = findChildNode("accessControl", disk.getChildNodes());
+        SecurityConfigSection secConfig = (SecurityConfigSection) getConfigSection(SecurityConfigSection.SectionName);
 
-		if ( aclElem != null) {
+        // Check if an access control list has been specified
 
-			// Parse the access control list
+        AccessControlList acls = null;
+        Element aclElem = findChildNode("accessControl", disk.getChildNodes());
 
-			acls = procAccessControlElement(aclElem, secConfig);
-		}
-		else {
+        if (aclElem != null) {
 
-			// Use the global access control list for this disk share
+            // Parse the access control list
 
-			acls = secConfig.getGlobalAccessControls();
-		}
+            acls = procAccessControlElement(aclElem, secConfig);
+        } else {
 
-		// Get the parameters for the driver
+            // Use the global access control list for this disk share
 
-		ConfigElement params = buildConfigElement(driverElem);
+            acls = secConfig.getGlobalAccessControls();
+        }
 
-		// Check if change notification should be disabled for this device
+        // Get the parameters for the driver
 
-		boolean changeNotify = findChildNode("disableChangeNotification", disk.getChildNodes()) != null ? false : true;
+        ConfigElement params = buildConfigElement(driverElem);
 
-		// Check if the volume information has been specified
+        // Check if change notification should be disabled for this device
 
-		Element volElem = findChildNode("volume", disk.getChildNodes());
-		VolumeInfo volInfo = null;
+        boolean changeNotify = findChildNode("disableChangeNotification", disk.getChildNodes()) != null ? false : true;
 
-		if ( volElem != null) {
+        // Check if the volume information has been specified
 
-			// Create the volume information
+        Element volElem = findChildNode("volume", disk.getChildNodes());
+        VolumeInfo volInfo = null;
 
-			volInfo = new VolumeInfo("");
+        if (volElem != null) {
 
-			// Get the volume label
+            // Create the volume information
 
-			attr = volElem.getAttribute("label");
-			if ( attr != null && attr.length() > 0)
-				volInfo.setVolumeLabel(attr);
+            volInfo = new VolumeInfo("");
 
-			// Get the serial number
+            // Get the volume label
 
-			attr = volElem.getAttribute("serial");
-			if ( attr != null && attr.length() > 0) {
-				try {
-					volInfo.setSerialNumber(Integer.parseInt(attr));
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException("Volume serial number invalid, " + attr);
-				}
-			}
+            attr = volElem.getAttribute("label");
+            if (attr != null && attr.length() > 0)
+                volInfo.setVolumeLabel(attr);
 
-			// Get the creation date/time
+            // Get the serial number
 
-			attr = volElem.getAttribute("created");
-			if ( attr != null && attr.length() > 0) {
-				try {
-					volInfo.setCreationDateTime(m_dateFmt.parse(attr));
-				}
-				catch (ParseException ex) {
-					throw new InvalidConfigurationException("Volume creation date/time invalid, " + attr);
-				}
-			}
-		}
-		else {
+            attr = volElem.getAttribute("serial");
+            if (attr != null && attr.length() > 0) {
+                try {
+                    volInfo.setSerialNumber(Integer.parseInt(attr));
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException("Volume serial number invalid, " + attr);
+                }
+            }
 
-			// Create volume information using the share name
+            // Get the creation date/time
 
-			volInfo = new VolumeInfo(name, (int) System.currentTimeMillis(), new Date(System.currentTimeMillis()));
-		}
+            attr = volElem.getAttribute("created");
+            if (attr != null && attr.length() > 0) {
+                try {
+                    volInfo.setCreationDateTime(m_dateFmt.parse(attr));
+                } catch (ParseException ex) {
+                    throw new InvalidConfigurationException("Volume creation date/time invalid, " + attr);
+                }
+            }
+        } else {
 
-		// Check if the disk sizing information has been specified
+            // Create volume information using the share name
 
-		SrvDiskInfo diskInfo = null;
-		Element sizeElem = findChildNode("size", disk.getChildNodes());
+            volInfo = new VolumeInfo(name, (int) System.currentTimeMillis(), new Date(System.currentTimeMillis()));
+        }
 
-		if ( sizeElem != null) {
+        // Check if the disk sizing information has been specified
 
-			// Get the total disk size in bytes
+        SrvDiskInfo diskInfo = null;
+        Element sizeElem = findChildNode("size", disk.getChildNodes());
 
-			long totSize = -1L;
-			long freeSize = 0;
+        if (sizeElem != null) {
 
-			attr = sizeElem.getAttribute("totalSize");
-			if ( attr != null && attr.length() > 0)
-				totSize = MemorySize.getByteValue(attr);
+            // Get the total disk size in bytes
 
-			if ( totSize == -1L)
-				throw new InvalidConfigurationException("Total disk size invalid or not specified");
+            long totSize = -1L;
+            long freeSize = 0;
 
-			// Get the free size in bytes
+            attr = sizeElem.getAttribute("totalSize");
+            if (attr != null && attr.length() > 0)
+                totSize = MemorySize.getByteValue(attr);
 
-			attr = sizeElem.getAttribute("freeSize");
-			if ( attr != null && attr.length() > 0)
-				freeSize = MemorySize.getByteValue(attr);
-			else
-				freeSize = (totSize / 10L) * 9L;
+            if (totSize == -1L)
+                throw new InvalidConfigurationException("Total disk size invalid or not specified");
 
-			if ( freeSize == -1L)
-				throw new InvalidConfigurationException("Free disk size invalid or not specified");
+            // Get the free size in bytes
 
-			// Get the block size and blocks per unit values, if specified
+            attr = sizeElem.getAttribute("freeSize");
+            if (attr != null && attr.length() > 0)
+                freeSize = MemorySize.getByteValue(attr);
+            else
+                freeSize = (totSize / 10L) * 9L;
 
-			long blockSize = 512L;
-			long blocksPerUnit = 64L; // 32Kb units
+            if (freeSize == -1L)
+                throw new InvalidConfigurationException("Free disk size invalid or not specified");
 
-			attr = sizeElem.getAttribute("blockSize");
-			if ( attr != null && attr.length() > 0) {
-				try {
-					blockSize = Long.parseLong(attr);
+            // Get the block size and blocks per unit values, if specified
 
-					// Check for a multiple of 512 bytes
+            long blockSize = 512L;
+            long blocksPerUnit = 64L; // 32Kb units
 
-					if ( blockSize <= 0 || blockSize % 512 != 0)
-						throw new InvalidConfigurationException("Block size must be a multiple of 512");
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException("Invalid block size specified, " + attr);
-				}
-			}
+            attr = sizeElem.getAttribute("blockSize");
+            if (attr != null && attr.length() > 0) {
+                try {
+                    blockSize = Long.parseLong(attr);
 
-			attr = sizeElem.getAttribute("blocksPerUnit");
-			if ( attr != null && attr.length() > 0) {
-				try {
-					blocksPerUnit = Long.parseLong(attr);
+                    // Check for a multiple of 512 bytes
 
-					// Check for a valid blocks per unit value
+                    if (blockSize <= 0 || blockSize % 512 != 0)
+                        throw new InvalidConfigurationException("Block size must be a multiple of 512");
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException("Invalid block size specified, " + attr);
+                }
+            }
 
-					if ( blocksPerUnit <= 0)
-						throw new InvalidConfigurationException("Invalid blocks per unit, must be greater than zero");
-				}
-				catch (NumberFormatException ex) {
-					throw new InvalidConfigurationException("Invalid blocks per unit value");
-				}
-			}
+            attr = sizeElem.getAttribute("blocksPerUnit");
+            if (attr != null && attr.length() > 0) {
+                try {
+                    blocksPerUnit = Long.parseLong(attr);
 
-			// Calculate the sizes and set the disk sizing information
+                    // Check for a valid blocks per unit value
 
-			long unitSize = blockSize * blocksPerUnit;
-			long totUnits = totSize / unitSize;
-			long freeUnits = freeSize / unitSize;
+                    if (blocksPerUnit <= 0)
+                        throw new InvalidConfigurationException("Invalid blocks per unit, must be greater than zero");
+                } catch (NumberFormatException ex) {
+                    throw new InvalidConfigurationException("Invalid blocks per unit value");
+                }
+            }
 
-			diskInfo = new SrvDiskInfo(totUnits, blocksPerUnit, blockSize, freeUnits);
-		}
-		else {
+            // Calculate the sizes and set the disk sizing information
 
-			// Default to a 80Gb sized disk with 90% free space
+            long unitSize = blockSize * blocksPerUnit;
+            long totUnits = totSize / unitSize;
+            long freeUnits = freeSize / unitSize;
 
-			diskInfo = new SrvDiskInfo(2560000, 64, 512, 2304000);
-		}
+            diskInfo = new SrvDiskInfo(totUnits, blocksPerUnit, blockSize, freeUnits);
+        } else {
 
-		// Check if a state cache is configured
+            // Default to a 80Gb sized disk with 90% free space
 
-		Element cacheElem = findChildNode("stateCache", disk.getChildNodes());
-		FileStateCache stateCache = null;
+            diskInfo = new SrvDiskInfo(2560000, 64, 512, 2304000);
+        }
 
-		if ( cacheElem != null) {
+        // Check if a state cache is configured
 
-			// Convert the state cache configuration
+        Element cacheElem = findChildNode("stateCache", disk.getChildNodes());
+        FileStateCache stateCache = null;
 
-			ConfigElement cacheConfig = buildConfigElement( cacheElem);
+        if (cacheElem != null) {
 
-			// Get the cache type
+            // Convert the state cache configuration
 
-			attr = cacheElem.getAttribute( "type");
-			if ( attr.equalsIgnoreCase( "standalone")) {
+            ConfigElement cacheConfig = buildConfigElement(cacheElem);
 
-				// Create a standalone file state cache
+            // Get the cache type
 
-				stateCache = new StandaloneFileStateCache();
-			}
-			else if ( attr.equalsIgnoreCase( "cluster")) {
+            attr = cacheElem.getAttribute("type");
+            if (attr.equalsIgnoreCase("standalone")) {
 
-				// Create a clustered file state cache, need to load the class to avoid a reference to it
+                // Create a standalone file state cache
 
-				try {
-					stateCache = (FileStateCache) Class.forName( "org.alfresco.jlan.server.filesys.cache.hazelcast.HazelCastClusterFileStateCache").newInstance();
-				}
-				catch ( ClassNotFoundException ex) {
-					throw new InvalidConfigurationException( "Clustered file state cache not available, check build/Jar");
-				}
-				catch ( Exception ex) {
-					throw new InvalidConfigurationException( "Failed to load clustered file state cache class, " + ex);
-				}
-			}
-			else if ( attr.equalsIgnoreCase( "custom")) {
+                stateCache = new StandaloneFileStateCache();
+            } else if (attr.equalsIgnoreCase("cluster")) {
 
-				// Get the custom state cache class name
+                // Create a clustered file state cache, need to load the class to avoid a reference to it
 
-				Element cacheClass = findChildNode( "class", cacheElem.getChildNodes());
-				if ( cacheClass == null || getText( cacheClass).length() == 0)
-					throw new InvalidConfigurationException( "Custom state cache class not specified");
+                try {
+                    stateCache = (FileStateCache) Class.forName("org.alfresco.jlan.server.filesys.cache.hazelcast.HazelCastClusterFileStateCache").newInstance();
+                } catch (ClassNotFoundException ex) {
+                    throw new InvalidConfigurationException("Clustered file state cache not available, check build/Jar");
+                } catch (Exception ex) {
+                    throw new InvalidConfigurationException("Failed to load clustered file state cache class, " + ex);
+                }
+            } else if (attr.equalsIgnoreCase("custom")) {
 
-				// Create a custom file state cache
+                // Get the custom state cache class name
 
-				try {
-					Object cacheObj = Class.forName( getText( cacheClass)).newInstance();
-					if ( cacheObj instanceof FileStateCache == false)
-						throw new InvalidConfigurationException( "State cache class is not a FileStateCache based class");
+                Element cacheClass = findChildNode("class", cacheElem.getChildNodes());
+                if (cacheClass == null || getText(cacheClass).length() == 0)
+                    throw new InvalidConfigurationException("Custom state cache class not specified");
 
-					stateCache = (FileStateCache) cacheObj;
-				}
-				catch ( ClassNotFoundException ex) {
-					throw new InvalidConfigurationException( "Clustered file state cache not available, check build/Jar");
-				}
-				catch ( Exception ex) {
-					throw new InvalidConfigurationException( "Failed to load clustered file state cache class, " + ex);
-				}
-			}
+                // Create a custom file state cache
 
-			// Initialize the cache
+                try {
+                    Object cacheObj = Class.forName(getText(cacheClass)).newInstance();
+                    if (cacheObj instanceof FileStateCache == false)
+                        throw new InvalidConfigurationException("State cache class is not a FileStateCache based class");
 
-			if ( stateCache != null)
-				stateCache.initializeCache( cacheConfig, this);
-			else
-				throw new InvalidConfigurationException( "Failed to initialize state cache for filesystem " + name);
-		}
+                    stateCache = (FileStateCache) cacheObj;
+                } catch (ClassNotFoundException ex) {
+                    throw new InvalidConfigurationException("Clustered file state cache not available, check build/Jar");
+                } catch (Exception ex) {
+                    throw new InvalidConfigurationException("Failed to load clustered file state cache class, " + ex);
+                }
+            }
 
-		// Check if a share with this name already exists
+            // Initialize the cache
 
-		if ( filesysConfig.getShares().findShare(name) != null)
-			throw new InvalidConfigurationException("Share " + name + " already exists");
+            if (stateCache != null)
+                stateCache.initializeCache(cacheConfig, this);
+            else
+                throw new InvalidConfigurationException("Failed to initialize state cache for filesystem " + name);
+        }
 
-		// Validate the driver class, create a device context and add the new disk share
+        // Check if a share with this name already exists
 
-		try {
+        if (filesysConfig.getShares().findShare(name) != null)
+            throw new InvalidConfigurationException("Share " + name + " already exists");
 
-			// Load the driver class
+        // Validate the driver class, create a device context and add the new disk share
 
-			Object drvObj = Class.forName(getText(classElem)).newInstance();
-			if ( drvObj instanceof DiskInterface) {
+        try {
 
-				// Create the driver
+            // Load the driver class
 
-				DiskInterface diskDrv = (DiskInterface) drvObj;
+            Object drvObj = Class.forName(getText(classElem)).newInstance();
+            if (drvObj instanceof DiskInterface) {
 
-				// Create a context for this share instance, save the configuration parameters as
-				// part of the context
+                // Create the driver
 
-				DiskDeviceContext devCtx = (DiskDeviceContext) diskDrv.createContext(name, params);
-				devCtx.setConfigurationParameters(params);
+                DiskInterface diskDrv = (DiskInterface) drvObj;
 
-				// Enable/disable change notification for this device
+                // Create a context for this share instance, save the configuration parameters as
+                // part of the context
 
-				devCtx.enableChangeHandler(changeNotify);
+                DiskDeviceContext devCtx = (DiskDeviceContext) diskDrv.createContext(name, params);
+                devCtx.setConfigurationParameters(params);
 
-				// Set the volume information, may be null
+                // Enable/disable change notification for this device
 
-				devCtx.setVolumeInformation(volInfo);
+                devCtx.enableChangeHandler(changeNotify);
 
-				// Set the disk sizing information, may be null
+                // Set the volume information, may be null
 
-				devCtx.setDiskInformation(diskInfo);
+                devCtx.setVolumeInformation(volInfo);
 
-				// Set the share name in the context
+                // Set the disk sizing information, may be null
 
-				devCtx.setShareName(name);
+                devCtx.setDiskInformation(diskInfo);
 
-				// Create the default file state cache type if the filesystem requires it, for backwards compatability
+                // Set the share name in the context
 
-				if ( devCtx.requiresStateCache() && stateCache == null) {
-					stateCache = new StandaloneFileStateCache();
-					stateCache.initializeCache( new GenericConfigElement( "stateCache"), this);
-				}
+                devCtx.setShareName(name);
 
-				if ( devCtx.requiresStateCache() == false && stateCache != null)
-					throw new InvalidConfigurationException( "Filesystem does not use state caching");
+                // Create the default file state cache type if the filesystem requires it, for backwards compatability
 
-				devCtx.setStateCache( stateCache);
+                if (devCtx.requiresStateCache() && stateCache == null) {
+                    stateCache = new StandaloneFileStateCache();
+                    stateCache.initializeCache(new GenericConfigElement("stateCache"), this);
+                }
 
-				// Create the disk shared device and add to the server's list of shares
+                if (devCtx.requiresStateCache() == false && stateCache != null)
+                    throw new InvalidConfigurationException("Filesystem does not use state caching");
 
-				DiskSharedDevice diskDev = new DiskSharedDevice(name, diskDrv, devCtx);
-				diskDev.setComment(comment);
-				diskDev.setConfiguration( this);
+                devCtx.setStateCache(stateCache);
 
-				// Add any access controls to the share
+                // Create the disk shared device and add to the server's list of shares
 
-				diskDev.setAccessControlList(acls);
+                DiskSharedDevice diskDev = new DiskSharedDevice(name, diskDrv, devCtx);
+                diskDev.setComment(comment);
+                diskDev.setConfiguration(this);
+
+                // Add any access controls to the share
+
+                diskDev.setAccessControlList(acls);
 
                 // Check if the filesystem uses the file state cache, if so then add to the file state reaper
 
-                if ( devCtx.hasStateCache()) {
+                if (devCtx.hasStateCache()) {
 
                     // Register the state cache with the reaper thread
 
-                    filesysConfig.addFileStateCache( name, devCtx.getStateCache());
+                    filesysConfig.addFileStateCache(name, devCtx.getStateCache());
                 }
 
-				// Start the filesystem
+                // Start the filesystem
 
-				devCtx.startFilesystem(diskDev);
+                devCtx.startFilesystem(diskDev);
 
-				// Pass the driver/context details to the state cache
+                // Pass the driver/context details to the state cache
 
-				if ( devCtx.hasStateCache())
-					devCtx.getStateCache().setDriverDetails(diskDev);
+                if (devCtx.hasStateCache())
+                    devCtx.getStateCache().setDriverDetails(diskDev);
 
-				// Add the new share to the list of available shares
+                // Add the new share to the list of available shares
 
-				filesysConfig.addShare(diskDev);
-			}
-		}
-		catch (ClassNotFoundException ex) {
-			throw new InvalidConfigurationException("Disk driver class " + getText(classElem) + " not found");
-		}
-		catch (DeviceContextException ex) {
-			throw new InvalidConfigurationException("Driver context error", ex);
-		}
-		catch (Exception ex) {
-			throw new InvalidConfigurationException("Disk share setup error", ex);
-		}
-	}
+                filesysConfig.addShare(diskDev);
+            }
+        } catch (ClassNotFoundException ex) {
+            throw new InvalidConfigurationException("Disk driver class " + getText(classElem) + " not found");
+        } catch (DeviceContextException ex) {
+            throw new InvalidConfigurationException("Driver context error", ex);
+        } catch (Exception ex) {
+            throw new InvalidConfigurationException("Disk share setup error", ex);
+        }
+    }
 
-	/**
-	 * Find the specified child node in the node list
-	 *
-	 * @param name String
-	 * @param list NodeList
-	 * @return Element
-	 */
-	protected final Element findChildNode(String name, NodeList list) {
+    /**
+     * Find the specified child node in the node list
+     *
+     * @param name String
+     * @param list NodeList
+     * @return Element
+     */
+    protected final Element findChildNode(String name, NodeList list) {
 
-		// Check if the list is valid
+        // Check if the list is valid
 
-		if ( list == null)
-			return null;
+        if (list == null)
+            return null;
 
-		// Search for the required element
+        // Search for the required element
 
-		for (int i = 0; i < list.getLength(); i++) {
+        for (int i = 0; i < list.getLength(); i++) {
 
-			// Get the current child node
+            // Get the current child node
 
-			Node child = list.item(i);
-			if ( child.getNodeName().equals(name) && child.getNodeType() == ELEMENT_TYPE)
-				return (Element) child;
-		}
+            Node child = list.item(i);
+            if (child.getNodeName().equals(name) && child.getNodeType() == ELEMENT_TYPE)
+                return (Element) child;
+        }
 
-		// Element not found
+        // Element not found
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Get the value text for the specified element
-	 *
-	 * @param elem Element
-	 * @return String
-	 */
-	protected final String getText(Element elem) {
+    /**
+     * Get the value text for the specified element
+     *
+     * @param elem Element
+     * @return String
+     */
+    protected final String getText(Element elem) {
 
-		// Check if the element has children
+        // Check if the element has children
 
-		NodeList children = elem.getChildNodes();
-		String text = "";
+        NodeList children = elem.getChildNodes();
+        String text = "";
 
-		if ( children != null && children.getLength() > 0 && children.item(0).getNodeType() != ELEMENT_TYPE)
-			text = children.item(0).getNodeValue();
+        if (children != null && children.getLength() > 0 && children.item(0).getNodeType() != ELEMENT_TYPE)
+            text = children.item(0).getNodeValue();
 
-		// Return the element text value
+        // Return the element text value
 
-		return text;
-	}
+        return text;
+    }
 
-	/**
-	 * Build a configuration element list from an elements child nodes
-	 *
-	 * @param root Element
-	 * @return GenericConfigElement
-	 */
-	protected final GenericConfigElement buildConfigElement(Element root) {
-		return buildConfigElement(root, null);
-	}
+    /**
+     * Build a configuration element list from an elements child nodes
+     *
+     * @param root Element
+     * @return GenericConfigElement
+     */
+    protected final GenericConfigElement buildConfigElement(Element root) {
+        return buildConfigElement(root, null);
+    }
 
-	/**
-	 * Build a configuration element list from an elements child nodes
-	 *
-	 * @param root Element
-	 * @param cfgElem GenericConfigElement
-	 * @return GenericConfigElement
-	 */
-	protected final GenericConfigElement buildConfigElement(Element root, GenericConfigElement cfgElem) {
+    /**
+     * Build a configuration element list from an elements child nodes
+     *
+     * @param root    Element
+     * @param cfgElem GenericConfigElement
+     * @return GenericConfigElement
+     */
+    protected final GenericConfigElement buildConfigElement(Element root, GenericConfigElement cfgElem) {
 
-		// Create the top level element, if not specified
+        // Create the top level element, if not specified
 
-		GenericConfigElement rootElem = cfgElem;
+        GenericConfigElement rootElem = cfgElem;
 
-		if ( rootElem == null) {
+        if (rootElem == null) {
 
-			// Create the root element
+            // Create the root element
 
-			rootElem = new GenericConfigElement(root.getNodeName());
+            rootElem = new GenericConfigElement(root.getNodeName());
 
-			// Add any attributes
+            // Add any attributes
 
-			NamedNodeMap attribs = root.getAttributes();
-			if ( attribs != null) {
-				for (int i = 0; i < attribs.getLength(); i++) {
-					Node attribNode = attribs.item(i);
-					rootElem.addAttribute(attribNode.getNodeName(), attribNode.getNodeValue());
-				}
-			}
-		}
+            NamedNodeMap attribs = root.getAttributes();
+            if (attribs != null) {
+                for (int i = 0; i < attribs.getLength(); i++) {
+                    Node attribNode = attribs.item(i);
+                    rootElem.addAttribute(attribNode.getNodeName(), attribNode.getNodeValue());
+                }
+            }
+        }
 
-		// Get the child node list
+        // Get the child node list
 
-		NodeList nodes = root.getChildNodes();
-		if ( nodes == null)
-			return rootElem;
+        NodeList nodes = root.getChildNodes();
+        if (nodes == null)
+            return rootElem;
 
-		// Process the child node list
+        // Process the child node list
 
-		GenericConfigElement childElem = null;
+        GenericConfigElement childElem = null;
 
-		for (int i = 0; i < nodes.getLength(); i++) {
+        for (int i = 0; i < nodes.getLength(); i++) {
 
-			// Get the current node
+            // Get the current node
 
-			Node node = nodes.item(i);
+            Node node = nodes.item(i);
 
-			if ( node.getNodeType() == ELEMENT_TYPE) {
+            if (node.getNodeType() == ELEMENT_TYPE) {
 
-				// Access the Element
+                // Access the Element
 
-				Element elem = (Element) node;
+                Element elem = (Element) node;
 
-				// Check if the element has any child nodes
+                // Check if the element has any child nodes
 
-				NodeList children = elem.getChildNodes();
+                NodeList children = elem.getChildNodes();
 
-				if ( children != null && children.getLength() > 1) {
+                if (children != null && children.getLength() > 1) {
 
-					// Add the child nodes as child configuration elements
+                    // Add the child nodes as child configuration elements
 
-					childElem = buildConfigElement(elem, null);
-				}
-				else {
+                    childElem = buildConfigElement(elem, null);
+                } else {
 
-					// Create a normal name/value
+                    // Create a normal name/value
 
-					if ( children.getLength() > 0) {
-						childElem = new GenericConfigElement(elem.getNodeName());
-						childElem.setValue(children.item(0).getNodeValue());
-					}
-					else
-						childElem = new GenericConfigElement(elem.getNodeName());
+                    if (children.getLength() > 0) {
+                        childElem = new GenericConfigElement(elem.getNodeName());
+                        childElem.setValue(children.item(0).getNodeValue());
+                    } else
+                        childElem = new GenericConfigElement(elem.getNodeName());
 
-					// Add any attributes
+                    // Add any attributes
 
-					NamedNodeMap attribs = elem.getAttributes();
-					if ( attribs != null) {
-						for (int j = 0; j < attribs.getLength(); j++) {
-							Node attribNode = attribs.item(j);
-							childElem.addAttribute(attribNode.getNodeName(), attribNode.getNodeValue());
-						}
-					}
-				}
+                    NamedNodeMap attribs = elem.getAttributes();
+                    if (attribs != null) {
+                        for (int j = 0; j < attribs.getLength(); j++) {
+                            Node attribNode = attribs.item(j);
+                            childElem.addAttribute(attribNode.getNodeName(), attribNode.getNodeValue());
+                        }
+                    }
+                }
 
-				// Add the child configuration element
+                // Add the child configuration element
 
-				rootElem.addChild(childElem);
-			}
-		}
+                rootElem.addChild(childElem);
+            }
+        }
 
-		// Return the configuration element
+        // Return the configuration element
 
-		return rootElem;
-	}
+        return rootElem;
+    }
 
-	/**
-	 * Add a configuration element
-	 */
-	/**
-	 * Parse a platform type string into a list of platform ids
-	 *
-	 * @param platforms String
-	 * @return List<Integer>
-	 * @exception InvalidConfigurationException
-	 */
-	protected final List<Platform.Type> parsePlatformString(String platforms)
-		throws InvalidConfigurationException {
-		// Create the list to hold the platform ids
+    /**
+     * Add a configuration element
+     */
+    /**
+     * Parse a platform type string into a list of platform ids
+     *
+     * @param platforms String
+     * @return List<Integer>
+     * @throws InvalidConfigurationException
+     */
+    protected final List<Platform.Type> parsePlatformString(String platforms)
+            throws InvalidConfigurationException {
+        // Create the list to hold the platform ids
 
-		List<Platform.Type> platformIds = new ArrayList<Platform.Type>();
+        List<Platform.Type> platformIds = new ArrayList<Platform.Type>();
 
-		if ( platforms == null)
-			return platformIds;
+        if (platforms == null)
+            return platformIds;
 
-		// Split the platform list
+        // Split the platform list
 
-		StringTokenizer tokens = new StringTokenizer(platforms.toUpperCase(Locale.ENGLISH), ",");
+        StringTokenizer tokens = new StringTokenizer(platforms.toUpperCase(Locale.ENGLISH), ",");
 
-		while (tokens.hasMoreTokens()) {
+        while (tokens.hasMoreTokens()) {
 
-			// Get the current platform token and validate
+            // Get the current platform token and validate
 
-			String platform = tokens.nextToken().trim();
+            String platform = tokens.nextToken().trim();
 
-			// Validate the platform id
+            // Validate the platform id
 
-			Platform.Type id = Platform.Type.Unknown;
+            Platform.Type id = Platform.Type.Unknown;
 
-			if ( platform.equalsIgnoreCase("WINDOWS"))
-				id = Platform.Type.WINDOWS;
-			else if ( platform.equalsIgnoreCase("LINUX"))
-				id = Platform.Type.LINUX;
-			else if ( platform.equalsIgnoreCase("MACOSX"))
-				id = Platform.Type.MACOSX;
-			else if ( platform.equalsIgnoreCase("SOLARIS"))
-				id = Platform.Type.SOLARIS;
+            if (platform.equalsIgnoreCase("WINDOWS"))
+                id = Platform.Type.WINDOWS;
+            else if (platform.equalsIgnoreCase("LINUX"))
+                id = Platform.Type.LINUX;
+            else if (platform.equalsIgnoreCase("MACOSX"))
+                id = Platform.Type.MACOSX;
+            else if (platform.equalsIgnoreCase("SOLARIS"))
+                id = Platform.Type.SOLARIS;
 
-			if ( id == Platform.Type.Unknown)
-				throw new InvalidConfigurationException("Invalid platform type '" + platform + "'");
+            if (id == Platform.Type.Unknown)
+                throw new InvalidConfigurationException("Invalid platform type '" + platform + "'");
 
-			// Add the platform id to the list
+            // Add the platform id to the list
 
-			platformIds.add(id);
-		}
+            platformIds.add(id);
+        }
 
-		// Return the platform id list
+        // Return the platform id list
 
-		return platformIds;
-	}
+        return platformIds;
+    }
 
-	/**
-	 * Parse an adapter name string and return the matching address
-	 *
-	 * @param adapter String
-	 * @return InetAddress
-	 * @exception InvalidConfigurationException
-	 */
-	protected final InetAddress parseAdapterName(String adapter)
-		throws InvalidConfigurationException {
+    /**
+     * Parse an adapter name string and return the matching address
+     *
+     * @param adapter String
+     * @return InetAddress
+     * @throws InvalidConfigurationException
+     */
+    protected final InetAddress parseAdapterName(String adapter)
+            throws InvalidConfigurationException {
 
-		NetworkInterface ni = null;
+        NetworkInterface ni = null;
 
-		try {
-			ni = NetworkInterface.getByName(adapter);
-		}
-		catch (SocketException ex) {
-			throw new InvalidConfigurationException("Invalid adapter name, " + adapter);
-		}
+        try {
+            ni = NetworkInterface.getByName(adapter);
+        } catch (SocketException ex) {
+            throw new InvalidConfigurationException("Invalid adapter name, " + adapter);
+        }
 
-		if ( ni == null)
-			throw new InvalidConfigurationException("Invalid network adapter name, " + adapter);
+        if (ni == null)
+            throw new InvalidConfigurationException("Invalid network adapter name, " + adapter);
 
-		// Get the IP address for the adapter
+        // Get the IP address for the adapter
 
-		InetAddress adapAddr = null;
-		Enumeration<InetAddress> addrEnum = ni.getInetAddresses();
+        InetAddress adapAddr = null;
+        Enumeration<InetAddress> addrEnum = ni.getInetAddresses();
 
-		while (addrEnum.hasMoreElements() && adapAddr == null) {
+        while (addrEnum.hasMoreElements() && adapAddr == null) {
 
-			// Get the current address
+            // Get the current address
 
-			InetAddress addr = addrEnum.nextElement();
-			if ( IPAddress.isNumericAddress(addr.getHostAddress()))
-				adapAddr = addr;
-		}
+            InetAddress addr = addrEnum.nextElement();
+            if (IPAddress.isNumericAddress(addr.getHostAddress()))
+                adapAddr = addr;
+        }
 
-		// Check if we found the IP address to bind to
+        // Check if we found the IP address to bind to
 
-		if ( adapAddr == null)
-			throw new InvalidConfigurationException("Adapter " + adapter + " does not have a valid IP address");
+        if (adapAddr == null)
+            throw new InvalidConfigurationException("Adapter " + adapter + " does not have a valid IP address");
 
-		// Return the adapter address
+        // Return the adapter address
 
-		return adapAddr;
-	}
+        return adapAddr;
+    }
 }

@@ -26,43 +26,49 @@ package org.alfresco.jlan.smb.server;
  */
 public class DefaultSrvSessionFactory implements SrvSessionFactory {
 
-	// Maximum number of virtual circuits per session
+    // Maximum number of virtual circuits per session
 
-	private int m_maxVirtualCircuit = VirtualCircuitList.DefMaxCircuits;
+    private int m_maxVirtualCircuit = VirtualCircuitList.DefMaxCircuits;
+    private boolean m_closeOnError = false;
 
-	/**
-	 * Create a server session object
-	 *
-	 * @param handler PacketHandler
-	 * @param server SMBServer
-	 * @param sessId int
-	 * @return SMBSrvSession
-	 */
-	public SMBSrvSession createSession(PacketHandler handler, SMBServer server, int sessId) {
+    /**
+     * Create a server session object
+     *
+     * @param handler PacketHandler
+     * @param server  SMBServer
+     * @param sessId  int
+     * @return SMBSrvSession
+     */
+    public SMBSrvSession createSession(PacketHandler handler, SMBServer server, int sessId) {
 
-		// Create a new SMB session
+        // Create a new SMB session
 
-		SMBSrvSession sess = new SMBSrvSession(handler, server, m_maxVirtualCircuit);
+        SMBSrvSession sess = new SMBSrvSession(handler, server, m_maxVirtualCircuit);
 
-		sess.setSessionId(sessId);
-		sess.setUniqueId(handler.getShortName() + sess.getSessionId());
-		sess.setDebugPrefix("[" + handler.getShortName() + sessId + "] ");
+        sess.setSessionId(sessId);
+        sess.setUniqueId(handler.getShortName() + sess.getSessionId());
+        sess.setDebugPrefix("[" + handler.getShortName() + sessId + "] ");
+        sess.setCloseSessionOnError(m_closeOnError);
+        // Add the session to the active session list
 
-		// Add the session to the active session list
+        server.addSession(sess);
 
-		server.addSession(sess);
+        // Return the new session
 
-		// Return the new session
+        return sess;
+    }
 
-		return sess;
-	}
+    /**
+     * Set the maximum virtual circuits per session
+     *
+     * @param maxVC int
+     */
+    public void setMaximumVirtualCircuits(int maxVC) {
+        m_maxVirtualCircuit = maxVC;
+    }
 
-	/**
-	 * Set the maximum virtual circuits per session
-	 *
-	 * @param maxVC int
-	 */
-	public void setMaximumVirtualCircuits( int maxVC) {
-		m_maxVirtualCircuit = maxVC;
-	}
+    @Override
+    public void setCloseSessionOnError(boolean closeOnError) {
+        m_closeOnError = closeOnError;
+    }
 }
