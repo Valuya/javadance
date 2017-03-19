@@ -19,36 +19,13 @@
 
 package org.alfresco.jlan.server.auth;
 
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
-import javax.security.auth.Subject;
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
-import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
-import javax.security.sasl.RealmCallback;
-
 import org.alfresco.jlan.debug.Debug;
 import org.alfresco.jlan.netbios.RFCNetBIOSProtocol;
 import org.alfresco.jlan.server.auth.kerberos.KerberosApReq;
 import org.alfresco.jlan.server.auth.kerberos.KerberosDetails;
 import org.alfresco.jlan.server.auth.kerberos.KrbAuthContext;
 import org.alfresco.jlan.server.auth.kerberos.SessionSetupPrivilegedAction;
-import org.alfresco.jlan.server.auth.ntlm.NTLM;
-import org.alfresco.jlan.server.auth.ntlm.NTLMMessage;
-import org.alfresco.jlan.server.auth.ntlm.NTLMv2Blob;
-import org.alfresco.jlan.server.auth.ntlm.TargetInfo;
-import org.alfresco.jlan.server.auth.ntlm.Type1NTLMMessage;
-import org.alfresco.jlan.server.auth.ntlm.Type2NTLMMessage;
-import org.alfresco.jlan.server.auth.ntlm.Type3NTLMMessage;
+import org.alfresco.jlan.server.auth.ntlm.*;
 import org.alfresco.jlan.server.auth.spnego.NegTokenInit;
 import org.alfresco.jlan.server.auth.spnego.NegTokenTarg;
 import org.alfresco.jlan.server.auth.spnego.OID;
@@ -59,15 +36,23 @@ import org.alfresco.jlan.server.core.NoPooledMemoryException;
 import org.alfresco.jlan.smb.Capability;
 import org.alfresco.jlan.smb.SMBStatus;
 import org.alfresco.jlan.smb.dcerpc.UUID;
-import org.alfresco.jlan.smb.server.CIFSConfigSection;
-import org.alfresco.jlan.smb.server.SMBSrvException;
-import org.alfresco.jlan.smb.server.SMBSrvPacket;
-import org.alfresco.jlan.smb.server.SMBSrvSession;
-import org.alfresco.jlan.smb.server.VirtualCircuit;
+import org.alfresco.jlan.smb.server.*;
 import org.alfresco.jlan.util.DataPacker;
 import org.alfresco.jlan.util.HexDump;
-import org.springframework.extensions.config.ConfigElement;
 import org.ietf.jgss.Oid;
+import org.springframework.extensions.config.ConfigElement;
+
+import javax.security.auth.Subject;
+import javax.security.auth.callback.*;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
+import javax.security.sasl.RealmCallback;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Enterprise CIFS Authenticator Class
@@ -915,7 +900,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	 * @param unicode boolean
 	 * @exception SMBSrvException
 	 */
-	private final byte[] doNtlmsspSessionSetup(SMBSrvSession sess, ClientInfo client, byte[] secbuf, int secpos, int seclen,
+	protected byte[] doNtlmsspSessionSetup(SMBSrvSession sess, ClientInfo client, byte[] secbuf, int secpos, int seclen,
 			boolean unicode)
 		throws SMBSrvException {
 
@@ -1063,7 +1048,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	 * @param unicode boolean
 	 * @exception SMBSrvException
 	 */
-	private final byte[] doSpnegoSessionSetup(SMBSrvSession sess, ClientInfo client, byte[] secbuf, int secpos, int seclen,
+	protected byte[] doSpnegoSessionSetup(SMBSrvSession sess, ClientInfo client, byte[] secbuf, int secpos, int seclen,
 			boolean unicode)
 		throws SMBSrvException {
 
@@ -1245,7 +1230,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	 * @return NegTokenTarg
 	 * @exception SMBSrvException
 	 */
-	private final NegTokenTarg doKerberosLogon(SMBSrvSession sess, NegTokenInit negToken, ClientInfo client)
+	protected NegTokenTarg doKerberosLogon(SMBSrvSession sess, NegTokenInit negToken, ClientInfo client)
 		throws SMBSrvException {
 
         //  Authenticate the user
@@ -1463,7 +1448,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	 * @param type3Msg Type3NTLMMessage
 	 * @exception SMBSrvException
 	 */
-	private final void doNTLMv1Logon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
+	protected void doNTLMv1Logon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
 		throws SMBSrvException {
 
 		// Check if NTLMv1 logons are allowed
@@ -1551,7 +1536,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	 * @param client ClientInfo
 	 * @exception SMBSrvException
 	 */
-	private final void doNTLMv1Logon(SMBSrvSession sess, ClientInfo client)
+	protected void doNTLMv1Logon(SMBSrvSession sess, ClientInfo client)
 		throws SMBSrvException {
 
 		// Check if NTLMv1 logons are allowed
@@ -1617,7 +1602,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	 * @param type3Msg Type3NTLMMessage
 	 * @exception SMBSrvException
 	 */
-	private final void doNTLMv2Logon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
+	protected void doNTLMv2Logon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
 		throws SMBSrvException {
 
 		// Get the type 2 message that contains the challenge sent to the client
@@ -1735,7 +1720,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	 * @param client ClientInfo
 	 * @exception SMBSrvException
 	 */
-	private final void doNTLMv2Logon(SMBSrvSession sess, ClientInfo client)
+	protected void doNTLMv2Logon(SMBSrvSession sess, ClientInfo client)
 		throws SMBSrvException {
 
 		// Check for a null logon
@@ -1853,7 +1838,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	 * @param type3Msg Type3NTLMMessage
 	 * @exception SMBSrvException
 	 */
-	private final void doNTLMv2SessionKeyLogon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
+	protected void doNTLMv2SessionKeyLogon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
 		throws SMBSrvException {
 
 		// Get the type 2 message that contains the challenge sent to the client
@@ -2014,7 +1999,7 @@ public class EnterpriseCifsAuthenticator extends CifsAuthenticator implements Ca
 	 * @param reqPkt SMBSrvPacket
 	 * @exception SMBSrvException
 	 */
-	private final void doHashedPasswordLogon(SMBSrvSession sess, SMBSrvPacket reqPkt)
+	protected void doHashedPasswordLogon(SMBSrvSession sess, SMBSrvPacket reqPkt)
 		throws SMBSrvException {
 
 		// Check that the received packet looks like a valid NT session setup andX request
