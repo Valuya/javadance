@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.alfresco</groupId>
         <artifactId>alfresco-jlan-parent</artifactId>
-        <version>5.1.2-SNAPSHOT</version>
+        <version>5.1.3-valuya-SNAPSHOT</version>
     </parent>
 
     <profiles>
@@ -134,10 +134,10 @@
 <!--            <plugin>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>  for now 
-                     <configLocation>checkstyle.xml</configLocation> 
+                    <skip>true</skip>  for now
+                     <configLocation>checkstyle.xml</configLocation>
                     <enableRulesSummary>false</enableRulesSummary>
-                     <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation> 
+                     <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
                     <failOnViolation>false</failOnViolation>
                 </configuration>
             </plugin>-->
@@ -152,7 +152,7 @@
                 </configuration>
             </plugin>-->
 
-<!--             run pre/post for integration tests 
+<!--             run pre/post for integration tests
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -192,7 +192,7 @@
                 </executions>
             </plugin>-->
 
-<!--             run integration tests 
+<!--             run integration tests
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
@@ -248,7 +248,7 @@
                                 <filter>
                                     <artifact>org.bouncycastle</artifact>
                                     <includes>
-                                         Note: This WILL NOT WORK unless the jar is signed! 
+                                         Note: This WILL NOT WORK unless the jar is signed!
                                         <include>org/bouncycastle/**</include>
                                     </includes>
                                 </filter>
@@ -266,7 +266,7 @@
                 </executions>
             </plugin>
 
-             Sign the executable jar 
+             Sign the executable jar
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jarsigner-plugin</artifactId>
@@ -286,7 +286,7 @@
                     <storepass>${sign.storepass}</storepass>
                     <storetype>${sign.storetype}</storetype>
                     <sigfile>${sign.sigfile}</sigfile>
-                     <tsa>${sign.tsa}</tsa> 
+                     <tsa>${sign.tsa}</tsa>
                     <processMainArtifact>false</processMainArtifact>
                     <processAttachedArtifacts>false</processAttachedArtifacts>
                     <removeExistingSignatures>true</removeExistingSignatures>
@@ -294,9 +294,9 @@
                 </configuration>
             </plugin>
 
-             Create separae jar with DLLs 
+             Create separae jar with DLLs
             <plugin>
-                 Windows DLL to be packaged separately. Used in the distribution 
+                 Windows DLL to be packaged separately. Used in the distribution
                 <artifactId>maven-jar-plugin</artifactId>
                 <executions>
                     <execution>
@@ -312,7 +312,7 @@
                 </executions>
             </plugin>-->
 <!--
-             Update dependencies 
+             Update dependencies
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
