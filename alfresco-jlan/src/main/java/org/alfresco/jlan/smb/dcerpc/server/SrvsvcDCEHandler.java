@@ -19,11 +19,6 @@
 
 package org.alfresco.jlan.smb.dcerpc.server;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-
 import org.alfresco.jlan.debug.Debug;
 import org.alfresco.jlan.server.auth.acl.AccessControlManager;
 import org.alfresco.jlan.server.core.ShareType;
@@ -42,6 +37,11 @@ import org.alfresco.jlan.smb.server.SMBServer;
 import org.alfresco.jlan.smb.server.SMBSrvException;
 import org.alfresco.jlan.smb.server.SMBSrvPacket;
 import org.alfresco.jlan.smb.server.SMBSrvSession;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Srvsvc DCE/RPC Handler Class
@@ -151,7 +151,7 @@ public class SrvsvcDCEHandler implements DCEHandler {
 
 		try {
 			inBuf.skipPointer();
-			srvName = inBuf.getString();
+			srvName = inBuf.getString(DCEBuffer.ALIGN_INT);
 			shrInfo = new ShareInfoList(inBuf);
 		}
 		catch (DCEBufferException ex) {
