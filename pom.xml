@@ -3,7 +3,7 @@
 
     <groupId>org.alfresco</groupId>
     <artifactId>alfresco-jlan-parent</artifactId>
-    <version>5.1.3-valuya</version>
+    <version>5.1.4-valuya-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Alfresco JLAN Parent</name>
 
