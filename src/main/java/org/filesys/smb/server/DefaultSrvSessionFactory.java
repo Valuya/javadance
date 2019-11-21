@@ -28,6 +28,7 @@ public class DefaultSrvSessionFactory implements SrvSessionFactory {
 
     // Maximum number of virtual circuits per session
     private int m_maxVirtualCircuit = SMBV1VirtualCircuitList.DefMaxCircuits;
+    private boolean m_closeOnError = false;
 
     /**
      * Create a server session object
@@ -45,6 +46,7 @@ public class DefaultSrvSessionFactory implements SrvSessionFactory {
         sess.setSessionId(sessId);
         sess.setUniqueId(handler.getShortName() + sess.getSessionId());
         sess.setDebugPrefix("[" + handler.getShortName() + sessId + "] ");
+        sess.setCloseSessionOnError(m_closeOnError);
 
         // Add the session to the active session list
         server.addSession(sess);
@@ -60,5 +62,10 @@ public class DefaultSrvSessionFactory implements SrvSessionFactory {
      */
     public void setMaximumVirtualCircuits(int maxVC) {
         m_maxVirtualCircuit = maxVC;
+    }
+
+    @Override
+    public void setCloseSessionOnError(boolean closeOnError) {
+        m_closeOnError = closeOnError;
     }
 }

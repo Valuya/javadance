@@ -237,6 +237,8 @@ public class SMBServer extends NetworkFileServer implements Runnable, Configurat
             // Set the maximum virtual circuits per session
             SMBSrvSession.getFactory().setMaximumVirtualCircuits(m_smbConfig.getMaximumVirtualCircuits());
 
+            SMBSrvSession.getFactory().setCloseSessionOnError(m_smbConfig.isCloseSessionOnError());
+
             // Get the core server configuration
             m_coreConfig = (CoreServerConfigSection) getConfiguration().getConfigSection(CoreServerConfigSection.SectionName);
             if (m_coreConfig != null) {

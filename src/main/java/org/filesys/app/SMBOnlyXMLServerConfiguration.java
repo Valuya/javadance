@@ -565,6 +565,12 @@ public class SMBOnlyXMLServerConfiguration extends ServerConfiguration {
 		// Check if session debug is enabled
         procSessionDebugElement( findChildNode("sessionDebug", smb.getChildNodes()), smbConfig);
 
+		// Check if close session on error is enabled
+		elem = findChildNode("closeSessionOnError", smb.getChildNodes());
+		if (elem != null) {
+			smbConfig.setCloseSessionOnError(true);
+		}
+
 		// Check if NIO based code should be disabled
 		if ( findChildNode( "disableNIO", smb.getChildNodes()) != null)
 			smbConfig.setDisableNIOCode( true);

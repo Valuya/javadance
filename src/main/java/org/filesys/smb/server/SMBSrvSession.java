@@ -139,6 +139,8 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 	// Virtual circuit list
 	private VirtualCircuitList m_vcircuits;
 
+	private boolean m_closeSessionOnError;
+
 	// Setup objects used during two stage session setup before the virtual circuit is allocated
 	private Hashtable<Integer, EnumMap<SetupObjectType, Object>> m_setupObjects;
 
@@ -1234,9 +1236,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 			// Output the exception details
 			if (isShutdown() == false) {
-				debugPrintln("Closing session due to exception");
-				debugPrintln(ex);
-				Debug.println(ex);
+				onSmbSessionExceptionCaught(smbPkt, ex);
 			}
 		}
 		catch (Throwable ex) {
@@ -1384,9 +1384,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 				// Output the exception details
 				if (isShutdown() == false) {
-					debugPrintln("Closing session due to exception");
-					debugPrintln(ex);
-					Debug.println(ex);
+					onSmbSessionExceptionCaught(smbPkt, ex);
 				}
 			}
 			catch (Throwable ex) {
@@ -2047,6 +2045,30 @@ public class SMBSrvSession extends SrvSession implements Runnable {
             debugPrintln("No setup objects");
 	}
 
+
+	public boolean isCloseSessionOnError() {
+		return m_closeSessionOnError;
+	}
+
+	public void setCloseSessionOnError(boolean closeSessionOnError) {
+		this.m_closeSessionOnError = closeSessionOnError;
+	}
+
+	private void onSmbSessionExceptionCaught(SMBSrvPacket smbPkt, Exception ex) {
+		if (isCloseSessionOnError()) {
+			debugPrintln("Closing session due to exception");
+			debugPrintln(ex);
+		} else {
+			debugPrintln("Caught exception");
+			debugPrintln(ex);
+			try {
+				this.sendErrorResponseSMB(smbPkt, SMBStatus.SRVNonSpecificError, SMBStatus.ErrSrv);
+			} catch (IOException e) {
+				debugPrintln("Failed to send error, closing session");
+				debugPrintln(e);
+			}
+		}
+	}
 	/**
 	 * Dump the session keys
 	 */
@@ -2064,4 +2086,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
         else
             debugPrintln("No session keys");
 	}
+
+
+
 }

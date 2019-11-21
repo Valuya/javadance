@@ -233,7 +233,9 @@ public class ServerInfo implements DCEWriteable, DCEReadable {
 				buf.skipPointer();
 
 				m_name = buf.getString(DCEBuffer.ALIGN_INT);
-				m_comment = buf.getString();
+//				m_comment = buf.getString();
+				// valuya: TODO: double-check
+				m_comment = buf.getString(DCEBuffer.ALIGN_INT);
 				break;
 
 			//	Level 102

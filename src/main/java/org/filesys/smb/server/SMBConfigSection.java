@@ -19,23 +19,23 @@
 
 package org.filesys.smb.server;
 
-import java.net.InetAddress;
-import java.util.List;
-
 import org.filesys.netbios.RFCNetBIOSProtocol;
-import org.filesys.server.auth.SMBAuthenticator;
 import org.filesys.server.auth.ISMBAuthenticator;
+import org.filesys.server.auth.SMBAuthenticator;
+import org.filesys.server.config.ConfigId;
+import org.filesys.server.config.ConfigSection;
+import org.filesys.server.config.ConfigurationListener;
+import org.filesys.server.config.InvalidConfigurationException;
+import org.filesys.server.config.ServerConfiguration;
 import org.filesys.smb.Dialect;
 import org.filesys.smb.DialectSelector;
 import org.filesys.smb.ServerType;
 import org.filesys.smb.TcpipSMB;
 import org.filesys.util.StringList;
 import org.springframework.extensions.config.ConfigElement;
-import org.filesys.server.config.ConfigId;
-import org.filesys.server.config.ConfigSection;
-import org.filesys.server.config.ConfigurationListener;
-import org.filesys.server.config.InvalidConfigurationException;
-import org.filesys.server.config.ServerConfiguration;
+
+import java.net.InetAddress;
+import java.util.List;
 
 /**
  * SMB Server Configuration Section Class
@@ -135,6 +135,9 @@ public class SMBConfigSection extends ConfigSection {
 
     // Require signing of requests/responses
     private boolean m_requireSigning = false;
+
+    // Close session on first error
+    private boolean m_closeSessionOnError = false;
 
     //--------------------------------------------------------------------------------
     //  Win32 NetBIOS configuration
@@ -619,14 +622,28 @@ public class SMBConfigSection extends ConfigSection {
      *
      * @return boolean
      */
-    public final boolean hasDisableEncryption() { return m_disableEncryption; }
+    public final boolean hasDisableEncryption() {
+        return m_disableEncryption;
+    }
 
     /**
      * Check if signing is required
      *
      * @return boolean
      */
-    public final boolean isSigningRequired() { return m_requireSigning; }
+    public final boolean isSigningRequired() {
+        return m_requireSigning;
+    }
+
+
+    /**
+     * Check if sesssion should be closed on error
+     *
+     * @return
+     */
+    public boolean isCloseSessionOnError() {
+        return m_closeSessionOnError;
+    }
 
     /**
      * Set the authenticator to be used to authenticate users and share connections.
@@ -1450,6 +1467,13 @@ public class SMBConfigSection extends ConfigSection {
         m_requireSigning = requireSign;
 
         //  Return the change status
+        return sts;
+    }
+
+
+    public final int setCloseSessionOnError(boolean closeSession) throws InvalidConfigurationException {
+        int sts = fireConfigurationChange(ConfigId.SMBCloseSessionOnError, new Boolean(closeSession));
+        m_closeSessionOnError = closeSession;
         return sts;
     }
 

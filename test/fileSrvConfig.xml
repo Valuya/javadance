@@ -27,6 +27,7 @@
             <tcpipSMB port="1445" platforms="linux,macosx,solaris"/>
 
             <hostAnnounce interval="5"/>
+            <closeSessionOnError />
         </host>
 <!--        <sessionDebug flags="Negotiate,Socket,Tree,State,Error,PktType,DceRpc,IPC,Search,Info,File,FileIO,Compound,Cancel,Notify"/> -->
         <sessionDebug flags="Negotiate,Socket,Tree,Error,Notify,Info,File,FileIO,State,IPC,PktType,Search"/>

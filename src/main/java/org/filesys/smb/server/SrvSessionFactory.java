@@ -42,4 +42,10 @@ public interface SrvSessionFactory {
      * @param maxVC int
      */
     public void setMaximumVirtualCircuits(int maxVC);
+
+    /**
+     * Close the session on uncaught exception.
+     * @param closeOnError
+     */
+    public void setCloseSessionOnError( boolean closeOnError);
 }

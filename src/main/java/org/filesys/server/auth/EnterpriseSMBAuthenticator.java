@@ -906,7 +906,7 @@ public class EnterpriseSMBAuthenticator extends SMBAuthenticator implements Call
      * @return AuthStatus
      * @exception SMBSrvException SMB error
      */
-    private final AuthStatus doNtlmsspSessionSetup(SMBSrvSession sess, ClientInfo client, SecurityBlob secBlob, boolean spnego)
+    protected AuthStatus doNtlmsspSessionSetup(SMBSrvSession sess, ClientInfo client, SecurityBlob secBlob, boolean spnego)
             throws SMBSrvException {
 
         // Make sure NTLM logons are enabled
@@ -1081,7 +1081,7 @@ public class EnterpriseSMBAuthenticator extends SMBAuthenticator implements Call
      * @return AuthStatus
      * @exception SMBSrvException SMB error
      */
-    private final AuthStatus doSpnegoSessionSetup(SMBSrvSession sess, ClientInfo client, SecurityBlob secBlob)
+    protected AuthStatus doSpnegoSessionSetup(SMBSrvSession sess, ClientInfo client, SecurityBlob secBlob)
             throws SMBSrvException {
 
         // Check the received token type, if it is a target token and there is a stored session setup object, this is
@@ -1304,7 +1304,7 @@ public class EnterpriseSMBAuthenticator extends SMBAuthenticator implements Call
      * @return NegTokenTarg
      * @exception SMBSrvException SMB error
      */
-    private final NegTokenTarg doKerberosLogon(SMBSrvSession sess, NegTokenInit negToken, ClientInfo client)
+    protected NegTokenTarg doKerberosLogon(SMBSrvSession sess, NegTokenInit negToken, ClientInfo client)
             throws SMBSrvException {
 
         //  Authenticate the user
@@ -1420,7 +1420,7 @@ public class EnterpriseSMBAuthenticator extends SMBAuthenticator implements Call
      * @param type3Msg Type3NTLMMessage
      * @exception SMBSrvException SMB error
      */
-    private final void doNTLMv1Logon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
+    protected void doNTLMv1Logon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
             throws SMBSrvException {
 
         // Check if NTLMv1 logons are allowed
@@ -1490,7 +1490,7 @@ public class EnterpriseSMBAuthenticator extends SMBAuthenticator implements Call
      * @param client ClientInfo
      * @exception SMBSrvException SMB error
      */
-    private final void doNTLMv1Logon(SMBSrvSession sess, ClientInfo client)
+    protected void doNTLMv1Logon(SMBSrvSession sess, ClientInfo client)
             throws SMBSrvException {
 
         // Check if NTLMv1 logons are allowed
@@ -1544,7 +1544,7 @@ public class EnterpriseSMBAuthenticator extends SMBAuthenticator implements Call
      * @param type3Msg Type3NTLMMessage
      * @exception SMBSrvException SMB error
      */
-    private final void doNTLMv2Logon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
+    protected void doNTLMv2Logon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
             throws SMBSrvException {
 
         // Get the type 2 message that contains the challenge sent to the client
@@ -1654,7 +1654,7 @@ public class EnterpriseSMBAuthenticator extends SMBAuthenticator implements Call
      * @param client ClientInfo
      * @exception SMBSrvException SMB error
      */
-    private final void doNTLMv2Logon(SMBSrvSession sess, ClientInfo client)
+    protected void doNTLMv2Logon(SMBSrvSession sess, ClientInfo client)
             throws SMBSrvException {
 
         // Check for a null logon
@@ -1749,7 +1749,7 @@ public class EnterpriseSMBAuthenticator extends SMBAuthenticator implements Call
      * @param type3Msg Type3NTLMMessage
      * @exception SMBSrvException SMB error
      */
-    private final void doNTLMv2SessionKeyLogon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
+    protected void doNTLMv2SessionKeyLogon(SMBSrvSession sess, ClientInfo client, Type3NTLMMessage type3Msg)
             throws SMBSrvException {
 
         // Get the type 2 message that contains the challenge sent to the client
@@ -1879,7 +1879,7 @@ public class EnterpriseSMBAuthenticator extends SMBAuthenticator implements Call
      * @param reqPkt SMBSrvPacket
      * @exception SMBSrvException SMB error
      */
-    private final void doHashedPasswordLogon(SMBSrvSession sess, SMBSrvPacket reqPkt)
+    protected void doHashedPasswordLogon(SMBSrvSession sess, SMBSrvPacket reqPkt)
             throws SMBSrvException {
 
         // Get the associated parser
