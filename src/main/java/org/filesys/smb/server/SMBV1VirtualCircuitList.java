@@ -69,9 +69,10 @@ public class SMBV1VirtualCircuitList implements VirtualCircuitList {
      * @param maxVC int
      */
     public SMBV1VirtualCircuitList(int maxVC) {
-
+        //valuya: fix initialization with 0 VC.
+        int maxVcCapped = maxVC == 0 || maxVC > MaxCircuits ? MaxCircuits : maxVC;
         // Save the maxmimum virtual circuits value
-        m_maxVC = maxVC;
+        m_maxVC = maxVcCapped;
 
         // Allocate the virtual circuit table
         m_vcircuits = new HashMap<Integer, VirtualCircuit>(getMaximumVirtualCircuits());
