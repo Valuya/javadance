@@ -412,6 +412,9 @@ public final class Dialect {
      * @return SMB dialect type string.
      */
     public static String DialectTypeString(int dia) {
+        if (dia < 0 || protType.length <= dia) {
+            return "Unmapped dialect (" + dia + ")";
+        }
         return protType[dia];
     }
 
