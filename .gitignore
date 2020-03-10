@@ -1,2 +1,4 @@
-*.iml
-.idea
+.idea/
+target/
+release.properties
+.idea/workspace.xml
