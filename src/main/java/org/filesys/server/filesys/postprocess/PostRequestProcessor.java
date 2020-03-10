@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 GK Spencer
+ * Copyright (C) 2019 GK Spencer
  *
  * JFileServer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,24 +14,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with JFileServer. If not, see <http://www.gnu.org/licenses/>.
  */
+package org.filesys.server.filesys.postprocess;
 
-package org.filesys.server.locking;
-
-import org.filesys.smb.OpLockType;
+import java.io.IOException;
 
 /**
- * Oplock Owner Interface
+ * Post Request Processor Interface
+ *
+ * <p>Implementations call into a filesystem driver to run additional code after a request has been processed and
+ * the response has been sent to the client by the protocol layer</p>
  *
  * @author gkspencer
  */
-public interface OplockOwner {
+public interface PostRequestProcessor {
 
     /**
-     * Check if the oplock owner matches this oplock owner for the type of oplock
+     * Run the post request processor, the implementation must store the required context for the callback
      *
-     * @param opType    OplockType
-     * @param opOwner   OplockOwner
-     * @return boolean
+     * @exception IOException I/O error occurred
      */
-    public boolean isOwner(OpLockType opType, OplockOwner opOwner);
+    public void runPostProcessor()
+        throws IOException;
 }

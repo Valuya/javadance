@@ -36,6 +36,7 @@ import org.filesys.server.SrvSessionList;
 import org.filesys.server.auth.AuthenticatorException;
 import org.filesys.server.auth.ClientInfo;
 import org.filesys.server.filesys.*;
+import org.filesys.server.filesys.postprocess.PostRequestProcessor;
 import org.filesys.server.thread.ThreadRequestPool;
 import org.filesys.smb.*;
 import org.filesys.smb.server.notify.NotifyRequest;
@@ -1147,7 +1148,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
         catch ( SMBSrvException ex) {
 
 		    // Build an error response, use the original request packet
-            smbPkt.getParser().buildErrorResponse(SMBStatus.NTErr, ex.getNTErrorCode());
+            smbPkt.getParser().buildErrorResponse(SMBStatus.NTErr, ex.getNTErrorCode(), getProtocolHandler());
             m_pktHandler.writePacket(smbPkt, smbPkt.getLength());
         }
 	}
@@ -1359,9 +1360,40 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 					}
 				}
 
+				// Check if the request has a post processor
+				PostRequestProcessor postProcessor = null;
+
+				if ( smbPkt != null && smbPkt.getParser() != null && smbPkt.getParser().hasPostProcessor())
+					postProcessor = smbPkt.getParser().getPostProcessor();
+
 				// Release the current packet back to the pool
 				getPacketPool().releasePacket(smbPkt);
 				smbPkt = null;
+
+				// Run the post processor, if valid
+				if ( postProcessor != null) {
+
+					try {
+
+						// Debug
+						if (Debug.EnableInfo && hasDebug(DBG_TIMING))
+							startTime = System.currentTimeMillis();
+
+						postProcessor.runPostProcessor();
+
+						// Debug
+						if (Debug.EnableInfo && hasDebug(DBG_TIMING)) {
+							long duration = System.currentTimeMillis() - startTime;
+							debugPrintln("Post processor (" + postProcessor.getClass().getSimpleName() + ") took " + duration + "ms");
+						}
+					}
+					catch ( IOException ex) {
+
+						// DEBUG
+						if (Debug.EnableInfo && hasDebug(DBG_ERROR))
+							Debug.println("[SMB] Error from post processor (" + postProcessor.getClass().getSimpleName() + "): " + ex);
+					}
+				}
 
 				// DEBUG
 				if (Debug.EnableInfo && hasDebug(DBG_PKTSTATS))
@@ -1507,12 +1539,12 @@ public class SMBSrvSession extends SrvSession implements Runnable {
         if ( parser.isLongErrorCode()) {
 
             // Build the success response using the NT status code
-            parser.buildErrorResponse( SMBStatus.NTErr, SMBStatus.NTSuccess);
+            parser.buildErrorResponse( SMBStatus.NTErr, SMBStatus.NTSuccess, getProtocolHandler());
         }
         else {
 
             // Build the success response using the specified error class
-            parser.buildErrorResponse( SMBStatus.Success, SMBStatus.Success);
+            parser.buildErrorResponse( SMBStatus.Success, SMBStatus.Success, getProtocolHandler());
         }
 
 		// Return the success response to the client
@@ -1579,12 +1611,12 @@ public class SMBSrvSession extends SrvSession implements Runnable {
         if ( parser.isLongErrorCode()) {
 
             // Build the error response using the NT status code
-            parser.buildErrorResponse( SMBStatus.NTErr, errCode);
+            parser.buildErrorResponse( SMBStatus.NTErr, errCode, getProtocolHandler());
         }
         else {
 
             // Build the error response using the specified error class
-            parser.buildErrorResponse( errClass, errCode);
+            parser.buildErrorResponse( errClass, errCode, getProtocolHandler());
         }
 
 		// Return the error response to the client
@@ -1610,7 +1642,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 		parser.setResponse();
 
 		// Build the error response using the NT status code
-		parser.buildErrorResponse( SMBStatus.NTErr, ntErrCode);
+		parser.buildErrorResponse( SMBStatus.NTErr, ntErrCode, getProtocolHandler());
 
 		// Return the error response to the client
 		sendResponseSMB(smbPkt, smbPkt.getLength());
@@ -1634,7 +1666,7 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 		// Build the error response
 		SMBParser parser = smbPkt.getParser();
-		parser.buildErrorResponse( errClass, errCode);
+		parser.buildErrorResponse( errClass, errCode, getProtocolHandler());
 
 		// Return the error response to the client
 		boolean sentOK = sendAsynchResponseSMB(smbPkt, smbPkt.getLength());
@@ -1665,7 +1697,6 @@ public class SMBSrvSession extends SrvSession implements Runnable {
 
 			// Send the asynchronous response immediately
 			sendResponseSMB(pkt, len);
-			m_pktHandler.flushPacket();
 
 			// Indicate that the SMB response has been sent
 			sts = true;

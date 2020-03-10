@@ -33,15 +33,15 @@ import java.util.Map;
 public class SMBV1VirtualCircuitList implements VirtualCircuitList {
 
     //  Default and maximum number of virtual circuits
-    public static final int DefaultCircuits     = 4;
-    public static final int DefMaxCircuits      = 16;
+    public static final int DefaultCircuits = 4;
+    public static final int DefMaxCircuits = 16;
 
-    public static final int MinCircuits         = 4;
-    public static final int MaxCircuits         = 2000;
-    public static final int InitialCircuits     = 16;
+    public static final int MinCircuits = 4;
+    public static final int MaxCircuits = 2000;
+    public static final int InitialCircuits = 16;
 
     //  UIDs are 16bit values
-    private static final int UIDMask            = 0x0000FFFF;
+    private static final int UIDMask = 0x0000FFFF;
 
     // Active virtual circuits
     private Map<Integer, VirtualCircuit> m_vcircuits;
@@ -59,7 +59,7 @@ public class SMBV1VirtualCircuitList implements VirtualCircuitList {
         m_maxVC = MaxCircuits;
 
         // Allocate the virtual circuit table
-        m_vcircuits = new HashMap<Integer, VirtualCircuit>( InitialCircuits);
+        m_vcircuits = new HashMap<Integer, VirtualCircuit>(InitialCircuits);
     }
 
 
@@ -70,7 +70,7 @@ public class SMBV1VirtualCircuitList implements VirtualCircuitList {
      */
     public SMBV1VirtualCircuitList(int maxVC) {
         //valuya: fix initialization with 0 VC.
-        int maxVcCapped = maxVC == 0 || maxVC > MaxCircuits ? MaxCircuits : maxVC;
+        int maxVcCapped = maxVC <= 0 || maxVC > MaxCircuits ? MaxCircuits : maxVC;
         // Save the maxmimum virtual circuits value
         m_maxVC = maxVcCapped;
 
@@ -81,11 +81,11 @@ public class SMBV1VirtualCircuitList implements VirtualCircuitList {
     /**
      * Create a virtual circuit object
      *
-     * @param vcNum int
+     * @param vcNum  int
      * @param client ClientInfo
      */
     public VirtualCircuit createVirtualCircuit(int vcNum, ClientInfo client) {
-        return new VirtualCircuit( vcNum, client);
+        return new VirtualCircuit(vcNum, client);
     }
 
     /**
