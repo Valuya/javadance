@@ -36,6 +36,8 @@ import org.springframework.extensions.config.ConfigElement;
  */
 public class JDKLoggingDebug extends DebugInterfaceBase {
 
+    private static final Logger LOG = Logger.getLogger("org.filesys");
+
     // Buffer for debugPrint() strings
     private StringBuilder m_printBuf;
 
@@ -49,7 +51,7 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
     /**
      * Output a debug string.
      *
-     * @param str String
+     * @param str   String
      * @param level int
      */
     public final void debugPrint(String str, int level) {
@@ -57,16 +59,12 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
         // Check if the logging level is enabled
         if (level <= getLogLevel()) {
 
-            // Allocate a holding buffer
-            if (m_printBuf == null) {
-                synchronized (this) {
-                    if (m_printBuf == null)
-                        m_printBuf = new StringBuilder();
+            synchronized (this) {
+                // Allocate a holding buffer
+                if (m_printBuf == null) {
+                    m_printBuf = new StringBuilder();
                 }
-            }
-
-            // Append the string to the holding buffer
-            synchronized (m_printBuf) {
+                // Append the string to the holding buffer
                 m_printBuf.append(str);
             }
         }
@@ -75,7 +73,7 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
     /**
      * Output a debug string, and a newline.
      *
-     * @param str String
+     * @param str   String
      * @param level int
      */
     public final void debugPrintln(String str, int level) {
@@ -83,15 +81,19 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
         // Check if the logging level is enabled
         if (level <= getLogLevel()) {
 
-            // Check if there is a holding buffer
-            if (m_printBuf != null) {
+            synchronized (this) {
 
-                // Append the new string
-                m_printBuf.append(str);
-                logOutput(m_printBuf.toString(), level);
-                m_printBuf = null;
-            } else
-                logOutput(str, level);
+                // Check if there is a holding buffer
+                if (m_printBuf != null) {
+                    // Append the new string
+                    m_printBuf.ensureCapacity(m_printBuf.length() + str.length());
+                    m_printBuf.append(str);
+                    logOutput(m_printBuf.toString(), level);
+                    m_printBuf = null;
+                } else
+                    logOutput(str, level);
+            }
+
         }
     }
 
@@ -107,28 +109,10 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
         if (level <= getLogLevel()) {
 
             // Convert the logging level to a JDK logging level
-            Level logLevel = Level.OFF;
-
-            switch (level) {
-                case Debug.Debug:
-                    logLevel = Level.FINEST;
-                    break;
-                case Debug.Info:
-                    logLevel = Level.INFO;
-                    break;
-                case Debug.Warn:
-                    logLevel = Level.WARNING;
-                    break;
-                case Debug.Fatal:
-                    logLevel = Level.SEVERE;
-                    break;
-                case Debug.Error:
-                    logLevel = Level.FINEST;
-                    break;
-            }
+            Level logLevel = getLoggingLevel(level);
 
             // Output the exception
-            Logger.getGlobal().log(logLevel, "", ex);
+            LOG.log(logLevel, "", ex);
         }
     }
 
@@ -139,27 +123,9 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
      * @param level int
      */
     protected void logOutput(String str, int level) {
-        Level logLevel = Level.OFF;
+        Level logLevel = getLoggingLevel(level);
 
-        switch (level) {
-            case Debug.Debug:
-                logLevel = Level.FINEST;
-                break;
-            case Debug.Info:
-                logLevel = Level.INFO;
-                break;
-            case Debug.Warn:
-                logLevel = Level.WARNING;
-                break;
-            case Debug.Fatal:
-                logLevel = Level.SEVERE;
-                break;
-            case Debug.Error:
-                logLevel = Level.FINEST;
-                break;
-        }
-
-        Logger.getGlobal().log(logLevel, str);
+        LOG.log(logLevel, str);
     }
 
     /**
@@ -186,21 +152,43 @@ public class JDKLoggingDebug extends DebugInterfaceBase {
 
                 // Load the logging properties
                 LogManager.getLogManager().readConfiguration(logPropsFile);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
 
-            }
-            finally {
+            } finally {
 
                 // Close the properties file
                 if (logPropsFile != null) {
                     try {
                         logPropsFile.close();
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                     }
                 }
             }
         }
     }
+
+
+    private Level getLoggingLevel(int level) {
+        Level logLevel = Level.OFF;
+
+        switch (level) {
+            case Debug.Debug:
+                logLevel = Level.FINE;
+                break;
+            case Debug.Info:
+                logLevel = Level.INFO;
+                break;
+            case Debug.Warn:
+                logLevel = Level.WARNING;
+                break;
+            case Debug.Fatal:
+                logLevel = Level.SEVERE;
+                break;
+            case Debug.Error:
+                logLevel = Level.WARNING;
+                break;
+        }
+        return logLevel;
+    }
+
 }
