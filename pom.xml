@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.filesys</groupId>
@@ -8,7 +9,8 @@
     <version>1.2.1-valuya.2-SNAPSHOT</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>Java file server with SMB, FTP/FTPS and NFS support, virtual filesystems, database filesystems</description>
+    <description>Java file server with SMB, FTP/FTPS and NFS support, virtual filesystems, database filesystems
+    </description>
     <url>http://www.filesys.org</url>
 
     <licenses>
@@ -172,18 +174,18 @@
             </plugin>
 
             <!-- Nexus staging -->
-<!--            <plugin>-->
-<!--                <groupId>org.sonatype.plugins</groupId>-->
-<!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
-<!--                <version>1.6.7</version>-->
-<!--                <extensions>true</extensions>-->
-<!--                <configuration>-->
-<!--                    <serverId>ossrh</serverId>-->
-<!--                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
-<!--                    <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
-<!--                    <stagingProgressTimeoutMinutes>15</stagingProgressTimeoutMinutes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.sonatype.plugins</groupId>-->
+            <!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
+            <!--                <version>1.6.7</version>-->
+            <!--                <extensions>true</extensions>-->
+            <!--                <configuration>-->
+            <!--                    <serverId>ossrh</serverId>-->
+            <!--                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+            <!--                    <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+            <!--                    <stagingProgressTimeoutMinutes>15</stagingProgressTimeoutMinutes>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 
@@ -239,19 +241,19 @@
         <repository>
             <id>nexus@valuya</id>
             <name>Nexus</name>
-            <url>https://nexus.valuya.be/nexus/repository/maven-release/</url>
+            <url>https://nexus.valuya.com/nexus/repository/maven-release/</url>
         </repository>
         <snapshotRepository>
             <id>nexus@valuya</id>
             <name>Nexus</name>
-            <url>https://nexus.valuya.be/nexus/repository/maven-snapshots/</url>
+            <url>https://nexus.valuya.com/nexus/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
     <repositories>
         <repository>
             <id>nexus@valuya</id>
-            <url>https://nexus.valuya.be/nexus/repository/maven-public/</url>
+            <url>https://nexus.valuya.com/nexus/repository/maven-public/</url>
             <name>Nexus</name>
             <snapshots>
                 <enabled>true</enabled>
